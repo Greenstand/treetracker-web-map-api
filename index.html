@@ -22,16 +22,13 @@
         //Get the tree data and create markers with corresponding data
         var initMarkers = function() {
 
-            $.get( "http://192.241.212.208/api/trees", function( data ) {
-              //$( ".result" ).html( data );
-              console.log(data);
-              alert( "Load was performed." );
+            $.get( "/api/trees", function( data ) {
 
-              // FOR EACH
+	     $.each(data.data, function(i, item) {
 
-              var latLng = new google.maps.LatLng(tree.primaryLocation.lat, tree.primaryLocation.lon);
+              var latLng = new google.maps.LatLng(item.lat, item.lon);
               var infowindow = new google.maps.InfoWindow({
-                content:'{{HTML::image("/img/loading.gif");}}'
+                content:'/img/loading.gif'
               });
               var marker = new google.maps.Marker({
                 position: latLng,
@@ -56,6 +53,8 @@
 
               markerBounds.extend(latLng);
               markers.push(marker);
+
+             });
 
             });
         }
