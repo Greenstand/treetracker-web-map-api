@@ -29,7 +29,7 @@
 
               // FOR EACH
 
-              var latLng = new google.maps.LatLng({{tree->primaryLocation->lat}}, {{tree->primaryLocation->lon}});
+              var latLng = new google.maps.LatLng(tree.primaryLocation.lat, tree.primaryLocation.lon);
               var infowindow = new google.maps.InfoWindow({
                 content:'{{HTML::image("/img/loading.gif");}}'
               });
