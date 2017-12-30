@@ -22,7 +22,7 @@
         //Get the tree data and create markers with corresponding data
         var initMarkers = function() {
 
-            $.get( "/api/trees", function( data ) {
+            $.get( "http://dev.treetracker.org/api/trees", function( data ) {
 
 	     $.each(data.data, function(i, item) {
 
