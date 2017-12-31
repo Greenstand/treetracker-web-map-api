@@ -10,20 +10,27 @@ html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     <script type="text/javascript"
             src="js/jquery-2.1.3.min.js">
     </script>
-    <script type="text/javascript"
-            src="js/markerclusterer.js">
-    </script>
     <script type="text/javascript">
 var map = undefined;//Google Map object
 var mc = undefined;//Marker Clusterer
 var markers = [];//All the markers
 var markerBounds = new google.maps.LatLngBounds();//Marker bounds
 
+var currentZoom;
+
 //Get the tree data and create markers with corresponding data
 var initMarkers = function() {
+  var zoomLevel = map.getZoom();
+  console.log(zoomLevel);
+  $.get( "/api/trees?zoom="+zoomLevel, function( data ) {
+    console.log('got data');
 
-  $.get( "/api/trees?zoom=10", function( data ) {
-
+    /*var oldMarkers = $.extend({}, markers);
+    markers.length = 0;
+    console.log('oldMarkers ' + oldMarkers.length);
+    */
+    clearOverlays(markers);
+    //console.log(data);
     $.each(data.data, function(i, item) {
 
       if(item.type == 'cluster'){
@@ -86,7 +93,18 @@ var initMarkers = function() {
 
     });
 
+    //console.log('len: ' + markers.length);
+
   });
+}
+
+function clearOverlays(overlays) {
+  //console.log(overlays);
+  for (var i = 0; i < overlays.length; i++ ) {
+    //console.log(i);
+    overlays[i].setMap(null);
+  }
+  overlays.length = 0;
 }
 
 //Initialize Google Maps and Marker Clusterer
@@ -96,15 +114,23 @@ var initialize = function() {
     mapTypeId: 'hybrid'
   }
   map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-  initMarkers();
 
   var mcOptions = {gridSize: 50, maxZoom: 13};
-  mc = new MarkerClusterer(map, markers, mcOptions);
 
+  google.maps.event.addListener(map, "bounds_changed", function() {
+    var zoomLevel = map.getZoom();
+    if( (currentZoom < 14 && zoomLevel >= 14)
+        || (currentZoom >= 14 && zoomLevel < 14 ) ) {
+      console.log('reload');
+      initMarkers();
+    }
+    currentZoom = zoomLevel;
+  });
+
+  currentZoom = 0;
   map.setCenter({lat: -3.263960, lng: 36.624882});
   map.setZoom(15);
 
-  //map.fitBounds(markerBounds);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
