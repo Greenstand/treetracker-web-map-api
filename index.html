@@ -42,10 +42,12 @@
               });
 
               google.maps.event.addListener(marker, 'click', function() {
+                debugger;
                 var currentItem = treeData[i];
                 //infowindow.open(map, this);
 
                 $("#tree_info_div").show();
+                $("#create-data").html(currentItem["time_created"]) ;
                 // $.ajax({
                 //   url: "/showtreedata/{{{$tree->id}}}",
                 //   cache: false
@@ -115,7 +117,7 @@
 			<img src="img_.jpg">
 			<div id="created_on">
 				<b>Created on</b>
-				<p>2017-07-31 11:47:46</p>
+				<p id = "create-data"></p>
 			</div>
 			<div id="updated_on">
 			        <b>Updated on</b>
