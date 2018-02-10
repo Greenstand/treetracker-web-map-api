@@ -38,6 +38,10 @@ b {
 	width: 400px;
 }
 
+.div-divide-half{
+	width:50%;
+}
+
 #tree_info_div{
 	display: none;
 }

@@ -42,13 +42,16 @@
               });
 
               google.maps.event.addListener(marker, 'click', function() {
-                debugger;
+                //debugger;
                 var currentItem = treeData[i];
                 //infowindow.open(map, this);
 
                 $("#tree_info_div").show();
                 $("#create-data").html(currentItem["time_created"]);
                 $("#updated-data").html(currentItem["time_updated"]);
+                $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
+                $("#latitude-data").html(currentItem["lat"]);
+                $("#longitude-data").html(currentItem["lon"]);
                 // $.ajax({
                 //   url: "/showtreedata/{{{$tree->id}}}",
                 //   cache: false
@@ -116,22 +119,34 @@
     <span id='close-button'>x</span>
 		<div class="tree_info">
 			<img src="img_.jpg">
-			<div id="created_on">
+			<div id="created_on" class="div-divide-half">
 				<b>Created on : </b>
 				<p id = "create-data"></p>
 			</div>
-			<div id="updated_on">
+			<div id="updated_on" class="div-divide-half">
         <b>Updated on : </b>
         <p id ="updated-data"></p>
 			</div>
-			<div id="missing_dead">
+			<div id="missing_dead" class="div-divide-half">
 				<b>Tree is not missing</b>
 				<b>Tree is not dead</b>
 			</div>
-			<div id="accuracy">
-			<b>GPS accuracy of the tree location is 6 meters</b>
+			<div id="accuracy" class="div-divide-half">
+        <p><b>GPS Accuracy: </b></p>
+		    <p id = "gps-accuracy-data"></p>
 			</div>
-		</div>
+      <div id ="lat-long-info">
+        <div class="div-divide-half">
+          <b>Latitude:</b>
+          <p id = "latitude-data"></p>
+        </div>
+        <div class="div-divide-half">
+          <b>Longitude:</b>
+          <p id = "longitude-data"></p>
+        </div>
+      </div>
+
+		</div><!--end of class-->
 	</div>
 </div>
 <div id="map-canvas"></div>
