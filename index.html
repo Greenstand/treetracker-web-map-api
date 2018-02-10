@@ -28,9 +28,9 @@
         var initMarkers = function() {
 
             $.get( "http://dev.treetracker.org/api/trees", function( data ) {
-
+            treeData = data.data; //Populate tree data
 	     $.each(data.data, function(i, item) {
-              treeData = data.data; //Populate tree data
+
               var latLng = new google.maps.LatLng(item.lat, item.lon);
               var infowindow = new google.maps.InfoWindow({
                 content:'/img/loading.gif'
