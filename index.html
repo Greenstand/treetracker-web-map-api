@@ -14,14 +14,15 @@
             src="js/markerclusterer.js">
     </script>
     <script type="text/javascript">
-    const DEAD_TREE = "The tree is dead.";
-    const ALIVE_TREE = "The tree is not dead.";
-    const MISSING_TREE = "The tree is missing.";
-    const NOT_MISSING_TREE = "The tree is not missing.";
-        var map = undefined;//Google Map object
-        var mc = undefined;//Marker Clusterer
-        var markers = [];//All the markers
-        var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+      const DEAD_TREE = "The tree is dead.";
+      const ALIVE_TREE = "The tree is not dead.";
+      const MISSING_TREE = "The tree is missing.";
+      const NOT_MISSING_TREE = "The tree is not missing.";
+      var map = undefined;//Google Map object
+      var mc = undefined;//Marker Clusterer
+      var markers = [];//All the markers
+      var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+      var treeData = [];  //populate treeData
 
         //Get the tree data and create markers with corresponding data
         var initMarkers = function() {
@@ -29,7 +30,7 @@
             $.get( "http://dev.treetracker.org/api/trees", function( data ) {
 
 	     $.each(data.data, function(i, item) {
-
+              treeData = data.data; //Populate tree data
               var latLng = new google.maps.LatLng(item.lat, item.lon);
               var infowindow = new google.maps.InfoWindow({
                 content:'/img/loading.gif'
