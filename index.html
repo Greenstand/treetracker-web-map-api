@@ -47,7 +47,8 @@
                 //infowindow.open(map, this);
 
                 $("#tree_info_div").show();
-                $("#create-data").html(currentItem["time_created"]) ;
+                $("#create-data").html(currentItem["time_created"]);
+                $("#updated-data").html(currentItem["time_updated"]);
                 // $.ajax({
                 //   url: "/showtreedata/{{{$tree->id}}}",
                 //   cache: false
@@ -116,12 +117,12 @@
 		<div class="tree_info">
 			<img src="img_.jpg">
 			<div id="created_on">
-				<b>Created on</b>
+				<b>Created on : </b>
 				<p id = "create-data"></p>
 			</div>
 			<div id="updated_on">
-			        <b>Updated on</b>
-                                <p>2017-07-31 11:47:46</p>
+        <b>Updated on : </b>
+        <p id ="updated-data"></p>
 			</div>
 			<div id="missing_dead">
 				<b>Tree is not missing</b>
