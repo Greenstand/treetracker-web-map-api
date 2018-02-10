@@ -50,6 +50,18 @@
                 $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
                 $("#latitude-data").html(currentItem["lat"]);
                 $("#longitude-data").html(currentItem["lon"]);
+                if(currentItem["missing"]){
+                  $("#missing-data").html(YES);
+                }
+                else {
+                  $("#missing-data").html(NO);
+                }
+                if(currentItem["dead"]){
+                  $("#dead-data").html(YES);
+                }
+                else{
+                  $("#dead-data").html(NO);
+                }
                 // $.ajax({
                 //   url: "/showtreedata/{{{$tree->id}}}",
                 //   cache: false
