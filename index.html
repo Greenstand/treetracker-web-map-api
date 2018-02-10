@@ -42,16 +42,18 @@
               });
 
               google.maps.event.addListener(marker, 'click', function() {
-                infowindow.open(map, this);
+                
+                //infowindow.open(map, this);
+
                 $("#tree_info_div").show();
-                $.ajax({
-                  url: "/showtreedata/{{{$tree->id}}}",
-                  cache: false
-                })
-                  .done(function( html ) {
-                    infowindow.setContent(html);
-                    $(".carousel-control").css("background-image", "none");
-                  });
+                // $.ajax({
+                //   url: "/showtreedata/{{{$tree->id}}}",
+                //   cache: false
+                // })
+                //   .done(function( html ) {
+                //     infowindow.setContent(html);
+                //     $(".carousel-control").css("background-image", "none");
+                //   });
 
 
               });
