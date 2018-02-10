@@ -14,10 +14,8 @@
             src="js/markerclusterer.js">
     </script>
     <script type="text/javascript">
-      const DEAD_TREE = "The tree is dead.";
-      const ALIVE_TREE = "The tree is not dead.";
-      const MISSING_TREE = "The tree is missing.";
-      const NOT_MISSING_TREE = "The tree is not missing.";
+      const YES = "YES";
+      const NO = "NO";
       var map = undefined;//Google Map object
       var mc = undefined;//Marker Clusterer
       var markers = [];//All the markers
@@ -127,10 +125,16 @@
         <b>Updated on : </b>
         <p id ="updated-data"></p>
 			</div>
-			<div id="missing_dead" class="div-divide-half">
-				<b>Tree is not missing</b>
-				<b>Tree is not dead</b>
-			</div>
+      <div>
+  			<div class="div-divide-half">
+  				<b>Missing Tree :</b>
+  				<p id="missing-data"></p>
+  			</div>
+        <div id = "dead-data" class="div-divide-half">
+          <b>Dead Tree:</b>
+          <p id="dead-data"></p>
+        </div>
+    </div>
 			<div id="accuracy" class="div-divide-half">
         <p><b>GPS Accuracy: </b></p>
 		    <p id = "gps-accuracy-data"></p>
