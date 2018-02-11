@@ -127,42 +127,43 @@
 <div id="overlay" class="overlay_container">
 	<div id = "tree_info_div" class="overlay_innards">
     <span id='close-button'>x</span>
-		<div class="tree_info">
-			<img src="img_.jpg">
-			<div id="created_on" class="div-divide-half">
-				<b>Created on : </b>
-				<p id = "create-data"></p>
-			</div>
-			<div id="updated_on" class="div-divide-half">
-        <b>Updated on : </b>
-        <p id ="updated-data"></p>
-			</div>
-      <div>
-  			<div class="div-divide-half">
-  				<b>Missing Tree :</b>
-  				<p id="missing-data"></p>
-  			</div>
-        <div id = "dead-data" class="div-divide-half">
-          <b>Dead Tree:</b>
-          <p id="dead-data"></p>
+  		<div class="tree_info">
+  			<img src="img_.jpg">
+    			<div id="created_on" class="div-divide-half float-left">
+    				<b>Created on : </b>
+    				<p id = "create-data"></p>
+    			</div>
+    			<div id="updated_on" class="div-divide-half float-right">
+            <b>Updated on : </b>
+            <p id ="updated-data"></p>
+    			</div>
+          <div>
+      			<div class="div-divide-half float-left">
+      				<b>Missing Tree :</b>
+      				<p id="missing-data"></p>
+      			</div>
+            <div class="div-divide-half float-right">
+              <b>Dead Tree:</b>
+              <p id="dead-data"></p>
+            </div>
         </div>
-    </div>
-			<div id="accuracy" class="div-divide-half">
-        <p><b>GPS Accuracy: </b></p>
-		    <p id = "gps-accuracy-data"></p>
-			</div>
-      <div id ="lat-long-info">
-        <div class="div-divide-half">
-          <b>Latitude:</b>
-          <p id = "latitude-data"></p>
+        <div id ="lat-long-info">
+          <div class="div-divide-half float-left">
+            <b>Latitude:</b>
+            <p id = "latitude-data"></p>
+          </div>
+          <div class="div-divide-half float-right">
+            <b>Longitude:</b>
+            <p id = "longitude-data"></p>
+          </div>
         </div>
-        <div class="div-divide-half">
-          <b>Longitude:</b>
-          <p id = "longitude-data"></p>
-        </div>
+        <div>
+      		<div class="div-divide-half float-left">
+            <b>GPS Accuracy: </b>
+      	    <p id = "gps-accuracy-data"></p>
+      		</div>
       </div>
-
-		</div><!--end of class-->
+    </div><!--end of class tree_info-->
 	</div>
 </div>
 <div id="map-canvas"></div>
