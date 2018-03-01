@@ -11,6 +11,8 @@ html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
             src="js/jquery-2.1.3.min.js">
     </script>
     <script type="text/javascript">
+const YES = "YES";
+const NO = "NO";
 var map = undefined;//Google Map object
 var mc = undefined;//Marker Clusterer
 var markers = [];//All the markers
@@ -26,14 +28,14 @@ var initMarkers = function() {
     console.log('got data');
 
     /*var oldMarkers = $.extend({}, markers);
-    markers.length = 0;
-    console.log('oldMarkers ' + oldMarkers.length);
-    */
+      markers.length = 0;
+      console.log('oldMarkers ' + oldMarkers.length);
+     */
     clearOverlays(markers);
     //console.log(data);
     $.each(data.data, function(i, item) {
 
-      if(item.type == 'cluster'){
+      if(item.type == 'cluster') {
 
         //alert(item.circle);
         //feature = ' { "type": "FeatureCollection", "features": [ { "type": "Feature", "geometry":  ' + item.centroid + ' } ] }';
@@ -42,30 +44,23 @@ var initMarkers = function() {
         centroid = JSON.parse(item.centroid);
         //console.log(centroid);
         var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
-       // console.log(latLng);
+        // console.log(latLng);
         var marker = new google.maps.Marker({
           position: latLng,
           map: map,
           title:"Count"
         });
 
-        google.maps.event.addListener(marker, 'click', function() {
-
-          var infowindow = new google.maps.InfoWindow({
-            content:item.count.toString()
-          });
-          infowindow.open(map, this);
-
-        });
-
         markerBounds.extend(latLng);
         markers.push(marker);
 
       } else if (item.type == 'point') {
+
         var latLng = new google.maps.LatLng(item.lat, item.lon);
         var infowindow = new google.maps.InfoWindow({
           content:'/img/loading.gif'
         });
+
         var marker = new google.maps.Marker({
           position: latLng,
           map: map,
@@ -73,17 +68,28 @@ var initMarkers = function() {
         });
 
         google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map, this);
+          var currentItem = item;
+          //infowindow.open(map, this);
+          console.log(currentItem);
 
-          $.ajax({
-            url: "/showtreedata/{{{$tree->id}}}",
-            cache: false
-          })
-          .done(function( html ) {
-            infowindow.setContent(html);
-            $(".carousel-control").css("background-image", "none");
-          });
-
+          $("#tree_info_div").show();
+          $("#create-data").html(currentItem["time_created"]);
+          $("#updated-data").html(currentItem["time_updated"]);
+          $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
+          $("#latitude-data").html(currentItem["lat"]);
+          $("#longitude-data").html(currentItem["lon"]);
+          if(currentItem["missing"]){
+            $("#missing-data").html(YES);
+          }
+          else {
+            $("#missing-data").html(NO);
+          }
+          if(currentItem["dead"]){
+            $("#dead-data").html(YES);
+          }
+          else{
+            $("#dead-data").html(NO);
+          }
 
         });
 
@@ -154,8 +160,57 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
     </style>
+    <link rel=stylesheet href="css/style.css"/>
 </head>
 <body>
+<div id="overlay" class="overlay_container">
+	<div id = "tree_info_div" class="overlay_innards">
+    <span id='close-button'>x</span>
+  		<div class="tree_info">
+  			<img src="img_.jpg">
+    			<div id="created_on" class="div-divide-half float-left">
+    				<b>Created on : </b>
+    				<p id = "create-data"></p>
+    			</div>
+    			<div id="updated_on" class="div-divide-half float-right">
+            <b>Updated on : </b>
+            <p id ="updated-data"></p>
+    			</div>
+          <div>
+      			<div class="div-divide-half float-left">
+      				<b>Missing Tree :</b>
+      				<p id="missing-data"></p>
+      			</div>
+            <div class="div-divide-half float-right">
+              <b>Dead Tree:</b>
+              <p id="dead-data"></p>
+            </div>
+        </div>
+        <div id ="lat-long-info">
+          <div class="div-divide-half float-left">
+            <b>Latitude:</b>
+            <p id = "latitude-data"></p>
+          </div>
+          <div class="div-divide-half float-right">
+            <b>Longitude:</b>
+            <p id = "longitude-data"></p>
+          </div>
+        </div>
+        <div>
+      		<div class="div-divide-half float-left">
+            <b>GPS Accuracy: </b>
+      	    <p id = "gps-accuracy-data"></p>
+      		</div>
+          <div class="div-divide-half float-right">
+            <b>Notes: </b>
+      	    <p id = "notes"></p>
+      		</div>
+      </div>
+    </div><!--end of class tree_info-->
+	</div>
+</div>
 <div id="map-canvas"></div>
+<script type="text/javascript"
+        src="js/script.js"></script>
 </body>
 </html>
