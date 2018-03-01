@@ -14,16 +14,19 @@
             src="js/markerclusterer.js">
     </script>
     <script type="text/javascript">
-        var map = undefined;//Google Map object
-        var mc = undefined;//Marker Clusterer
-        var markers = [];//All the markers
-        var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+      const YES = "YES";
+      const NO = "NO";
+      var map = undefined;//Google Map object
+      var mc = undefined;//Marker Clusterer
+      var markers = [];//All the markers
+      var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+      var treeData = [];  //populate treeData
 
         //Get the tree data and create markers with corresponding data
         var initMarkers = function() {
 
             $.get( "http://dev.treetracker.org/api/trees", function( data ) {
-
+            treeData = data.data; //Populate tree data
 	     $.each(data.data, function(i, item) {
 
               var latLng = new google.maps.LatLng(item.lat, item.lon);
@@ -37,16 +40,35 @@
               });
 
               google.maps.event.addListener(marker, 'click', function() {
-                infowindow.open(map, this);
+                var currentItem = treeData[i];
+                //infowindow.open(map, this);
+
                 $("#tree_info_div").show();
-                $.ajax({
-                  url: "/showtreedata/{{{$tree->id}}}",
-                  cache: false
-                })
-                  .done(function( html ) {
-                    infowindow.setContent(html);
-                    $(".carousel-control").css("background-image", "none");
-                  });
+                $("#create-data").html(currentItem["time_created"]);
+                $("#updated-data").html(currentItem["time_updated"]);
+                $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
+                $("#latitude-data").html(currentItem["lat"]);
+                $("#longitude-data").html(currentItem["lon"]);
+                if(currentItem["missing"]){
+                  $("#missing-data").html(YES);
+                }
+                else {
+                  $("#missing-data").html(NO);
+                }
+                if(currentItem["dead"]){
+                  $("#dead-data").html(YES);
+                }
+                else{
+                  $("#dead-data").html(NO);
+                }
+                // $.ajax({
+                //   url: "/showtreedata/{{{$tree->id}}}",
+                //   cache: false
+                // })
+                //   .done(function( html ) {
+                //     infowindow.setContent(html);
+                //     $(".carousel-control").css("background-image", "none");
+                //   });
 
 
               });
@@ -104,24 +126,47 @@
 <div id="overlay" class="overlay_container">
 	<div id = "tree_info_div" class="overlay_innards">
     <span id='close-button'>x</span>
-		<div class="tree_info">
-			<img src="img_.jpg">
-			<div id="created_on">
-				<b>Created on</b>
-				<p>2017-07-31 11:47:46</p>
-			</div>
-			<div id="updated_on">
-			        <b>Updated on</b>
-                                <p>2017-07-31 11:47:46</p>
-			</div>
-			<div id="missing_dead">
-				<b>Tree is not missing</b>
-				<b>Tree is not dead</b>
-			</div>
-			<div id="accuracy">
-			<b>GPS accuracy of the tree location is 6 meters</b>
-			</div>
-		</div>
+  		<div class="tree_info">
+  			<img src="img_.jpg">
+    			<div id="created_on" class="div-divide-half float-left">
+    				<b>Created on : </b>
+    				<p id = "create-data"></p>
+    			</div>
+    			<div id="updated_on" class="div-divide-half float-right">
+            <b>Updated on : </b>
+            <p id ="updated-data"></p>
+    			</div>
+          <div>
+      			<div class="div-divide-half float-left">
+      				<b>Missing Tree :</b>
+      				<p id="missing-data"></p>
+      			</div>
+            <div class="div-divide-half float-right">
+              <b>Dead Tree:</b>
+              <p id="dead-data"></p>
+            </div>
+        </div>
+        <div id ="lat-long-info">
+          <div class="div-divide-half float-left">
+            <b>Latitude:</b>
+            <p id = "latitude-data"></p>
+          </div>
+          <div class="div-divide-half float-right">
+            <b>Longitude:</b>
+            <p id = "longitude-data"></p>
+          </div>
+        </div>
+        <div>
+      		<div class="div-divide-half float-left">
+            <b>GPS Accuracy: </b>
+      	    <p id = "gps-accuracy-data"></p>
+      		</div>
+          <div class="div-divide-half float-right">
+            <b>Notes: </b>
+      	    <p id = "notes"></p>
+      		</div>
+      </div>
+    </div><!--end of class tree_info-->
 	</div>
 </div>
 <div id="map-canvas"></div>

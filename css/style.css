@@ -37,6 +37,20 @@ b {
 .tree_info{
 	width: 400px;
 }
+#tree_info_div{
+	height: auto;
+}
+
+.div-divide-half{
+	width:50%;
+}
+.float-left{
+	float:left;
+}
+
+.float-right{
+	float: right;
+}
 
 #tree_info_div{
 	display: none;
