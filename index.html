@@ -24,7 +24,7 @@ var currentZoom;
 var initMarkers = function() {
   var zoomLevel = map.getZoom();
   console.log(zoomLevel);
-  $.get( "/api/trees?zoom="+zoomLevel, function( data ) {
+  $.get( "http://dev.treetracker.org/api/trees?zoom="+zoomLevel, function( data ) {
     console.log('got data');
 
     /*var oldMarkers = $.extend({}, markers);
@@ -35,8 +35,26 @@ var initMarkers = function() {
     //console.log(data);
     $.each(data.data, function(i, item) {
 
-      if(item.type == 'cluster') {
+    var gridColorValues = {
+        5: "pink",
+        10: "lightcoral",
+        50: "coral",
+        100: "orange",
+        1000: "orangered",
+        10000: "red"
+    }
 
+    //set marker sizes according to your images for correct display
+    var markerImageSizes = {
+        1: google.maps.Size(24,39),
+        5 : google.maps.Size(30,30),
+        10: google.maps.Size(30,30),
+        50: google.maps.Size(40,40),
+        100: google.maps.Size(40,40),
+        1000: google.maps.Size(50,50),
+    }
+
+      if(item.type == 'cluster') {
         //alert(item.circle);
         //feature = ' { "type": "FeatureCollection", "features": [ { "type": "Feature", "geometry":  ' + item.centroid + ' } ] }';
         //feature = JSON.parse(feature);
@@ -45,10 +63,29 @@ var initMarkers = function() {
         //console.log(centroid);
         var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
         // console.log(latLng);
+
+        var count = item.count; 
+        var pinicon;
+	    if (count > 1000) {
+	        pinicon = '1000';
+	    } else if (count > 100) {
+	        pinicon = '100';
+	    } else if (count > 50) {
+	        pinicon = '50';
+	    } else if (count > 10) {
+	        pinicon = '10';
+	    } else {
+	        pinicon = '5';
+	    }
         var marker = new google.maps.Marker({
           position: latLng,
           map: map,
-          title:"Count"
+          title: "Count",
+          count: count,
+          icon: {
+            url: './img/'+pinicon+'.png',
+            size: markerImageSizes[pinicon]
+          }
         });
 
         markerBounds.extend(latLng);
