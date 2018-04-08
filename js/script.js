@@ -1,7 +1,10 @@
+console.log("Hello");
+
 $(document).ready(function() {
   $('#close-button').click(function() {
     $("#tree_info_div").hide();
   });
+  initialize();
 });
 
 //Mapbox
@@ -105,6 +108,7 @@ function clearOverlays(overlays) {
 
 //Initialize Mapbox and Marker Clusterer
 var initialize = function() {
+  console.log("ok");
   mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGhld3hpIiwiYSI6ImNqZW9scnl3ZDA3M3oyd202NHZkZHRsM2oifQ.A5X0BI-tzS5c0LAkHLAMwg';
   map = new mapboxgl.Map({
       container: 'map-canvas',
@@ -117,7 +121,7 @@ var initialize = function() {
   map.on('moveend', function () { 
       var zoomLevel = map.getZoom();
       if( (currentZoom < 12 && zoomLevel >= 12)
-          || (currentZoom >= 12 && zoomLevel < 12 ) ) {*/
+          || (currentZoom >= 12 && zoomLevel < 12 ) ) {
         console.log('reload');
           initMarkers();
       }
@@ -125,4 +129,3 @@ var initialize = function() {
   });
 }
 
-$(document).ready(initialize);
