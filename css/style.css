@@ -69,3 +69,36 @@ source : http://jsfiddle.net/xftr5/17/
 #missing_dead, #accuracy{
 	padding-top:25px;
 }
+
+/* Markers */
+.mapboxgl-marker {
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+}
+.marker5 {
+  background-image:url('../img/5.png');
+  width:24px;
+  height:39px;
+}
+.marker10 {
+  background-image:url('../img/10.png');
+  width:30px;
+  height:30px;
+}
+.marker50 {
+  background-image:url('../img/50.png');
+  width:40px;
+  height:40px;
+}
+.marker100 {
+  background-image:url('../img/100.png');
+  width:40px;
+  height:40px;
+}
+.marker1000 {
+  background-image:url('../img/1000.png');
+  width:50px;
+  height:50px;
+}
+
