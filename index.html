@@ -11,6 +11,10 @@ html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     <script type="text/javascript"
             src="js/jquery-2.1.3.min.js">
     </script>
+    <script type="text/javascript"
+            src="js/jquery-ui.min.js">
+    </script>
+<link rel="stylesheet" href="js/jquery-ui.min.css">
     <script type="text/javascript">
 const YES = "YES";
 const NO = "NO";
@@ -110,7 +114,7 @@ var initMarkers = function() {
           //infowindow.open(map, this);
           console.log(currentItem);
 
-          $("#tree_info_div").show();
+          $("#tree_info_div").show("slide","slow");
           $("#create-data").html(currentItem["time_created"]);
           $("#updated-data").html(currentItem["time_updated"]);
           $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
