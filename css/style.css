@@ -28,7 +28,7 @@ b {
 	z-index: 99;
 	background-color: rgb(255, 255, 255);
 	width: 500px;
-	height: 675px;
+	height: 692px;
 	border-bottom-right-radius: 5px;
 	border-top-right-radius: 5px;
 	background-clip: padding-box;
@@ -62,6 +62,7 @@ b {
 source : http://jsfiddle.net/xftr5/17/
 */
 #close-button {
+cursor: pointer;
     float:right;
     display:inline-block;
     padding:2px 5px;
