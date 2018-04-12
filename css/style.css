@@ -1,5 +1,7 @@
-p, b {
-	font:400 12px Roboto, Arial, sans-serif;
+
+
+p, b, span {
+	font-family: 'Raleway', sans-serif;
 	padding-left:10px;
 	float:left;
 }
@@ -21,14 +23,14 @@ b {
 
 .overlay_innards{
 	position: absolute;
-	top: 75px;
+	top: 55px;
 	left: 10px;
 	z-index: 99;
 	background-color: rgb(255, 255, 255);
 	width: 500px;
 	height: 675px;
-	border-bottom-right-radius: 2px;
-	border-top-right-radius: 2px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
 	background-clip: padding-box;
 	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
 
@@ -38,7 +40,7 @@ b {
 	width: 400px;
 }
 #tree_info_div{
-	height: auto;
+	/*height: auto;*/
 }
 
 .div-divide-half{
@@ -63,7 +65,7 @@ source : http://jsfiddle.net/xftr5/17/
     float:right;
     display:inline-block;
     padding:2px 5px;
-    background:#ccc;
+   
 }
 
 #missing_dead, #accuracy{
