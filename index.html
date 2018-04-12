@@ -4,12 +4,17 @@
     <style type="text/css">
 html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     </style>
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs">
     </script>
     <script type="text/javascript"
             src="js/jquery-2.1.3.min.js">
     </script>
+    <script type="text/javascript"
+            src="js/jquery-ui.min.js">
+    </script>
+<link rel="stylesheet" href="js/jquery-ui.min.css">
     <script type="text/javascript">
 const YES = "YES";
 const NO = "NO";
@@ -109,7 +114,7 @@ var initMarkers = function() {
           //infowindow.open(map, this);
           console.log(currentItem);
 
-          $("#tree_info_div").show();
+          $("#tree_info_div").show("slide","swing",600);
           $("#create-data").html(currentItem["time_created"]);
           $("#updated-data").html(currentItem["time_updated"]);
           $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
@@ -188,17 +193,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    <style>
 
-        .carousel-inner > .item > img {
-            margin: 0 auto;
-            max-height: 250px;
-        }
-
-
-    </style>
     <link rel=stylesheet href="css/style.css"/>
 </head>
+
+
+
 <body>
 <div id="overlay" class="overlay_container">
 	<div id = "tree_info_div" class="overlay_innards">
