@@ -136,6 +136,7 @@ var initMarkers = function() {
           else{
             $("#dead-data").html(NO);
           }
+          $("#tree-image").attr("src",currentItem["image_url"]);
 
         });
 
@@ -208,7 +209,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	<div id = "tree_info_div" class="overlay_innards">
     <span id='close-button'>x</span>
   		<div class="tree_info">
-  			<img src="img_.jpg">
+  			<img id="tree-image" src="">
     			<div id="created_on" class="div-divide-half float-left">
     				<b>Created on : </b>
     				<p id = "create-data"></p>
