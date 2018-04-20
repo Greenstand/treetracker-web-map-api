@@ -19,6 +19,8 @@
   <script type="text/javascript" src="js/jquery-ui.min.js">
   </script>
   <link rel="stylesheet" href="js/jquery-ui.min.css">
+  <script type="text/javascript" src="js/config.js">
+  </script>
   <script type="text/javascript">
     const YES = "YES";
     const NO = "NO";
@@ -29,12 +31,18 @@
 
     var currentZoom;
 
+    var treetrackerApiUrl = "http://dev.treetracker.org/api/";
+    console.log(configTreetrackerApi);
+    if(configTreetrackerApi){
+      treetrackerApiUrl = configTreetrackerApi;
+    }
+
     //Get the tree data and create markers with corresponding data
     var initMarkers = function () {
       var zoomLevel = map.getZoom();
       var token = getParameterByName("token", window.location.href) || "";
       console.log(zoomLevel);
-      $.get("http://dev.treetracker.org/api/trees?zoom=" + zoomLevel + "&token=" + token, function (data) {
+      $.get(treetrackerApiUrl + "trees?zoom=" + zoomLevel + "&token=" + token, function (data) {
         console.log('got data');
 
         /*var oldMarkers = $.extend({}, markers);
