@@ -28,8 +28,9 @@ var currentZoom;
 //Get the tree data and create markers with corresponding data
 var initMarkers = function() {
   var zoomLevel = map.getZoom();
+  var token = getParameterByName("token", window.location.href) || "";
   console.log(zoomLevel);
-  $.get( "http://dev.treetracker.org/api/trees?zoom="+zoomLevel, function( data ) {
+  $.get( "http://dev.treetracker.org/api/trees?zoom="+zoomLevel + "&token=" + token, function( data ) {
     console.log('got data');
 
     /*var oldMarkers = $.extend({}, markers);
@@ -158,6 +159,17 @@ function clearOverlays(overlays) {
     overlays[i].setMap(null);
   }
   overlays.length = 0;
+}
+
+// This function gets the value of a given querystring in the provided url
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 //Initialize Google Maps and Marker Clusterer
