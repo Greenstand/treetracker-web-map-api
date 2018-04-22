@@ -3,7 +3,7 @@ const NO = "NO";
 var map = undefined;//Google Map object
 var mc = undefined;//Marker Clusterer
 var markers = [];//All the markers
-var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+// var markerBounds = new google.maps.LatLngBounds();//Marker bounds
 
 var currentZoom;
 
@@ -14,11 +14,10 @@ var treetrackerApiUrl = "http://dev.treetracker.org/api/";
 // }
 
 //Get the tree data and create markers with corresponding data
-var initMarkers = function () {
+var initMarkers = function (token, viewportBounds) {
     var zoomLevel = map.getZoom();
-    var token = getParameterByName("token", window.location.href) || "";
     console.log(zoomLevel);
-    $.get(treetrackerApiUrl + "trees?zoom=" + zoomLevel + "&token=" + token, function (data) {
+    $.get(treetrackerApiUrl + "trees?zoom=" + zoomLevel + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
         console.log('got data');
 
         /*var oldMarkers = $.extend({}, markers);
@@ -82,7 +81,7 @@ var initMarkers = function () {
                     }
                 });
 
-                markerBounds.extend(latLng);
+                // markerBounds.extend(latLng);
                 markers.push(marker);
 
             } else if (item.type == 'point') {
@@ -129,7 +128,7 @@ var initMarkers = function () {
 
                 });
 
-                markerBounds.extend(latLng);
+                // markerBounds.extend(latLng);
                 markers.push(marker);
             }
 
@@ -147,6 +146,10 @@ function clearOverlays(overlays) {
         overlays[i].setMap(null);
     }
     overlays.length = 0;
+}
+
+function getUrlToken() {
+    return getParameterByName("token", window.location.href) || "";
 }
 
 // Gets the value of a given querystring in the provided url
@@ -176,7 +179,7 @@ var initialize = function () {
         if ((currentZoom < 14 && zoomLevel >= 14)
             || (currentZoom >= 14 && zoomLevel < 14)) {
             console.log('reload');
-            initMarkers();
+            initMarkers(getUrlToken(), map.getBounds().toUrlValue());
         }
         currentZoom = zoomLevel;
     });
