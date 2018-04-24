@@ -163,6 +163,37 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+// Returns the bounds for the visible area of the map.
+// The offset parameter extends the bounds resulting rectangle by a certain percentage.
+// For example: 1.1 will return a rectangle with each point (N, S, E, W) 10% farther from the rectangle.
+// The offset specification might be useful for preloading trees around the visible area, taking advantage of a single request.
+function getViewportBounds(offset) {
+    var bounds = map.getBounds();
+    if (offset) {
+        offset -= 1;
+        var east = bounds.getNorthEast().lng();
+        var west = bounds.getSouthWest().lng();
+        var north = bounds.getNorthEast().lat();
+        var south = bounds.getSouthWest().lat();
+        // Get the longitude and latitude differences
+        var longitudeDifference = (east - west) * offset;
+        var latitudeDifference = (north - south) * offset;
+
+        // Move each point farther outside the rectangle
+        // To west
+        bounds.extend(new google.maps.LatLng(south, west - longitudeDifference));
+        // To east
+        bounds.extend(new google.maps.LatLng(north, east + longitudeDifference));
+        // To south
+        bounds.extend(new google.maps.LatLng(south - latitudeDifference, west));
+        // To north
+        bounds.extend(new google.maps.LatLng(north + latitudeDifference, east));
+    }
+    return bounds;
+}
+
+//google.maps.geometry.spherical.computeDistanceBetween(map.getBounds().getNorthEast(),map.getBounds().getSouthWest())
+
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
     var mapOptions = {
@@ -179,7 +210,7 @@ var initialize = function () {
         if ((currentZoom < 14 && zoomLevel >= 14)
             || (currentZoom >= 14 && zoomLevel < 14)) {
             console.log('reload');
-            initMarkers(getUrlToken(), map.getBounds().toUrlValue());
+            initMarkers(getUrlToken(), getViewportBounds(1.1).toUrlValue());
         }
         currentZoom = zoomLevel;
     });
