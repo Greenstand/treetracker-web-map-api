@@ -52,7 +52,7 @@ var initMarkers = function (token, viewportBounds) {
                 //feature = ' { "type": "FeatureCollection", "features": [ { "type": "Feature", "geometry":  ' + item.centroid + ' } ] }';
                 //feature = JSON.parse(feature);
                 //map.data.addGeoJson(feature);
-                centroid = JSON.parse(item.centroid);
+                var centroid = JSON.parse(item.centroid);
                 //console.log(centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
                 // console.log(latLng);
