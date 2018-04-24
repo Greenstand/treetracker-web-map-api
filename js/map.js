@@ -8,10 +8,9 @@ var markers = [];//All the markers
 var currentZoom;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/";
-// console.log(configTreetrackerApi);
-// if (configTreetrackerApi) {
-//     treetrackerApiUrl = configTreetrackerApi;
-// }
+if (configTreetrackerApi) {
+     treetrackerApiUrl = configTreetrackerApi;
+}
 
 //Get the tree data and create markers with corresponding data
 var initMarkers = function (token, viewportBounds) {
