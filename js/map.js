@@ -192,7 +192,9 @@ function getViewportBounds(offset) {
     return bounds;
 }
 
-//google.maps.geometry.spherical.computeDistanceBetween(map.getBounds().getNorthEast(),map.getBounds().getSouthWest())
+function toUrlValueLonLat(bounds) {
+    return [bounds.b.b, bounds.f.b, bounds.b.f, bounds.f.f].join();
+}
 
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
@@ -210,7 +212,7 @@ var initialize = function () {
         if ((currentZoom < 14 && zoomLevel >= 14)
             || (currentZoom >= 14 && zoomLevel < 14)) {
             console.log('reload');
-            initMarkers(getUrlToken(), getViewportBounds(1.1).toUrlValue());
+            initMarkers(getUrlToken(), toUrlValueLonLat(getViewportBounds(1.1)));
         }
         currentZoom = zoomLevel;
     });
