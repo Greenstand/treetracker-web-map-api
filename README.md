@@ -17,6 +17,8 @@ For example, if you need to load the map with an initial zoom level of 15, and a
 
 dev.treetracker.org?**zoom=15&clusterRadius=0.001**
 
+To find the correct value for the cluster radius in a given zoom level, play with some ranges between 0.1 and 0.00025. However, feel free to experiment however you like.
+
 When these values are overriden, you can zoom and drag the map freely, while keeping the same clusterization behaviors.
 
 Another useful tool to use in conjunction with this is the web browser's console (in Chrome or Firefox, hit F12 to open it). Whenever the map is updated, current zoom level and cluster radius used will be output to the console, so you have a better idea of what is going on.
