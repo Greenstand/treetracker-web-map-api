@@ -157,7 +157,10 @@ function getClusterRadius(zoom) {
 var initialize = function () {
     var mapOptions = {
         zoom: parseInt(getQueryStringValue('zoom')) || 10,
-        mapTypeId: 'hybrid'
+        mapTypeId: 'hybrid',
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
