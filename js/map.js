@@ -9,80 +9,36 @@ var currentZoom;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/";
 if (configTreetrackerApi) {
-     treetrackerApiUrl = configTreetrackerApi;
+    treetrackerApiUrl = configTreetrackerApi;
 }
 
 //Get the tree data and create markers with corresponding data
-var initMarkers = function (token, viewportBounds) {
-    var zoomLevel = map.getZoom();
-    console.log(zoomLevel);
-    $.get(treetrackerApiUrl + "trees?zoom=" + zoomLevel + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
+var initMarkers = function (token, viewportBounds, clusterRadius) {
+    console.log('Cluster radius: ' + clusterRadius);
+    $.get(treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
         console.log('got data');
 
-        /*var oldMarkers = $.extend({}, markers);
-          markers.length = 0;
-          console.log('oldMarkers ' + oldMarkers.length);
-         */
         clearOverlays(markers);
         //console.log(data);
         $.each(data.data, function (i, item) {
-
-            var gridColorValues = {
-                5: "pink",
-                10: "lightcoral",
-                50: "coral",
-                100: "orange",
-                1000: "orangered",
-                10000: "red"
-            }
-
-            //set marker sizes according to your images for correct display
-            var markerImageSizes = {
-                1: google.maps.Size(24, 39),
-                5: google.maps.Size(30, 30),
-                10: google.maps.Size(30, 30),
-                50: google.maps.Size(40, 40),
-                100: google.maps.Size(40, 40),
-                1000: google.maps.Size(50, 50),
-            }
-
             if (item.type == 'cluster') {
-                //alert(item.circle);
-                //feature = ' { "type": "FeatureCollection", "features": [ { "type": "Feature", "geometry":  ' + item.centroid + ' } ] }';
-                //feature = JSON.parse(feature);
-                //map.data.addGeoJson(feature);
                 var centroid = JSON.parse(item.centroid);
-                //console.log(centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
-                // console.log(latLng);
-
-                var count = item.count;
-                var pinicon;
-                if (count > 1000) {
-                    pinicon = '1000';
-                } else if (count > 100) {
-                    pinicon = '100';
-                } else if (count > 50) {
-                    pinicon = '50';
-                } else if (count > 10) {
-                    pinicon = '10';
-                } else {
-                    pinicon = '5';
-                }
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
-                    title: "Count",
-                    count: count,
+                    label: {
+                        text: item.count.toString(),
+                        color: '#fff'
+                    },
                     icon: {
-                        url: './img/' + pinicon + '.png',
-                        size: markerImageSizes[pinicon]
+                        url: './img/blank_pin.png',
+                        labelOrigin: new google.maps.Point(20, 22)
                     }
                 });
 
                 // markerBounds.extend(latLng);
                 markers.push(marker);
-
             } else if (item.type == 'point') {
 
                 var latLng = new google.maps.LatLng(item.lat, item.lon);
@@ -95,8 +51,7 @@ var initMarkers = function (token, viewportBounds) {
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/blank_pin.png',
-                        size: markerImageSizes[pinicon]
+                        url: './img/blank_pin.png'
                     }
                 });
 
@@ -147,12 +102,8 @@ function clearOverlays(overlays) {
     overlays.length = 0;
 }
 
-function getUrlToken() {
-    return getParameterByName("token", window.location.href) || "";
-}
-
 // Gets the value of a given querystring in the provided url
-function getParameterByName(name, url) {
+function getQueryStringValue(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -195,10 +146,17 @@ function toUrlValueLonLat(bounds) {
     return [bounds.b.b, bounds.f.b, bounds.b.f, bounds.f.f].join();
 }
 
+function getClusterRadius(zoom) {
+    if (zoom >= 17) {
+        return 0.001;
+    }
+    return 0.00025;
+}
+
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
     var mapOptions = {
-        zoom: 4,
+        zoom: parseInt(getQueryStringValue('zoom')) || 10,
         mapTypeId: 'hybrid'
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -206,19 +164,16 @@ var initialize = function () {
     var mcOptions = { gridSize: 50, maxZoom: 13 };
 
     google.maps.event.addListener(map, "idle", function () {
-        console.log('idle');
         var zoomLevel = map.getZoom();
-        if ((currentZoom < 14 && zoomLevel >= 14)
-            || (currentZoom >= 14 && zoomLevel < 14)) {
-            console.log('reload');
-            initMarkers(getUrlToken(), toUrlValueLonLat(getViewportBounds(1.1)));
-        }
+        console.log('New zoom level: ' + zoomLevel);
+        var token = getQueryStringValue('token') || '';
+        var clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
+        initMarkers(token, toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
         currentZoom = zoomLevel;
     });
 
     currentZoom = 0;
-    map.setCenter({ lat: -3.263960, lng: 36.624882 });
-    map.setZoom(15);
+    map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
 }
 
