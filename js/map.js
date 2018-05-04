@@ -75,7 +75,7 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                 google.maps.event.addListener(marker, 'click', function () {
                     var currentItem = item;
                     //infowindow.open(map, this);
-                    console.log(currentItem);
+                    //console.log(currentItem);
 
                     $("#tree_info_div").show("slide", "swing", 600);
                     $("#create-data").html(currentItem["time_created"]);
@@ -212,13 +212,13 @@ var initialize = function () {
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null; 
-    var zoomLevel = map.getZoom();
-    clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
 
     google.maps.event.addListener(map, "idle", function () {
-        console.log('New zoom level: ' + zoomLevel);
-        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
-        currentZoom = zoomLevel;
+      var zoomLevel = map.getZoom();
+      clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
+      console.log('New zoom level: ' + zoomLevel);
+      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
+      currentZoom = zoomLevel;
     });
 
     currentZoom = 0;
