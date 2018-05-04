@@ -1,2 +1,2 @@
-var configTreetrackerApi = 'http://localhost:8080/api/';
+var configTreetrackerApi = 'http://dev.treetracker.org/api/web/';
 // copy this file to config.js, and configure your api endpoint
