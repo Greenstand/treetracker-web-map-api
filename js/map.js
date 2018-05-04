@@ -210,8 +210,7 @@ var initialize = function () {
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
-        fullscreenControl: false,
-        minZoom: 4
+        fullscreenControl: false
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
