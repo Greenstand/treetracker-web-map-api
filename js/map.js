@@ -41,6 +41,11 @@ var initMarkers = function (token, viewportBounds, clusterRadius) {
                     }
                 });
 
+                google.maps.event.addListener(marker, 'click', function () {
+                  var zoomLevel = map.getZoom();
+                  map.setZoom(zoomLevel + 2);
+                  map.panTo(marker.position);
+                });
                 // markerBounds.extend(latLng);
                 markers.push(marker);
             } else if (item.type == 'point') {
@@ -151,7 +156,7 @@ function toUrlValueLonLat(bounds) {
 }
 
 function getClusterRadius(zoom) {
-    if (zoom >= 17) {
+    if (zoom >= 16) {
         return 0.001;
     }
     return 0.0025;
