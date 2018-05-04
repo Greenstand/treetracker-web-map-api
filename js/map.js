@@ -41,6 +41,11 @@ var initMarkers = function (token, viewportBounds, clusterRadius) {
                     }
                 });
 
+                google.maps.event.addListener(marker, 'click', function () {
+                  var zoomLevel = map.getZoom();
+                  map.setZoom(zoomLevel + 2);
+                  map.panTo(marker.position);
+                });
                 // markerBounds.extend(latLng);
                 markers.push(marker);
             } else if (item.type == 'point') {
