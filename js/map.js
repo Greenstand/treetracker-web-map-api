@@ -21,7 +21,10 @@ var initMarkers = function (viewportBounds, clusterRadius) {
     if (req != null) {
         req.abort();
     }
-    var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&bounds=" + viewportBounds;
+    var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
+    if(currentZoom >= 4){ 
+      queryUrl = queryUrl + "&bounds=" + viewportBounds;
+    }
     if(token != null){
       queryUrl = queryUrl + "&token=" + token;
     } else if (organization != null){
@@ -193,9 +196,10 @@ function getClusterRadius(zoom) {
             return 0.003;
         case 17:
         case 18:
+        case 19:
             return 0.000;
         default:
-            return 0.001;
+            return 4;
     }
 }
 
@@ -206,8 +210,7 @@ var initialize = function () {
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
-        fullscreenControl: false,
-        minZoom: 4
+        fullscreenControl: false
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
@@ -217,8 +220,8 @@ var initialize = function () {
       var zoomLevel = map.getZoom();
       clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
       console.log('New zoom level: ' + zoomLevel);
-      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
       currentZoom = zoomLevel;
+      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
     });
 
     currentZoom = 0;

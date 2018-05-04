@@ -33,6 +33,9 @@ b {
 	width: 400px;
 	background-color: rgb(236, 239, 223);
 	height: 100%;
+	-webkit-box-shadow: 10px 0px 16px 0px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    10px 0px 16px 0px rgba(50, 50, 50, 0.4);
+	box-shadow:         10px 0px 16px 0px rgba(50, 50, 50, 0.4);
 
 }
 
