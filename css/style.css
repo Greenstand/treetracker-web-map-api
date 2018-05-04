@@ -11,30 +11,22 @@ b {
 }
 
 #overlay img{
-	width:400px;
+	width:100%;
 	height:auto;
-	margin:10px 50px;
 
 }
 
 .overlay_container{
-	position:relative;
+	/*position:relative;*/
 }
 
 .overlay_innards{
 	position: absolute;
-	top: 55px;
-	left: 10px;
 	z-index: 99;
 	background-color: rgb(255, 255, 255);
-	width: 500px;
-	height: 692px;
-	border-bottom-right-radius: 5px;
-	border-top-right-radius: 5px;
-	background-clip: padding-box;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-
+	height:100%;
 }
+
 
 .tree_info{
 	width: 400px;
