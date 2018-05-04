@@ -1,4 +1,6 @@
-
+body {
+font-family: 'Raleway', sans-serif;
+}
 
 p, b, span {
 	font-family: 'Raleway', sans-serif !important;
