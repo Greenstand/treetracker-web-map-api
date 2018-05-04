@@ -18,7 +18,7 @@ if (configTreetrackerApi) {
 //Get the tree data and create markers with corresponding data
 var initMarkers = function (viewportBounds, clusterRadius) {
     console.log('Cluster radius: ' + clusterRadius);
-    if ( req != null ){
+    if (req != null) {
         req.abort();
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&bounds=" + viewportBounds;
@@ -164,10 +164,39 @@ function toUrlValueLonLat(bounds) {
 }
 
 function getClusterRadius(zoom) {
-    if (zoom >= 16) {
-        return 0;
+    switch (zoom) {
+        case 4:
+            return 4;
+        case 5:
+            return 0.8;
+        case 6:
+            return 0.75;
+        case 7:
+            return 0.3;
+        case 8:
+            return 0.099;
+        case 9:
+            return 0.095;
+        case 10:
+            return 0.05;
+        case 11:
+            return 0.03;
+        case 12:
+            return 0.02;
+        case 13:
+            return 0.008;
+        case 14:
+            return 0.005;
+        case 15:
+            return 0.004;
+        case 16:
+            return 0.003;
+        case 17:
+        case 18:
+            return 0.002;
+        default:
+            return 0.001;
     }
-    return 0.0025;
 }
 
 //Initialize Google Maps and Marker Clusterer
@@ -177,13 +206,12 @@ var initialize = function () {
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
-        fullscreenControl: false
+        fullscreenControl: false,
+        minZoom: 4
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null; 
-
-    var mcOptions = { gridSize: 50, maxZoom: 13 };
 
     google.maps.event.addListener(map, "idle", function () {
       var zoomLevel = map.getZoom();
