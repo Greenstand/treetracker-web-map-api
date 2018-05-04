@@ -220,8 +220,8 @@ var initialize = function () {
       var zoomLevel = map.getZoom();
       clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
       console.log('New zoom level: ' + zoomLevel);
-      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
       currentZoom = zoomLevel;
+      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
     });
 
     currentZoom = 0;
