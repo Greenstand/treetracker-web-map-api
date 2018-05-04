@@ -3,7 +3,9 @@ const NO = "NO";
 var map = undefined;//Google Map object
 var mc = undefined;//Marker Clusterer
 var markers = [];//All the markers
-// var markerBounds = new google.maps.LatLngBounds();//Marker bounds
+var token;
+var organization;
+var clusterRadius;
 
 var currentZoom;
 var req = null;
@@ -14,12 +16,18 @@ if (configTreetrackerApi) {
 }
 
 //Get the tree data and create markers with corresponding data
-var initMarkers = function (token, viewportBounds, clusterRadius) {
+var initMarkers = function (viewportBounds, clusterRadius) {
     console.log('Cluster radius: ' + clusterRadius);
     if ( req != null ){
         req.abort();
     }
-    req = $.get(treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
+    var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&bounds=" + viewportBounds;
+    if(token != null){
+      queryUrl = queryUrl + "&token=" + token;
+    } else if (organization != null){
+      queryUrl = queryUrl + "&organization=" + organization;
+    }
+    req = $.get(queryUrl, function (data) {
         console.log('got data');
 
         clearOverlays(markers);
@@ -172,15 +180,16 @@ var initialize = function () {
         fullscreenControl: false
     }
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    token = getQueryStringValue('token') || null;
+    organization = getQueryStringValue('organization') || null; 
+    var zoomLevel = map.getZoom();
+    clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
 
     var mcOptions = { gridSize: 50, maxZoom: 13 };
 
     google.maps.event.addListener(map, "idle", function () {
-        var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
-        var token = getQueryStringValue('token') || '';
-        var clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
-        initMarkers(token, toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
+        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
         currentZoom = zoomLevel;
     });
 
