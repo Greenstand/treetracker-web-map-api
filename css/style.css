@@ -1,7 +1,7 @@
 
 
 p, b, span {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Raleway', sans-serif !important;
 	padding-left:10px;
 	float:left;
 }
@@ -11,36 +11,42 @@ b {
 }
 
 #overlay img{
-	width:400px;
+	width:100%;
 	height:auto;
-	margin:10px 50px;
 
 }
 
 .overlay_container{
-	position:relative;
+	/*position:relative;*/
 }
 
 .overlay_innards{
 	position: absolute;
-	top: 55px;
-	left: 10px;
 	z-index: 99;
-	background-color: rgb(255, 255, 255);
-	width: 500px;
-	height: 692px;
-	border-bottom-right-radius: 5px;
-	border-top-right-radius: 5px;
-	background-clip: padding-box;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+	height:100%;
+	margin-right:30px;
 
 }
+
 
 .tree_info{
 	width: 400px;
+	background-color: rgb(236, 239, 223);
+	height: 100%;
+
 }
-#tree_info_div{
-	/*height: auto;*/
+
+.planted_by{
+	width:100%;
+	height:40px;
+	background-color: #4d755d;
+}
+
+.planted_by p{
+	color:white;
+	float:right;
+	font-size:14px;
+	margin:10px;
 }
 
 .div-divide-half{
@@ -58,15 +64,15 @@ b {
 	display: none;
 }
 
-/*
-source : http://jsfiddle.net/xftr5/17/
-*/
 #close-button {
-cursor: pointer;
-    float:right;
-    display:inline-block;
-    padding:2px 5px;
-   
+	cursor: pointer;
+    	float:right;
+	margin: 0px -35px -20px -20px;
+	padding-top: 5px;
+	padding-left: 13px;
+	width: 35px;
+	height: 35px;
+	background-color: rgb(236, 239, 223);
 }
 
 #missing_dead, #accuracy{
