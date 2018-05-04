@@ -4,6 +4,7 @@ This map is built for other organizations website.
 This map allows organization's donors to see their trees.
 The user experience is on the other organization's website.
 
+[Wiki](https://github.com/Greenstand/treetracker-web-map/wiki) for Minimum demo and MVP features
 ## Clustering Basics
 
 For performance and UX purposes, since this map needs to deal with an enormous amount of trees, a clustering strategy is used to group those trees, showing information in a way that is more digestible for the end-user.

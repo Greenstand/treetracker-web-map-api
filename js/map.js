@@ -6,6 +6,7 @@ var markers = [];//All the markers
 // var markerBounds = new google.maps.LatLngBounds();//Marker bounds
 
 var currentZoom;
+var req = null;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/";
 if (configTreetrackerApi) {
@@ -15,7 +16,10 @@ if (configTreetrackerApi) {
 //Get the tree data and create markers with corresponding data
 var initMarkers = function (token, viewportBounds, clusterRadius) {
     console.log('Cluster radius: ' + clusterRadius);
-    $.get(treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
+    if ( req != null ){
+        req.abort();
+    }
+    req = $.get(treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius + "&token=" + token + "&bounds=" + viewportBounds, function (data) {
         console.log('got data');
 
         clearOverlays(markers);
@@ -150,7 +154,7 @@ function getClusterRadius(zoom) {
     if (zoom >= 17) {
         return 0.001;
     }
-    return 0.00025;
+    return 0.0025;
 }
 
 //Initialize Google Maps and Marker Clusterer
