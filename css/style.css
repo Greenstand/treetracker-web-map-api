@@ -23,16 +23,16 @@ b {
 .overlay_innards{
 	position: absolute;
 	z-index: 99;
-	background-color: rgb(255, 255, 255);
 	height:100%;
+	margin-right:30px;
 }
 
 
 .tree_info{
 	width: 400px;
-}
-#tree_info_div{
-	/*height: auto;*/
+	background-color: rgb(255, 255, 255);
+	height: 100%;
+
 }
 
 .div-divide-half{
@@ -50,15 +50,15 @@ b {
 	display: none;
 }
 
-/*
-source : http://jsfiddle.net/xftr5/17/
-*/
 #close-button {
-cursor: pointer;
-    float:right;
-    display:inline-block;
-    padding:2px 5px;
-   
+	cursor: pointer;
+    	float:right;
+	margin: 0px -35px -20px -20px;
+	padding-top: 5px;
+	padding-left: 13px;
+	width: 35px;
+	height: 40px;
+	background-color: white;
 }
 
 #missing_dead, #accuracy{
