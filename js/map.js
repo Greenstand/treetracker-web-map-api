@@ -223,7 +223,7 @@ var initialize = function () {
       console.log('New zoom level: ' + zoomLevel);
       currentZoom = zoomLevel;
       initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
-});
+    });
 
     currentZoom = 0;
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
