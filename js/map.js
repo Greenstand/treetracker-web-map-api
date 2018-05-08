@@ -212,6 +212,7 @@ var initialize = function () {
         streetViewControl: false,
         fullscreenControl: false
     }
+
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null; 
@@ -228,5 +229,7 @@ var initialize = function () {
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
 }
+
+
 
 google.maps.event.addDomListener(window, 'load', initialize);
