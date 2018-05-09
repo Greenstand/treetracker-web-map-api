@@ -77,8 +77,6 @@ var initMarkers = function (viewportBounds, clusterRadius) {
 
                 google.maps.event.addListener(marker, 'click', function () {
                     var currentItem = item;
-                    //infowindow.open(map, this);
-                    //console.log(currentItem);
 
                     $("#tree_info_div").show("slide", "swing", 600);
                     $("#create-data").html(currentItem["time_created"]);
@@ -99,6 +97,12 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                         $("#dead-data").html(NO);
                     }
                     $("#tree-image").attr("src", currentItem["image_url"]);
+                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"]); 
+                    if(currentItem["user_image_url"]){
+                      $("#planter_image").attr("src", currentItem["user_image_url"]);
+                    } else {
+                      $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
+                    }
 
                 });
 
