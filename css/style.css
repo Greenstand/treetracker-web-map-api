@@ -45,6 +45,7 @@ b {
 	width:100%;
 	height:40px;
 	background-color: #4d755d;
+	margin-bottom:30px;
 }
 
 .planted_by p{
@@ -54,9 +55,7 @@ b {
 	margin:10px;
 }
 
-.div-divide-half{
-	width:50%;
-}
+
 .float-left{
 	float:left;
 }
@@ -80,10 +79,6 @@ b {
 	background-color: rgb(236, 239, 223);
 }
 
-#missing_dead, #accuracy{
-	padding-top:25px;
-}
-
 #close-button:hover {
     background-color: white;
 }
@@ -99,4 +94,9 @@ b {
 .planter_image img{
 	width:100px !important;
 	height:100px !important;
+}
+
+.info_data{
+	width:300px;
+	margin-left:10px;
 }
