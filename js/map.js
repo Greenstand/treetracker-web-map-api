@@ -10,7 +10,7 @@ var clusterRadius;
 var currentZoom;
 var req = null;
 
-var treetrackerApiUrl = "http://dev.treetracker.org/api/";
+var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 if (configTreetrackerApi) {
     treetrackerApiUrl = configTreetrackerApi;
 }
@@ -77,8 +77,6 @@ var initMarkers = function (viewportBounds, clusterRadius) {
 
                 google.maps.event.addListener(marker, 'click', function () {
                     var currentItem = item;
-                    //infowindow.open(map, this);
-                    //console.log(currentItem);
 
                     $("#tree_info_div").show("slide", "swing", 600);
                     $("#create-data").html(currentItem["time_created"]);
@@ -99,6 +97,12 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                         $("#dead-data").html(NO);
                     }
                     $("#tree-image").attr("src", currentItem["image_url"]);
+                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"]); 
+                    if(currentItem["user_image_url"]){
+                      $("#planter_image").attr("src", currentItem["user_image_url"]);
+                    } else {
+                      $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
+                    }
 
                 });
 
@@ -212,6 +216,7 @@ var initialize = function () {
         streetViewControl: false,
         fullscreenControl: false
     }
+
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null; 
@@ -228,5 +233,7 @@ var initialize = function () {
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
 }
+
+
 
 google.maps.event.addDomListener(window, 'load', initialize);

@@ -1,4 +1,6 @@
-
+body {
+font-family: 'Raleway', sans-serif;
+}
 
 p, b, span {
 	font-family: 'Raleway', sans-serif !important;
@@ -33,6 +35,9 @@ b {
 	width: 400px;
 	background-color: rgb(236, 239, 223);
 	height: 100%;
+	-webkit-box-shadow: 10px 0px 16px 0px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    10px 0px 16px 0px rgba(50, 50, 50, 0.4);
+	box-shadow:         10px 0px 16px 0px rgba(50, 50, 50, 0.4);
 
 }
 
@@ -67,14 +72,31 @@ b {
 #close-button {
 	cursor: pointer;
     	float:right;
-	margin: 0px -35px -20px -20px;
+	margin: 0px -30px -20px -20px;
 	padding-top: 5px;
 	padding-left: 13px;
 	width: 35px;
-	height: 35px;
+	height: 30px;
 	background-color: rgb(236, 239, 223);
 }
 
 #missing_dead, #accuracy{
 	padding-top:25px;
+}
+
+#close-button:hover {
+    background-color: white;
+}
+
+.planter_image{
+	border: 3px solid #4d755d;
+	width:106px;
+        height:106px;
+	position: absolute;
+	margin: -105px 0px 0px 294px;
+}
+
+.planter_image img{
+	width:100px !important;
+	height:100px !important;
 }
