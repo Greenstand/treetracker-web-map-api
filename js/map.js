@@ -10,7 +10,7 @@ var clusterRadius;
 var currentZoom;
 var req = null;
 
-var treetrackerApiUrl = "http://dev.treetracker.org/api/";
+var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 if (configTreetrackerApi) {
     treetrackerApiUrl = configTreetrackerApi;
 }
