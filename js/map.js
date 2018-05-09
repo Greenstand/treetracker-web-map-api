@@ -9,6 +9,7 @@ var clusterRadius;
 
 var currentZoom;
 var req = null;
+var treeInfoDivShowing = false;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 if (configTreetrackerApi) {
@@ -79,6 +80,13 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                     var currentItem = item;
 
                     $("#tree_info_div").show("slide", "swing", 600);
+                    if (treeInfoDivShowing == false) {
+                      treeInfoDivShowing = true;
+                      $('#map-canvas').css('margin-left', '400px');
+                      map.panTo(marker.getPosition());
+                    }
+
+
                     $("#create-data").html(currentItem["time_created"]);
                     $("#updated-data").html(currentItem["time_updated"]);
                     $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
@@ -232,6 +240,11 @@ var initialize = function () {
     currentZoom = 0;
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
+  $('#close-button').click(function() {
+    $("#tree_info_div").hide("slide", "swing", 600);
+     treeInfoDivShowing = false;
+    $('#map-canvas').css('margin-left', '0px');
+  });
 }
 
 
