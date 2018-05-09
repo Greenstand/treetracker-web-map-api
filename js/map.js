@@ -199,7 +199,7 @@ function getClusterRadius(zoom) {
         case 19:
             return 0.000;
         default:
-            return 4;
+            return 0;
     }
 }
 
