@@ -1,5 +1,6 @@
 body {
 font-family: 'Raleway', sans-serif;
+background-color: rgb(236, 239, 223);
 }
 
 p, b, span {
@@ -99,4 +100,8 @@ b {
 .info_data{
 	width:300px;
 	margin-left:10px;
+}
+
+.mapChange{
+margin-left:400px !important;
 }

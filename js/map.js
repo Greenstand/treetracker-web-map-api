@@ -79,10 +79,14 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                 google.maps.event.addListener(marker, 'click', function () {
                     var currentItem = item;
 
-                    $("#tree_info_div").show("slide", "swing", 600);
+                    $('#tree_info_div').show('slide', 'swing', 600);
                     if (treeInfoDivShowing == false) {
                       treeInfoDivShowing = true;
-                      $('#map-canvas').css('margin-left', '400px');
+                      $('#map-canvas').animate({
+				margin: '0 0 0 400px'
+			}, 700, function() { 
+			//Animation Complete
+			});;
                       map.panTo(marker.getPosition());
                     }
 
