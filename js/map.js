@@ -222,7 +222,7 @@ function getClusterRadius(zoom) {
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
     var mapOptions = {
-        zoom: parseInt(getQueryStringValue('zoom')) || 10,
+        zoom: parseInt(getQueryStringValue('zoom')) || 0,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
@@ -242,7 +242,7 @@ var initialize = function () {
     });
 
     currentZoom = 0;
-    map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
+    map.setCenter({ lat: 0.0, lng: 0.0 });
 
   $('#close-button').click(function() {
     $("#tree_info_div").hide("slide", "swing", 600);
