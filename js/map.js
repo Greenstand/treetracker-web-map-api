@@ -6,6 +6,8 @@ var markers = [];//All the markers
 var token;
 var organization;
 var clusterRadius;
+var firstRender = true;
+var initialBounds = new google.maps.LatLngBounds();
 
 var currentZoom;
 var req = null;
@@ -23,13 +25,13 @@ var initMarkers = function (viewportBounds, clusterRadius) {
         req.abort();
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
-    if(currentZoom >= 4){ 
-      queryUrl = queryUrl + "&bounds=" + viewportBounds;
+    if (currentZoom >= 4) {
+        queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
-    if(token != null){
-      queryUrl = queryUrl + "&token=" + token;
-    } else if (organization != null){
-      queryUrl = queryUrl + "&organization=" + organization;
+    if (token != null) {
+        queryUrl = queryUrl + "&token=" + token;
+    } else if (organization != null) {
+        queryUrl = queryUrl + "&organization=" + organization;
     }
     req = $.get(queryUrl, function (data) {
         console.log('got data');
@@ -40,6 +42,7 @@ var initMarkers = function (viewportBounds, clusterRadius) {
             if (item.type == 'cluster') {
                 var centroid = JSON.parse(item.centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
+                determineInitialSize(latLng);
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
@@ -54,15 +57,15 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
-                  var zoomLevel = map.getZoom();
-                  map.setZoom(zoomLevel + 2);
-                  map.panTo(marker.position);
+                    var zoomLevel = map.getZoom();
+                    map.setZoom(zoomLevel + 2);
+                    map.panTo(marker.position);
                 });
-                // markerBounds.extend(latLng);
                 markers.push(marker);
             } else if (item.type == 'point') {
 
                 var latLng = new google.maps.LatLng(item.lat, item.lon);
+                determineInitialSize(latLng);
                 var infowindow = new google.maps.InfoWindow({
                     content: '/img/loading.gif'
                 });
@@ -81,13 +84,13 @@ var initMarkers = function (viewportBounds, clusterRadius) {
 
                     $('#tree_info_div').show('slide', 'swing', 600);
                     if (treeInfoDivShowing == false) {
-                      treeInfoDivShowing = true;
-                      $('#map-canvas').animate({
-				margin: '0 0 0 400px'
-			}, 700, function() { 
-			//Animation Complete
-			});;
-                      map.panTo(marker.getPosition());
+                        treeInfoDivShowing = true;
+                        $('#map-canvas').animate({
+                            margin: '0 0 0 400px'
+                        }, 700, function () {
+                            //Animation Complete
+                        });;
+                        map.panTo(marker.getPosition());
                     }
 
 
@@ -109,22 +112,28 @@ var initMarkers = function (viewportBounds, clusterRadius) {
                         $("#dead-data").html(NO);
                     }
                     $("#tree-image").attr("src", currentItem["image_url"]);
-                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"]); 
-                    if(currentItem["user_image_url"]){
-                      $("#planter_image").attr("src", currentItem["user_image_url"]);
+                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"]);
+                    if (currentItem["user_image_url"]) {
+                        $("#planter_image").attr("src", currentItem["user_image_url"]);
                     } else {
-                      $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
+                        $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
                     }
 
                 });
 
-                // markerBounds.extend(latLng);
                 markers.push(marker);
             }
 
         });
 
-        //console.log('len: ' + markers.length);
+        if (firstRender && data.data.length > 0 && (organization != null || token != null)) {
+            map.fitBounds(initialBounds);
+            map.setZoom(map.getZoom() - 1);
+            if (map.getZoom() > 15) {
+                map.setZoom(15);
+            }
+            firstRender = false;
+        }
 
     });
 }
@@ -182,6 +191,12 @@ function toUrlValueLonLat(bounds) {
     return [bounds.b.b, bounds.f.b, bounds.b.f, bounds.f.f].join();
 }
 
+function determineInitialSize(latLng) {
+    if (firstRender) {
+        initialBounds.extend(latLng);
+    }
+}
+
 function getClusterRadius(zoom) {
     switch (zoom) {
         case 4:
@@ -231,24 +246,25 @@ var initialize = function () {
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
-    organization = getQueryStringValue('organization') || null; 
+    organization = getQueryStringValue('organization') || null;
+    donor = getQueryStringValue('donor') || null;
 
     google.maps.event.addListener(map, "idle", function () {
-      var zoomLevel = map.getZoom();
-      clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
-      console.log('New zoom level: ' + zoomLevel);
-      currentZoom = zoomLevel;
-      initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
+        var zoomLevel = map.getZoom();
+        clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
+        console.log('New zoom level: ' + zoomLevel);
+        currentZoom = zoomLevel;
+        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
     });
 
     currentZoom = 0;
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
-  $('#close-button').click(function() {
-    $("#tree_info_div").hide("slide", "swing", 600);
-     treeInfoDivShowing = false;
-    $('#map-canvas').css('margin-left', '0px');
-  });
+    $('#close-button').click(function () {
+        $("#tree_info_div").hide("slide", "swing", 600);
+        treeInfoDivShowing = false;
+        $('#map-canvas').css('margin-left', '0px');
+    });
 }
 
 
