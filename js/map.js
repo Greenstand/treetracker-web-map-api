@@ -32,6 +32,8 @@ var initMarkers = function (viewportBounds, clusterRadius) {
         queryUrl = queryUrl + "&token=" + token;
     } else if (organization != null) {
         queryUrl = queryUrl + "&organization=" + organization;
+    } else if (treeid != null){
+        queryUrl = queryUrl + "&treeid=" + treeid;
     }
     req = $.get(queryUrl, function (data) {
         console.log('got data');
