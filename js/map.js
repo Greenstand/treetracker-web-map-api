@@ -5,6 +5,7 @@ var mc = undefined;//Marker Clusterer
 var markers = [];//All the markers
 var token;
 var organization;
+var treeid;
 var clusterRadius;
 var firstRender = true;
 var initialBounds = new google.maps.LatLngBounds();
@@ -249,6 +250,7 @@ var initialize = function () {
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null;
+    treeid = getQueryStringValue('treeid') || null;
     donor = getQueryStringValue('donor') || null;
 
     google.maps.event.addListener(map, "idle", function () {
