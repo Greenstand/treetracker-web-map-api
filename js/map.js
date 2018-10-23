@@ -191,7 +191,11 @@ function getViewportBounds(offset) {
 }
 
 function toUrlValueLonLat(bounds) {
-    return [bounds.b.b, bounds.f.b, bounds.b.f, bounds.f.f].join();
+    var east = bounds.getNorthEast().lng();
+    var west = bounds.getSouthWest().lng();
+    var north = bounds.getNorthEast().lat();
+    var south = bounds.getSouthWest().lat();
+    return [east, north, west, south].join();
 }
 
 function determineInitialSize(latLng) {
