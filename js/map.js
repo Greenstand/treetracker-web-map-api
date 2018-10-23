@@ -20,12 +20,16 @@ if (configTreetrackerApi) {
 }
 
 //Get the tree data and create markers with corresponding data
-var initMarkers = function (viewportBounds, clusterRadius) {
+var initMarkers = function (viewportBounds, zoomLevel) {
+
+    clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
+
     console.log('Cluster radius: ' + clusterRadius);
     if (req != null) {
         req.abort();
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
+    queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
     if (currentZoom >= 4) {
         queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
@@ -259,10 +263,9 @@ var initialize = function () {
 
     google.maps.event.addListener(map, "idle", function () {
         var zoomLevel = map.getZoom();
-        clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
-        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), clusterRadius);
+        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
     });
 
     currentZoom = 0;
