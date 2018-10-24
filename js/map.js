@@ -255,7 +255,7 @@ function getClusterRadius(zoom) {
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
     var mapOptions = {
-        zoom: parseInt(getQueryStringValue('zoom')) || 10,
+        zoom: parseInt(getQueryStringValue('zoom')) || 7,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
