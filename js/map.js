@@ -273,6 +273,7 @@ var initialize = function () {
 
     var mapOptions = {
         zoom: initialZoom,
+        minZoom: 6,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
