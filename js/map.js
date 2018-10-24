@@ -260,7 +260,7 @@ var initialize = function () {
     treeid = getQueryStringValue('treeid') || null;
     donor = getQueryStringValue('donor') || null;
 
-    var initialZoom = 7;
+    var initialZoom = 6;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
     if(linkZoom){
