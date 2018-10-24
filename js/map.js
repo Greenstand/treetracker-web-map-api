@@ -254,28 +254,42 @@ function getClusterRadius(zoom) {
 
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
+
+    token = getQueryStringValue('token') || null;
+    organization = getQueryStringValue('organization') || null;
+    treeid = getQueryStringValue('treeid') || null;
+    donor = getQueryStringValue('donor') || null;
+
+    var initialZoom = 7;
+
+    var linkZoom = parseInt(getQueryStringValue('zoom'));
+    if(linkZoom){
+        initialZoom = linkZoom;
+    }
+
+    if(token != null || organization != null || treeid != null || donor != null){
+        initialZoom = 10;
+    }
+
     var mapOptions = {
-        zoom: parseInt(getQueryStringValue('zoom')) || 7,
+        zoom: initialZoom,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false
     }
 
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    token = getQueryStringValue('token') || null;
-    organization = getQueryStringValue('organization') || null;
-    treeid = getQueryStringValue('treeid') || null;
-    donor = getQueryStringValue('donor') || null;
+    console.log(mapOptions);
 
-    google.maps.event.addListener(map, "idle", function () {
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+       google.maps.event.addListener(map, "idle", function () {
         var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
         initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
     });
 
-    currentZoom = 0;
+    currentZoom = initialZoom;
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
     $('#close-button').click(function () {
