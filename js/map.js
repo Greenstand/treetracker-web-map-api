@@ -30,7 +30,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
     queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
-    if (currentZoom >= 4) {
+    if (currentZoom >= 4 && !(token != null && firstRender == true )) {
         queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
     if (token != null) {
