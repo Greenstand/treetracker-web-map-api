@@ -4,6 +4,74 @@ This map is built for other organizations website.
 This map allows organization's donors to see their trees.
 The user experience is on the other organization's website.
 
+
+## Development Environment Quick Start
+
+We provide a development environment through docker that can run on your local environment.
+
+### Set Up Docker
+To run docker on a local machine, you will have to install Docker first. Docker is a linux container technology, so running it on Mac or Windows requires an application with an attached linux VM. Docker provides one for each OS by default.
+
+[Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
+
+You can alternatively install Docker for Mac using homebrew, using the following command
+
+```
+$ brew cask install docker
+```
+
+[Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
+
+To install on linux, you can run `sudo apt-get install -y docker-ce` but there is [additional setup](https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository) to verify keys, etc.
+
+
+### Install, build docker containers and go
+
+Install Node (see Requirements above)
+
+Clone this repository
+
+```
+git clone git@github.com:Greenstand/treetracker-web-map.git
+cd treetracker-web-map
+```
+
+Run the setup script.  This script installs node modules, builds docker containers, and starts them
+```
+./dev/setup.sh
+```
+
+
+You can now view the treetracker web map at http://localhost:8080
+
+
+
+To stop the dev environment use
+
+```
+./dev/down.sh
+```
+
+To start the dev environment back up use
+
+```
+./dev/up.sh
+```
+
+
+Just edit as you normally would to view changes in your development environment.
+
+
+### Alternative setup for MS Windows (Works on Linux and Mac also)
+On Windows the easiest way to develop and debug Node.js applications is using Visual Studio Code.
+It comes with Node.js support out of the box.
+
+https://code.visualstudio.com/docs
+
+
+
+
+
 [Wiki](https://github.com/Greenstand/treetracker-web-map/wiki) for Minimum demo and MVP features
 ## Clustering Basics
 
