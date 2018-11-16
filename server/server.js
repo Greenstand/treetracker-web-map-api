@@ -17,6 +17,7 @@ const pool = new Pool({
 });
 
 
+
 app.get('/trees', function (req, res) {
   //console.log(req);
 
@@ -60,9 +61,11 @@ app.get('/trees', function (req, res) {
   else {
 
     // check if query is in the cached zone
+    var boundingBox;
+    var optimizedBounds;
     if(bounds) {
-      const boundingBox = bounds.split(',');
-      const optimizedBounds = conn.optimizedBounds.split(',');
+      boundingBox = bounds.split(',');
+      optimizedBounds = conn.optimizedBounds.split(',');
       console.log(boundingBox);
       console.log(optimizedBounds);
     }
