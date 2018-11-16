@@ -30,7 +30,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
     queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
-    if (currentZoom >= 4) {
+    if (currentZoom >= 4 && !( (token != null || organization != null || treeid != null) && firstRender == true )) {
         queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
     if (token != null) {
@@ -135,6 +135,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
         if (firstRender && data.data.length > 0 && (organization != null || token != null)) {
             map.fitBounds(initialBounds);
+            map.setCenter(initialBounds.getCenter());
             map.setZoom(map.getZoom() - 1);
             if (map.getZoom() > 15) {
                 map.setZoom(15);
@@ -210,6 +211,12 @@ function determineInitialSize(latLng) {
 
 function getClusterRadius(zoom) {
     switch (zoom) {
+        case 1:
+            return 10;
+        case 2:
+            return 8;
+        case 3:
+            return 6;
         case 4:
             return 4;
         case 5:
@@ -247,28 +254,43 @@ function getClusterRadius(zoom) {
 
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
+
+    token = getQueryStringValue('token') || null;
+    organization = getQueryStringValue('organization') || null;
+    treeid = getQueryStringValue('treeid') || null;
+    donor = getQueryStringValue('donor') || null;
+
+    var initialZoom = 6;
+
+    var linkZoom = parseInt(getQueryStringValue('zoom'));
+    if(linkZoom){
+        initialZoom = linkZoom;
+    }
+
+    if(token != null || organization != null || treeid != null || donor != null){
+        initialZoom = 10;
+    }
+
     var mapOptions = {
-        zoom: parseInt(getQueryStringValue('zoom')) || 10,
+        zoom: initialZoom,
+        minZoom: 6,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false
     }
 
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    token = getQueryStringValue('token') || null;
-    organization = getQueryStringValue('organization') || null;
-    treeid = getQueryStringValue('treeid') || null;
-    donor = getQueryStringValue('donor') || null;
+    console.log(mapOptions);
 
-    google.maps.event.addListener(map, "idle", function () {
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+       google.maps.event.addListener(map, "idle", function () {
         var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
         initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
     });
 
-    currentZoom = 0;
+    currentZoom = initialZoom;
     map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
 
     $('#close-button').click(function () {
