@@ -43,8 +43,8 @@ Run the setup script.  This script installs node modules, builds docker containe
 
 
 You can now view the treetracker web map at http://localhost:8080
-
-
+Note: For older OS (eg. win7 ,win8) Docker toolbox should be used and the app can be viewed on http://192.168.99.100:8080
+ 
 
 To stop the dev environment use
 
@@ -58,8 +58,10 @@ To start the dev environment back up use
 ./dev/up.sh
 ```
 
+Now to view the map . Goto client folder than to js folder ,next make a new file and name it config.js and copy the content in config.js.example and paste it in config.js .(If required make the necessary adjustment to address (eg. http://192.168.99.100:8080) else you are ready to view the map)
 
 Just edit as you normally would to view changes in your development environment.
+
 
 
 ### Alternative setup for MS Windows (Works on Linux and Mac also)
