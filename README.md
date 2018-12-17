@@ -4,6 +4,10 @@ This map is built for other organizations website.
 This map allows organization's donors to see their trees.
 The user experience is on the other organization's website.
 
+## Setting up the Web Application
+***
+
+
 
 ## Development Environment Quick Start
 
@@ -27,7 +31,24 @@ To install on linux, you can run `sudo apt-get install -y docker-ce` but there i
 
 ### Install, build docker containers and go
 
-Install Node (see Requirements above)
+### Set up NodeJS
+Because of the application architecture, it is absolutely necessary to have NodeJS for package management. Here are the following methods of installation for the most popular operating systems. 
+
+#### Windows
+Download it from the official website, [here](https://nodejs.org/en/#download)
+
+#### MacOS
+
+To install NodeJS on MacOS, run this command:
+- brew install node
+#### Linux - Ubuntu
+
+To install NodeJS on Ubuntu, run the following commands:
+
+- sudo apt-get update
+- sudo apt-get install nodejs
+- sudo apt-get install npm
+- nodejs -v
 
 Clone this repository
 
@@ -96,3 +117,21 @@ Future:
 * Filters and Statistics
 * View photo together with tree data
 * View planter profile. 
+
+#### Web App installation issues
+
+Ubuntu:
+docker-compose - command not found:
+ - $ sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
+ - $ sudo mv ./docker-compose /usr/bin/docker-compose
+ - $ sudo chmod +x /usr/bin/docker-compose
+
+docker-compose - permission denied:
+- cd to /usr/bin
+- Enter command sudo chmod 777 docker-compose
+ 
+Error: Failed to load resource: the server responded with a status of 404 (Not Found)
+map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
+    at map.js:18
+
+**Solution**: To Solve this issue, go into the client/js folder, and either change the file config.js.example to config.js, or copy it into a file of the same name.
