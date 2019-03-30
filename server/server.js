@@ -6,7 +6,7 @@ const { Pool, Client } = require('pg');
 var path = require('path');
 var app = express();
 var port = process.env.NODE_PORT || 3000;
-var conn = require('./config');
+var conn = require('./config/config');
 
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
@@ -50,9 +50,22 @@ app.get('/trees', function (req, res) {
   let clusterRadius = parseFloat(req.query['clusterRadius']);
   console.log(clusterRadius);
   var sql, query
-  if (clusterRadius <= 0.001) {
+  if (clusterRadius <= 0.001 || treeid != null ) {
 
-    sql = "SELECT 'point' AS type, trees.*, users.first_name as first_name, users.last_name as last_name, users.image_url as user_image_url FROM trees INNER JOIN users ON users.id = trees.user_id " + join + " WHERE active = true " + boundingBoxQuery + filter + joinCriteria;
+    sql = `SELECT DISTINCT ON(trees.id)
+    'point' AS type,
+     trees.*, users.first_name as first_name, users.last_name as last_name, 
+    users.image_url as user_image_url 
+    FROM trees 
+    INNER JOIN users 
+    ON users.id = trees.user_id ` + join + ` 
+    LEFT JOIN note_trees 
+    ON note_trees.tree_id = trees.id 
+    LEFT JOIN notes 
+    ON notes.id = note_trees.note_id 
+    WHERE active = true ` + boundingBoxQuery + filter + joinCriteria;
+    console.log(sql);
+
     query = {
       text: sql
     }
