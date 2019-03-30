@@ -42,6 +42,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     }
     req = $.get(queryUrl, function (data) {
         console.log('got data');
+        console.log(data);
 
         clearOverlays(markers);
         //console.log(data);
@@ -133,7 +134,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
         });
 
-        if (firstRender && data.data.length > 0 && (organization != null || token != null)) {
+        if (firstRender && data.data.length > 0 && (organization != null || token != null || treeid != null)) {
             map.fitBounds(initialBounds);
             map.setCenter(initialBounds.getCenter());
             map.setZoom(map.getZoom() - 1);
