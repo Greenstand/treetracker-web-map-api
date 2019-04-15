@@ -64,7 +64,9 @@ Run the setup script.  This script installs node modules, builds docker containe
 ./dev/setup.sh
 ```
 
-Install the config.js file in the server/ folder.  You can get this file by asking another contributor for it on Slack.
+Install the server's config.js file in the folder server/config/.  You can get this file by asking another contributor for it on Slack.
+
+Install the client's config.js file in the folder client/js/.  You can get this file by asking another contributor for it on Slack.
 
 
 You can now view the treetracker web map at http://localhost:8080
