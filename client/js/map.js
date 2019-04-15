@@ -30,14 +30,14 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     }
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
     queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
-    if (currentZoom >= 4 && !( (token != null || organization != null || treeid != null) && firstRender == true )) {
+    if (currentZoom >= 4 && !((token != null || organization != null || treeid != null) && firstRender == true)) {
         queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
     if (token != null) {
         queryUrl = queryUrl + "&token=" + token;
     } else if (organization != null) {
         queryUrl = queryUrl + "&organization=" + organization;
-    } else if (treeid != null){
+    } else if (treeid != null) {
         queryUrl = queryUrl + "&treeid=" + treeid;
     }
     req = $.get(queryUrl, function (data) {
@@ -120,7 +120,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                         $("#dead-data").html(NO);
                     }
                     $("#tree-image").attr("src", currentItem["image_url"]);
-                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"]);
+                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"].slice(0, 1));
                     if (currentItem["user_image_url"]) {
                         $("#planter_image").attr("src", currentItem["user_image_url"]);
                     } else {
@@ -264,11 +264,11 @@ var initialize = function () {
     var initialZoom = 6;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
-    if(linkZoom){
+    if (linkZoom) {
         initialZoom = linkZoom;
     }
 
-    if(token != null || organization != null || treeid != null || donor != null){
+    if (token != null || organization != null || treeid != null || donor != null) {
         initialZoom = 10;
     }
 
@@ -284,7 +284,7 @@ var initialize = function () {
     console.log(mapOptions);
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-       google.maps.event.addListener(map, "idle", function () {
+    google.maps.event.addListener(map, "idle", function () {
         var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
