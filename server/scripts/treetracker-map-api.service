@@ -7,7 +7,7 @@ After=network.target
 Environment=NODE_PORT=3000
 Type=simple
 User=root
-ExecStart=/usr/bin/node /root/treetracker-web-map/server/server.js
+ExecStart=/usr/bin/node /root/treetracker-web/server/server.js
 Restart=on-failure
 
 [Install]
