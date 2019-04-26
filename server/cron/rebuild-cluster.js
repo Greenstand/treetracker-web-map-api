@@ -1,6 +1,6 @@
 var pg = require('pg');
 const { Pool, Client } = require('pg');
-var config = require('./../config');
+var config = require('./../config/config');
 const pool = new Pool({
   connectionString: config.connectionString
 });
