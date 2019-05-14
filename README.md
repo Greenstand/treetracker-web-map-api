@@ -96,6 +96,11 @@ Our docker-compose settings for volume mounting don't work out of the box for at
 https://github.com/docker/compose/issues/4303
 
 
+### If docker just isn't working for you
+
+We use docker to automatically deal with CORS restrictions - a website can't usually make requests to an API that doesn't run on the same base URL.  If you are familiar with CORS, you can simply disable CORS manually in the web map server code, and then change the client to look for the API at whatever port you are running server.js on.  This is relatively straightforward to do if you are familiar with the concepts and have done a nodejs development before.  If you resolve your issue using this strategy, please update the ReadMe here with details for other developers.
+
+
 ### Alternative development environment for MS Windows (Works on Linux and Mac also)
 On Windows, the easiest way to develop and debug Node.js applications is using Visual Studio Code.
 It comes with Node.js support out of the box.
