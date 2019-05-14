@@ -89,7 +89,13 @@ Now to view the map. Goto client folder than to js folder, next make a new file 
 
 Just edit as you normally would to view changes in your development environment.
 
-### Alternative setup for MS Windows (Works on Linux and Mac also)
+### MS Windows setup details
+
+Our docker compose settings for volume mounting won't work out of the box for at least some version of Windows.  Please see this thread for details, and update this document with usage details if this solves your issue.
+https://github.com/docker/compose/issues/4303
+
+
+### Alternative develompment environment for MS Windows (Works on Linux and Mac also)
 On Windows, the easiest way to develop and debug Node.js applications is using Visual Studio Code.
 It comes with Node.js support out of the box.
 
