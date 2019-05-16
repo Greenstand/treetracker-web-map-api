@@ -27,6 +27,7 @@ $ brew cask install docker
 ```
 
 [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
+Please note Docker for Windows only works for Windows 10 Enterprise and Windows 10 Pro editions. 
 
 To install on linux, you can run `sudo apt-get install -y docker-ce` but there is [additional setup](https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository) to verify keys, etc.
 
@@ -89,11 +90,55 @@ Now to view the map. Goto client folder than to js folder, next make a new file 
 
 Just edit as you normally would to view changes in your development environment.
 
-### Alternative setup for MS Windows (Works on Linux and Mac also)
+### MS Windows setup details
+
+Our docker-compose settings for volume mounting don't work out of the box for at least some versions of Windows.  Please see this thread for more information, and update this document with usage details if this solves your issue.
+
+https://github.com/docker/compose/issues/4303
+
+
+### If docker just isn't working for you
+
+We use docker to automatically deal with CORS restrictions - a website can't usually make requests to an API that doesn't run on the same base URL.  If you are familiar with CORS, you can simply disable CORS manually in the web map server code, and then change the client to look for the API at whatever port you are running server.js on.  This is relatively straightforward to do if you are familiar with the concepts and have done a little nodejs development before.  If you resolve your issue using this strategy, please update the ReadMe here with details for other developers.
+
+
+### Alternative development environment for MS Windows (Works on Linux and Mac also)
 On Windows, the easiest way to develop and debug Node.js applications is using Visual Studio Code.
 It comes with Node.js support out of the box.
 
 https://code.visualstudio.com/docs
+
+
+## Web App installation issues
+
+Ubuntu:
+docker-compose - command not found:
+ - $ sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
+ - $ sudo mv ./docker-compose /usr/bin/docker-compose
+ - $ sudo chmod +x /usr/bin/docker-compose
+
+docker-compose - permission denied:
+- cd to /usr/bin
+- Enter command sudo chmod 777 docker-compose
+
+docker: Got permission denied while trying to connect to the Docker daemon socket
+ - $ sudo groupadd docker
+ - $ sudo usermod -aG docker $USER
+
+Version in "./dev/docker-compose.yml" is unsupported. 
+ - confirm docker-compose is installed
+ - $ docker-compose -v 
+ - If docker-compose is installed:
+ - $ sudo curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+ - $ sudo chmod +x /usr/local/bin/docker-compose
+ - if docker-compose is not installed:
+ - $sudo apt-get install docker-compose
+
+Error: Failed to load resource: the server responded with a status of 404 (Not Found)
+map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
+    at map.js:18
+
+**Solution**: To Solve this issue, go into the client/js folder, and either change the file config.js.example to config.js, or copy it into a file of the same name.
 
 ## Clustering Basics
 
@@ -119,20 +164,4 @@ Future:
 * View photo together with tree data
 * View planter profile. 
 
-#### Web App installation issues
 
-Ubuntu:
-docker-compose - command not found:
- - $ sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
- - $ sudo mv ./docker-compose /usr/bin/docker-compose
- - $ sudo chmod +x /usr/bin/docker-compose
-
-docker-compose - permission denied:
-- cd to /usr/bin
-- Enter command sudo chmod 777 docker-compose
- 
-Error: Failed to load resource: the server responded with a status of 404 (Not Found)
-map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
-    at map.js:18
-
-**Solution**: To Solve this issue, go into the client/js folder, and either change the file config.js.example to config.js, or copy it into a file of the same name.

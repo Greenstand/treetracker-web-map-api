@@ -1,10 +1,10 @@
 {
-  "name": "treetracker-map-server",
+  "name": "treetracker-map-client",
   "version": "1.0.0",
-  "description": "The tree map server",
+  "description": "The tree map client",
   "author": "",
   "keywords": [],
-  "main": "server.js",
+  "main": "js/map.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Greenstand/treetracker-web-map.git"
@@ -12,11 +12,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "morgan": "^1.9.0",
-    "pg": "^7.4.0"
-  },
+  "dependencies": {},
   "license": "AGPL"
 }
