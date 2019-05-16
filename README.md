@@ -27,6 +27,7 @@ $ brew cask install docker
 ```
 
 [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
+Please note Docker for Windows only works for Windows 10 Enterprise and Windows 10 Pro editions. 
 
 To install on linux, you can run `sudo apt-get install -y docker-ce` but there is [additional setup](https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository) to verify keys, etc.
 
@@ -142,7 +143,20 @@ docker-compose - command not found:
 docker-compose - permission denied:
 - cd to /usr/bin
 - Enter command sudo chmod 777 docker-compose
- 
+
+docker: Got permission denied while trying to connect to the Docker daemon socket
+ - $ sudo groupadd docker
+ - $ sudo usermod -aG docker $USER
+
+Version in "./dev/docker-compose.yml" is unsupported. 
+ - confirm docker-compose is installed
+ - $ docker-compose -v 
+ - If docker-compose is installed:
+ - $ sudo curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+ - $ sudo chmod +x /usr/local/bin/docker-compose
+ - if docker-compose is not installed:
+ - $sudo apt-get install docker-compose
+
 Error: Failed to load resource: the server responded with a status of 404 (Not Found)
 map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
     at map.js:18
