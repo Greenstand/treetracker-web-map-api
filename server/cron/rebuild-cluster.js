@@ -66,12 +66,15 @@ var clusterRadius = {
     }
     await client.query('COMMIT');
     console.log('COMMIT');
+    client.release();
+    pool.end();
   } catch (e) {
     await client.query('ROLLBACK');
     console.log('ROLLBACK');
+    client.release();
+    pool.end();
     throw e
   } finally {
-    client.release();
     const end = Date.now();
     console.log(start);
     console.log(end);
