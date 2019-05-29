@@ -358,7 +358,7 @@ var initialize = function () {
         fetchMarkers = true;
     });
 
-    google.maps.event.addListener(map, 'idle', function() {
+    google.maps.event.addListener(map, "idle", function() {
         var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
