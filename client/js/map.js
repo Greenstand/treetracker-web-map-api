@@ -15,13 +15,15 @@ var req = null;
 var treeInfoDivShowing = false;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
+
+console.log("hello");
 if (configTreetrackerApi) {
     treetrackerApiUrl = configTreetrackerApi;
 }
 
 //Get the tree data and create markers with corresponding data
 var initMarkers = function (viewportBounds, zoomLevel) {
-
+		
     clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
 
     console.log('Cluster radius: ' + clusterRadius);
@@ -39,7 +41,10 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&organization=" + organization;
     } else if (treeid != null) {
         queryUrl = queryUrl + "&treeid=" + treeid;
-    }
+    } else if(token == null)
+		{
+			console.log("hello world");
+}
     req = $.get(queryUrl, function (data) {
         console.log('got data');
         console.log(data);
@@ -255,7 +260,7 @@ function getClusterRadius(zoom) {
 
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
-
+console.log("hello world");
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
