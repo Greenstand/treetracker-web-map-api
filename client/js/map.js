@@ -13,6 +13,11 @@ var initialBounds = new google.maps.LatLngBounds();
 var currentZoom;
 var req = null;
 var treeInfoDivShowing = false;
+var fetchMarkers = true;
+
+// used to keep track of our points and markers
+var points = [];
+var markerByPointId = {};
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 if (configTreetrackerApi) {
@@ -21,6 +26,10 @@ if (configTreetrackerApi) {
 
 //Get the tree data and create markers with corresponding data
 var initMarkers = function (viewportBounds, zoomLevel) {
+    // no need to load this up at every tiny movement
+    if(!fetchMarkers) {
+        return;
+    }
 
     clusterRadius = getQueryStringValue('clusterRadius') || getClusterRadius(zoomLevel);
 
@@ -41,11 +50,12 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&treeid=" + treeid;
     }
     req = $.get(queryUrl, function (data) {
-        console.log('got data');
-        console.log(data);
-
+        // clear everything
+        points = [];
+        markerByPointId = {};
         clearOverlays(markers);
         //console.log(data);
+
         $.each(data.data, function (i, item) {
             if (item.type == 'cluster') {
                 var centroid = JSON.parse(item.centroid);
@@ -87,52 +97,18 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     }
                 });
 
-                google.maps.event.addListener(marker, 'click', function () {
-                    var currentItem = item;
+                // set the field for sorting
+                item._sort_field = new Date(item.time_created);
 
-                    $('#tree_info_div').show('slide', 'swing', 600);
-                    if (treeInfoDivShowing == false) {
-                        treeInfoDivShowing = true;
-                        $('#map-canvas').animate({
-                            margin: '0 0 0 400px'
-                        }, 700, function () {
-                            //Animation Complete
-                        });;
-                        map.panTo(marker.getPosition());
-                    }
-
-
-                    $("#create-data").html(currentItem["time_created"]);
-                    $("#updated-data").html(currentItem["time_updated"]);
-                    $("#gps-accuracy-data").html(currentItem["gps_accuracy"]);
-                    $("#latitude-data").html(currentItem["lat"]);
-                    $("#longitude-data").html(currentItem["lon"]);
-                    if (currentItem["missing"]) {
-                        $("#missing-data").html(YES);
-                    }
-                    else {
-                        $("#missing-data").html(NO);
-                    }
-                    if (currentItem["dead"]) {
-                        $("#dead-data").html(YES);
-                    }
-                    else {
-                        $("#dead-data").html(NO);
-                    }
-                    $("#tree-image").attr("src", currentItem["image_url"]);
-                    $("#planter_name").html(currentItem["first_name"] + ' ' + currentItem["last_name"].slice(0, 1));
-                    if (currentItem["user_image_url"]) {
-                        $("#planter_image").attr("src", currentItem["user_image_url"]);
-                    } else {
-                        $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
-                    }
-
-                });
-
+                // hold the reference to our points
+                points.push(item);
+                markerByPointId[item["id"]] = marker;
                 markers.push(marker);
             }
-
         });
+
+        // set he markers once we are done
+        setPointMarkerListeners();
 
         if (firstRender && data.data.length > 0 && (organization != null || token != null || treeid != null)) {
             map.fitBounds(initialBounds);
@@ -147,6 +123,95 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     });
 }
 
+// for each point, set the listeners.
+// sort first so we can reference the next point
+// in chronological order
+function setPointMarkerListeners() {
+    points.sort(function(a, b) {
+        return a._sort_field - b._sort_field;
+    });
+
+    $.each(points, function(i, point){
+        var marker = markerByPointId[point.id];
+        google.maps.event.addListener(marker, 'click', function () {
+            showMarkerInfo(point, marker, i);
+        });
+    })
+}
+
+// set up and show the marker info
+function showMarkerInfo(point, marker, index) {
+    $('#tree_info_div').show('slide', 'swing', 600);
+    if (treeInfoDivShowing == false) {
+        treeInfoDivShowing = true;
+        $('#map-canvas').animate({
+            margin: '0 0 0 400px'
+        }, 700, function () {
+            //Animation Complete
+        });;
+    }
+    // always center this one
+    map.panTo(marker.getPosition());
+
+    $("#create-data").html(point["time_created"]);
+    $("#updated-data").html(point["time_updated"]);
+    $("#gps-accuracy-data").html(point["gps_accuracy"]);
+    $("#latitude-data").html(point["lat"]);
+    $("#longitude-data").html(point["lon"]);
+    if (point["missing"]) {
+        $("#missing-data").html(YES);
+    }
+    else {
+        $("#missing-data").html(NO);
+    }
+    if (point["dead"]) {
+        $("#dead-data").html(YES);
+    }
+    else {
+        $("#dead-data").html(NO);
+    }
+    $("#tree-image").attr("src", point["image_url"]);
+    $("#planter_name").html(point["first_name"] + ' ' + point["last_name"].slice(0, 1));
+    if (point["user_image_url"]) {
+        $("#planter_image").attr("src", point["user_image_url"]);
+    } else {
+        $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
+    }
+    $("#tree_next").val(getCircularPointIndex(index + 1))
+    $("#tree_prev").val(getCircularPointIndex(index - 1))
+
+    $("#tree_next").off('click').on('click', function () {
+        fetchMarkers = false;
+        var index = parseInt($(this).val(), 10)
+        showMarkerInfoByIndex(index)
+    });
+
+    $("#tree_prev").off('click').on('click', function () {
+        fetchMarkers = false;
+        var index = parseInt($(this).val(), 10)
+        showMarkerInfoByIndex(index)
+    });
+}
+
+// using an index, get the point and marker and show them
+function showMarkerInfoByIndex(index) {
+    var point = points[index];
+    var marker = markerByPointId[point["id"]];
+    showMarkerInfo(point, marker, index);
+}
+
+// handle the index for a circular list
+function getCircularPointIndex(index) {
+    if (index > points.length - 1) {
+        index = 0;
+    }
+    else if (index < 0) {
+        index = points.length - 1;
+    }
+    return index;
+}
+
+// clear the markers from the map and then clear our the array of markers
 function clearOverlays(overlays) {
     //console.log(overlays);
     for (var i = 0; i < overlays.length; i++) {
@@ -284,7 +349,16 @@ var initialize = function () {
     console.log(mapOptions);
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    google.maps.event.addListener(map, "idle", function () {
+
+    // only fetch when the user has made some sort of action
+    google.maps.event.addListener(map, "dragstart", function () {
+        fetchMarkers = true;
+    });
+    google.maps.event.addListener(map, "zoom_changed", function () {
+        fetchMarkers = true;
+    });
+
+    google.maps.event.addListener(map, 'idle', function() {
         var zoomLevel = map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
