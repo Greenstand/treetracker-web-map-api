@@ -37,18 +37,13 @@
   <script type="text/javascript" src="js/jquery-ui.min.js">
   </script>
   <link rel="stylesheet" href="js/jquery-ui.min.css">
-<script>
-    function scriptfail(element) {
-  location.replace("error.html")
 
-        alert('failed to load ' + element.src);
-    }
-</script>
-  <script type="text/javascript" src="js/config.js" onerror='scriptfail(this);'>
+
+    <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'>
   </script>
+
   <script type="text/javascript" src="js/map.js">
   </script>
-
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 

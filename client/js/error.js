@@ -1,6 +1,6 @@
-let inOkState = false; // Current state of the website.
-const elDivError = document.getElementById("error_message_div"); // error div 
-const elDivRemedy = document.getElementById("remedy_message_div"); // remedy div 
+let inOkState = true; // Current state of the website.
+const elDivError = document.getElementById("error-message-div"); // error div 
+const elDivRemedy = document.getElementById("remedy-message-div"); // remedy div 
 
 /*
  * Parameters: message: either array or string that contains the message or messages to display.
@@ -22,11 +22,11 @@ function error(errorMessage, remedyMessage){
  *          If the message is an array, then an unordered list will be displayed. 
  */
 function displayMessage(message, containerDiv){
-	let el = createElement("p");
-	if( typeof message === 'string' || message instanceof String) {
+	let el = document.createElement("p");
+	if( typeof message === 'string') {
 			el.innerText = message; 
 	}else if(message instanceof Array) {
-		let elList = createElement("li");
+		let elList = document.createElement("li");
 
 		message.forEach(function(item) {
 				let li = document.createElement("li");
@@ -34,35 +34,14 @@ function displayMessage(message, containerDiv){
 				li.appendChild(text);
 				elList.appendChild(li);
 			});
-
-		appendChild(el, elList);
+		el.appendChild(elList);
 	}else{
 		console.log("Unexpected Data Type");
 	}
-	el.style.backgroundColor = "white";
-	appendChild(containerDiv, el);
+    el.class += "hello"; 
+	containerDiv.appendChild(el);
 }
 
-/*
- * Parameter: type: type of HTML that is needed to be created. Parameter should be a string.
- *
- * Details: Outputs the HTML element which type is the value that is passed into the function.
- * 
- * Return:  HTML element with the type that is passed into the function. 
- */
-function createElement(type){
-	return document.createElement(type);
-}
-
-/*
- * Parameter: parent: HTML element that the child parameter will be appended to
- *						child: HTML element which will be appended to the parent parameter
- *   
- * Details: Appends the child parameter to the parent parameter.
- */
-function appendChild(parent, child){
-	 parent.appendChild(child);
-}
 
 /*
  * Parameter: element: script element that is used to output the error message 
@@ -71,8 +50,11 @@ function appendChild(parent, child){
  * Passes possible solutions and the problem to error function.
  */
 function scriptfail(element){
-  inOkState = false;
-	let messagesRemedy = ["Check the config.js path and name.", " Read the README about acquiring the config files.", " Reload the page when done."];
+  if(inOkState){
+
+	 inOkState = false;
+  }
+  let messagesRemedy = ["Check the config.js path and name.", " Read the README about acquiring the config files.", " Reload the page when done."];
   error(element.src + " failed to load", messagesRemedy)
 }
 
