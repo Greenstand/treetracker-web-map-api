@@ -302,7 +302,4 @@ var initialize = function () {
     });
 }
 
-function scriptfail(){
-    location.replace("error.html");
-}
 google.maps.event.addDomListener(window, 'load', initialize);
