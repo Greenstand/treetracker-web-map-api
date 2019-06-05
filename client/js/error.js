@@ -38,7 +38,6 @@ function displayMessage(message, containerDiv){
 	}else{
 		console.log("Unexpected Data Type");
 	}
-    el.class += "hello"; 
 	containerDiv.appendChild(el);
 }
 
@@ -51,7 +50,6 @@ function displayMessage(message, containerDiv){
  */
 function scriptfail(element){
   if(inOkState){
-
 	 inOkState = false;
   }
   let messagesRemedy = ["Check the config.js path and name.", " Read the README about acquiring the config files.", " Reload the page when done."];
