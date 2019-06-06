@@ -111,3 +111,8 @@ b {
 .mapChange{
 margin-left:400px !important;
 }
+
+.tree_nav{
+  max-height:10%;
+  max-width:10%;
+}
