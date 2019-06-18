@@ -102,6 +102,17 @@ b {
 	margin-left:10px;
 }
 
+.next_prev_buttons{
+	width:400px;
+	margin-left:10px;
+	margin-right:10px;
+}
+
 .mapChange{
 margin-left:400px !important;
+}
+
+.tree_nav{
+  max-height:10%;
+  max-width:10%;
 }
