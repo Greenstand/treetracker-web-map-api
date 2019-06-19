@@ -23,6 +23,7 @@ app.get('/trees', function (req, res) {
 
   let token = req.query['token'];
   let organization = req.query['organization'];
+  let flavor = req.query['flavor'];
   let treeid = req.query['treeid'];
   let join = '';
   let joinCriteria = '';
@@ -34,6 +35,10 @@ app.get('/trees', function (req, res) {
   } else if(organization) {
     join = ", certificates, donors, organizations";
     joinCriteria = "AND trees.certificate_id = certificates.id AND certificates.donor_id = donors.id AND donors.organization_id = organizations.id AND organizations.id = " + organization;
+    subset = true;
+  } else if (flavor) {
+    join = "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
+    joinCriteria = "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + flavor + "'";
     subset = true;
   } else if(treeid) {
     filter = 'AND trees.id = ' + treeid + ' '
@@ -54,15 +59,15 @@ app.get('/trees', function (req, res) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
-     trees.*, users.first_name as first_name, users.last_name as last_name, 
-    users.image_url as user_image_url 
-    FROM trees 
-    INNER JOIN users 
-    ON users.id = trees.user_id ` + join + ` 
-    LEFT JOIN note_trees 
-    ON note_trees.tree_id = trees.id 
-    LEFT JOIN notes 
-    ON notes.id = note_trees.note_id 
+     trees.*, users.first_name as first_name, users.last_name as last_name,
+    users.image_url as user_image_url
+    FROM trees
+    INNER JOIN users
+    ON users.id = trees.user_id ` + join + `
+    LEFT JOIN note_trees
+    ON note_trees.tree_id = trees.id
+    LEFT JOIN notes
+    ON notes.id = note_trees.note_id
     WHERE active = true ` + boundingBoxQuery + filter + joinCriteria;
     console.log(sql);
 
@@ -91,7 +96,7 @@ app.get('/trees', function (req, res) {
 
       console.log('Using cluster cache');
       sql = `SELECT 'cluster' as type,
-             St_asgeojson(location) centroid, count 
+             St_asgeojson(location) centroid, count
              FROM clusters
              WHERE zoom_level = ` + req.query['zoom_level'] + ' AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
       query = {
@@ -102,13 +107,13 @@ app.get('/trees', function (req, res) {
     } else {
 
       console.log('Calculating clusters directly');
-      sql = `SELECT 'cluster'                                                   AS type, 
-        St_asgeojson(St_centroid(clustered_locations))                 centroid, 
-        --St_asgeojson(St_minimumboundingcircle(clustered_locations))    circle, 
-        St_numgeometries(clustered_locations)                          count 
-      FROM   ( 
+      sql = `SELECT 'cluster'                                                   AS type,
+        St_asgeojson(St_centroid(clustered_locations))                 centroid,
+        --St_asgeojson(St_minimumboundingcircle(clustered_locations))    circle,
+        St_numgeometries(clustered_locations)                          count
+      FROM   (
         SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-        FROM   trees ` + join + ` 
+        FROM   trees ` + join + `
         WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
       query = {
         text: sql,
