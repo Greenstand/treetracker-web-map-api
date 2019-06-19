@@ -2,14 +2,12 @@
 
 ## Current Milestones and Issue Topics
 
-Developers please see current milestones here:
-
+Developers please see current milestones here:  
 https://github.com/Greenstand/treetracker-web-map/milestones
 
 
 
-Big picture UX/UI challenges are tracked at:
-
+Big picture UX/UI challenges are tracked at:  
 https://github.com/Greenstand/treetracker-web-map/issues?q=is%3Aissue+is%3Aopen+label%3AUX%2FUI
 
 ## Project Description
