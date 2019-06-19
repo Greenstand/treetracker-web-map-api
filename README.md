@@ -1,13 +1,16 @@
-# treetracker-web
+# Treetracker Web
 
-This map is built for other organizations website.
-This map allows organization's donors to see their trees.
-The user experience is on the other organization's website.
-See [Wiki](https://github.com/Greenstand/treetracker-web-map/wiki) for Minimum demo and MVP features. Live map is at [www.treetracker.org](https://www.treetracker.org)
+## Current Milestones and Issue Topics
+
+Please see current milestones here:
+https://github.com/Greenstand/treetracker-web-map/milestones
 
 
-## Setting up the Web Application
-***
+## Project Description
+
+Displays location and details of all trees that have been tracked.
+
+Live map is at [www.treetracker.org](https://www.treetracker.org)
 
 
 
