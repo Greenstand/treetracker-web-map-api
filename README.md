@@ -9,7 +9,8 @@ https://github.com/Greenstand/treetracker-web-map/milestones
 Big picture UX/UI challenges are tracked at:  
 https://github.com/Greenstand/treetracker-web-map/issues?q=is%3Aissue+is%3Aopen+label%3AUX%2FUI
 
-
+&nbsp;
+&nbsp;
 
 ## Project Description
 
@@ -17,7 +18,8 @@ Displays location and details of all trees that have been tracked.
 
 Live map is at [www.treetracker.org](https://www.treetracker.org)
 
-
+&nbsp;
+&nbsp;
 
 ## Development Environment Quick Start
 
@@ -116,6 +118,8 @@ It comes with Node.js support out of the box.
 
 https://code.visualstudio.com/docs
 
+&nbsp;
+&nbsp;
 
 ## Web App installation issues
 
@@ -147,6 +151,9 @@ map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
     at map.js:18
 
 **Solution**: To Solve this issue, go into the client/js folder, and either change the file config.js.example to config.js, or copy it into a file of the same name.
+
+&nbsp;
+&nbsp;
 
 ## Clustering Basics
 
