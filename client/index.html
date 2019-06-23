@@ -51,8 +51,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
   <link rel=stylesheet href="css/style.css" />
+<<<<<<< Updated upstream
   <link rel=stylesheet href="icon_style.css" />	
   <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+=======
+  <link rel=stylesheet href="icon_style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -62,22 +67,28 @@
       <div class="tree_info">
         <img id="tree-image" src="">
         <div class="planter_image">
-          <img id="planter_image"t sta src="img/portrait_placeholder_100.png">
+					<div class="planter_image_wrap">
+          	<img id="planter_image"t sta src="img/portrait_placeholder_100.png">
+					</div>
         </div>
         <div class="planted_by">
-          <p><span>Planted by: </span><span id="planter_name">Planter</span></p>
+          <p><span>Planter: </span><span id="planter_name">Planter</span></p>
         </div>
 
-        <div id="created_on" class="info_data">
-          <p>Created on : </p>
-          <p id="create-data"></p>
-        </div>
-        <div id="status" class="info_data">
-          <p>Status : </p>
-          <p id="status-data">Planted</p>
-        </div>
+				<p id="status" class="info_data info_data_status success">
+          <span><b>Status</b>: </span>
+          <span id="status-data">Planted</span>
+				</p>
+        <p id="sponsor" class="info_data">
+          <span><b>Sponsor</b>: </span>
+          <span id="status-data">Mondelez</span>
+        </p>
+        <p id="created_on" class="info_data">
+          <span>Tracked: </span>
+          <span id="create-data"></span>
+        </p>
 
-        <br>
+        <br />
         <div class="float-left info_data">
             <a href="#" class="float-left tree_nav" id="tree_prev" >
                 <img src="img/webmap-back-green.svg" />
