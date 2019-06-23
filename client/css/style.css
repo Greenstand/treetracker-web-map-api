@@ -146,10 +146,6 @@ margin-left:400px !important;
 	transition: opacity 0.5s 0s, display 0s 0.5s;
 }
 
-.page-loader .active {
-
-}
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
