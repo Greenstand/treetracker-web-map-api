@@ -84,10 +84,3 @@ var clusterRadius = {
 
 
 })().catch(e => console.error(e.stack))
-
-
-//pool.query(query)
-//  .then(function (data) {
-//    console.log(data);
-//  })
-//  .catch(e => console.error(e.stack));
