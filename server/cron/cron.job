@@ -1,1 +1,1 @@
-*/1 * * * *  /usr/bin/node /root/treetracker-map-api/cron/rebuild-cluster.js >>treetracker-map-api/cron/log-file.txt 2>>treetracker-map-api/cron/log-file.txt
+0 0 * * * /root/treetracker-web-map/server/cron/rebuild-clusters.sh
