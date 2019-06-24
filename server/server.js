@@ -6,14 +6,19 @@ const { Pool, Client } = require('pg');
 var path = require('path');
 var app = express();
 var port = process.env.NODE_PORT || 3000;
-var conn = require('./config/config');
+var config = require('./config/config');
+const Sentry = require('@sentry/node');
 
+config.sentryDSN = 'https://6c8d8f7f5cd14c29aa9baf455d259e27@sentry.io/1489211';
+Sentry.init({ dsn: config.sentryDSN });
+
+app.use(Sentry.Handlers.requestHandler());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 app.set('view engine', 'html');
 
 const pool = new Pool({
-  connectionString: conn.connectionString
+  connectionString: config.connectionString
 });
 
 
@@ -78,7 +83,7 @@ app.get('/trees', function (req, res) {
     var optimizedBounds;
     if(bounds) {
       boundingBox = bounds.split(',');
-      optimizedBounds = conn.optimizedBounds.split(',');
+      optimizedBounds = config.optimizedBounds.split(',');
       console.log(boundingBox);
       console.log(optimizedBounds);
     }
@@ -123,9 +128,14 @@ app.get('/trees', function (req, res) {
         data: data.rows
       })
     })
-    .catch(e => console.error(e.stack));
+    .catch(function(error) {
+      console.error(e.stack);
+      throw(error);
+    });
 
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 app.listen(port, () => {
   console.log('listening on port ' + port);
