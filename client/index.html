@@ -14,8 +14,9 @@
 	<!-- trees, treetracker, greenstand -->
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1280531-63"></script>
+	<script src="https://browser.sentry-cdn.com/5.4.3/bundle.min.js" crossorigin="anonymous"></script>
 	<script>
-	  window.dataLayer = window.dataLayer || [];
+		window.dataLayer = window.dataLayer || [];
 	  function gtag(){dataLayer.push(arguments);}
 	  gtag('js', new Date());
 	  gtag('config', 'UA-1280531-63');
@@ -30,19 +31,17 @@
       padding: 0;
     }
   </style>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs">
-  </script>
-  <script type="text/javascript" src="js/jquery-2.1.3.min.js">
-  </script>
-  <script type="text/javascript" src="js/jquery-ui.min.js">
-  </script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs"></script>
+  <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="js/jquery-ui.min.css">
 
 
-  <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'>
-  </script>
-  <script type="text/javascript" src="js/map.js">
-  </script>
+  <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'></script>
+	<script>
+		Sentry.init({ dsn: sentryDSN });
+	</script>
+  <script type="text/javascript" src="js/map.js"></script>
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
