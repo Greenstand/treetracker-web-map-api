@@ -36,15 +36,15 @@ var clusterRadius = {
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
     var zoomLevel;
     for(zoomLevel=6; zoomLevel < 17; zoomLevel = zoomLevel + 1){
-      sql = `SELECT 'cluster' AS type, 
-        St_centroid(clustered_locations) centroid, 
-        St_numgeometries(clustered_locations) count 
-      FROM   ( 
+      await client.query('BEGIN');
+      sql = `SELECT 'cluster' AS type,
+        St_centroid(clustered_locations) centroid,
+        St_numgeometries(clustered_locations) count
+      FROM   (
         SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-        FROM   trees  
+        FROM   trees
         WHERE  active = true ` + 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + bounds + ', 4326) ' + ` ) clusters`;
 
       query = {
@@ -59,13 +59,14 @@ var clusterRadius = {
       for (let row in rows) {
         query = {
           text: 'INSERT INTO clusters (count, zoom_level, location) values ($1, $2, $3 ) RETURNING *',
-          values: [rows[row]['count'], zoomLevel, rows[row]['centroid']] 
+          values: [rows[row]['count'], zoomLevel, rows[row]['centroid']]
         };
         await client.query(query);
       }
+      await client.query('COMMIT');
+      console.log('COMMIT zoom level ' + zoomLevel);
     }
-    await client.query('COMMIT');
-    console.log('COMMIT');
+
     client.release();
     pool.end();
   } catch (e) {
@@ -90,4 +91,3 @@ var clusterRadius = {
 //    console.log(data);
 //  })
 //  .catch(e => console.error(e.stack));
-
