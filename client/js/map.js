@@ -9,6 +9,7 @@ var treeid;
 var clusterRadius;
 var firstRender = true;
 var initialBounds = new google.maps.LatLngBounds();
+var loader;
 
 var currentZoom;
 var req = null;
@@ -50,8 +51,8 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&organization=" + organization;
     } else if (treeid != null) {
         queryUrl = queryUrl + "&treeid=" + treeid;
-    } 
-    
+    }
+
     req = $.get(queryUrl, function (data) {
         // clear everything
         points = [];
@@ -113,14 +114,18 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         // set he markers once we are done
         setPointMarkerListeners();
 
-        if (firstRender && data.data.length > 0 && (organization != null || token != null || treeid != null)) {
-            map.fitBounds(initialBounds);
-            map.setCenter(initialBounds.getCenter());
-            map.setZoom(map.getZoom() - 1);
-            if (map.getZoom() > 15) {
-                map.setZoom(15);
-            }
-            firstRender = false;
+        if (firstRender) {
+          if (data.data.length > 0 && (organization != null || token != null || treeid != null)) {
+              map.fitBounds(initialBounds);
+              map.setCenter(initialBounds.getCenter());
+              map.setZoom(map.getZoom() - 1);
+              if (map.getZoom() > 15) {
+                  map.setZoom(15);
+              }
+          }
+
+          loader.classList.remove('active');
+          firstRender = false;
         }
 
     });
@@ -327,6 +332,7 @@ var initialize = function () {
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
     donor = getQueryStringValue('donor') || null;
+    loader = document.getElementById('map-loader');
 
     var initialZoom = 6;
 
