@@ -153,7 +153,7 @@ function showMarkerInfo(point, marker, index) {
     if (treeInfoDivShowing == false) {
         treeInfoDivShowing = true;
         $('#map-canvas').animate({
-            margin: '0 0 0 400px'
+            margin: '0 0 0 295px'
         }, 700, function () {
             //Animation Complete
         });;
