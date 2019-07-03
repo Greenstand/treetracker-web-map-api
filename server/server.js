@@ -30,6 +30,7 @@ app.get('/trees', function (req, res) {
   let organization = req.query['organization'];
   let flavor = req.query['flavor'];
   let treeid = req.query['treeid'];
+  let userid = req.query['userid'];
   let join = '';
   let joinCriteria = '';
   let filter = '';
@@ -47,6 +48,9 @@ app.get('/trees', function (req, res) {
     subset = true;
   } else if(treeid) {
     filter = 'AND trees.id = ' + treeid + ' '
+    subset = true;
+  } else if(userid) {
+    filter = 'AND trees.user_id = ' + userid + ' '
     subset = true;
   }
 
@@ -118,7 +122,7 @@ app.get('/trees', function (req, res) {
       FROM   (
         SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
         FROM   trees ` + join + `
-        WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
+        WHERE  active = true ` + (userid ? '' : boundingBoxQuery) + filter + joinCriteria + ` ) clusters`;
       query = {
         text: sql,
         values: [clusterRadius]
