@@ -58,6 +58,10 @@ var initMarkers = function (viewportBounds, zoomLevel) {
     }
 
     req = $.get(queryUrl, function (data) {
+      if (userid && data.data.length === 0) {
+        showAlert();
+      }
+
         // clear everything
         points = [];
         markerByPointId = {};
@@ -150,6 +154,21 @@ function setPointMarkerListeners() {
             showMarkerInfo(point, marker, i);
         });
     })
+}
+
+function showAlert() {
+  const alertHtml = `
+    <div class="alert alert-info alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      Could not find any trees associated with userid ${userid}
+    </div>
+  `;
+  // Prevent duplicate alerts after map is re-rendered
+  if ($('.alert-container').find('.alert').length === 0) {
+    $(alertHtml).prependTo('.alert-container');
+  }
 }
 
 // set up and show the marker info
