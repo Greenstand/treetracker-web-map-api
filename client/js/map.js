@@ -70,11 +70,12 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     map: map,
                     label: {
                         text: item.count.toString(),
-                        color: '#fff'
+                        color: '#000'
                     },
                     icon: {
-                        url: './img/blank_pin.png',
-                        labelOrigin: new google.maps.Point(20, 22)
+                        url: './img/cluster_63px.png',
+                        labelOrigin: new google.maps.Point(32, 32),
+                        anchor: new google.maps.Point(32, 32)
                     }
                 });
 
@@ -334,7 +335,7 @@ var initialize = function () {
     donor = getQueryStringValue('donor') || null;
     loader = document.getElementById('map-loader');
 
-    var initialZoom = 6;
+    var initialZoom = 4;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
     if (linkZoom) {
