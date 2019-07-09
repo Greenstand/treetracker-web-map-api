@@ -9,7 +9,6 @@ var port = process.env.NODE_PORT || 3000;
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 
-config.sentryDSN = 'https://6c8d8f7f5cd14c29aa9baf455d259e27@sentry.io/1489211';
 Sentry.init({ dsn: config.sentryDSN });
 
 app.use(Sentry.Handlers.requestHandler());
@@ -70,7 +69,8 @@ app.get('/trees', function (req, res) {
   let clusterRadius = parseFloat(req.query['clusterRadius']);
   console.log(clusterRadius);
   var sql, query
-  if (req.query['zoom_level'] > 12 || treeid != null ) {
+  const zoomLevel = req.query['zoom_level'];
+  if (zoomLevel > 14 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
@@ -88,10 +88,24 @@ app.get('/trees', function (req, res) {
 
     query = {
       text: sql
-    }
+    };
 
-  }
-  else {
+  } else if (zoomLevel == 14) {
+    // do the cluster generation I guess
+    console.log('Calculating clusters directly');
+    sql = `SELECT 'cluster'                                                   AS type,
+       St_asgeojson(St_centroid(clustered_locations))                 centroid,
+       St_numgeometries(clustered_locations)                          count
+      FROM   (
+       SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
+       FROM   trees ` + join + `
+       WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
+    query = {
+      text: sql,
+      values: [clusterRadius]
+    };
+
+  } else {
 
     // check if query is in the cached zone
     var boundingBox;
