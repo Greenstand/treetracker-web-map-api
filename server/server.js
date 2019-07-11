@@ -9,16 +9,13 @@ var port = process.env.NODE_PORT || 3000;
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 
+const pool = new Pool({ connectionString: config.connectionString });
 Sentry.init({ dsn: config.sentryDSN });
 
 app.use(Sentry.Handlers.requestHandler());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 app.set('view engine', 'html');
-
-const pool = new Pool({
-  connectionString: config.connectionString
-});
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -30,7 +27,6 @@ var allowCrossDomain = function(req, res, next) {
 if(process.env.NODE_ENV == 'dev'){
   app.use(allowCrossDomain);
 }
-
 
 app.get('/trees', function (req, res) {
   //console.log(req);
