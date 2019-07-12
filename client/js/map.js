@@ -74,6 +74,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     },
                     icon: {
                         url: './img/cluster_63px.png',
+                      //  url: './img/blank_pin.png',
                         labelOrigin: new google.maps.Point(32, 32),
                         anchor: new google.maps.Point(32, 32)
                     }
@@ -112,7 +113,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
             }
         });
 
-        // set he markers once we are done
+        // set the markers once we are done
         setPointMarkerListeners();
 
         if (firstRender) {
@@ -335,7 +336,7 @@ var initialize = function () {
     donor = getQueryStringValue('donor') || null;
     loader = document.getElementById('map-loader');
 
-    var initialZoom = 4;
+    var initialZoom = 2;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
     if (linkZoom) {
@@ -375,7 +376,8 @@ var initialize = function () {
     });
 
     currentZoom = initialZoom;
-    map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
+    //map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
+    map.setCenter({ lat: 20, lng: 0 });
 
     $('#close-button').click(function () {
         $("#tree_info_div").hide("slide", "swing", 600);

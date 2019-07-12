@@ -86,7 +86,7 @@ app.get('/trees', function (req, res) {
       text: sql
     };
 
-  } else if (zoomLevel == 14) {
+  } else if (zoomLevel == 14 || subset) {
     // do the cluster generation I guess
     console.log('Calculating clusters directly');
     sql = `SELECT 'cluster'                                                   AS type,
@@ -112,25 +112,52 @@ app.get('/trees', function (req, res) {
 
     var regionBoundingBoxQuery = "";
 
-    if( bounds && !subset) {
+    console.log(zoomLevel);
+    if(zoomLevel >= 10) {
+    console.log('greater eq 10');
 
-      regionBoundingBoxQuery = ' AND ST_INTERSECTS( geom, ST_MakeEnvelope(' + bounds + ', 4326) )';
+    if( bounds ) {
+
+      regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
 
     }
 
-    query = {
-      text: `SELECT 'cluster' AS type,
-               region.id, ST_ASGeoJson(region.centroid) centroid,
-               region.type_id as region_type,
-               count(tree_region.id)
-               FROM tree_region
-               JOIN region
-               ON region.id = region_id
-               WHERE zoom_level = $1
-               ${regionBoundingBoxQuery}
-               GROUP BY region.id`,
-      values: [req.query['zoom_level']]
-    };
+      query = {
+        text: `SELECT 'cluster' AS type,
+                 region.id, ST_ASGeoJson(region.centroid) centroid,
+                 region.type_id as region_type,
+                 count(tree_region.id)
+                 FROM tree_region
+                 JOIN trees
+                 ON trees.id = tree_region.tree_id
+                 AND trees.active = TRUE
+                 JOIN region
+                 ON region.id = region_id
+                 WHERE zoom_level = $1
+                 ${regionBoundingBoxQuery}
+                 GROUP BY region.id`,
+        values: [req.query['zoom_level']]
+      };
+
+    } else {
+
+      query = {
+        text: `SELECT 'cluster' AS type,
+                 region.id, ST_ASGeoJson(region.centroid) centroid,
+                 region.type_id as region_type,
+                 count(tree_region.id)
+                 FROM tree_region
+                 JOIN trees
+                 ON trees.id = tree_region.tree_id
+                 AND trees.active = TRUE
+                 JOIN region
+                 ON region.id = region_id
+                 WHERE zoom_level = $1
+                 GROUP BY region.id`,
+        values: [req.query['zoom_level']]
+      };
+
+    }
 
   }
 
