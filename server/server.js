@@ -128,6 +128,9 @@ app.get('/trees', function (req, res) {
                  region.type_id as region_type,
                  count(tree_region.id)
                  FROM tree_region
+                 JOIN trees
+                 ON trees.id = tree_region.tree_id
+                 AND trees.active = TRUE
                  JOIN region
                  ON region.id = region_id
                  WHERE zoom_level = $1
@@ -144,6 +147,9 @@ app.get('/trees', function (req, res) {
                  region.type_id as region_type,
                  count(tree_region.id)
                  FROM tree_region
+                 JOIN trees
+                 ON trees.id = tree_region.tree_id
+                 AND trees.active = TRUE
                  JOIN region
                  ON region.id = region_id
                  WHERE zoom_level = $1
