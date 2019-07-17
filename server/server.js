@@ -85,9 +85,7 @@ app.get('/trees', function (req, res) {
     query = {
       text: sql
     };
-
-  } else if (zoomLevel == 14 || subset) {
-    // do the cluster generation I guess
+  } else if (subset) {
     console.log('Calculating clusters directly');
     sql = `SELECT 'cluster'                                                   AS type,
        St_asgeojson(St_centroid(clustered_locations))                 centroid,
@@ -100,6 +98,15 @@ app.get('/trees', function (req, res) {
       text: sql,
       values: [clusterRadius]
     };
+  } else if (zoomLevel == 14 || zoomLevel == 13) {
+    console.log('Using cluster cache from zoom level 14');
+    sql = `SELECT 'cluster' as type,
+           St_asgeojson(location) centroid, count
+           FROM clusters
+          WHERE zoom_level = 14`
+    query = {
+      text: sql
+    }
 
   } else {
 
