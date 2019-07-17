@@ -25,6 +25,7 @@ const pool = new Pool({
       AND trees.cluster_regions_assigned = false
       ORDER BY trees.id, zoom_level, region_zoom.priority DESC`
   };
+  console.log(insert);
   await client.query(insert);
   await client.query('COMMIT');
 
@@ -35,10 +36,11 @@ const pool = new Pool({
       WHERE tree_region.tree_id = trees.id
       AND cluster_regions_assigned = false`
   };
+  console.log(update);
   await client.query(update);
   await client.query('COMMIT');
 
-
+  client.release();
   pool.end();
 
   const end = Date.now();
