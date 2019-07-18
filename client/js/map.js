@@ -107,7 +107,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/blank_pin.png'
+                        url: './img/pin_29px.png'
                     }
                 });
 
