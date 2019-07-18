@@ -59,6 +59,7 @@ app.get('/trees', function (req, res) {
   let boundingBoxQuery = '';
   if (bounds) {
     boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + bounds + ', 4326) ';
+    clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
     console.log(bounds);
   }
 
@@ -100,16 +101,17 @@ app.get('/trees', function (req, res) {
       values: [clusterRadius]
     };
 
-  } else if (zoomLevel == 14 || zoomLevel == 13) {
+  } else if (zoomLevel == 14 || zoomLevel == 13 || zoomLevel == 12) {
 
     console.log('Using cluster cache from zoom level 14');
     sql = `SELECT 'cluster' as type,
            St_asgeojson(location) centroid, count
            FROM clusters
-           WHERE zoom_level = 14 ${boundingBoxQuery}`
+           WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
     query = {
       text: sql
     }
+    console.log(query);
 
   } else {
 
