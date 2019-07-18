@@ -65,6 +65,15 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                 var centroid = JSON.parse(item.centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
                 determineInitialSize(latLng);
+                var iconUrl = './img/cluster_63px.png';
+                var labelOrigin = new google.maps.Point(32, 32);
+                var anchor = new google.maps.Point(32, 32);
+                if(item.count <= 300){
+                    iconUrl = './img/cluster_46px.png';
+                    labelOrigin = new google.maps.Point(23, 23);
+                    anchor = new google.maps.Point(23, 23);
+                }
+
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
@@ -73,10 +82,9 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                         color: '#000'
                     },
                     icon: {
-                        url: './img/cluster_63px.png',
-                      //  url: './img/blank_pin.png',
-                        labelOrigin: new google.maps.Point(32, 32),
-                        anchor: new google.maps.Point(32, 32)
+                        url: iconUrl,
+                        labelOrigin: labelOrigin,
+                        anchor: anchor
                     }
                 });
 
@@ -137,9 +145,9 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 // sort first so we can reference the next point
 // in chronological order
 function setPointMarkerListeners() {
-    points.sort(function(a, b) {
-        return a._sort_field - b._sort_field;
-    });
+   // points.sort(function(a, b) {
+   //     return a._sort_field - b._sort_field;
+   // });
 
     $.each(points, function(i, point){
         var marker = markerByPointId[point.id];
