@@ -38,6 +38,12 @@ const pool = new Pool({
   };
   console.log(update);
   await client.query(update);
+
+  const refresh = {
+    text: `REFRESH MATERIALIZED VIEW active_tree_region`
+  }
+  await client.query(refresh);
+
   await client.query('COMMIT');
 
   client.release();
@@ -49,4 +55,3 @@ const pool = new Pool({
   console.log('DONE');
 
 })().catch(e => console.error(e.stack))
-
