@@ -106,7 +106,7 @@ app.get('/trees', function (req, res) {
     sql = `SELECT 'cluster' as type,
            St_asgeojson(location) centroid, count
            FROM clusters
-           WHERE zoom_level = 14`
+           WHERE zoom_level = 14 ${boundingBoxQuery}`
     query = {
       text: sql
     }
