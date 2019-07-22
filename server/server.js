@@ -126,11 +126,9 @@ app.get('/trees', function (req, res) {
     if(zoomLevel >= 10) {
     console.log('greater eq 10');
 
-    if( bounds ) {
-
-      regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
-
-    }
+      if( bounds ) {
+        regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
+      }
 
       query = {
         text: `SELECT 'cluster' AS type,
