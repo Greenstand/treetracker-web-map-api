@@ -59,6 +59,7 @@ app.get('/trees', function (req, res) {
   let boundingBoxQuery = '';
   if (bounds) {
     boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + bounds + ', 4326) ';
+    clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
     console.log(bounds);
   }
 
@@ -100,16 +101,17 @@ app.get('/trees', function (req, res) {
       values: [clusterRadius]
     };
 
-  } else if (zoomLevel == 14 || zoomLevel == 13) {
+  } else if (zoomLevel == 14 || zoomLevel == 13 || zoomLevel == 12) {
 
     console.log('Using cluster cache from zoom level 14');
     sql = `SELECT 'cluster' as type,
            St_asgeojson(location) centroid, count
            FROM clusters
-           WHERE zoom_level = 14 ${boundingBoxQuery}`
+           WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
     query = {
       text: sql
     }
+    console.log(query);
 
   } else {
 
@@ -124,7 +126,7 @@ app.get('/trees', function (req, res) {
 
     console.log(zoomLevel);
     if(zoomLevel >= 10) {
-    console.log('greater eq 10');
+      console.log('greater eq 10');
 
       if( bounds ) {
         regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
@@ -132,7 +134,7 @@ app.get('/trees', function (req, res) {
 
       query = {
         text: `SELECT 'cluster' AS type,
-                 region.id, ST_ASGeoJson(region.centroid) centroid,
+			  region.id, ST_ASGeoJson(region.centroid) centroid,
                  region.type_id as region_type,
                  count(tree_region.id)
                  FROM tree_region
@@ -151,17 +153,12 @@ app.get('/trees', function (req, res) {
 
       query = {
         text: `SELECT 'cluster' AS type,
-                 region.id, ST_ASGeoJson(region.centroid) centroid,
-                 region.type_id as region_type,
-                 count(tree_region.id)
-                 FROM tree_region
-                 JOIN trees
-                 ON trees.id = tree_region.tree_id
-                 AND trees.active = TRUE
-                 JOIN region
-                 ON region.id = region_id
-                 WHERE zoom_level = $1
-                 GROUP BY region.id`,
+             region_id id, ST_ASGeoJson(centroid) centroid,
+             type_id as region_type,
+             count(id)
+             FROM active_tree_region tree_region
+             WHERE zoom_level = $1
+             GROUP BY region_id, centroid, type_id`,
         values: [req.query['zoom_level']]
       };
 
