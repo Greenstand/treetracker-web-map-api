@@ -101,7 +101,7 @@ app.get('/trees', function (req, res) {
       values: [clusterRadius]
     };
 
-  } else if (zoomLevel == 14 || zoomLevel == 13 || zoomLevel == 12) {
+  } else if (zoomLevel in [12, 13, 14]) {
 
     console.log('Using cluster cache from zoom level 14');
     sql = `SELECT 'cluster' as type,
