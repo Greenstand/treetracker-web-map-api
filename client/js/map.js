@@ -6,8 +6,10 @@ var markers = [];//All the markers
 var token;
 var organization;
 var treeid;
+var userid;
 var clusterRadius;
 var firstRender = true;
+var firstInteraction = false;
 var initialBounds = new google.maps.LatLngBounds();
 var loader;
 
@@ -51,14 +53,20 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&organization=" + organization;
     } else if (treeid != null) {
         queryUrl = queryUrl + "&treeid=" + treeid;
+    } else if (userid != null) {
+        queryUrl = queryUrl + "&userid=" + userid;
     }
 
     req = $.get(queryUrl, function (data) {
+      if (userid && data.data.length === 0) {
+        showAlert();
+      }
+
         // clear everything
         points = [];
         markerByPointId = {};
         clearOverlays(markers);
-        //console.log(data);
+        // console.log(data);
 
         $.each(data.data, function (i, item) {
             if (item.type == 'cluster') {
@@ -128,7 +136,8 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         setPointMarkerListeners();
 
         if (firstRender) {
-          if (data.data.length > 0 && (organization != null || token != null || treeid != null)) {
+          if (data.data.length > 0 &&
+            (organization != null || token != null || treeid != null || userid != null)) {
               map.fitBounds(initialBounds);
               map.setCenter(initialBounds.getCenter());
               map.setZoom(map.getZoom() - 1);
@@ -158,6 +167,21 @@ function setPointMarkerListeners() {
             showMarkerInfo(point, marker, i);
         });
     })
+}
+
+function showAlert() {
+  const alertHtml = `
+    <div class="alert alert-info alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      Could not find any trees associated with userid ${userid}
+    </div>
+  `;
+  // Prevent duplicate alerts after map is re-rendered
+  if ($('.alert-container').find('.alert').length === 0) {
+    $(alertHtml).prependTo('.alert-container');
+  }
 }
 
 // set up and show the marker info
@@ -344,23 +368,26 @@ var initialize = function () {
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
+    userid = getQueryStringValue('userid') || null;
     donor = getQueryStringValue('donor') || null;
     loader = document.getElementById('map-loader');
 
     var initialZoom = 2;
+    var minZoom = 2;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
     if (linkZoom) {
         initialZoom = linkZoom;
     }
 
-    if (token != null || organization != null || treeid != null || donor != null) {
+    if (token != null || organization != null || treeid != null || userid != null || donor != null) {
         initialZoom = 10;
+        minZoom = null;    // use the minimum zoom from the current map type
     }
 
     var mapOptions = {
         zoom: initialZoom,
-        minZoom: 2,
+        minZoom: minZoom,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
@@ -374,7 +401,17 @@ var initialize = function () {
     // only fetch when the user has made some sort of action
     google.maps.event.addListener(map, "dragstart", function () {
         fetchMarkers = true;
+        firstInteraction = true;
     });
+
+    function registerFirstInteraction() {
+        firstInteraction = true;
+    }
+
+    google.maps.event.addListener(map, "click", registerFirstInteraction);
+
+    google.maps.event.addListener(map, "mousemove", registerFirstInteraction);
+
     google.maps.event.addListener(map, "zoom_changed", function () {
         fetchMarkers = true;
     });
@@ -384,6 +421,14 @@ var initialize = function () {
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
         initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
+    });
+
+    // Adjust map bounds after it’s fully loaded, but only before first interaction
+    google.maps.event.addListener(map, 'tilesloaded', function() {
+      if (!firstInteraction &&
+        (token != null || organization != null || treeid != null || userid != null || donor != null)) {
+        map.fitBounds(initialBounds);
+      }
     });
 
     currentZoom = initialZoom;

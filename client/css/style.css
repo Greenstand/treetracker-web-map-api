@@ -164,3 +164,15 @@ margin-left:400px !important;
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.alert-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+}
+
+.alert {
+  margin: 20px auto;
+}
