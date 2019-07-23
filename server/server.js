@@ -9,7 +9,7 @@ var port = process.env.NODE_PORT || 3000;
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 
-config.sentryDSN = 'https://6c8d8f7f5cd14c29aa9baf455d259e27@sentry.io/1489211';
+const pool = new Pool({ connectionString: config.connectionString });
 Sentry.init({ dsn: config.sentryDSN });
 
 app.use(Sentry.Handlers.requestHandler());
@@ -17,11 +17,16 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.set('view engine', 'html');
 
-const pool = new Pool({
-  connectionString: config.connectionString
-});
+const allowCrossDomain = (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}
 
-
+if(process.env.NODE_ENV == 'dev'){
+  app.use(allowCrossDomain);
+}
 
 app.get('/trees', function (req, res) {
   //console.log(req);
@@ -58,13 +63,15 @@ app.get('/trees', function (req, res) {
   let boundingBoxQuery = '';
   if (bounds) {
     boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + bounds + ', 4326) ';
+    clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
     console.log(bounds);
   }
 
   let clusterRadius = parseFloat(req.query['clusterRadius']);
   console.log(clusterRadius);
   var sql, query
-  if (clusterRadius <= 0.001 || treeid != null ) {
+  const zoomLevel = req.query['zoom_level'];
+  if (zoomLevel > 14 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
@@ -82,62 +89,98 @@ app.get('/trees', function (req, res) {
 
     query = {
       text: sql
-    }
+    };
+  } else if (subset) {
 
-  }
-  else {
+    console.log('Calculating clusters directly');
+    sql = `SELECT 'cluster'                                           AS type,
+       St_asgeojson(St_centroid(clustered_locations))                 centroid,
+       St_numgeometries(clustered_locations)                          count
+      FROM   (
+       SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
+       FROM   trees ` + join + `
+       WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
+    query = {
+      text: sql,
+      values: [clusterRadius]
+    };
+
+  } else if (zoomLevel in [12, 13, 14]) {
+
+    console.log('Using cluster cache from zoom level 14');
+    sql = `SELECT 'cluster' as type,
+           St_asgeojson(location) centroid, count
+           FROM clusters
+           WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
+    query = {
+      text: sql
+    }
+    console.log(query);
+
+  } else {
 
     // check if query is in the cached zone
     var boundingBox;
-    var optimizedBounds;
     if(bounds) {
       boundingBox = bounds.split(',');
-      optimizedBounds = config.optimizedBounds.split(',');
       console.log(boundingBox);
-      console.log(optimizedBounds);
     }
-   // 38.34009133803761,-2.5769945571374615,35.94562112319386,-4.088867604371135
-    if( bounds && !subset
-      && parseFloat(boundingBox[0]) <= parseFloat(optimizedBounds[0])
-      && parseFloat(boundingBox[1]) <= parseFloat(optimizedBounds[1])
-      && parseFloat(boundingBox[2]) >= parseFloat(optimizedBounds[2])
-      && parseFloat(boundingBox[3]) >= parseFloat(optimizedBounds[3])){
 
-      console.log('Using cluster cache');
-      sql = `SELECT 'cluster' as type,
-             St_asgeojson(location) centroid, count
-             FROM clusters
-             WHERE zoom_level = ` + req.query['zoom_level'] + ' AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
-      query = {
-        text: sql
+    var regionBoundingBoxQuery = "";
+
+    console.log(zoomLevel);
+    if(zoomLevel >= 10) {
+      console.log('greater eq 10');
+
+      if( bounds ) {
+        regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
       }
-      console.log(query);
+
+      query = {
+        text: `SELECT 'cluster' AS type,
+			  region.id, ST_ASGeoJson(region.centroid) centroid,
+                 region.type_id as region_type,
+                 count(tree_region.id)
+                 FROM tree_region
+                 JOIN trees
+                 ON trees.id = tree_region.tree_id
+                 AND trees.active = TRUE
+                 JOIN region
+                 ON region.id = region_id
+                 WHERE zoom_level = $1
+                 ${regionBoundingBoxQuery}
+                 GROUP BY region.id`,
+        values: [req.query['zoom_level']]
+      };
 
     } else {
 
-      console.log('Calculating clusters directly');
-      sql = `SELECT 'cluster'                                                   AS type,
-        St_asgeojson(St_centroid(clustered_locations))                 centroid,
-        St_numgeometries(clustered_locations)                          count
-      FROM   (
-        SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-        FROM   trees ` + join + `
-        WHERE  active = true ` + (userid ? '' : boundingBoxQuery) + filter + joinCriteria + ` ) clusters`;
       query = {
-        text: sql,
-        values: [clusterRadius]
-      }
+        text: `SELECT 'cluster' AS type,
+             region_id id, ST_ASGeoJson(centroid) centroid,
+             type_id as region_type,
+             count(id)
+             FROM active_tree_region tree_region
+             WHERE zoom_level = $1
+             GROUP BY region_id, centroid, type_id`,
+        values: [req.query['zoom_level']]
+      };
+
     }
+
   }
 
+  console.log(query);
   pool.query(query)
     .then(function (data) {
+      console.log('ok');
       res.status(200).json({
         data: data.rows
       })
     })
     .catch(function(error) {
-      console.error(e.stack);
+      console.log('not ok');
+      console.log(error);
       throw(error);
     });
 

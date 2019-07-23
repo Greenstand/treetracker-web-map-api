@@ -73,16 +73,29 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                 var centroid = JSON.parse(item.centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
                 determineInitialSize(latLng);
+
+                var iconUrl = null, labelOrigin = null, anchor = null;
+                if(item.count <= 300){
+                    iconUrl = './img/cluster_46px.png';
+                    labelOrigin = new google.maps.Point(23, 23);
+                    anchor = new google.maps.Point(23, 23);
+                } else {
+                    iconUrl = './img/cluster_63px.png';
+                    labelOrigin = new google.maps.Point(32, 32);
+                    anchor = new google.maps.Point(32, 32);
+                }
+
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
                     label: {
                         text: item.count.toString(),
-                        color: '#fff'
+                        color: '#000'
                     },
                     icon: {
-                        url: './img/blank_pin.png',
-                        labelOrigin: new google.maps.Point(20, 22)
+                        url: iconUrl,
+                        labelOrigin: labelOrigin,
+                        anchor: anchor
                     }
                 });
 
@@ -105,7 +118,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/blank_pin.png'
+                        url: './img/pin_29px.png'
                     }
                 });
 
@@ -119,7 +132,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
             }
         });
 
-        // set he markers once we are done
+        // set the markers once we are done
         setPointMarkerListeners();
 
         if (firstRender) {
@@ -144,9 +157,9 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 // sort first so we can reference the next point
 // in chronological order
 function setPointMarkerListeners() {
-    points.sort(function(a, b) {
-        return a._sort_field - b._sort_field;
-    });
+   // points.sort(function(a, b) {
+   //     return a._sort_field - b._sort_field;
+   // });
 
     $.each(points, function(i, point){
         var marker = markerByPointId[point.id];
@@ -203,6 +216,7 @@ function showMarkerInfo(point, marker, index) {
         $("#dead-data").html(NO);
     }
     $("#tree-image").attr("src", point["image_url"]);
+    $("#tree-id").html(point["id"]);
     $("#planter_name").html(point["first_name"] + ' ' + point["last_name"].slice(0, 1));
     if (point["user_image_url"]) {
         $("#planter_image").attr("src", point["user_image_url"]);
@@ -359,8 +373,8 @@ var initialize = function () {
     donor = getQueryStringValue('donor') || null;
     loader = document.getElementById('map-loader');
 
-    var initialZoom = 6;
-    var minZoom = 6;
+    var initialZoom = 2;
+    var minZoom = 2;
 
     var linkZoom = parseInt(getQueryStringValue('zoom'));
     if (linkZoom) {
@@ -419,7 +433,8 @@ var initialize = function () {
     });
 
     currentZoom = initialZoom;
-    map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
+    //map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
+    map.setCenter({ lat: 20, lng: 0 });
 
     $('#close-button').click(function () {
         $("#tree_info_div").hide("slide", "swing", 600);

@@ -1,1 +1,1 @@
-0 */4 * * * /root/treetracker-web-map/server/cron/rebuild-clusters.sh
+*/15 * * * * /root/treetracker-web-map/server/cron/assign-new-trees-to-clusters.sh
