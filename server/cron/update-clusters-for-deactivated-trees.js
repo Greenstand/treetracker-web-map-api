@@ -14,6 +14,15 @@ const pool = new Pool({
   try {
 
     await client.query('BEGIN');
+    const refresh = {
+      text: `REFRESH MATERIALIZED VIEW active_tree_region`
+    }
+    await client.query(refresh);
+
+    await client.query('COMMIT');
+
+
+    await client.query('BEGIN');
 
     sql = `SELECT 'cluster' AS type,
       St_centroid(clustered_locations) centroid,

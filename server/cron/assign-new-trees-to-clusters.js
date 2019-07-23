@@ -56,6 +56,9 @@ const pool = new Pool({
   console.log(update);
   await client.query(update);
 
+  await client.query('COMMIT');
+
+  await client.query('BEGIN');
   const refresh = {
     text: `REFRESH MATERIALIZED VIEW active_tree_region`
   }
