@@ -216,6 +216,7 @@ function showMarkerInfo(point, marker, index) {
         $("#dead-data").html(NO);
     }
     $("#tree-image").attr("src", point["image_url"]);
+    $("#tree-id").html(point["id"]);
     $("#planter_name").html(point["first_name"] + ' ' + point["last_name"].slice(0, 1));
     if (point["user_image_url"]) {
         $("#planter_image").attr("src", point["user_image_url"]);
