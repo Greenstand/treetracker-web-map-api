@@ -44,8 +44,10 @@ app.get('/trees', function (req, res) {
     join = "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + token + "'";
     subset = true;
   } else if(organization) {
-    join = ", certificates, donors, organizations";
-    joinCriteria = "AND trees.certificate_id = certificates.id AND certificates.donor_id = donors.id AND donors.organization_id = organizations.id AND organizations.id = " + organization;
+    join = `JOIN certificates ON trees.certificate_id = certificates.id 
+             JOIN donors ON certificates.donor_id = donors.id
+             JOIN organizations ON donors.organization_id = organizations.id`;
+    joinCriteria = "AND organizations.id = " + organization;
     subset = true;
   } else if (flavor) {
     join = "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
@@ -61,6 +63,7 @@ app.get('/trees', function (req, res) {
 
   let bounds = req.query['bounds'];
   let boundingBoxQuery = '';
+  let clusterBoundingBoxQuery = '';
   if (bounds) {
     boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + bounds + ', 4326) ';
     clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + bounds + ', 4326) ';
@@ -71,15 +74,16 @@ app.get('/trees', function (req, res) {
   console.log(clusterRadius);
   var sql, query
   const zoomLevel = req.query['zoom_level'];
-  if (zoomLevel > 14 || treeid != null ) {
+  if (parseInt(zoomLevel) > 15 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
      trees.*, users.first_name as first_name, users.last_name as last_name,
     users.image_url as user_image_url
-    FROM trees
+    FROM trees `
+    + join + `
     INNER JOIN users
-    ON users.id = trees.user_id ` + join + `
+    ON users.id = trees.user_id 
     LEFT JOIN note_trees
     ON note_trees.tree_id = trees.id
     LEFT JOIN notes
@@ -105,9 +109,9 @@ app.get('/trees', function (req, res) {
       values: [clusterRadius]
     };
 
-  } else if (zoomLevel in [12, 13, 14]) {
+  } else if (['12', '13', '14', '15'].includes(zoomLevel)) {
 
-    console.log('Using cluster cache from zoom level 14');
+    console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
     sql = `SELECT 'cluster' as type,
            St_asgeojson(location) centroid, count
            FROM clusters
