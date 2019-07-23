@@ -7,6 +7,7 @@ var token;
 var organization;
 var treeid;
 var userid;
+var flavor;
 var clusterRadius;
 var firstRender = true;
 var firstInteraction = false;
@@ -55,6 +56,8 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&treeid=" + treeid;
     } else if (userid != null) {
         queryUrl = queryUrl + "&userid=" + userid;
+    } else if (flavor != null) {
+        queryUrl = queryUrl + "&flavor=" + flavor;
     }
 
     req = $.get(queryUrl, function (data) {
@@ -370,6 +373,7 @@ var initialize = function () {
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
     userid = getQueryStringValue('userid') || null;
+    flavor = getQueryStringValue('flavor') || null;
     donor = getQueryStringValue('donor') || null;
     loader = document.getElementById('map-loader');
 
