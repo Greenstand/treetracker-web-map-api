@@ -65,13 +65,16 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                 var centroid = JSON.parse(item.centroid);
                 var latLng = new google.maps.LatLng(centroid.coordinates[1], centroid.coordinates[0]);
                 determineInitialSize(latLng);
-                var iconUrl = './img/cluster_63px.png';
-                var labelOrigin = new google.maps.Point(32, 32);
-                var anchor = new google.maps.Point(32, 32);
+
+                var iconUrl = null, labelOrigin = null, anchor = null;
                 if(item.count <= 300){
                     iconUrl = './img/cluster_46px.png';
                     labelOrigin = new google.maps.Point(23, 23);
                     anchor = new google.maps.Point(23, 23);
+                } else {
+                    iconUrl = './img/cluster_63px.png';
+                    labelOrigin = new google.maps.Point(32, 32);
+                    anchor = new google.maps.Point(32, 32);
                 }
 
                 var marker = new google.maps.Marker({
