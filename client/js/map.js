@@ -13,6 +13,7 @@ var firstRender = true;
 var firstInteraction = false;
 var initialBounds = new google.maps.LatLngBounds();
 var loader;
+var panelLoader;
 
 var currentZoom;
 var req = null;
@@ -189,6 +190,8 @@ function showAlert() {
 
 // set up and show the marker info
 function showMarkerInfo(point, marker, index) {
+    panelLoader = document.getElementById('tree-info-loader');
+
     $('#tree_info_div').show('slide', 'swing', 600);
     if (treeInfoDivShowing == false) {
         treeInfoDivShowing = true;
@@ -232,13 +235,22 @@ function showMarkerInfo(point, marker, index) {
     $("#tree_next").off('click').on('click', function () {
         fetchMarkers = false;
         var index = parseInt($(this).val(), 10)
+        panelLoader.classList.add('active');
         showMarkerInfoByIndex(index)
+        window.setTimeout(function () {
+          panelLoader.classList.remove('active');
+        }, 2000)
+
     });
 
     $("#tree_prev").off('click').on('click', function () {
         fetchMarkers = false;
         var index = parseInt($(this).val(), 10)
+        panelLoader.classList.add('active');
         showMarkerInfoByIndex(index)
+        window.setTimeout(function () {
+          panelLoader.classList.remove('active');
+        }, 2000)
     });
 }
 
