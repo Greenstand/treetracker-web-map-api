@@ -25,7 +25,7 @@ For more details see the [Tree Tracker Web Map Wiki] (https://github.com/Greenst
 
 ## Development Environment Quick Start
 
-We provide a development environment through docker that can run on your local environment.
+We provide a development environment through docker that can run on your local environment.  You can also develop locally without docker if you are willing to install Postgres and postGIS.
 
 ### Set Up Docker
 To run docker on a local machine, you will have to install Docker first. Docker is a linux container technology, so running it on Mac or Windows requires an application with an attached linux VM. Docker provides one for each OS by default.
@@ -109,9 +109,23 @@ Our docker-compose settings for volume mounting don't work out of the box for at
 https://github.com/docker/compose/issues/4303
 
 
-### If docker just isn't working for you
+### Developing locally without docker
 
-We use docker to automatically deal with CORS restrictions - a website can't usually make requests to an API that doesn't run on the same base URL.  If you are familiar with CORS, you can simply disable CORS manually in the web map server code, and then change the client to look for the API at whatever port you are running server.js on.  This is relatively straightforward to do if you are familiar with the concepts and have done a little nodejs development before.  If you resolve your issue using this strategy, please update the ReadMe here with details for other developers.
+1. Install postgres
+2. Install postGIS
+3. Create a database named 'treetracker'
+4. Import our developer seed into your database.  Seed can be downloaded at https://developer-resources.sfo2.cdn.digitaloceanspaces.com/treetracker_developer_seed.sql.gz
+5. Configure server/src/config/config.js to point to your local database
+6. Install supervisor globally
+```
+npm i -g supervisor
+```
+6. Run server.js with CORS restrictions lifted
+```
+NODE_ENV=dev supervisor server.js
+```
+7. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
+
 
 
 ### Alternative development environment for MS Windows (Works on Linux and Mac also)
