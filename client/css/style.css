@@ -25,7 +25,6 @@ b {
 
 }
 
-
 .tree_info{
 	width: 294px;
 	background-color: #fff;
@@ -60,6 +59,10 @@ b {
 
 .float-right{
 	float: right;
+}
+
+.tree_nav{
+	max-width:60px;
 }
 
 #tree_info_div{
