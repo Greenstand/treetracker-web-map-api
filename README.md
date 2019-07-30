@@ -25,7 +25,7 @@ For more details see the [Tree Tracker Web Map Wiki] (https://github.com/Greenst
 
 ## Development Environment Quick Start
 
-We provide a development environment through docker that can run on your local environment.  You can also develop locally without docker if you are willing to install Postgres and postGIS.
+We provide a development environment through docker that can run on your local environment.  You can also develop locally without docker if you are willing to install Postgres and postGIS (see 'Developing locally without docker' below)
 
 ### Set Up Docker
 To run docker on a local machine, you will have to install Docker first. Docker is a linux container technology, so running it on Mac or Windows requires an application with an attached linux VM. Docker provides one for each OS by default.
@@ -50,6 +50,7 @@ To install on linux, you can run `sudo apt-get install -y docker-ce` but there i
 Because of the application architecture, it is absolutely necessary to have NodeJS for package management. Here are the following methods of installation for the most popular operating systems. 
 
 #### Windows
+
 Download it from the official website, [here](https://nodejs.org/en/#download)
 
 #### MacOS
@@ -102,13 +103,6 @@ Now to view the map. Goto client folder than to js folder, next make a new file 
 
 Just edit as you normally would to view changes in your development environment.
 
-### MS Windows setup details
-
-Our docker-compose settings for volume mounting don't work out of the box for at least some versions of Windows.  Please see this thread for more information, and update this document with usage details if this solves your issue.
-
-https://github.com/docker/compose/issues/4303
-
-
 ### Developing locally without docker
 
 1. Install postgres
@@ -126,6 +120,12 @@ NODE_ENV=dev supervisor server.js
 ```
 7. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
 
+
+### MS Windows setup details
+
+Our docker-compose settings for volume mounting don't work out of the box for at least some versions of Windows.  Please see this thread for more information, and update this document with usage details if this solves your issue.
+
+https://github.com/docker/compose/issues/4303
 
 
 ### Alternative development environment for MS Windows (Works on Linux and Mac also)
