@@ -34,6 +34,7 @@
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs"></script>
   <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
   <link rel="stylesheet" href="js/jquery-ui.min.css">
 
   <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'></script>
@@ -70,34 +71,34 @@
 					</div>
         </div>
         <div class="planted_by">
-          <p><span>Planter: </span><span id="planter_name">Planter</span></p>
+          <p><span id="planter_name">Planter</span></p>
         </div>
 
 				<p id="status" class="info_data info_data_status success">
-          <span><b>Status</b>: </span>
-          <span id="status-data">Planted</span>
+          <span id="status-data">The tree has been planted</span>
 				</p>
+
+        <p id="created_on" class="info_data">
+          <span id="create-data"></span>
+        </p>
+
         <p id="sponsor" class="info_data">
           <span><b>Sponsor</b>: </span>
           <span id="status-data"></span>
         </p>
-        <p id="created_on" class="info_data">
-          <span>Tracked: </span>
-          <span id="create-data"></span>
-        </p>
+
         <p id="tree_id_holder" class="info_data">
           <span>Tree Id: </span>
           <span id="tree-id"></span>
         </p>
 
-
         <br />
         <div class="float-left info_data">
             <a href="#" class="float-left tree_nav" id="tree_prev" >
-                <img src="img/webmap-back-green.svg" />
+                <img src="img/previous_tree.svg" />
             </a>
             <a href="#" class="float-right tree_nav" id="tree_next" >
-                <img src="img/webmap-forward-green.svg" />
+                <img src="img/next_tree.svg" />
             </a>
         </div>
       </div>

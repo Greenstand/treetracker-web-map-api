@@ -204,7 +204,7 @@ function showMarkerInfo(point, marker, index) {
     // always center this one
     map.panTo(marker.getPosition());
 
-    $("#create-data").html(point["time_created"]);
+    $("#create-data").html(moment(point["time_created"]).format('MMM D YYYY hh:mma'));
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
     $("#latitude-data").html(point["lat"]);
