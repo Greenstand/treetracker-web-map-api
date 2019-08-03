@@ -237,10 +237,9 @@ function showMarkerInfo(point, marker, index) {
         var index = parseInt($(this).val(), 10)
         panelLoader.classList.add('active');
         showMarkerInfoByIndex(index)
-        window.setTimeout(function () {
+        $("#tree-image").on('load', function() {
           panelLoader.classList.remove('active');
-        }, 2000)
-
+        })
     });
 
     $("#tree_prev").off('click').on('click', function () {
@@ -248,9 +247,9 @@ function showMarkerInfo(point, marker, index) {
         var index = parseInt($(this).val(), 10)
         panelLoader.classList.add('active');
         showMarkerInfoByIndex(index)
-        window.setTimeout(function () {
+        $("#tree-image").on('load', function() {
           panelLoader.classList.remove('active');
-        }, 2000)
+        })
     });
 }
 
