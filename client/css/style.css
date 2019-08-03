@@ -40,10 +40,11 @@ b {
 	width:100%;
 	display: flex;
 	align-items: flex-start;
-	justify-content: flex-end;
+	justify-content: flex-start;
 	min-height:54px;
-	background-color: #474B4F;
-	color: #fff;
+	background-color: #fff;
+	color: #474B4F;
+	font-size: 16px;
 	margin-bottom:54px;
 	padding: 12px;
 	padding-left: calc(119px + 32px);
@@ -104,9 +105,10 @@ b {
 
 .info_data {
 	padding: 0 12px;
+	width: 100%;
 }
 
-.info_data_status.success::after {
+.info_data_status.success::before {
 	content: '';
 	display: inline-block;
 	width: 16px;
@@ -116,19 +118,28 @@ b {
 	background-size: cover;
 }
 
+#create-data {
+	font-size: 13px;
+	color: #b7b7b7;
+}
+
+#status-data {
+	padding: 5px;
+}
+
 .next_prev_buttons{
-	width:400px;
-	margin-left:10px;
-	margin-right:10px;
+	width: 400px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 .mapChange{
-margin-left:400px !important;
+	margin-left: 400px !important;
 }
 
 .tree_nav{
-  max-height:10%;
-  max-width:10%;
+  max-height: 10%;
+  max-width: 100%;
 }
 
 

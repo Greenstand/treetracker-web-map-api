@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="49px" height="50px" viewBox="0 0 49 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>buttons/previous tree</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="21" cy="21" r="21"></circle>
+        <filter x="-15.5%" y="-13.1%" width="131.0%" height="131.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="screen-1-copy-14" transform="translate(-13.000000, -446.000000)">
+            <g id="buttons/previous-tree" transform="translate(16.500000, 449.044940)">
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M18.9046951,22 L26.0525621,29.147867 C27.3158126,30.4111175 27.3158126,32.4592513 26.0525621,33.7225019 C24.7893116,34.9857524 22.7411778,34.9857524 21.4779272,33.7225019 L12.6982219,24.9427966 C12.4285734,24.7971526 12.1752435,24.6104279 11.9474379,24.3826223 C11.2915714,23.7267558 10.976224,22.859318 11.0013955,22 C10.976224,21.140682 11.2915714,20.2732442 11.9474379,19.6173777 C12.1752435,19.3895721 12.4285734,19.2028474 12.6982219,19.0572034 L21.4779272,10.2774981 C22.7411778,9.0142476 24.7893116,9.0142476 26.0525621,10.2774981 C27.3158126,11.5407487 27.3158126,13.5888825 26.0525621,14.852133 L18.9046951,22 Z" id="Combined-Shape" fill="#86C232"></path>
+            </g>
+        </g>
+    </g>
+</svg>
