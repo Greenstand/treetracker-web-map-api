@@ -23,6 +23,8 @@ var fetchMarkers = true;
 var points = [];
 var markerByPointId = {};
 
+var selectedTreePoint; // Used to track selected tree
+
 var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 
 if (configTreetrackerApi) {
@@ -116,12 +118,18 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     content: '/img/loading.gif'
                 });
 
+                var markerUrl = './img/pin_29px.png';
+                if (selectedTreePoint && item.id == selectedTreePoint.id)
+                {
+                    markerUrl = './img/pin_32px.png'
+                } 
+
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/pin_29px.png'
+                        url: markerUrl
                     }
                 });
 
@@ -200,6 +208,8 @@ function showMarkerInfo(point, marker, index) {
     }
     // always center this one
     map.panTo(marker.getPosition());
+    selectedTreePoint = point;
+    
 
     $("#create-data").html(moment(point["time_created"]).format('MMM D YYYY hh:mma'));
     $("#updated-data").html(point["time_updated"]);
