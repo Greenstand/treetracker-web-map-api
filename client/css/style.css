@@ -168,7 +168,22 @@ b {
 	transition: opacity 0.5s 0s, display 0s 0.5s;
 }
 
-.page-loader:not(.active) {
+.panel-loader {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.45);
+	width: 294px;
+	height: 100%;
+	z-index: 99999;
+	transition: opacity 0.5s 0s, display 0s 0.5s;
+}
+
+.page-loader:not(.active),
+.panel-loader:not(.active) {
 	display: none;
 	opacity: 0;
 	transition: opacity 0.5s 0s, display 0s 0.5s;
