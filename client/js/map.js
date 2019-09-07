@@ -227,7 +227,7 @@ function showMarkerInfo(point, marker, index) {
     if (point["user_image_url"]) {
         $("#planter_image").attr("src", point["user_image_url"]);
     } else {
-        $("#planter_image").attr("src", "img/portrait_placeholder_100.png");
+        $("#planter_image").attr("src", "img/LogoOnly_Bright_Green100x100.png");
     }
     $("#tree_next").val(getCircularPointIndex(index + 1))
     $("#tree_prev").val(getCircularPointIndex(index - 1))
