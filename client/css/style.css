@@ -104,6 +104,19 @@ b {
 	border-radius: 50%;
 	overflow: hidden;
 	width: 93px;
+	position: relative;
+}
+
+.planter_image_wrap img {
+	min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  max-width: 150%;
+  max-height: 150%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 .info_data {
