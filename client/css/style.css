@@ -104,6 +104,7 @@ b {
 	border-radius: 50%;
 	overflow: hidden;
 	width: 93px;
+	height: 93px;
 	position: relative;
 }
 
