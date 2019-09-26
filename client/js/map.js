@@ -396,7 +396,7 @@ var initialize = function () {
         initialZoom = linkZoom;
     }
 
-    if (token != null || organization != null || treeid != null || userid != null || donor != null) {
+    if (token != null || organization != null || treeid != null || userid === null || donor != null) {
         initialZoom = 10;
         minZoom = null;    // use the minimum zoom from the current map type
     }
@@ -433,7 +433,7 @@ var initialize = function () {
     });
 
     google.maps.event.addListener(map, "idle", function() {
-        var zoomLevel = map.getZoom();
+        var zoomLevel = !firstInteraction ? initialZoom : map.getZoom();
         console.log('New zoom level: ' + zoomLevel);
         currentZoom = zoomLevel;
         initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
@@ -442,7 +442,7 @@ var initialize = function () {
     // Adjust map bounds after it’s fully loaded, but only before first interaction
     google.maps.event.addListener(map, 'tilesloaded', function() {
       if (!firstInteraction &&
-        (token != null || organization != null || treeid != null || userid != null || donor != null)) {
+        (token != null || organization != null || treeid != null || userid === null || donor != null)) {
         map.fitBounds(initialBounds);
       }
     });
