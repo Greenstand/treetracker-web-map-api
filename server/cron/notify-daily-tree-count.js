@@ -1,12 +1,10 @@
 const Config = require('./config/config');
-const Database = require('./config/database');
 const http = require('http');
-const moment = require('moment-timezone');
 const rp = require('request-promise-native');
 const { Pool, Client } = require('pg');
 
 const pool = new Pool({
-  connectionString: Database.connectionString['default']
+  connectionString: Config.connectionString
 });
 
 const Sentry = require('@sentry/node');
@@ -32,7 +30,7 @@ Sentry.init({ dsn: Config.sentryDSN });
      , r.name`
   };
   rval = await pool.query(query);
-  var output = '```    date_created | region_name  | trees';
+  var output = "```    date_created | region_name  | trees";
   for(let row of rval.rows){
    console.log(row);
    const string = row.id.toString().padStart(6) + ' | ' + row.date_created_at + ' | ' + row.region_name + ' | ' + row.trees.toString().padStart(3);
@@ -45,16 +43,16 @@ Sentry.init({ dsn: Config.sentryDSN });
 
     var options = {
       method: 'POST',
-      uri: 'https://hooks.slack.com/services/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',
+      uri: Config.slackDailyPlantingsWebhook,
 
       body: {
-    attachments: [
-        {
+        attachments: [
+          {
             "title": "Trees Planted Yesterday in Tanzania, Kenya and globally ",
             "text": output,
-        }
-    ]
-},
+          }
+        ]
+      },
 
       json: true // Automatically stringifies the body to JSON
     };
@@ -76,10 +74,10 @@ Sentry.init({ dsn: Config.sentryDSN });
     where date_trunc('day',time_created) =  date_trunc('day', current_date - 5)
       and rt.id not in (2, 5, 7) -- continent, grid 100000 and tanzania_admin_regions
       and r.name IS NOT NULL
-    group by TO_CHAR(t.time_created :: DATE, 'dd/mm/yyyy') 
+    group by TO_CHAR(t.time_created :: DATE, 'dd/mm/yyyy')` 
   };
   rval = await pool.query(query);
-  var output = '```    date_created | region_name  | trees';
+  var output = "```    date_created | region_name  | trees";
   for(let row of rval.rows){
    console.log(row);
    const string = row.id.toString().padStart(6) + ' | ' + row.date_created_at + ' | ' + row.region_name + ' | ' + row.trees.toString().padStart(3);
