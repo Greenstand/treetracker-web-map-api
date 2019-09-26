@@ -1,2 +1,3 @@
 */30 * * * * /root/treetracker-web-map/server/cron/assign-new-trees-to-clusters.sh
 15 */4 * * * /root/treetracker-web-map/server/cron/update-clusters-for-deactivated-trees.sh
+0 17 * * * /root/treetracker-web-map/server/cron/notify-daily-tree-count.sh
