@@ -24,6 +24,7 @@ Sentry.init({ dsn: Config.sentryDSN });
     inner join region r on r.id = tr.region_id
     where time_created > now() - INTERVAL '1 day'
       and r.id in (6632386, 6632476) -- Kenya and Tanzania
+      and t.active = true
     group by r.id`
   };
   rval = await pool.query(query);
@@ -42,7 +43,8 @@ Sentry.init({ dsn: Config.sentryDSN });
     text: `Select 'Global Total' as region_name
      , count(distinct t.id) as trees
     from trees t
-    where time_created > now() - INTERVAL '1 day'`
+    where t.active = true
+      and time_created > now() - INTERVAL '1 day'`
   };
   rval = await pool.query(query);
   for(let row of rval.rows){
