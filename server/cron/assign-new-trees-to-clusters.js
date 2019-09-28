@@ -60,7 +60,7 @@ const pool = new Pool({
 
   await client.query('BEGIN');
   const refresh = {
-    text: `REFRESH MATERIALIZED VIEW active_tree_region`
+    text: `REFRESH MATERIALIZED VIEW CONCURRENTLY active_tree_region`
   }
   await client.query(refresh);
 
