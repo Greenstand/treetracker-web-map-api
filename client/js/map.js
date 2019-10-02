@@ -93,7 +93,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     position: latLng,
                     map: map,
                     label: {
-                        text: shortenLargeNumber(item.count,2).toString(),
+                        text: shortenLargeNumber(item.count,0).toString(),
                         color: '#000'
                     },
                     icon: {
