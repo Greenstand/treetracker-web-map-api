@@ -93,7 +93,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     position: latLng,
                     map: map,
                     label: {
-                        text: shortenLargeNumber(item.count,0).toString(),
+                        text: shortenLargeNumber(item.count).toString(),
                         color: '#000'
                     },
                     icon: {
@@ -378,15 +378,15 @@ function getClusterRadius(zoom) {
     }
 }
 
-function shortenLargeNumber(number, digits) {
-    var units = ['K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
+function shortenLargeNumber(number) {
+    var units = ['K', 'M'],
         decimal;
 
     for (var i = units.length - 1; i >= 0; i--) {
         decimal = Math.pow(1000, i + 1);
 
         if (number <= -decimal || number >= decimal) {
-            return +(number / decimal).toFixed(digits) + units[i];
+            return +(number / decimal).toFixed(0) + units[i];
         }
     }
     return number;
