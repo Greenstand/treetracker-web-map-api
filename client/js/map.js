@@ -93,7 +93,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     position: latLng,
                     map: map,
                     label: {
-                        text: item.count.toString(),
+                        text: shortenLargeNumber(item.count).toString(),
                         color: '#000'
                     },
                     icon: {
@@ -376,6 +376,20 @@ function getClusterRadius(zoom) {
         default:
             return 0;
     }
+}
+
+function shortenLargeNumber(number) {
+    var units = ['K', 'M'],
+        decimal;
+
+    for (var i = units.length - 1; i >= 0; i--) {
+        decimal = Math.pow(1000, i + 1);
+
+        if (number <= -decimal || number >= decimal) {
+            return +(number / decimal).toFixed(0) + units[i];
+        }
+    }
+    return number;
 }
 
 //Initialize Google Maps and Marker Clusterer
