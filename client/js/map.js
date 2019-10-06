@@ -23,6 +23,8 @@ var fetchMarkers = true;
 // used to keep track of our points and markers
 var points = [];
 var markerByPointId = {};
+var selectedTreeMarker;
+var selectedOldTreeMarker;
 
 var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 
@@ -123,8 +125,18 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     title: "Tree",
                     icon: {
                         url: './img/pin_29px.png'
-                    }
+                    },
+                    zIndex: undefined,
+                    payload: {
+                        id: item["id"]                      
+                    }                    
                 });
+
+                
+                if ((selectedTreeMarker) && (marker.payload.id === selectedTreeMarker.payload.id)) {
+                    selectedTreeMarker = marker;
+                    changeTreeMarkSelected();
+                }
 
                 // set the field for sorting
                 item._sort_field = new Date(item.time_created);
@@ -201,6 +213,12 @@ function showMarkerInfo(point, marker, index) {
             //Animation Complete
         });;
     }
+    
+    //toggle tree mark
+    selectedOldTreeMarker = selectedTreeMarker;
+    selectedTreeMarker = marker;
+    changeTreeMarkSelected();
+
     // always center this one
     map.panTo(marker.getPosition());
 
@@ -251,6 +269,19 @@ function showMarkerInfo(point, marker, index) {
           panelLoader.classList.remove('active');
         })
     });
+}
+
+function changeTreeMarkSelected() {
+    
+    if (selectedOldTreeMarker){
+        selectedOldTreeMarker.setIcon('./img/pin_29px.png'); 
+        selectedOldTreeMarker.setZIndex(0);
+    }
+
+    if (selectedTreeMarker) {
+        selectedTreeMarker.setIcon('./img/pin_32px.png');
+        selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
+    }
 }
 
 // using an index, get the point and marker and show them
