@@ -1,25 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="49px" height="50px" viewBox="0 0 49 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
-    <title>buttons/previous tree</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="21" cy="21" r="21"></circle>
-        <filter x="-15.5%" y="-13.1%" width="131.0%" height="131.0%" filterUnits="objectBoundingBox" id="filter-2">
-            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-        </filter>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="screen-1-copy-14" transform="translate(-13.000000, -446.000000)">
-            <g id="buttons/previous-tree" transform="translate(16.500000, 449.044940)">
-                <g id="Oval">
-                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                </g>
-                <path d="M18.9046951,22 L26.0525621,29.147867 C27.3158126,30.4111175 27.3158126,32.4592513 26.0525621,33.7225019 C24.7893116,34.9857524 22.7411778,34.9857524 21.4779272,33.7225019 L12.6982219,24.9427966 C12.4285734,24.7971526 12.1752435,24.6104279 11.9474379,24.3826223 C11.2915714,23.7267558 10.976224,22.859318 11.0013955,22 C10.976224,21.140682 11.2915714,20.2732442 11.9474379,19.6173777 C12.1752435,19.3895721 12.4285734,19.2028474 12.6982219,19.0572034 L21.4779272,10.2774981 C22.7411778,9.0142476 24.7893116,9.0142476 26.0525621,10.2774981 C27.3158126,11.5407487 27.3158126,13.5888825 26.0525621,14.852133 L18.9046951,22 Z" id="Combined-Shape" fill="#86C232"></path>
-            </g>
-        </g>
-    </g>
+<svg width="14" height="27" xmlns="http://www.w3.org/2000/svg">
+ <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+ <title>buttons/previous tree</title>
+ <desc>Created with Sketch.</desc>
+ <defs>
+  <circle id="path-1" cx="21" cy="21" r="21"/>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="16" height="29" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="Page-1" fill="none" fill-rule="evenodd">
+   <g stroke="null" id="buttons/previous-tree">
+    <path stroke="null" stroke-width="19" d="m6.866662,13.514516l6.270751,7.506188c1.108237,1.326576 1.108237,3.477377 0,4.803953c-1.108237,1.326576 -2.905043,1.326576 -4.01328,0l-7.702358,-9.21982c-0.236561,-0.152951 -0.458805,-0.349031 -0.658652,-0.588261c-0.575389,-0.688738 -0.852042,-1.599662 -0.829952,-2.502059c-0.02209,-0.902397 0.254563,-1.813321 0.829952,-2.502059c0.199847,-0.23923 0.422091,-0.43531 0.658652,-0.588261l7.702358,-9.21982c1.108237,-1.326576 2.905043,-1.326576 4.01328,0c1.108237,1.326576 1.108237,3.477377 0,4.803953l-6.270751,7.506188z" id="Combined-Shape" fill="#ffffff"/>
+   </g>
+  </g>
+  <path id="svg_2" d="m28.803274,19.448016" opacity="0.5" stroke-dasharray="5,2,2,2" stroke-width="20" stroke="#000" fill="#152d2d"/>
+  <text stroke="#000" transform="matrix(1.2492281270363463,0,0,2.3683598041534424,-3.301439795616248,0.32070932909846306) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="35" id="svg_3" y="13.364028" x="10.194118" stroke-width="0" fill="#000000"/>
+ </g>
 </svg>

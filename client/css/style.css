@@ -25,8 +25,13 @@ b {
 
 }
 
+.container-buttons {
+	position: absolute;
+    top: calc(417px / 2 + 27px);
+}
+
 .tree_info{
-	width: 294px;
+	width: 354px;
 	background-color: #fff;
 	height: 100%;
 	-webkit-box-shadow: 10px 0px 16px 0px rgba(50, 50, 50, 0.4);
@@ -35,12 +40,17 @@ b {
 
 }
 
+.tree_info_divider {
+	height: 3px;
+    background-color: #86C232;
+}
+
 .planted_by{
 	width:100%;
 	display: flex;
 	align-items: flex-start;
 	justify-content: flex-start;
-	min-height:54px;
+	min-height:64px;
 	background-color: #fff;
 	color: #474B4F;
 	font-size: 16px;
@@ -94,7 +104,6 @@ b {
 	width:calc(119px + 2*3px);
 	height:calc(119px + 2*3px);
 	position: absolute;
-	left: 12px;
 	overflow: hidden;
 	margin-top: calc(-119px / 2 + 54px / 2);
 }
@@ -109,7 +118,7 @@ b {
 }
 
 .planter_image_wrap img {
-	min-width: 100%;
+  min-width: 100%;
   min-height: 100%;
   width: auto;
   max-width: 150%;
@@ -121,7 +130,7 @@ b {
 }
 
 .info_data {
-	padding: 0 12px;
+	padding: 0 16px;
 	width: 100%;
 }
 
@@ -130,18 +139,45 @@ b {
 	display: inline-block;
 	width: 16px;
 	height: 16px;
-	margin-left: 2px;
 	background-image: url('../img/check-icon.png');
 	background-size: cover;
 }
 
-#create-data {
-	font-size: 13px;
-	color: #b7b7b7;
+#planter_name {
+	color: #333333;
+	font-size: 16px;
+	font-family: 'Lato';	
+}
+
+#status {
+	margin-bottom: 16px;
+}
+
+#created_on {
+	 margin-bottom: 8px;
+	 color: #666666;
+	 font-size: 12px;
+	 font-family: 'Lato';	 
+}
+
+#tree_id_holder {
+	margin-bottom: 16px;
+	color: #666666;
+	font-size: 12px;
+	font-family: 'Lato';
 }
 
 #status-data {
 	padding: 5px;
+	color: #333333;
+	font-size: 14px;
+	font-family: 'Lato';
+}
+
+#sponsor {
+	color: #333333;
+	font-size: 14px;
+	font-family: 'Lato';
 }
 
 .next_prev_buttons{
@@ -190,7 +226,7 @@ b {
 	top: 0;
 	left: 0;
 	background-color: rgba(255, 255, 255, 0.45);
-	width: 294px;
+	width: 354px;
 	height: 100%;
 	z-index: 99999;
 	transition: opacity 0.5s 0s, display 0s 0.5s;
