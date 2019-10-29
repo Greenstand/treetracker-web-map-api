@@ -1,22 +1,13 @@
-<svg width="14" height="27" xmlns="http://www.w3.org/2000/svg">
- <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
- <title>buttons/previous tree</title>
- <desc>Created with Sketch.</desc>
- <defs>
-  <circle id="path-1" cx="21" cy="21" r="21"/>
- </defs>
- <g>
-  <title>background</title>
-  <rect x="-1" y="-1" width="16" height="29" id="canvas_background" fill="none"/>
- </g>
- <g>
-  <title>Layer 1</title>
-  <g stroke="null" id="Page-1" fill="none" fill-rule="evenodd">
-   <g stroke="null" id="buttons/previous-tree">
-    <path stroke="null" stroke-width="19" d="m7.0335,13.514516l-6.242671,7.580031c-1.103275,1.339626 -1.103275,3.511586 0,4.851213c1.103275,1.339626 2.892034,1.339626 3.995309,0l7.667867,-9.310521c0.235502,-0.154456 0.456751,-0.352465 0.655703,-0.594049c0.572812,-0.695513 0.848227,-1.615399 0.826236,-2.526673c0.021991,-0.911275 -0.253424,-1.83116 -0.826236,-2.526673c-0.198952,-0.241583 -0.420201,-0.439593 -0.655703,-0.594049l-7.667867,-9.310521c-1.103275,-1.339626 -2.892034,-1.339626 -3.995309,0c-1.103275,1.339626 -1.103275,3.511586 0,4.851213l6.242671,7.580031z" id="Combined-Shape" fill="#ffffff"/>
-   </g>
-  </g>
-  <path id="svg_2" d="m28.803274,19.448016" opacity="0.5" stroke-dasharray="5,2,2,2" stroke-width="20" stroke="#000" fill="#152d2d"/>
-  <text stroke="#000" transform="matrix(1.2492281270363463,0,0,2.3683598041534424,-3.301439795616248,0.32070932909846306) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="35" id="svg_3" y="13.364028" x="10.194118" stroke-width="0" fill="#000000"/>
- </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="33px" viewBox="0 0 20 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>icons/next tree icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Latest-production-map-(Liam)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="portrait-and-logo" transform="translate(-317.000000, -167.000000)" stroke="#FFFFFF" stroke-width="6">
+            <g id="planter-and-tree-info" transform="translate(-4.000000, 0.000000)">
+                <polyline id="icons/next-tree-icon" points="324 170 338 184.277593 324 197"></polyline>
+            </g>
+        </g>
+    </g>
 </svg>
