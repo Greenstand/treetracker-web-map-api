@@ -259,7 +259,7 @@ b {
 
 #logo-floating-map {
 	position: absolute;
-    bottom: 18px;
+    bottom: 25px;
     left: calc(100% - 161px);
     margin-left: -60px;
 }
