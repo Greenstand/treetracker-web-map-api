@@ -208,7 +208,7 @@ function showMarkerInfo(point, marker, index) {
     if (treeInfoDivShowing == false) {
         treeInfoDivShowing = true;
         $('#map-canvas').animate({
-            margin: '0 0 0 295px'
+            margin: '0 0 0 354px'
         }, 700, function () {
             //Animation Complete
         });;
@@ -222,7 +222,7 @@ function showMarkerInfo(point, marker, index) {
     // always center this one
     map.panTo(marker.getPosition());
 
-    $("#create-data").html(moment(point["time_created"]).format('MMM D YYYY hh:mma'));
+    $("#create-data").html(moment(point["time_created"]).format('MM/DD/YYYY hh:mm A'));
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
     $("#latitude-data").html(point["lat"]);
