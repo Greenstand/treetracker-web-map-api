@@ -104,6 +104,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
+                    fetchMarkers = false
                     var zoomLevel = map.getZoom();
                     map.setZoom(zoomLevel + 2);
                     map.panTo(marker.position);
@@ -165,10 +166,18 @@ function setPointMarkerListeners() {
    //     return a._sort_field - b._sort_field;
    // });
 
+    panelLoader = document.getElementById('tree-info-loader');
+
     $.each(points, function(i, point){
         var marker = markerByPointId[point.id];
         google.maps.event.addListener(marker, 'click', function () {
+
+            panelLoader.classList.add('active');
             showMarkerInfo(point, marker, i);
+            $("#tree-image").on('load', function() {
+              panelLoader.classList.remove('active');
+            })
+
         });
     })
 }
