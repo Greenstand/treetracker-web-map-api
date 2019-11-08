@@ -128,11 +128,11 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     },
                     zIndex: undefined,
                     payload: {
-                        id: item["id"]                      
-                    }                    
+                        id: item["id"]
+                    }
                 });
 
-                
+
                 if ((selectedTreeMarker) && (marker.payload.id === selectedTreeMarker.payload.id)) {
                     selectedTreeMarker = marker;
                     changeTreeMarkSelected();
@@ -213,7 +213,7 @@ function showMarkerInfo(point, marker, index) {
             //Animation Complete
         });;
     }
-    
+
     //toggle tree mark
     selectedOldTreeMarker = selectedTreeMarker;
     selectedTreeMarker = marker;
@@ -272,9 +272,9 @@ function showMarkerInfo(point, marker, index) {
 }
 
 function changeTreeMarkSelected() {
-    
+
     if (selectedOldTreeMarker){
-        selectedOldTreeMarker.setIcon('./img/pin_29px.png'); 
+        selectedOldTreeMarker.setIcon('./img/pin_29px.png');
         selectedOldTreeMarker.setZIndex(0);
     }
 
@@ -441,7 +441,7 @@ var initialize = function () {
         initialZoom = linkZoom;
     }
 
-    if (token != null || organization != null || treeid != null || userid === null || donor != null) {
+    if (token != null || organization != null || treeid != null || userid !== null || donor != null) {
         initialZoom = 10;
         minZoom = null;    // use the minimum zoom from the current map type
     }
@@ -487,7 +487,7 @@ var initialize = function () {
     // Adjust map bounds after it’s fully loaded, but only before first interaction
     google.maps.event.addListener(map, 'tilesloaded', function() {
       if (!firstInteraction &&
-        (token != null || organization != null || treeid != null || userid === null || donor != null)) {
+        (token != null || organization != null || treeid != null || userid !== null || donor != null)) {
         map.fitBounds(initialBounds);
       }
     });
