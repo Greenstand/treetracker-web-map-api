@@ -288,7 +288,7 @@ function changeTreeMarkSelected() {
     }
 
     if (selectedTreeMarker) {
-        selectedTreeMarker.setIcon('./img/pin_32px.png');
+        selectedTreeMarker.setIcon('./img/pin_highlighted.svg');
         selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
     }
 }

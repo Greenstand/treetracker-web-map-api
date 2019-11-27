@@ -27,7 +27,12 @@ b {
 
 .container-buttons {
 	position: absolute;
-    top: calc(417px / 2 + 27px);
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+.container-tree-image{
+	position: relative;
 }
 
 .tree_info{
