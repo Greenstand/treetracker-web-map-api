@@ -285,11 +285,13 @@ function changeTreeMarkSelected() {
     if (selectedOldTreeMarker){
         selectedOldTreeMarker.setIcon('./img/pin_29px.png');
         selectedOldTreeMarker.setZIndex(0);
+        selectedOldTreeMarker.setAnimation(null);
     }
 
     if (selectedTreeMarker) {
         selectedTreeMarker.setIcon('./img/pin_highlighted.svg');
         selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
+        selectedTreeMarker.setAnimation(google.maps.Animation.BOUNCE);
     }
 }
 
