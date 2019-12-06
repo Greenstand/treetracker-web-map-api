@@ -291,7 +291,12 @@ function changeTreeMarkSelected() {
     if (selectedTreeMarker) {
         selectedTreeMarker.setIcon('./img/pin_highlighted.svg');
         selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
-        selectedTreeMarker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            selectedTreeMarker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                selectedTreeMarker.setAnimation(null);
+            }, 750);
+        }, 500);
     }
 }
 
