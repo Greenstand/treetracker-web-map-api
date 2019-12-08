@@ -61,6 +61,8 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&userid=" + userid;
     } else if (flavor != null) {
         queryUrl = queryUrl + "&flavor=" + flavor;
+    } else if (wallet != null) {
+        queryUrl = queryUrl + "&wallet=" + wallet;
     }
 
     req = $.get(queryUrl, function (data) {

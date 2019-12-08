@@ -36,6 +36,8 @@ app.get('/trees', function (req, res) {
   let flavor = req.query['flavor'];
   let treeid = req.query['treeid'];
   let userid = req.query['userid'];
+  let wallet = req.query['wallet'];
+
   let join = '';
   let joinCriteria = '';
   let filter = '';
@@ -59,6 +61,9 @@ app.get('/trees', function (req, res) {
   } else if(userid) {
     filter = 'AND trees.planter_id = ' + userid + ' '
     subset = true;
+  } else if(wallet) {
+    filter = 'AND wallet.id = ' + wallet + ' '
+    subset = true
   }
 
   let bounds = req.query['bounds'];
