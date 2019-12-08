@@ -62,7 +62,9 @@ app.get('/trees', function (req, res) {
     filter = 'AND trees.planter_id = ' + userid + ' '
     subset = true;
   } else if(wallet) {
-    filter = 'AND wallet.id = ' + wallet + ' '
+    join = 'INNER JOIN token ON token.tree_id = trees.id'
+    join += ' INNER JOIN entity ON entity.id = token.entity_id'
+    filter = "AND entity.wallet = '" + wallet + "'"
     subset = true
   }
 

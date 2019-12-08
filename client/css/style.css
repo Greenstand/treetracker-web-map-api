@@ -140,7 +140,7 @@ b {
 	display: inline-block;
 	width: 16px;
 	height: 16px;
-	background-image: url('../img/check-icon.png');
+	background-image: url('/img/check-icon.png');
 	background-size: cover;
 }
 
