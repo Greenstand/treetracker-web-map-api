@@ -243,6 +243,9 @@ function showMarkerInfo(point, marker, index) {
       $("#impact-owner-data").html("@" + wallet);
       $("#status-data").html("Token issued");
       $("#token-id-data").html(point["token_uuid"]);
+    } else {
+      $("#sponsor").hide()
+      $("#token_holder").hide()
     }
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
