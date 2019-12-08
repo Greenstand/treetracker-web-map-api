@@ -72,6 +72,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         showAlert();
       }
 
+
         // clear everything
         points = [];
         markerByPointId = {};
@@ -236,6 +237,12 @@ function showMarkerInfo(point, marker, index) {
     map.panTo(marker.getPosition());
 
     $("#create-data").html(moment(point["time_created"]).format('MM/DD/YYYY hh:mm A'));
+    if(wallet != null){
+      $("#created_on").hide()
+      $("#tree_id_holder").hide()
+      $("#impact-owner-data").html("@" + wallet);
+      $("#status-data").html("ID: " + point["token_uuid"]);
+    }
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
     $("#latitude-data").html(point["lat"]);

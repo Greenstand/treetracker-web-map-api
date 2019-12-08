@@ -263,3 +263,7 @@ b {
     left: calc(100% - 161px);
     margin-left: -60px;
 }
+
+#impact-owner-data {
+  font-weight: bold;
+}
