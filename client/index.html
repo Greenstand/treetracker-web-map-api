@@ -32,16 +32,16 @@
     }
   </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs"></script>
-  <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/moment.min.js"></script>
-  <link rel="stylesheet" href="js/jquery-ui.min.css">
+  <script type="text/javascript" src="/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/moment.min.js"></script>
+  <link rel="stylesheet" href="/js/jquery-ui.min.css">
 
-  <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'></script>
+  <script type="text/javascript" src="/js/config.js" onerror='location.replace("error.html");'></script>
 	<script>
 		Sentry.init({ dsn: sentryDSN });
 	</script>
-  <script type="text/javascript" src="js/map.js"></script>
+  <script type="text/javascript" src="/js/map.js"></script>
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -49,8 +49,8 @@
    <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="icon_style.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/icon_style.css" />
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 
@@ -68,10 +68,10 @@
           <img id="tree-image" src="">
           <div class="float-left info_data container-buttons">
             <a href="#" class="float-left tree_nav" id="tree_prev">
-                <img src="img/previous_tree.svg">
+                <img src="/img/previous_tree.svg">
             </a>
             <a href="#" class="float-right tree_nav" id="tree_next">
-                <img src="img/next_tree.svg">
+                <img src="/img/next_tree.svg">
             </a>
           </div>
         </div>
@@ -100,8 +100,13 @@
           </p>
 
           <p id="sponsor">
-            <span><b>Sponsor</b>: </span>
-            <span id="status-data"></span>
+            <span><b>Impact Owner</b>: </span>
+            <span id="impact-owner-data"></span>
+          </p>
+
+          <p id="token_holder">
+            <span><b>Token</b>: </span>
+            <span id="token-id-data"></span>
           </p>
         </div>
       </div>
@@ -112,7 +117,7 @@
 		<div class="loader"></div>
   </div>
   <div id="logo-floating-map">
-    <img src="img/logo_floating_map.svg"  >
+    <img src="/img/logo_floating_map.svg"  >
   </div>
 </body>
 

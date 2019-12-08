@@ -36,6 +36,9 @@ app.get('/trees', function (req, res) {
   let flavor = req.query['flavor'];
   let treeid = req.query['treeid'];
   let userid = req.query['userid'];
+  let wallet = req.query['wallet'];
+
+  let select = '';
   let join = '';
   let joinCriteria = '';
   let filter = '';
@@ -59,6 +62,12 @@ app.get('/trees', function (req, res) {
   } else if(userid) {
     filter = 'AND trees.planter_id = ' + userid + ' '
     subset = true;
+  } else if(wallet) {
+    select = ', token.uuid AS token_uuid '
+    join = 'INNER JOIN token ON token.tree_id = trees.id'
+    join += ' INNER JOIN entity ON entity.id = token.entity_id'
+    filter = "AND entity.wallet = '" + wallet + "'"
+    subset = true
   }
 
   let bounds = req.query['bounds'];
@@ -79,7 +88,8 @@ app.get('/trees', function (req, res) {
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
      trees.*, planter.first_name as first_name, planter.last_name as last_name,
-    planter.image_url as user_image_url
+    planter.image_url as user_image_url `
+    + select + `
     FROM trees `
     + join + `
     INNER JOIN planter
