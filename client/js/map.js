@@ -241,7 +241,8 @@ function showMarkerInfo(point, marker, index) {
       $("#created_on").hide()
       $("#tree_id_holder").hide()
       $("#impact-owner-data").html("@" + wallet);
-      $("#status-data").html("ID: " + point["token_uuid"]);
+      $("#status-data").html("Token issued");
+      $("#token-id-data").html(point["token_uuid"]);
     }
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
