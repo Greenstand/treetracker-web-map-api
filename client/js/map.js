@@ -348,6 +348,18 @@ function getPathVariable(name, url){
     return results[1];
 }
 
+function getHandleVariable(name, url){
+    if (!url) url = window.location.href;
+    console.log(url);
+    var regex = new RegExp("/@(.*)");
+    console.log(regex);
+    results = regex.exec(url);
+    console.log(results);
+    if (!results) return null;
+    if (!results[1]) return '';
+    return results[1];
+}
+
 
 // Returns the bounds for the visible area of the map.
 // The offset parameter extends the bounds resulting rectangle by a certain percentage.
@@ -461,7 +473,7 @@ var initialize = function () {
     donor = getQueryStringValue('donor') || null;
     wallet = getQueryStringValue('wallet') || null;
     if(wallet == null){
-        wallet = getPathVariable('wallet') || null;
+        wallet = getHandleVariable('wallet') || null;
     }
     console.log(wallet);
     loader = document.getElementById('map-loader');
