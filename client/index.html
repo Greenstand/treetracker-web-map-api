@@ -32,16 +32,16 @@
     }
   </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLHZL7-3Y5aNMlW_Cz5G1NyBn5R0Mmurs"></script>
-  <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/moment.min.js"></script>
-  <link rel="stylesheet" href="js/jquery-ui.min.css">
+  <script type="text/javascript" src="/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/moment.min.js"></script>
+  <link rel="stylesheet" href="/js/jquery-ui.min.css">
 
-  <script type="text/javascript" src="js/config.js" onerror='location.replace("error.html");'></script>
+  <script type="text/javascript" src="/js/config.js" onerror='location.replace("error.html");'></script>
 	<script>
 		Sentry.init({ dsn: sentryDSN });
 	</script>
-  <script type="text/javascript" src="js/map.js"></script>
+  <script type="text/javascript" src="/js/map.js"></script>
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -49,8 +49,8 @@
    <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="icon_style.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/icon_style.css" />
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 
@@ -64,42 +64,50 @@
     <div id="tree_info_div" class="overlay_innards">
       <span id='close-button'><div class="icon-angle-left"></div></span>
       <div class="tree_info">
-        <img id="tree-image" src="">
-        <div class="planter_image">
-					<div class="planter_image_wrap">
-          	<img id="planter_image"t sta src="img/LogoOnly_Bright_Green100x100.png">
-					</div>
-        </div>
-        <div class="planted_by">
-          <p><span id="planter_name">Planter</span></p>
-        </div>
-
-				<p id="status" class="info_data info_data_status success">
-          <span id="status-data">The tree has been planted</span>
-				</p>
-
-        <p id="created_on" class="info_data">
-          <span id="create-data"></span>
-        </p>
-
-        <p id="sponsor" class="info_data">
-          <span><b>Sponsor</b>: </span>
-          <span id="status-data"></span>
-        </p>
-
-        <p id="tree_id_holder" class="info_data">
-          <span>Tree Id: </span>
-          <span id="tree-id"></span>
-        </p>
-
-        <br />
-        <div class="float-left info_data">
-            <a href="#" class="float-left tree_nav" id="tree_prev" >
-                <img src="img/previous_tree.svg" />
+        <div class="container-tree-image">
+          <img id="tree-image" src="">
+          <div class="float-left info_data container-buttons">
+            <a href="#" class="float-left tree_nav" id="tree_prev">
+                <img src="/img/previous_tree.svg">
             </a>
-            <a href="#" class="float-right tree_nav" id="tree_next" >
-                <img src="img/next_tree.svg" />
+            <a href="#" class="float-right tree_nav" id="tree_next">
+                <img src="/img/next_tree.svg">
             </a>
+          </div>
+        </div>
+        <div class="tree_info_divider"></div>
+        <div class="info_data">
+          <div class="planter_image">
+            <div class="planter_image_wrap">
+              <img id="planter_image"t sta src="img/LogoOnly_Bright_Green100x100.png">
+            </div>
+          </div>
+          <div class="planted_by">
+            <p><span id="planter_name">Planter</span></p>
+          </div>
+
+          <p id="status" class="info_data_status success">
+            <span id="status-data">This tree has been planted</span>
+          </p>
+
+          <p id="created_on">
+            <span id="create-data"></span>
+          </p>
+
+          <p id="tree_id_holder">
+            <span>Tree Id: </span>
+            <span id="tree-id"></span>
+          </p>
+
+          <p id="sponsor">
+            <span><b>Impact Owner</b>: </span>
+            <span id="impact-owner-data"></span>
+          </p>
+
+          <p id="token_holder">
+            <span><b>Token</b>: </span>
+            <span id="token-id-data"></span>
+          </p>
         </div>
       </div>
     </div>
@@ -107,7 +115,10 @@
   <div id="map-canvas"></div>
 	<div id="map-loader" class="page-loader active">
 		<div class="loader"></div>
-	</div>
+  </div>
+  <div id="logo-floating-map">
+    <img src="/img/logo_floating_map.svg"  >
+  </div>
 </body>
 
 </html>

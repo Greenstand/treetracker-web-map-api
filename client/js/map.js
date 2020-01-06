@@ -7,6 +7,8 @@ var token;
 var organization;
 var treeid;
 var userid;
+var donor;
+var wallet;
 var flavor;
 var clusterRadius;
 var firstRender = true;
@@ -61,12 +63,15 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         queryUrl = queryUrl + "&userid=" + userid;
     } else if (flavor != null) {
         queryUrl = queryUrl + "&flavor=" + flavor;
+    } else if (wallet != null) {
+        queryUrl = queryUrl + "&wallet=" + wallet;
     }
 
     req = $.get(queryUrl, function (data) {
       if (userid && data.data.length === 0) {
         showAlert();
       }
+
 
         // clear everything
         points = [];
@@ -82,11 +87,11 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
                 var iconUrl = null, labelOrigin = null, anchor = null;
                 if(item.count <= 300){
-                    iconUrl = './img/cluster_46px.png';
+                    iconUrl = '/img/cluster_46px.png';
                     labelOrigin = new google.maps.Point(23, 23);
                     anchor = new google.maps.Point(23, 23);
                 } else {
-                    iconUrl = './img/cluster_63px.png';
+                    iconUrl = '/img/cluster_63px.png';
                     labelOrigin = new google.maps.Point(32, 32);
                     anchor = new google.maps.Point(32, 32);
                 }
@@ -106,6 +111,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
+                    fetchMarkers = false
                     var zoomLevel = map.getZoom();
                     map.setZoom(zoomLevel + 2);
                     map.panTo(marker.position);
@@ -124,15 +130,15 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/pin_29px.png'
+                        url: '/img/pin_29px.png'
                     },
                     zIndex: undefined,
                     payload: {
-                        id: item["id"]                      
-                    }                    
+                        id: item["id"]
+                    }
                 });
 
-                
+
                 if ((selectedTreeMarker) && (marker.payload.id === selectedTreeMarker.payload.id)) {
                     selectedTreeMarker = marker;
                     changeTreeMarkSelected();
@@ -153,7 +159,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
         if (firstRender) {
           if (data.data.length > 0 &&
-            (organization != null || token != null || treeid != null || userid != null)) {
+            (organization != null || token != null || treeid != null || userid != null || wallet != null)) {
               map.fitBounds(initialBounds);
               map.setCenter(initialBounds.getCenter());
               map.setZoom(map.getZoom() - 1);
@@ -177,10 +183,18 @@ function setPointMarkerListeners() {
    //     return a._sort_field - b._sort_field;
    // });
 
+    panelLoader = document.getElementById('tree-info-loader');
+
     $.each(points, function(i, point){
         var marker = markerByPointId[point.id];
         google.maps.event.addListener(marker, 'click', function () {
+
+            panelLoader.classList.add('active');
             showMarkerInfo(point, marker, i);
+            $("#tree-image").on('load', function() {
+              panelLoader.classList.remove('active');
+            })
+
         });
     })
 }
@@ -208,12 +222,12 @@ function showMarkerInfo(point, marker, index) {
     if (treeInfoDivShowing == false) {
         treeInfoDivShowing = true;
         $('#map-canvas').animate({
-            margin: '0 0 0 295px'
+            margin: '0 0 0 354px'
         }, 700, function () {
             //Animation Complete
         });;
     }
-    
+
     //toggle tree mark
     selectedOldTreeMarker = selectedTreeMarker;
     selectedTreeMarker = marker;
@@ -222,7 +236,17 @@ function showMarkerInfo(point, marker, index) {
     // always center this one
     map.panTo(marker.getPosition());
 
-    $("#create-data").html(moment(point["time_created"]).format('MMM D YYYY hh:mma'));
+    $("#create-data").html(moment(point["time_created"]).format('MM/DD/YYYY hh:mm A'));
+    if(wallet != null){
+      $("#created_on").hide()
+      $("#tree_id_holder").hide()
+      $("#impact-owner-data").html("@" + wallet);
+      $("#status-data").html("Token issued");
+      $("#token-id-data").html(point["token_uuid"]);
+    } else {
+      $("#sponsor").hide()
+      $("#token_holder").hide()
+    }
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
     $("#latitude-data").html(point["lat"]);
@@ -245,7 +269,7 @@ function showMarkerInfo(point, marker, index) {
     if (point["user_image_url"]) {
         $("#planter_image").attr("src", point["user_image_url"]);
     } else {
-        $("#planter_image").attr("src", "img/LogoOnly_Bright_Green100x100.png");
+        $("#planter_image").attr("src", "/img/LogoOnly_Bright_Green100x100.png");
     }
     $("#tree_next").val(getCircularPointIndex(index + 1))
     $("#tree_prev").val(getCircularPointIndex(index - 1))
@@ -272,14 +296,14 @@ function showMarkerInfo(point, marker, index) {
 }
 
 function changeTreeMarkSelected() {
-    
+
     if (selectedOldTreeMarker){
-        selectedOldTreeMarker.setIcon('./img/pin_29px.png'); 
+        selectedOldTreeMarker.setIcon('/img/pin_29px.png');
         selectedOldTreeMarker.setZIndex(0);
     }
 
     if (selectedTreeMarker) {
-        selectedTreeMarker.setIcon('./img/pin_32px.png');
+        selectedTreeMarker.setIcon('/img/pin_32px.png');
         selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
     }
 }
@@ -322,6 +346,31 @@ function getQueryStringValue(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+function getPathVariable(name, url){
+    if (!url) url = window.location.href;
+    console.log(url);
+    var regex = new RegExp("/" + name + "/(.*)");
+    console.log(regex);
+    results = regex.exec(url);
+    console.log(results);
+    if (!results) return null;
+    if (!results[1]) return '';
+    return results[1];
+}
+
+function getHandleVariable(name, url){
+    if (!url) url = window.location.href;
+    console.log(url);
+    var regex = new RegExp("/@(.*)");
+    console.log(regex);
+    results = regex.exec(url);
+    console.log(results);
+    if (!results) return null;
+    if (!results[1]) return '';
+    return results[1];
+}
+
 
 // Returns the bounds for the visible area of the map.
 // The offset parameter extends the bounds resulting rectangle by a certain percentage.
@@ -423,14 +472,21 @@ function shortenLargeNumber(number) {
     return number;
 }
 
+
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
+    console.log(window.location.href);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
     userid = getQueryStringValue('userid') || null;
     flavor = getQueryStringValue('flavor') || null;
     donor = getQueryStringValue('donor') || null;
+    wallet = getQueryStringValue('wallet') || null;
+    if(wallet == null){
+        wallet = getHandleVariable('wallet') || null;
+    }
+    console.log(wallet);
     loader = document.getElementById('map-loader');
 
     var initialZoom = 2;
@@ -441,7 +497,7 @@ var initialize = function () {
         initialZoom = linkZoom;
     }
 
-    if (token != null || organization != null || treeid != null || userid === null || donor != null) {
+    if (token != null || organization != null || treeid != null || userid !== null || donor != null) {
         initialZoom = 10;
         minZoom = null;    // use the minimum zoom from the current map type
     }
@@ -487,7 +543,7 @@ var initialize = function () {
     // Adjust map bounds after it’s fully loaded, but only before first interaction
     google.maps.event.addListener(map, 'tilesloaded', function() {
       if (!firstInteraction &&
-        (token != null || organization != null || treeid != null || userid === null || donor != null)) {
+        (token != null || organization != null || treeid != null || userid !== null || donor != null)) {
         map.fitBounds(initialBounds);
       }
     });
