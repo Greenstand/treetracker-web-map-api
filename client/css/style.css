@@ -37,6 +37,12 @@ b {
   box-shadow: 10px 0px 16px 0px rgba(50, 50, 50, 0.4);
 }
 
+@media (max-width: 801px) {
+  .tree_info {
+    width: 80vw;
+  }
+}
+
 .tree_info_divider {
   height: 3px;
   background-color: #86c232;
@@ -151,6 +157,12 @@ b {
   margin-bottom: 16px;
 }
 
+@media (max-width: 801px) {
+  #status {
+    margin-bottom: 24px;
+  }
+}
+
 #created_on {
   margin-bottom: 8px;
   color: #666666;
@@ -158,11 +170,23 @@ b {
   font-family: "Lato";
 }
 
+@media (max-width: 801px) {
+  #created_on {
+    margin-bottom: 16px;
+  }
+}
+
 #tree_id_holder {
   margin-bottom: 16px;
   color: #666666;
   font-size: 12px;
   font-family: "Lato";
+}
+
+@media (max-width: 801px) {
+  #tree_id_holder {
+    margin-bottom: 24px;
+  }
 }
 
 #status-data {
@@ -267,7 +291,7 @@ b {
 @media (max-width: 801px) {
   #logo-floating-map {
     left: auto;
-    right: 7vw;
+    right: 15vw;
   }
   #logo-floating-map > img {
     width: 45vw;
