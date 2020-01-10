@@ -7,6 +7,8 @@ var token;
 var organization;
 var treeid;
 var userid;
+var donor;
+var wallet;
 var flavor;
 var clusterRadius;
 var firstRender = true;
@@ -70,6 +72,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
         showAlert();
       }
 
+
         // clear everything
         points = [];
         markerByPointId = {};
@@ -84,11 +87,11 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
                 var iconUrl = null, labelOrigin = null, anchor = null;
                 if(item.count <= 300){
-                    iconUrl = './img/cluster_46px.png';
+                    iconUrl = '/img/cluster_46px.png';
                     labelOrigin = new google.maps.Point(23, 23);
                     anchor = new google.maps.Point(23, 23);
                 } else {
-                    iconUrl = './img/cluster_63px.png';
+                    iconUrl = '/img/cluster_63px.png';
                     labelOrigin = new google.maps.Point(32, 32);
                     anchor = new google.maps.Point(32, 32);
                 }
@@ -127,7 +130,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
                     map: map,
                     title: "Tree",
                     icon: {
-                        url: './img/pin_29px.png'
+                        url: '/img/pin_29px.png'
                     },
                     zIndex: undefined,
                     payload: {
@@ -156,7 +159,7 @@ var initMarkers = function (viewportBounds, zoomLevel) {
 
         if (firstRender) {
           if (data.data.length > 0 &&
-            (organization != null || token != null || treeid != null || userid != null)) {
+            (organization != null || token != null || treeid != null || userid != null || wallet != null)) {
               map.fitBounds(initialBounds);
               map.setCenter(initialBounds.getCenter());
               map.setZoom(map.getZoom() - 1);
@@ -234,6 +237,16 @@ function showMarkerInfo(point, marker, index) {
     map.panTo(marker.getPosition());
 
     $("#create-data").html(moment(point["time_created"]).format('MM/DD/YYYY hh:mm A'));
+    if(wallet != null){
+      $("#created_on").hide()
+      $("#tree_id_holder").hide()
+      $("#impact-owner-data").html("@" + wallet);
+      $("#status-data").html("Token issued");
+      $("#token-id-data").html(point["token_uuid"]);
+    } else {
+      $("#sponsor").hide()
+      $("#token_holder").hide()
+    }
     $("#updated-data").html(point["time_updated"]);
     $("#gps-accuracy-data").html(point["gps_accuracy"]);
     $("#latitude-data").html(point["lat"]);
@@ -256,7 +269,7 @@ function showMarkerInfo(point, marker, index) {
     if (point["user_image_url"]) {
         $("#planter_image").attr("src", point["user_image_url"]);
     } else {
-        $("#planter_image").attr("src", "img/LogoOnly_Bright_Green100x100.png");
+        $("#planter_image").attr("src", "/img/LogoOnly_Bright_Green100x100.png");
     }
     $("#tree_next").val(getCircularPointIndex(index + 1))
     $("#tree_prev").val(getCircularPointIndex(index - 1))
@@ -285,12 +298,12 @@ function showMarkerInfo(point, marker, index) {
 function changeTreeMarkSelected() {
 
     if (selectedOldTreeMarker){
-        selectedOldTreeMarker.setIcon('./img/pin_29px.png');
+        selectedOldTreeMarker.setIcon('/img/pin_29px.png');
         selectedOldTreeMarker.setZIndex(0);
     }
 
     if (selectedTreeMarker) {
-        selectedTreeMarker.setIcon('./img/pin_32px.png');
+        selectedTreeMarker.setIcon('/img/pin_32px.png');
         selectedTreeMarker.setZIndex(google.maps.Marker.MAX_ZINDEX);
     }
 }
@@ -333,6 +346,31 @@ function getQueryStringValue(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+function getPathVariable(name, url){
+    if (!url) url = window.location.href;
+    console.log(url);
+    var regex = new RegExp("/" + name + "/(.*)");
+    console.log(regex);
+    results = regex.exec(url);
+    console.log(results);
+    if (!results) return null;
+    if (!results[1]) return '';
+    return results[1];
+}
+
+function getHandleVariable(name, url){
+    if (!url) url = window.location.href;
+    console.log(url);
+    var regex = new RegExp("/@(.*)");
+    console.log(regex);
+    results = regex.exec(url);
+    console.log(results);
+    if (!results) return null;
+    if (!results[1]) return '';
+    return results[1];
+}
+
 
 // Returns the bounds for the visible area of the map.
 // The offset parameter extends the bounds resulting rectangle by a certain percentage.
@@ -434,14 +472,21 @@ function shortenLargeNumber(number) {
     return number;
 }
 
+
 //Initialize Google Maps and Marker Clusterer
 var initialize = function () {
+    console.log(window.location.href);
     token = getQueryStringValue('token') || null;
     organization = getQueryStringValue('organization') || null;
     treeid = getQueryStringValue('treeid') || null;
     userid = getQueryStringValue('userid') || null;
     flavor = getQueryStringValue('flavor') || null;
     donor = getQueryStringValue('donor') || null;
+    wallet = getQueryStringValue('wallet') || null;
+    if(wallet == null){
+        wallet = getHandleVariable('wallet') || null;
+    }
+    console.log(wallet);
     loader = document.getElementById('map-loader');
 
     var initialZoom = 2;

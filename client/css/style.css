@@ -140,7 +140,7 @@ b {
 	display: inline-block;
 	width: 16px;
 	height: 16px;
-	background-image: url('../img/check-icon.png');
+	background-image: url('/img/check-icon.png');
 	background-size: cover;
 }
 
@@ -262,4 +262,8 @@ b {
     bottom: 25px;
     left: calc(100% - 161px);
     margin-left: -60px;
+}
+
+#impact-owner-data {
+  font-weight: bold;
 }
