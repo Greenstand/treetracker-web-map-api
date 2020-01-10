@@ -110,15 +110,19 @@ Just edit as you normally would to view changes in your development environment.
 3. Create a database named 'treetracker'
 4. Import our developer seed into your database.  Seed can be downloaded at https://developer-resources.sfo2.cdn.digitaloceanspaces.com/treetracker_developer_seed.sql.gz
 5. Configure server/src/config/config.js to point to your local database
-6. Install supervisor globally
+6. Install node modules, run npm i in server/ folder
+```
+npm i
+```
+7. Install supervisor globally
 ```
 npm i -g supervisor
 ```
-6. Run server.js with CORS restrictions lifted
+8. Run server.js with CORS restrictions lifted
 ```
 NODE_ENV=dev supervisor server.js
 ```
-7. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
+9. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
 
 
 ### MS Windows setup details
