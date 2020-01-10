@@ -122,6 +122,11 @@ npm i -g supervisor
 ```
 NODE_ENV=dev supervisor server.js
 ```
+9. Open client/js/config.js from the project root.  It should contain only the following 2 lines
+```
+var configTreetrackerApi = 'http://localhost:3000/';
+var sentryDSN = null;
+```
 9. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
 
 
