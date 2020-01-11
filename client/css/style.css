@@ -286,12 +286,16 @@ b {
   bottom: 25px;
   left: calc(100% - 161px);
   margin-left: -60px;
+  user-select: none;
 }
 
 @media (max-width: 801px) {
   #logo-floating-map {
     left: auto;
-    right: 15vw;
+    bottom: auto;
+    right: 0px;
+    top: 0px;
+    margin: 10px;
   }
   #logo-floating-map > img {
     width: 45vw;
