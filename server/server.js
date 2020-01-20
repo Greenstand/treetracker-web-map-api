@@ -153,7 +153,7 @@ app.get('/trees', function (req, res) {
       query = {
         text: `SELECT 'cluster' AS type,
 			           region.id, ST_ASGeoJson(region.centroid) centroid,
-                 ST_AsGeojson(BOX2d(geom)) as boundingBox,
+                 ST_AsGeojson(BOX2D(geom)) as bounding_box,
                  region.type_id as region_type,
                  count(tree_region.id)
                  FROM tree_region
@@ -173,12 +173,12 @@ app.get('/trees', function (req, res) {
       query = {
         text: `SELECT 'cluster' AS type,
              region_id id, ST_ASGeoJson(centroid) centroid,
-             ST_AsGeojson(BOX2d(geom)) as boundingBox,
+             ST_AsGeojson(bounding_box) as bounding_box,
              type_id as region_type,
              count(id)
              FROM active_tree_region tree_region
              WHERE zoom_level = $1
-             GROUP BY region_id, centroid, type_id`,
+             GROUP BY region_id, centroid, bounding_box::geometry, type_id`,
         values: [req.query['zoom_level']]
       };
 

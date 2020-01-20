@@ -123,20 +123,27 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }
         });
 
-        var bounds = JSON.parse(item.bounds);
         google.maps.event.addListener(marker, "click", function() {
           fetchMarkers = false;
 
-          var latLngBounds = new google.maps.LatLngBounds();
-          bounds.coordinates.forEach(function(coordinate) {
-            var latLng = new google.maps.LatLng(coordinate[1], coordinate[2]);
-            latLngBounds.extend(latLng);
-          });
-          map.panToBounds(bounds);
+          var zoomLevel = map.getZoom();
 
-          //var zoomLevel = map.getZoom();
-          //map.setZoom(zoomLevel + 2);
-          //map.panTo(marker.position);
+          if(zoomLevel > 2 && zoomLevel < 12) {
+            var boundingBox = JSON.parse(item.bounding_box);
+            var latLngBounds = new google.maps.LatLngBounds();
+            boundingBox.coordinates[0].forEach(function(coordinate) {
+              console.log(coordinate);
+              var latLng = new google.maps.LatLng(coordinate[1], coordinate[0]);
+              latLngBounds.extend(latLng);
+            });
+            console.log(latLngBounds);
+            map.setCenter(latLngBounds.getCenter());
+            map.fitBounds(latLngBounds);
+            //map.panToBounds(latLngBounds);
+          } else {
+            map.setZoom(zoomLevel + 2);
+            map.panTo(marker.position);
+          }
         });
         markers.push(marker);
       } else if (item.type == "point") {
