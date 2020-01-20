@@ -109,6 +109,7 @@ app.get('/trees', function (req, res) {
     console.log('Calculating clusters directly');
     sql = `SELECT 'cluster'                                           AS type,
        St_asgeojson(St_centroid(clustered_locations))                 centroid,
+       St_asgeojson(BOX2D(clustered_locations))                       bounding_box,
        St_numgeometries(clustered_locations)                          count
       FROM   (
        SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
