@@ -152,7 +152,8 @@ app.get('/trees', function (req, res) {
 
       query = {
         text: `SELECT 'cluster' AS type,
-			  region.id, ST_ASGeoJson(region.centroid) centroid,
+			           region.id, ST_ASGeoJson(region.centroid) centroid,
+                 ST_AsGeojson(BOX2d(geom)) as boundingBox,
                  region.type_id as region_type,
                  count(tree_region.id)
                  FROM tree_region
@@ -172,6 +173,7 @@ app.get('/trees', function (req, res) {
       query = {
         text: `SELECT 'cluster' AS type,
              region_id id, ST_ASGeoJson(centroid) centroid,
+             ST_AsGeojson(BOX2d(geom)) as boundingBox,
              type_id as region_type,
              count(id)
              FROM active_tree_region tree_region
