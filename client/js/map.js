@@ -556,7 +556,8 @@ var initialize = function() {
     organization != null ||
     treeid != null ||
     userid !== null ||
-    donor != null
+    donor != null || 
+    wallet != null
   ) {
     initialZoom = 10;
     minZoom = null; // use the minimum zoom from the current map type
@@ -608,7 +609,8 @@ var initialize = function() {
         organization != null ||
         treeid != null ||
         userid !== null ||
-        donor != null)
+        donor != null || 
+        wallet != null)
     ) {
       map.fitBounds(initialBounds);
     }
