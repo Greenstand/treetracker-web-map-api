@@ -13,24 +13,19 @@ Sentry.init({ dsn: Config.sentryDSN });
 
 (async () => {
 
-  var output = "```Region       | Tree Count";
+  var output = "```Tree Count";
 
 {
   const query = {
-    text: `select r.name as region_name
-      , count(distinct t.id) as trees
-    from trees t
-    inner join tree_region tr on tr.tree_id = t.id
-    inner join region r on r.id = tr.region_id
-    where time_created > now() - INTERVAL '1 day'
-      and r.id in (6632386, 6632476) -- Kenya and Tanzania
-      and t.active = true
-    group by r.id`
+    text: `select count(distinct t.id) as trees
+from trees t
+where time_created > now() - INTERVAL ‘1 day’
+and t.active = true`
   };
   rval = await pool.query(query);
   for(let row of rval.rows){
    console.log(row);
-   const string = row.region_name.padEnd(12) + ' | ' + row.trees;
+   const string = ' Total trees tracked ' + row.trees;
    output = output + "\n" +  string;
   }
   console.log(output);
@@ -38,23 +33,6 @@ Sentry.init({ dsn: Config.sentryDSN });
   
 }
 
-{
-  const query = {
-    text: `Select 'Global Total' as region_name
-     , count(distinct t.id) as trees
-    from trees t
-    where t.active = true
-      and time_created > now() - INTERVAL '1 day'`
-  };
-  rval = await pool.query(query);
-  for(let row of rval.rows){
-   console.log(row);
-   const string = row.region_name.padEnd(12) + ' | ' + row.trees;
-   output = output + "\n" +  string;
-  }
-  console.log(output);
-
-}
 
   output = output + '```';
   if(output != null) {
@@ -66,7 +44,7 @@ Sentry.init({ dsn: Config.sentryDSN });
       body: {
         attachments: [
           {
-            "title": "Trees Planted in the last 24 hours: Tanzania, Kenya and globally ",
+            "title": "Trees Planted in the last 24 hours globally: ",
             "text": output,
           }
         ]
