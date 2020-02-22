@@ -193,8 +193,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         (organization != null ||
           token != null ||
           treeid != null ||
-          userid != null ||
-          wallet != null)
+          userid != null 
+          )
       ) {
         map.fitBounds(initialBounds);
         map.setCenter(initialBounds.getCenter());
@@ -559,7 +559,7 @@ var initialize = function() {
     donor != null || 
     wallet != null
   ) {
-    initialZoom = 10;
+    initialZoom = 4;
     minZoom = null; // use the minimum zoom from the current map type
   }
 
@@ -609,8 +609,8 @@ var initialize = function() {
         organization != null ||
         treeid != null ||
         userid !== null ||
-        donor != null || 
-        wallet != null)
+        donor != null 
+        )
     ) {
       map.fitBounds(initialBounds);
     }
