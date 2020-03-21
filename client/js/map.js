@@ -528,7 +528,6 @@ function markerTextToNumber(text) {
 function handleZoomClick(marker, callback) {
     var zoomLevel = map.getZoom();
     map.setZoom(zoomLevel + 2);
-    // console.log(markers)
     map.panTo(marker.position)
     callback();
 }
@@ -544,11 +543,8 @@ function afterZoomClick() {
             //now convert text to number, will have to consider "k"
             maxMarkerInBounds.max = markerTextToNumber(markers[i].label.text);
             maxMarkerInBounds.pointer = i;
-            // console.log(markers[i]);
-            // console.log(`Max marker: ${maxMarkerInBounds.max}`);
           }
         } 
-        // console.log(`Max${maxMarkerInBounds.pointer}`);
     }
     if(!!markers[maxMarkerInBounds.pointer]) {
         map.panTo(markers[maxMarkerInBounds.pointer].position)
@@ -556,7 +552,6 @@ function afterZoomClick() {
         zoomLevel = map.getZoom();
         map.setZoom(zoomLevel -1);
     }
-    // console.log(`pointer? ${!!markers[maxMarkerInBounds.pointer]}`)
     maxMarkerInBounds = {max: 0, pointer: null};
 }
 
