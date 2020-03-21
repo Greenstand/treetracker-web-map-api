@@ -34,6 +34,59 @@ if (configTreetrackerApi) {
   treetrackerApiUrl = configTreetrackerApi;
 }
 
+/**
+ * Writes to the document's cookie to expire (or not) after a set time from the date of the user's last visit to the webpage.
+ *
+ * @param {string=} c_name The name of the cookie to be written (i.e. "visited").
+ * @param {string=} value The value of the cookie (i.e. "yes")
+ * @param {Number=} exdays The length of time that the cookie will not expire
+ */
+function setCookie(c_name,value,exdays){
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie=c_name + "=" + c_value;
+}
+
+/**
+ * Reads from the cookie if it exists.
+ *
+ * @param {string=} c_name The name of the cookie to be read from (i.e. "visited").
+ */
+function getCookie(c_name){
+  var c_value = document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1){
+    c_start = c_value.indexOf(c_name + "=");
+  }
+
+  if (c_start == -1){
+    c_value = null;
+  } else{
+    c_start = c_value.indexOf("=", c_start) + 1;
+    var c_end = c_value.indexOf(";", c_start);
+
+    if (c_end == -1){
+      c_end = c_value.length;
+    }
+    c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
+}
+
+/**
+ * Checks if the user has visited the page before.
+ *
+ */
+function checkSession(){
+  var c = getCookie("visited");
+  setCookie("visited", "yes", 365); // expire in 1 year; or use null to never expire
+  if (c === "yes") {
+    return 1;
+  }
+  return 0;
+}
+
 //Get the tree data and create markers with corresponding data
 var initMarkers = function(viewportBounds, zoomLevel) {
   // no need to load this up at every tiny movement
@@ -122,6 +175,20 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             anchor: anchor
           }
         });
+
+        // create infowindow object
+        var infowindow = new google.maps.InfoWindow({
+          content: "Click on the cluster to zoom into trees"
+        });
+
+        if (!checkSession()){ //only if the user is not new
+          marker.addListener('mouseover', function() {
+            infowindow.open(map, marker); // add an event listener for hovering over a marker
+            marker.addListener('mouseout', function() {
+              infowindow.close(); // add an event listener for hovering away from the marker
+            });
+          });
+        }
 
         google.maps.event.addListener(marker, "click", function() {
           fetchMarkers = false;
