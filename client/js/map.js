@@ -123,11 +123,17 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }
         });
 
-        google.maps.event.addListener(marker, "click", function() {
-          fetchMarkers = false;
-          var zoomLevel = map.getZoom();
-          map.setZoom(zoomLevel + 2);
-          map.panTo(marker.position);
+        //Set Marker Zoom 
+        google.maps.event.addListener(marker, 'click', function () {
+            handleZoomClick(marker, function() {
+                map.addListener('zoom_changed', function() {
+                  // 1 seconds after the center of the map has changed, pan back to the
+                  // marker.
+                  window.setTimeout(function() {
+                    afterZoomClick();
+                  }, 1000);
+                });
+            })
         });
         markers.push(marker);
       } else if (item.type == "point") {
@@ -509,6 +515,49 @@ function shortenLargeNumber(number) {
     }
   }
   return number;
+}
+
+function markerTextToNumber(text) {
+    if(text.slice(-1) == 'K') {
+        return parseInt(text.slice(0, -1)) * 1000;
+    } else {
+        return parseInt(text);
+    }
+}
+
+function handleZoomClick(marker, callback) {
+    var zoomLevel = map.getZoom();
+    map.setZoom(zoomLevel + 2);
+    // console.log(markers)
+    map.panTo(marker.position)
+    callback();
+}
+
+function afterZoomClick() {
+    let maxMarkerInBounds = {max: 0, pointer: null}
+    for (var i=0; i < markers.length; i++) 
+    {
+        if (map.getBounds().contains(markers[i].getPosition() ) 
+            )
+        {
+            if(markerTextToNumber(markers[i].label.text) > maxMarkerInBounds.max) {
+            //now convert text to number, will have to consider "k"
+            maxMarkerInBounds.max = markerTextToNumber(markers[i].label.text);
+            maxMarkerInBounds.pointer = i;
+            // console.log(markers[i]);
+            // console.log(`Max marker: ${maxMarkerInBounds.max}`);
+          }
+        } 
+        // console.log(`Max${maxMarkerInBounds.pointer}`);
+    }
+    if(!!markers[maxMarkerInBounds.pointer]) {
+        map.panTo(markers[maxMarkerInBounds.pointer].position)
+    } else {
+        zoomLevel = map.getZoom();
+        map.setZoom(zoomLevel -1);
+    }
+    // console.log(`pointer? ${!!markers[maxMarkerInBounds.pointer]}`)
+    maxMarkerInBounds = {max: 0, pointer: null};
 }
 
 //Initialize Google Maps and Marker Clusterer
