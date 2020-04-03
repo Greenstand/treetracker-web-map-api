@@ -546,14 +546,6 @@ var initialize = function() {
     minZoom = null; // use the minimum zoom from the current map type
   }
 
-  var mapOptions = {
-    zoom: initialZoom,
-    minZoom: minZoom,
-    mapTypeId: "hybrid",
-    mapTypeControl: false,
-    streetViewControl: false,
-    fullscreenControl: false
-  };
 
   console.log(mapOptions);
 
