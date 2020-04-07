@@ -1,12 +1,12 @@
 var DAR_ES_SAALAM_BOUNDS = {
-        south: -7.076662133793353,
-        west: 38.82617710304551,
-        north: -6.53258085734252,
-        east: 39.81494663429551
+       south: -7.842182,
+        west: 38.149433,
+        north: -6.113815,
+        east: 40.670796
       };
 
 var mapOptions = {
-        zoom: 11,
+        zoom: 10,
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,
@@ -14,6 +14,5 @@ var mapOptions = {
         restriction: {
             latLngBounds: DAR_ES_SAALAM_BOUNDS,
             strictBounds: true
-          },
-        minZoom: 11
+          }
  	  };
