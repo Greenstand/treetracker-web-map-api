@@ -7,6 +7,7 @@ var DAR_ES_SAALAM_BOUNDS = {
 
 var mapOptions = {
         zoom: 10,
+        center: {lat: -6.888822, lng: 39.316731},
         mapTypeId: 'hybrid',
         mapTypeControl: false,
         streetViewControl: false,

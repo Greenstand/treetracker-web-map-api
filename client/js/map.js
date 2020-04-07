@@ -591,8 +591,6 @@ var initialize = function() {
   });
 
   currentZoom = initialZoom;
-  //map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
-  map.setCenter({ lat: 20, lng: 0 });
 
   $("#close-button").click(function() {
     $("#tree_info_div").hide("slide", "swing", 600);
