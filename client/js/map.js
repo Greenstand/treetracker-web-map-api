@@ -80,11 +80,15 @@ function getCookie(c_name){
  */
 function checkSession(){
   var c = getCookie("visited");
-  setCookie("visited", "yes", 365); // expire in 1 year; or use null to never expire
+  var past_visitor = true;
   if (c === "yes") {
-    return 1;
+    console.log("OLD VISITOR");
+  } else {
+    console.log("NEW VISITOR");
+    past_visitor = false;
   }
-  return 0;
+  setCookie("visited", "yes", 365); // expire in 1 year; or use null to never expire
+  return past_visitor;
 }
 
 //Get the tree data and create markers with corresponding data
@@ -176,20 +180,6 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }
         });
 
-        // create infowindow object
-        var infowindow = new google.maps.InfoWindow({
-          content: "Click on the cluster to zoom into trees"
-        });
-
-        if (!checkSession()){ //only if the user is not new
-          marker.addListener('mouseover', function() {
-            infowindow.open(map, marker); // add an event listener for hovering over a marker
-            marker.addListener('mouseout', function() {
-              infowindow.close(); // add an event listener for hovering away from the marker
-            });
-          });
-        }
-
         google.maps.event.addListener(marker, "click", function() {
           fetchMarkers = false;
           var zoomLevel = map.getZoom();
@@ -253,6 +243,16 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         if (map.getZoom() > 15) {
           map.setZoom(15);
         }
+      }
+
+      // create infowindow object
+      var infowindow = new google.maps.InfoWindow({
+        content: "<div style='float:left'><img src='/img/TipPopupIcon.png' height=40 width=40></div><div style='float:right; padding: 10px;'><b>Click on the cluster to zoom into trees</b></div>"
+      });
+      //
+      if (!checkSession()) { //only if the user is new
+        // add the infowindow to a random starting marker to be visible by default when the user first loads the screen
+        infowindow.open(map, markers[Math.floor(Math.random() * markers.length)]);
       }
 
       loader.classList.remove("active");
