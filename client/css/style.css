@@ -305,3 +305,11 @@ b {
 #impact-owner-data {
   font-weight: bold;
 }
+
+#favicon {
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  right: 10px;
+  bottom: 10px;
+}
