@@ -527,8 +527,8 @@ var initialize = function() {
   console.log(wallet);
   loader = document.getElementById("map-loader");
 
-  var initialZoom = 2;
-  var minZoom = 2;
+  var initialZoom = 10;
+  var minZoom = 10;
 
   var linkZoom = parseInt(getQueryStringValue("zoom"));
   if (linkZoom) {
