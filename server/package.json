@@ -10,7 +10,7 @@
     "url": "https://github.com/Greenstand/treetracker-web-map.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll --runInBand"
   },
   "dependencies": {
     "@sentry/node": "^5.4.3",
@@ -19,5 +19,9 @@
     "morgan": "^1.9.1",
     "pg": "^7.4.0"
   },
-  "license": "AGPL"
+  "license": "AGPL",
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
+  }
 }
