@@ -4,13 +4,14 @@
   "description": "The tree map client",
   "author": "",
   "keywords": [],
-  "main": "js/map.js",
+  "main": "js/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Greenstand/treetracker-web-map.git"
   },
   "scripts": {
-    "test": "jest --watchAll --runInBand --env=jsdom"
+    "test": "jest --watchAll --runInBand --env=jsdom",
+    "build": "webpack --entry ./js/index.js --output ./js/bundle.js"
   },
   "dependencies": {
     "axios": "^0.19.2"
@@ -19,6 +20,8 @@
   "devDependencies": {
     "@testing-library/dom": "^7.5.2",
     "@testing-library/jest-dom": "^5.7.0",
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   }
 }
