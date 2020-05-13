@@ -17,6 +17,8 @@
   },
   "license": "AGPL",
   "devDependencies": {
+    "@testing-library/dom": "^7.5.2",
+    "@testing-library/jest-dom": "^5.7.0",
     "jest": "^26.0.1"
   }
 }

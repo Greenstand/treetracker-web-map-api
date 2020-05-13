@@ -15,24 +15,57 @@ describe("entity", () => {
   let app;
 
   beforeEach(() => {
-    query.mockResolvedValue({id:1, name: "zaven"});
     app = express();
-    app.use("/entity", entity);
+    app.use("/entities", entity);
+  });
+
+  afterAll(() => {
     jest.clearAllMocks();
   });
 
-  it("", async () => {
+  it("/entities/1", async () => {
+    query.mockResolvedValue({rows:[{id:1, name: "zaven"}]});
     const response = await request(app)
-      .get("/entity/1")
+      .get("/entities/1")
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
     expect(query).toHaveBeenCalledWith({
-      text: "select * from entity where id = ?",
+      text: "select * from entity where id = $1",
       values: ["1"],
     });
     expect(response.body).toMatchObject({
       id: 1,
       name: "zaven",
     });
+  });
+
+  it("/entities", async () => {
+    query.mockResolvedValue({rows:[{id:1, name: "zaven"}]});
+    const response = await request(app)
+      .get("/entities")
+    expect(response.statusCode).toBe(200);
+    expect(query).toHaveBeenCalledWith({
+      text: "select * from entity",
+      values: [],
+    });
+    expect(response.body).toMatchObject([{
+      id: 1,
+      name: "zaven",
+    }]);
+  });
+
+  it("/entities?wallet=zaven", async () => {
+    query.mockResolvedValue({rows:[{id:1, name: "zaven"}]});
+    const response = await request(app)
+      .get("/entities?wallet=zaven")
+    expect(response.statusCode).toBe(200);
+    expect(query).toHaveBeenCalledWith({
+      text: "select * from entity where wallet = $1",
+      values: ["zaven"],
+    });
+    expect(response.body).toMatchObject([{
+      id: 1,
+      name: "zaven",
+    }]);
   });
 });
