@@ -10,7 +10,7 @@ const {
 } = require("@testing-library/dom");
 require("@testing-library/jest-dom");
 const entity = require("./entity");
-require("./logo.js");
+const logo = require("./logo.js");
 
 jest.mock("./entity");
 

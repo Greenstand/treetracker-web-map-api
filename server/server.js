@@ -28,7 +28,7 @@ if(process.env.NODE_ENV == 'dev'){
   app.use(allowCrossDomain);
 }
 
-app.get('/trees', function (req, res) {
+app.get(/(\/api\/web)?\/trees/, function (req, res) {
   //console.log(req);
 
   let token = req.query['token'];
@@ -205,7 +205,7 @@ app.use(Sentry.Handlers.errorHandler());
 
 //entities API
 const entity = require("./api/entity");
-app.use("/entities", entity);
+app.use(/(\/api\/web)?\/entities/, entity);
 
 //add static files, HTML pages
 app.use(express.static(path.join(__dirname, "../client")));

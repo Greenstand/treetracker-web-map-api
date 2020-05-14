@@ -31,7 +31,7 @@ describe("entity", () => {
       },
     }));
     const e = await entity.getById(1);
-    expect(axios.get).toHaveBeenCalledWith("/entities/1");
+    expect(axios.get).toHaveBeenCalledWith("/api/web/entities/1");
     expect(e).toMatchObject({
       id: 1,
       name: "Zaven",
@@ -49,7 +49,7 @@ describe("entity", () => {
       }],
     }));
     const e = await entity.getByWallet("Zaven");
-    expect(axios.get).toHaveBeenCalledWith("/entities?wallet=Zaven");
+    expect(axios.get).toHaveBeenCalledWith("/api/web/entities?wallet=Zaven");
     expect(e).toMatchObject([{
       id: 1,
       name: "Zaven",

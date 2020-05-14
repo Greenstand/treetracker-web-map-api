@@ -28,9 +28,10 @@ var markerByPointId = {};
 var selectedTreeMarker;
 var selectedOldTreeMarker;
 
-var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
+//var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
+var treetrackerApiUrl = "/api/web/";
 
-if (configTreetrackerApi) {
+if (typeof configTreetrackerApi !== "undefined") {
   treetrackerApiUrl = configTreetrackerApi;
 }
 
@@ -133,6 +134,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     queryUrl = queryUrl + "&wallet=" + wallet;
   }
 
+  console.log("request:", queryUrl);
   req = $.get(queryUrl, function(data) {
     if (userid && data.data.length === 0) {
       showAlert();

@@ -6,14 +6,14 @@ const axios = require("axios");
 const entity = {
   name: "entity",
   getById: async function(id){
-    const res = await axios.get(`/entities/${id}`);
+    const res = await axios.get(`/api/web/entities/${id}`);
     if(res.status !== 200){
       throw Error("entity load fails");
     }
     return res.data;
   },
   getByWallet: async function(name){
-    const res = await axios.get(`/entities?wallet=${name}`);
+    const res = await axios.get(`/api/web/entities?wallet=${name}`);
     if(res.status !== 200){
       throw Error("entity load fails");
     }
