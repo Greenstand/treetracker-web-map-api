@@ -284,9 +284,13 @@ b {
 #logo-floating-map {
   position: absolute;
   bottom: 25px;
-  left: calc(100% - 161px);
-  margin-left: -60px;
+  right: 0px;
+  margin-right: 60px;
   user-select: none;
+}
+
+#logo-floating-map img {
+  max-width: 200px;
 }
 
 @media (max-width: 801px) {
