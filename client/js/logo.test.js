@@ -60,4 +60,16 @@ describe("Logo", () => {
     expect(image).toHaveAttribute("src", logoCustomer);
   });
 
+  it("logo.load('https://localhost:3000/@Zaven", async () => {
+    entity.getByWallet.mockResolvedValue([{
+      logo_url: logoCustomer,
+    }]);
+    await logo.load("https://localhost:3000/@Zaven", container);
+    expect(entity.getByWallet).toHaveBeenCalled();
+    const image = getByAltText(container, "logo");
+    expect(image).toBeDefined();
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute("src", logoCustomer);
+  });
+
 });

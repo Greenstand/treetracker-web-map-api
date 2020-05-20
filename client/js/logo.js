@@ -10,7 +10,7 @@ const logo = {
     if(m){
       wallet = m[1];
     }else{
-      const at = url.match(/http:\/\.*.*@(.\S+)/);
+      const at = url.match(/https?:\/\.*.*@(.\S+)/);
       if(at){
         wallet = at[1];
       }
