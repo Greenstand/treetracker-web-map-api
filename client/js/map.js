@@ -301,6 +301,41 @@ function showMarkerInfo(point, marker, index) {
   }
   $("#tree-image").attr("src", point["image_url"]);
   $("#tree-id").html(point["id"]);
+  $("#tree-species").html(point["domain_specific_data"]["tree_species"]);
+  $("#tree-lat").html(point["lat"]);
+  $("#tree-lon").html(point["lon"]);
+  $("#tree-altitude").html(point["domain_specific_data"]["_coordinates_altitude"]);
+  $("#tree-gps").html(point["domain_specific_data"]["_coordinates_precision"]);
+  $("#tree-dbh").html(point["domain_specific_data"]["diameter (cm)"]);
+  $("#tree-health").html(point["domain_specific_data"]["tree_health"]);
+  $("#tree-proximity").html(point["domain_specific_data"]["threat to"]);
+  $("#tree-base").html(point["domain_specific_data"]["tree_base"]);
+  $("#tree-site").html(point["domain_specific_data"]["tree_site"]);
+  $("#tree-uses").html(point["domain_specific_data"]["functional_uses"]);
+  $("#tree_leaf_picture_holder").click(function() {
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("img01");
+    modal.style.display = "block";
+    modalImg.src = point["images"]["picture_leaf_url"];
+
+      $(".close").click(function() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+      })
+   })
+
+  $("#tree_base_picture_holder").click(function() {
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("img01");
+    modal.style.display = "block";
+    modalImg.src = point["images"]["picture_base_url"];
+
+      $(".close").click(function() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+      })
+   })
+  
   $("#planter_name").html(
     point["first_name"] + " " + point["last_name"].slice(0, 1)
   );
