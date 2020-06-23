@@ -312,29 +312,24 @@ function showMarkerInfo(point, marker, index) {
   $("#tree-base").html(point["domain_specific_data"]["tree_base"]);
   $("#tree-site").html(point["domain_specific_data"]["tree_site"]);
   $("#tree-uses").html(point["domain_specific_data"]["functional_uses"]);
-  $("#tree_leaf_picture_holder").click(function() {
+  $("#tree_leaf_picture_holder").toggle(!!point["images"]["picture_leaf_url"]).click(function() {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("img01");
     modal.style.display = "block";
     modalImg.src = point["images"]["picture_leaf_url"];
-
-      $(".close").click(function() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-      })
    })
 
-  $("#tree_base_picture_holder").click(function() {
+  $("#tree_base_picture_holder").toggle(!!point["images"]["picture_base_url"]).click(function() {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("img01");
     modal.style.display = "block";
     modalImg.src = point["images"]["picture_base_url"];
+   })
 
-      $(".close").click(function() {
+  $(".close").click(function() {
         var modal = document.getElementById("myModal");
         modal.style.display = "none";
       })
-   })
   
   $("#planter_name").html(
     point["first_name"] + " " + point["last_name"].slice(0, 1)
