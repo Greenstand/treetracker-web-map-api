@@ -154,7 +154,7 @@ app.get("/trees", function (req, res) {
   } else {
 
     console.log(zoomLevel);
-    var boundingBoxQuery = "";
+    boundingBoxQuery = "";
     if( bounds ) {
       boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
     }
