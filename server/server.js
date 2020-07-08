@@ -120,6 +120,25 @@ app.get("/trees", function (req, res) {
       values: [clusterRadius]
     };
 
+
+    /*
+    var boundingBoxQuery = "";
+    if( bounds ) {
+      boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
+    }
+    query = {
+      text: `SELECT 'cluster' AS type,
+      region_id id, ST_ASGeoJson(centroid) centroid,
+      type_id as region_type,
+      count(id)
+      FROM active_tree_region tree_region
+      WHERE zoom_level = $1
+      ${boundingBoxQuery}
+      GROUP BY region_id, centroid, type_id`,
+      values: [req.query['zoom_level']]
+    };
+    */
+
   } else if (['12', '13', '14', '15'].includes(zoomLevel)) {
 
     console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
@@ -134,54 +153,23 @@ app.get("/trees", function (req, res) {
 
   } else {
 
-    // check if query is in the cached zone
-    var boundingBox;
-    if(bounds) {
-      boundingBox = bounds.split(',');
-      console.log(boundingBox);
-    }
-
-    var regionBoundingBoxQuery = "";
-
     console.log(zoomLevel);
-    if(zoomLevel >= 10) {
-      console.log('greater eq 10');
-
-      if( bounds ) {
-        regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
-      }
-
-      query = {
-        text: `SELECT 'cluster' AS type,
-			  region.id, ST_ASGeoJson(region.centroid) centroid,
-                 region.type_id as region_type,
-                 count(tree_region.id)
-                 FROM tree_region
-                 JOIN trees
-                 ON trees.id = tree_region.tree_id
-                 AND trees.active = TRUE
-                 JOIN region
-                 ON region.id = region_id
-                 WHERE zoom_level = $1
-                 ${regionBoundingBoxQuery}
-                 GROUP BY region.id`,
-        values: [req.query['zoom_level']]
-      };
-
-    } else {
-
-      query = {
-        text: `SELECT 'cluster' AS type,
-             region_id id, ST_ASGeoJson(centroid) centroid,
-             type_id as region_type,
-             count(id)
-             FROM active_tree_region tree_region
-             WHERE zoom_level = $1
-             GROUP BY region_id, centroid, type_id`,
-        values: [req.query['zoom_level']]
-      };
-
+    var boundingBoxQuery = "";
+    if( bounds ) {
+      boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
     }
+
+    query = {
+      text: `SELECT 'cluster' AS type,
+      region_id id, ST_ASGeoJson(centroid) centroid,
+      type_id as region_type,
+      count(id)
+      FROM active_tree_region tree_region
+      WHERE zoom_level = $1
+      ${boundingBoxQuery}
+      GROUP BY region_id, centroid, type_id`,
+      values: [req.query['zoom_level']]
+    };
 
   }
 
