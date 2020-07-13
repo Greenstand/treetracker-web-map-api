@@ -21,14 +21,6 @@ const dir = path.join(__dirname, "../");
 console.log("dir:", dir);
 app.use(express.static(dir));
 
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
-//app.use(
-//  webpackDevMiddleware(compiler, {
-//    publicPath: config.output.publicPath,
-//  })
-//);
-
 //proxy the api
 app.use(
   "/api/web",
@@ -39,6 +31,14 @@ app.use(
     pathRewrite: {
       "^/api/web": "",
     },
+  })
+);
+
+// Tell express to use the webpack-dev-middleware and use the webpack.config.js
+// configuration file as a base.
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
   })
 );
 

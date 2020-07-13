@@ -7,7 +7,8 @@ module.exports = {
   entry: "./js/index.js",
   devtool: "inline-source-map",
   devServer: {
-    contentBase: "./",
+    contentBase: ".",
+    watchContentBase: true,
   },
   plugins: [
     //    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
