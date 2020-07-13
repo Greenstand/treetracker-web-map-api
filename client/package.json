@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "jest --watchAll --runInBand --env=jsdom",
-    "build": "webpack --entry ./js/index.js --output ./js/bundle.js"
+    "build": "webpack --entry ./js/index.js --output ./js/bundle.js",
+    "dev": "node ./js/test.js"
   },
   "dependencies": {
     "axios": "^0.19.2"
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@testing-library/dom": "^7.5.2",
     "@testing-library/jest-dom": "^5.7.0",
+    "http-proxy-middleware": "^1.0.5",
     "jest": "^26.0.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
