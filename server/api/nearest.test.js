@@ -13,6 +13,8 @@ Pool.mockImplementation(
 
 const nearest = require("./nearest");
 
+const nearestResult = [{"st_asgeojson":"{\"type\":\"Point\",\"coordinates\":[39.1089215842116,-5.12839483715479]}"}];
+
 describe("nearest", () => {
   let app;
 
@@ -25,10 +27,10 @@ describe("nearest", () => {
     jest.clearAllMocks();
   });
 
-  it("/nearest?zoom_level=16&longitude=85.5&latitude=23.4", async () => {
-    query.mockResolvedValue({ rows: [{ id: 1, name: "zaven" }] });
+  it("/nearest?zoom_level=16&lng=85.5&lat=23.4", async () => {
+    query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=16&longitude=85.5&latitude=23.4"
+      "/nearest?zoom_level=16&lng=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
@@ -41,10 +43,10 @@ describe("nearest", () => {
     });
   });
 
-  it("/nearest?zoom_level=14&longitude=85.5&latitude=23.4", async () => {
-    query.mockResolvedValue({ rows: [{ id: 1, name: "zaven" }] });
+  it("/nearest?zoom_level=14&lng=85.5&lat=23.4", async () => {
+    query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=14&longitude=85.5&latitude=23.4"
+      "/nearest?zoom_level=14&lng=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
@@ -57,10 +59,10 @@ describe("nearest", () => {
     });
   });
 
-  it("/nearest?zoom_level=8&longitude=85.5&latitude=23.4", async () => {
-    query.mockResolvedValue({ rows: [{ id: 1, name: "zaven" }] });
+  it("/nearest?zoom_level=8&lng=85.5&lat=23.4", async () => {
+    query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=8&longitude=85.5&latitude=23.4"
+      "/nearest?zoom_level=8&lng=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
