@@ -35,7 +35,7 @@ router.get("/", async function (req, res, next) {
     chai.expect(lng).not.NaN;
     chai.expect(lat).not.NaN;
     let query;
-    if (zoom_level >= 15) {
+    if (zoom_level <= 11) {
       query = {
         text: `
     SELECT
@@ -65,7 +65,7 @@ router.get("/", async function (req, res, next) {
     `,
         values: [],
       };
-    } else if (zoom_level <= 11) {
+    } else if (zoom_level >= 15) {
       query = {
         text: `
   SELECT

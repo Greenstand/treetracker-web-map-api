@@ -35,7 +35,7 @@ describe("nearest", () => {
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
     expect(query).toHaveBeenCalledWith({
-      text: expect.stringMatching(/select.*active_tree_region.*/is),
+      text: expect.stringMatching(/select.*trees.*/is),
       values: expect.anything(),
     });
     expect(response.body).toMatchObject({
@@ -67,7 +67,7 @@ describe("nearest", () => {
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
     expect(query).toHaveBeenCalledWith({
-      text: expect.stringMatching(/select.*trees.*/is),
+      text: expect.stringMatching(/select.*active_tree_region.*/is),
       values: expect.anything(),
     });
     expect(response.body).toMatchObject({
