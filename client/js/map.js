@@ -3,6 +3,7 @@ const NO = "NO";
 var map = undefined; //Google Map object
 var mc = undefined; //Marker Clusterer
 var markers = []; //All the markers
+var mapModel = undefined;
 var token;
 var organization;
 var treeid;
@@ -261,6 +262,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       firstRender = false;
     }
     console.log("init markert finished, loaded:", markers.length);
+    //debugger;
+    mapModel.checkArrow();
   });
 };
 
@@ -677,6 +680,11 @@ var initialize = function() {
     treeInfoDivShowing = false;
     $("#map-canvas").css("margin-left", "0px");
   });
+
+  //initialize MapModel
+  mapModel = new MapModel();
+  mapModel.map = map;
+  mapModel.markers = markers;
 };
 
 google.maps.event.addDomListener(window, "load", initialize);

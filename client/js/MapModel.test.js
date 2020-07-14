@@ -38,10 +38,7 @@ describe("MapModel", () => {
       data: {
         nearest: {
           type: "cluster",
-          coordinate: {
-            lat: 20,
-            lng: 0,
-          }
+          coordinates: [0, 20]
         },
       },
     }));
@@ -58,10 +55,11 @@ describe("MapModel", () => {
       getBounds: () => ({
         contains: () => false,
       }),
+      getZoom: () => 15,
     };
     await mapModel.checkArrow();
     expect(axios.get).toHaveBeenCalledWith(
-      expect.stringMatching(/\/api\/web\/nearest.*/)
+      expect.stringMatching(/\/api\/web\/nearest\?zoom_level=15&lat=0&lng=0/)
     );
     expect(mapModel.showArrow).toHaveBeenCalledWith("north");
   });

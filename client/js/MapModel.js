@@ -30,28 +30,29 @@ class MapModel {
    * To check if need display arrow
    */
   async checkArrow(){
-    if(this._markers.length === 0){
+    if(
+      //no markers
+      this._markers.length === 0 || 
+      //all markers out of bounds
+      this._markers.every(marker => !this._map.getBounds().contains(marker.getPosition()))
+    ){
       //no markers, need to find nearest
-      const res = await axios.get(`/api/web/nearest?zoom_level=`);
-      if(res.status !== 200){
-        throw Error("request failed");
-      }
-      const {nearest} = res.data;
+      const center = this._map.getCenter();
+      console.log("current center:", center.toJSON());
+      const nearest = await this.getNearest();
       if(nearest){
         //find it
         //get nearest markers
-        const center = this._map.getCenter();
-        console.log("current center:", center.toJSON());
-        chai.assert.isNumber(nearest.coordinate.lat);
-        chai.assert.isNumber(nearest.coordinate.lng);
+        chai.assert.isNumber(nearest.lat);
+        chai.assert.isNumber(nearest.lng);
         if(!this._map.getBounds().contains({
-          lat: nearest.coordinate.lat,
-          lng: nearest.coordinate.lng,
+          lat: nearest.lat,
+          lng: nearest.lng,
         })){
           console.log("out of bounds, display arrow");
           const dist = {
-            lat: nearest.coordinate.lat,
-            lng: nearest.coordinate.lng,
+            lat: nearest.lat,
+            lng: nearest.lng,
           };
           const distanceLat = google.maps.geometry.spherical.computeDistanceBetween(
             center,
@@ -107,6 +108,8 @@ class MapModel {
           this.hideArrow();
         }
       }
+    }else{
+      this.hideArrow();
     }
   }
 
@@ -122,43 +125,47 @@ class MapModel {
     const arrow = $("#arrow");
     chai.expect(direction).oneOf(["north", "south", "west", "east"]);
     if(direction === "north"){
+      arrow.removeClass();
       arrow.addClass("north");
-      arrow.removeClass("south");
-      arrow.removeClass("west");
-      arrow.removeClass("east");
-      arrow.css("top", "0");
-      arrow.css("left", "50%");
-      arrow.css("right", "unset");
-      arrow.css("bottom", "unset");
     }else if(direction === "south"){
+      arrow.removeClass();
       arrow.addClass("south");
-      arrow.removeClass("north");
-      arrow.removeClass("west");
-      arrow.removeClass("east");
-      arrow.css("top", "unset");
-      arrow.css("left", "50%");
-      arrow.css("right", "unset");
-      arrow.css("bottom", "0");
     }else if(direction === "west"){
+      arrow.removeClass();
       arrow.addClass("west");
-      arrow.removeClass("south");
-      arrow.removeClass("north");
-      arrow.removeClass("east");
-      arrow.css("top", "50%");
-      arrow.css("left", "0");
-      arrow.css("right", "unset");
-      arrow.css("bottom", "unset");
     }else if(direction === "east"){
+      arrow.removeClass();
       arrow.addClass("east");
-      arrow.removeClass("south");
-      arrow.removeClass("west");
-      arrow.removeClass("north");
-      arrow.css("top", "50%");
-      arrow.css("left", "unset");
-      arrow.css("right", "0");
-      arrow.css("bottom", "unset");
     }
     arrow.show();
+  }
+
+  /*
+   * pan map to nearest point
+   */
+  async gotoNearest(){
+    const nearest = await this.getNearest();
+    if(nearest){
+      this._map.panTo(nearest);
+    }
+  }
+
+  async getNearest(){
+    const center = this._map.getCenter();
+    console.log("current center:", center.toJSON());
+    const zoom_level = this._map.getZoom();
+    const res = await axios.get(`/api/web/nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`);
+    if(res.status !== 200){
+      throw Error("request failed");
+    }
+    let {nearest} = res.data;
+    nearest = nearest? {
+      lat: nearest.coordinates[1],
+      lng: nearest.coordinates[0],
+    }:
+    undefined;
+    console.log("get nearest:", nearest);
+    return nearest;
   }
 }
 

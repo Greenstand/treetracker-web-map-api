@@ -32,7 +32,7 @@
       padding: 0;
     }
   </style>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry"></script>
   <script type="text/javascript" src="/js/jquery-2.1.3.min.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/js/moment.min.js"></script>
@@ -115,6 +115,14 @@
     </div>
   </div>
   <div id="map-canvas"></div>
+  <div id="arrow" onclick="javascript:mapModel.gotoNearest();" class="west" >
+    <div class="round">
+      <div id="cta">
+        <span class="arrow primera next "></span>
+        <span class="arrow segunda next "></span>
+      </div>
+    </div>
+  </div>
 	<div id="map-loader" class="page-loader active">
 		<div class="loader"></div>
   </div>
