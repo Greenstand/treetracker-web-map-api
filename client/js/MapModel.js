@@ -144,6 +144,7 @@ class MapModel {
    * pan map to nearest point
    */
   async gotoNearest(){
+    this.hideArrow();
     const nearest = await this.getNearest();
     if(nearest){
       this._map.panTo(nearest);
