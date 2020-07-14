@@ -260,6 +260,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       loader.classList.remove("active");
       firstRender = false;
     }
+    console.log("init markert finished, loaded:", markers.length);
   });
 };
 

@@ -12,10 +12,11 @@
   "scripts": {
     "test": "jest --watchAll --runInBand --env=jsdom",
     "build": "webpack --entry ./js/index.js --output ./js/bundle.js",
-    "dev": "nodemon --watch index.html ./js/test.js"
+    "dev": "nodemon --watch index.html ./js/testServer.js"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "chai": "^4.2.0"
   },
   "license": "AGPL",
   "devDependencies": {
