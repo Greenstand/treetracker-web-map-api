@@ -178,9 +178,50 @@ app.get("/trees", function (req, res) {
     .then(function (data) {
       console.log('query ok');
       console.log(data.rows)
-      res.status(200).json({
-        data: data.rows
-      })
+
+      // if we are in zoom level 9 or less
+      // get the biggest cluster within each region
+      // at a higher zoom level after zooming (zoom in moves 2 zoom levels ) 
+      if(zoomLevel <= 9){
+        const zoomTargetsQuery = {
+          text: `SELECT DISTINCT ON (region.id)
+                region.id region_id,
+                contained.region_id most_populated_subregion_id,
+                contained.total
+                FROM
+                 (
+                  SELECT region_id, zoom_level
+                  FROM active_tree_region
+                  WHERE zoom_level = $1
+                  GROUP BY region_id, zoom_level
+                 ) populated_region
+                JOIN region
+                ON region.id = populated_region.region_id
+                JOIN (
+                  SELECT region_id, zoom_level, count(active_tree_region.id) AS total, centroid
+                  FROM active_tree_region
+                  WHERE zoom_level = $2
+                  GROUP BY region_id, zoom_level, centroid
+                ) contained
+                ON ST_CONTAINS(region.geom, contained.centroid)
+                WHERE true ${boundingBoxQuery}
+                ORDER BY region.id, total DESC`
+        }
+        pool.query(zoomTargetsQuery)
+          .then(function (zoomTargetsData) {
+            res.status(200).json({
+              data: data.rows,
+              zoomTargets: zoomTargetsData.rows
+            })
+          })
+
+      } else {
+
+        res.status(200).json({
+          data: data.rows
+        })
+
+      }
     })
     .catch(function(error) {
       console.log('query not ok');
