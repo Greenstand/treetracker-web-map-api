@@ -184,6 +184,13 @@ app.get("/trees", function (req, res) {
       // at a higher zoom level after zooming (zoom in moves 2 zoom levels ) 
       if(zoomLevel <= 9){
         console.log('get zoom targets data');
+
+
+        boundingBoxQuery = "";
+        if( bounds ) {
+          boundingBoxQuery = ' AND region.centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
+        }
+
         const zoomTargetsQuery = {
           text: `SELECT DISTINCT ON (region.id)
                 region.id region_id,
