@@ -83,8 +83,8 @@ app.get("/trees", function (req, res) {
   let clusterRadius = parseFloat(req.query['clusterRadius']);
   console.log(clusterRadius);
   var sql, query
-  const zoomLevel = req.query['zoom_level'];
-  if (parseInt(zoomLevel) > 15 || treeid != null ) {
+  const zoomLevel = parseInt(req.query['zoom_level']);
+  if (zoomLevel > 15 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
@@ -183,11 +183,14 @@ app.get("/trees", function (req, res) {
       // get the biggest cluster within each region
       // at a higher zoom level after zooming (zoom in moves 2 zoom levels ) 
       if(zoomLevel <= 9){
+        console.log('get zoom targets data');
         const zoomTargetsQuery = {
           text: `SELECT DISTINCT ON (region.id)
                 region.id region_id,
                 contained.region_id most_populated_subregion_id,
-                contained.total
+                contained.total,
+                contained.zoom_level,
+                ST_ASGeoJson(contained.centroid) centroid
                 FROM
                  (
                   SELECT region_id, zoom_level
@@ -205,15 +208,23 @@ app.get("/trees", function (req, res) {
                 ) contained
                 ON ST_CONTAINS(region.geom, contained.centroid)
                 WHERE true ${boundingBoxQuery}
-                ORDER BY region.id, total DESC`
+                ORDER BY region.id, total DESC`,
+          values: [zoomLevel, zoomLevel + 2]
         }
+        console.log(zoomTargetsQuery);
         pool.query(zoomTargetsQuery)
           .then(function (zoomTargetsData) {
+            console.log('got zoom targets data');
             res.status(200).json({
               data: data.rows,
               zoomTargets: zoomTargetsData.rows
             })
           })
+          .catch(function(error) {
+            console.log('query not ok');
+            console.log(error);
+            throw(error);
+          });
 
       } else {
 
