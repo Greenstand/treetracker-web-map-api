@@ -6,13 +6,6 @@ jest.mock("axios");
 describe("MapModel", () => {
 
   beforeEach(async () => {
-  });
-
-  afterAll(() => {
-    jest.clearAllMock();
-  });
-
-  it("checkArrow", async () => {
     //mock jQuery
     global.$ = () => ({
       addClass: jest.fn(),
@@ -33,6 +26,15 @@ describe("MapModel", () => {
         LatLng: jest.fn(),
       },
     };
+  });
+
+  afterAll(() => {
+    jest.clearAllMock();
+    global.$ = undefined;
+    global.google = undefined;
+  });
+
+  it("checkArrow", async () => {
     axios.get = jest.fn(() => ({
       status: 200,
       data: {
@@ -59,10 +61,73 @@ describe("MapModel", () => {
     };
     await mapModel.checkArrow();
     expect(axios.get).toHaveBeenCalledWith(
-      expect.stringMatching(/\/api\/web\/nearest\?zoom_level=15&lat=0&lng=0/)
+      expect.stringMatching(/\/api\/web\/nearest\?zoom_level=15&lat=0&lng=0/),
+      expect.anything(),
     );
     expect(mapModel.showArrow).toHaveBeenCalledWith("north");
   });
+
+  describe("Simulate slow API request, and previous request was canceled", () => {
+    let cancel = jest.fn();
+
+    beforeEach(() => {
+      axios.get = jest.fn()
+        //slow api
+        .mockImplementationOnce(() => {
+          return new Promise(resolve => {
+            setTimeout(() => {
+              resolve(true);
+            }, 10000);
+          });
+        })
+        .mockImplementationOnce(() => ({
+          status: 200,
+          data: {
+            nearest: {
+              type: "cluster",
+              coordinates: [0, 20]
+            },
+          },
+      }));
+      //mock axios cancel
+      axios.CancelToken = jest.fn()
+        .mockImplementation((newFn) => {
+          newFn(cancel);
+        });
+    });
+
+
+    it("", (done) => {
+      const mapModel = new MapModel();
+      jest.spyOn(mapModel, "showArrow");
+      expect(mapModel).toBeInstanceOf(MapModel);
+      mapModel.markers = [];
+      mapModel.map = {
+        getCenter: () => ({
+          lat: () => 0,
+          lng: () => 0,
+          toJSON: () => ({lat:0,lng:0}),
+        }),
+        getBounds: () => ({
+          contains: () => false,
+        }),
+        getZoom: () => 15,
+      };
+      mapModel.checkArrow();
+      setTimeout(() => {
+        mapModel.checkArrow()
+          .then(() => {
+            expect(cancel).toHaveBeenCalledTimes(1);
+            done();
+          });
+      }, 10);
+//      expect(axios.get).toHaveBeenCalledWith(
+//        expect.stringMatching(/\/api\/web\/nearest\?zoom_level=15&lat=0&lng=0/)
+//      );
+//      expect(mapModel.showArrow).toHaveBeenCalledWith("north");
+    });
+  });
+
 
 
 //  it("module defined", async () => {

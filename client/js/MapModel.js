@@ -8,6 +8,7 @@ class MapModel {
   constructor(){
     this._markers = [];
     this._map = undefined;
+    this._cancelAxios = undefined;
   }
 
   set markers(mks){
@@ -30,6 +31,7 @@ class MapModel {
    * To check if need display arrow
    */
   async checkArrow(){
+    console.log("check arrow");
     if(
       //no markers
       this._markers.length === 0 || 
@@ -38,7 +40,6 @@ class MapModel {
     ){
       //no markers, need to find nearest
       const center = this._map.getCenter();
-      console.log("current center:", center.toJSON());
       const nearest = await this.getNearest();
       if(nearest){
         //find it
@@ -152,10 +153,21 @@ class MapModel {
   }
 
   async getNearest(){
+    //try to cancel previous request if any
+    //await this._source.cancel("cancel prevous nearest request");
+    if(this._cancelAxios){
+      console.log("cancel");
+      this._cancelAxios("cancel previous nearest request");
+    }
     const center = this._map.getCenter();
     console.log("current center:", center.toJSON());
     const zoom_level = this._map.getZoom();
-    const res = await axios.get(`/api/web/nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`);
+    const res = await axios.get(`/api/web/nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`, {
+      cancelToken: new axios.CancelToken((c) => {
+        this._cancelAxios = c;
+      }),
+    });
+    this._cancelAxios = undefined;
     if(res.status !== 200){
       throw Error("request failed");
     }
