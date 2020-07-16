@@ -232,4 +232,18 @@ Future:
 * View photo together with tree data
 * View planter profile. 
 
+### How to test
 
+We use Jest to build tests.
+
+1. To test client
+```
+cd client
+npm test
+```
+
+2. To test server
+```
+cd server
+npm test
+```
