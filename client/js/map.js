@@ -95,8 +95,10 @@ function checkSession(){
 
 //Get the tree data and create markers with corresponding data
 var initMarkers = function(viewportBounds, zoomLevel) {
+  console.log("initMarkers:", viewportBounds, zoomLevel);
   // no need to load this up at every tiny movement
   if (!fetchMarkers) {
+    console.log("initMarkers quit");
     return;
   }
 
@@ -105,6 +107,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 
   console.log("Cluster radius: " + clusterRadius);
   if (req != null) {
+    console.log("initMarkers abort");
     req.abort();
   }
   var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
@@ -137,6 +140,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 
   console.log("request:", queryUrl);
   req = $.get(queryUrl, function(data) {
+    console.log("initMarkers, get");
     if (userid && data.data.length === 0) {
       showAlert();
     }
@@ -240,12 +244,34 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           userid != null ||
           wallet != null)
       ) {
-        map.fitBounds(initialBounds);
-        map.setCenter(initialBounds.getCenter());
-        map.setZoom(map.getZoom() - 1);
-        if (map.getZoom() > 15) {
-          map.setZoom(15);
-        }
+        console.log("first render!!!!");
+//Fri Jul 17 12:04:12 CST 2020 to change to new algorithm to fit map
+//        map.fitBounds(initialBounds);
+//        map.setCenter(initialBounds.getCenter());
+//        map.setZoom(map.getZoom() - 1);
+//        if (map.getZoom() > 15) {
+//          map.setZoom(15);
+//        }
+        const bounds = mapTools.getInitialBounds(
+          data.data.map(i => {
+            if(i.type === "cluster"){
+              const c = JSON.parse(i.centroid);
+              return {
+                lat: c.coordinates[1],
+                lng: c.coordinates[0],
+              };
+            }else if(i.type === "point"){
+              return {
+                lat: i.lat,
+                lng: i.lon,
+              };
+            }
+          }),
+          window.innerWidth,
+          window.innerHeight,
+        );
+        map.panTo(bounds.center);
+        map.setZoom(bounds.zoomLevel);
       }
 
       // create infowindow object
@@ -523,6 +549,7 @@ function toUrlValueLonLat(bounds) {
 
 function determineInitialSize(latLng) {
   if (firstRender) {
+    console.log("extends initial bounds");
     initialBounds.extend(latLng);
   }
 }
@@ -608,16 +635,17 @@ var initialize = function() {
     initialZoom = linkZoom;
   }
 
-  if (
-    token != null ||
-    organization != null ||
-    treeid != null ||
-    userid !== null ||
-    donor != null
-  ) {
-    initialZoom = 10;
-    minZoom = null; // use the minimum zoom from the current map type
-  }
+//Fri Jul 17 14:26:03 CST 2020  do not set initial zoom when there is some parameters
+//  if (
+//    token != null ||
+//    organization != null ||
+//    treeid != null ||
+//    userid !== null ||
+//    donor != null
+//  ) {
+//    initialZoom = 10;
+//    minZoom = null; // use the minimum zoom from the current map type
+//  }
 
   var mapOptions = {
     zoom: initialZoom,
@@ -651,25 +679,29 @@ var initialize = function() {
   });
 
   google.maps.event.addListener(map, "idle", function() {
+    console.log("triger idle...");
     var zoomLevel = !firstInteraction ? initialZoom : map.getZoom();
     console.log("New zoom level: " + zoomLevel);
     currentZoom = zoomLevel;
     initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
   });
 
-  // Adjust map bounds after it’s fully loaded, but only before first interaction
-  google.maps.event.addListener(map, "tilesloaded", function() {
-    if (
-      !firstInteraction &&
-      (token != null ||
-        organization != null ||
-        treeid != null ||
-        userid !== null ||
-        donor != null)
-    ) {
-      map.fitBounds(initialBounds);
-    }
-  });
+//Fri Jul 17 14:26:56 CST 2020  do not use titlesloaded to set initial bounds
+//use the firstRender in initMarkers fn to load initial bounds
+//  // Adjust map bounds after it’s fully loaded, but only before first interaction
+//  google.maps.event.addListener(map, "tilesloaded", function() {
+//    if (
+//      !firstInteraction &&
+//      (token != null ||
+//        organization != null ||
+//        treeid != null ||
+//        userid !== null ||
+//        donor != null)
+//    ) {
+//      console.log("before first interaction, fit the map", initialBounds.toJSON());
+//      map.fitBounds(initialBounds);
+//    }
+//  });
 
   currentZoom = initialZoom;
   //map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
