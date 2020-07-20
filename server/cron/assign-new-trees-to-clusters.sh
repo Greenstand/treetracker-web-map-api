@@ -1,14 +1,15 @@
-REBUILD_CLUSTERS_PID_FILE=/var/run/assign-clusters.pid
+PID_FILE=/var/run/assign-clusters.pid
+LOG_FILE=/var/log/treetracker-cron-assign-clusters
 
-if [ -e $REBUILD_CLUSTERS_PID_FILE ]; then
+if [ -e $PID_FILE ]; then
   echo "script is already running"
   exit
 fi
 
 # Ensure PID file is removed on program exit.
-trap "rm -f -- '$REBUILD_CLUSTERS_PID_FILE'" EXIT
+trap "rm -f -- '$PID_FILE'" EXIT
 
 # Create a file with current PID to indicate that process is running.
-echo $$ > "$REBUILD_CLUSTERS_PID_FILE"
+echo $$ > "$PID_FILE"
 
-/usr/bin/node /root/treetracker-web-map/server/cron/assign-new-trees-to-clusters.js >>/root/treetracker-web-map/server/cron/log-file.txt 2>/root/treetracker-web-map/server/cron/log-file.txt
+/usr/bin/node /root/treetracker-map-api/cron/assign-new-trees-to-clusters.js >>$LOG_FILE 2>>$LOG_FILE
