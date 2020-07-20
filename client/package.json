@@ -22,6 +22,7 @@
   "devDependencies": {
     "@testing-library/dom": "^7.5.2",
     "@testing-library/jest-dom": "^5.7.0",
+    "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.5",
     "jest": "^26.0.1",
     "nodemon": "^2.0.4",

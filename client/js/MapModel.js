@@ -5,7 +5,9 @@ const axios = require("axios");
 const chai = require("chai");
 
 class MapModel {
-  constructor(){
+  constructor(apiUrl){
+    console.log('ok' + apiUrl);
+    this.apiUrl = apiUrl;
     this._markers = [];
     this._map = undefined;
     this._cancelAxios = undefined;
@@ -162,7 +164,7 @@ class MapModel {
     const center = this._map.getCenter();
     console.log("current center:", center.toJSON());
     const zoom_level = this._map.getZoom();
-    const res = await axios.get(`/api/web/nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`, {
+    const res = await axios.get(this.apiUrl + `nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`, {
       cancelToken: new axios.CancelToken((c) => {
         this._cancelAxios = c;
       }),
