@@ -209,6 +209,10 @@ const entity = require("./api/entity");
 //app.use(/(\/api\/web)?\/entities/, entity);
 app.use("/entities", entity);
 
+//nearest API
+const nearest = require("./api/nearest");
+app.use("/nearest", nearest);
+
 //add static files, HTML pages
 app.use(express.static(path.join(__dirname, "../client")));
 app.get("/", (req, res) => {
