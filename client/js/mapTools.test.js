@@ -111,3 +111,38 @@ describe("getInitialBounds", () => {
     });
   });
 });
+
+describe("zoomInToLocation", () => {
+
+  it("location= (.1,.1) bounds= (-.5, -1)(.5,1) zoomRation = 0.5 should get:bounds= (-0.15,-0.4),(0.35, 0.6) ", () => {
+    const bounds = mapTools.zoomInToLocation(
+      {
+        lat: 0.1,
+        lng: 0.1,
+      },
+      {
+        getNorthEast: () => ({
+          lng: () => 1,
+          lat: () => 0.5,
+        }),
+        getSouthWest: () => ({
+          lng: () => -1,
+          lat: () => -0.5,
+        }),
+        getCenter: () => ({lat:() => 0, lng:() => 0})
+      },
+      0.5,
+    );
+    expect(bounds).toMatchObject({
+      southWest: {
+        lat: -0.15,
+        lng: -0.4
+      },
+      northEast: {
+        lat: 0.35,
+        lng: 0.6,
+      },
+    });
+  });
+});
+

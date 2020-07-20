@@ -144,9 +144,65 @@ function getInitialBounds (locations, width, height){
   return result;
 }
 
+/*
+ * On the current map (with a bounds), zoom in the map, to go to some 
+ * location(lat,lng), return the result bounds for the new map viewport.
+ *
+ * This works just like: 
+ *  map.panTo(xxx);
+ *  map.setZoom(map.getZoom() + 2);
+ *
+ */
+function zoomInToLocation(location, currentBounds, zoomRatio){
+  chai.expect(location).property("lat").a("number");
+  chai.expect(location).property("lng").a("number");
+  chai.expect(zoomRatio).a("number");
+  const center = {
+    lat: currentBounds.getCenter().lat(),
+    lng: currentBounds.getCenter().lng(),
+  }
+  const angleLat = getAngleLat(
+    currentBounds.getSouthWest().lat(),
+    center.lat,
+  );
+  const angleLng = getAngleLng(
+    center.lng,
+    currentBounds.getSouthWest().lng(),
+  );
+  const southWest = 
+    go(
+      "west", 
+      go(
+        "south", 
+        location, 
+        angleLat * zoomRatio
+      ),
+      angleLng * zoomRatio
+    );
+  chai.expect(southWest.lat).a("number").not.NaN;
+  chai.expect(southWest.lng).a("number").not.NaN;
+  const northEast = 
+    go(
+      "east", 
+      go(
+        "north", 
+        location, 
+        angleLat * zoomRatio
+      ),
+      angleLng * zoomRatio
+    );
+  chai.expect(northEast.lat).a("number").not.NaN;
+  chai.expect(southWest.lng).a("number").not.NaN;
+  return {
+    southWest,
+    northEast,
+  };
+}
+
 module.exports = {
   go,
   getAngleLat,
   getAngleLng,
   getInitialBounds,
+  zoomInToLocation,
 };

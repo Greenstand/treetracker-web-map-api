@@ -32,16 +32,6 @@ var selectedOldTreeMarker;
 //var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 var treetrackerApiUrl = "/api/web/";
 
-const STATE = {
-  //original state
-  NONE: "none",
-  //user clicked a marker
-  CLICKED: "clicked",
-  //run initMarkers, and finished (fetched data from server, and pushed markers into map)
-  MARKER_LOADED: "marker_loaded",
-}
-var state = STATE.NONE;
-
 if (typeof configTreetrackerApi !== "undefined") {
   treetrackerApiUrl = configTreetrackerApi;
 }
@@ -202,7 +192,6 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           var zoomLevel = map.getZoom();
           map.setZoom(zoomLevel + 2);
           map.panTo(marker.position);
-          state = STATE.CLICKED;
         });
         markers.push(marker);
       } else if (item.type == "point") {
@@ -298,31 +287,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       loader.classList.remove("active");
       firstRender = false;
     }
-    //check zoomTargets
-    if(state === STATE.CLICKED && data.zoomTargets){
-      console.log("returned zoomTargets, handle it");
-      //sort
-      const largestCluster = data.zoomTargets
-        .reduce((a, c) => {
-          if(a && parseInt(a.total) > parseInt(c.total)){
-            return a;
-          }else{
-            return c;
-          }
-        }, undefined);
-      if(largestCluster){
-        const json = JSON.parse(largestCluster.centroid);
-        const center = {
-          lat: json.coordinates[1],
-          lng: json.coordinates[0],
-        };
-        map.panTo(center);
-        map.setZoom(largestCluster.zoom_level);
-        console.log("according zoom target, move map to:", center, largestCluster.zoom_level);
-      }
-    }
 
-    state = STATE.MARKER_LOADED;
     console.log("init markert finished, loaded:", markers.length);
     //debugger;
     mapModel.checkArrow();
