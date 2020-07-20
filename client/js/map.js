@@ -682,7 +682,8 @@ var initialize = function() {
   });
 
   //initialize MapModel
-  mapModel = new MapModel();
+  console.log("MAKING MAP MODELL");
+  mapModel = new MapModel(treetrackerApiUrl);
   mapModel.map = map;
   mapModel.markers = markers;
 };
