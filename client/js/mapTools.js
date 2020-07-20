@@ -75,7 +75,8 @@ function getInitialBounds (locations, width, height){
   // If there is only a single cluster, create a bounding box centered on that cluster with a .1 degree latitude height and .1 degree longitude width
   if(locations.length === 1){
     const location = locations[0];
-    const degrees = 0.05
+    const degrees = 0.005
+    console.log(degrees);
     const cornerWestNorth = 
       go(
         "north",
