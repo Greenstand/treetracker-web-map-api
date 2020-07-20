@@ -93,7 +93,7 @@ function checkSession(){
   return past_visitor;
 }
 
-function request(viewportBounds, zoomLevel){
+function request(viewportBounds, zoomLevel, forceBounds/*new parameter, force to add bounds in query*/){
   return new Promise((resolve, reject) => {
     clusterRadius =
       getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
@@ -107,14 +107,16 @@ function request(viewportBounds, zoomLevel){
     var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
     queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
     if (
-      currentZoom >= 4 &&
-      !(
-        (token != null ||
-          organization != null ||
-          treeid != null ||
-          userid !== null) &&
-        firstRender == true
-      )
+      (
+        currentZoom >= 4 &&
+        !(
+          (token != null ||
+            organization != null ||
+            treeid != null ||
+            userid !== null) &&
+          firstRender == true
+        )
+      ) || forceBounds
     ) {
       queryUrl = queryUrl + "&bounds=" + viewportBounds;
     }
@@ -199,10 +201,74 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           });
 
           google.maps.event.addListener(marker, "click", function() {
-            fetchMarkers = false;
-            var zoomLevel = map.getZoom();
-            map.setZoom(zoomLevel + 2);
-            map.panTo(marker.position);
+            //get the bounds of this marker, after zoomed in
+            const bounds = mapTools.zoomInToLocation(
+              {
+                lat: marker.getPosition().lat(),
+                lng: marker.getPosition().lng(),
+              },
+              map.getBounds(),
+              /*
+               * If don't zoom in enough, maybe the zoomTarget would be 
+               * not what the user wanted, it would target to another cluster if 
+               * it appear in the bounds (zoomed) too.
+               */
+              0.1,
+            );
+            console.log("zoomed bounds:", bounds);
+            const boundsGoogle = new google.maps.LatLngBounds(
+              bounds.southWest, bounds.northEast
+            );
+            /*
+             * try to request server to resolve the zoom target
+             * if failed, then use old way to do so.
+             */
+            const zoomLevel = map.getZoom();
+            request(
+              toUrlValueLonLat(boundsGoogle), 
+              /*
+               * Potential problem: here the zoomLevel is nor accurate, 
+               * just an estimate value
+               */
+              zoomLevel + 2, 
+              true
+            )
+              .then(data => {
+                let hasHandled = false;
+                //check zoomTargets
+                if(data.zoomTargets){
+                  console.log("returned zoomTargets, handle it");
+                  //sort
+                  const largestCluster = data.zoomTargets
+                    .reduce((a, c) => {
+                      if(a && parseInt(a.total) > parseInt(c.total)){
+                        return a;
+                      }else{
+                        return c;
+                      }
+                    }, undefined);
+                  if(largestCluster){
+                    const json = JSON.parse(largestCluster.centroid);
+                    const center = {
+                      lat: json.coordinates[1],
+                      lng: json.coordinates[0],
+                    };
+                    map.panTo(center);
+                    map.setZoom(largestCluster.zoom_level);
+                    hasHandled = true;
+                    console.log("according zoom target, move map to:", center, largestCluster.zoom_level);
+                  }
+                }
+                /*
+                 * if can't do it with zoomTarget, then using old way to do so
+                 */
+                if(!hasHandled){
+                  fetchMarkers = false;
+                  var zoomLevel = map.getZoom();
+                  map.setZoom(zoomLevel + 2);
+                  map.panTo(marker.position);
+                }
+              });
           });
           markers.push(marker);
         } else if (item.type == "point") {
