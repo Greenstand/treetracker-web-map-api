@@ -93,6 +93,52 @@ function checkSession(){
   return past_visitor;
 }
 
+function request(viewportBounds, zoomLevel){
+  return new Promise((resolve, reject) => {
+    clusterRadius =
+      getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
+
+    console.log("Cluster radius: " + clusterRadius);
+    if (req != null) {
+      console.log("initMarkers abort");
+      req.abort();
+
+    }
+    var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
+    queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
+    if (
+      currentZoom >= 4 &&
+      !(
+        (token != null ||
+          organization != null ||
+          treeid != null ||
+          userid !== null) &&
+        firstRender == true
+      )
+    ) {
+      queryUrl = queryUrl + "&bounds=" + viewportBounds;
+    }
+    if (token != null) {
+      queryUrl = queryUrl + "&token=" + token;
+    } else if (organization != null) {
+      queryUrl = queryUrl + "&organization=" + organization;
+    } else if (treeid != null) {
+      queryUrl = queryUrl + "&treeid=" + treeid;
+    } else if (userid != null) {
+      queryUrl = queryUrl + "&userid=" + userid;
+    } else if (flavor != null) {
+      queryUrl = queryUrl + "&flavor=" + flavor;
+    } else if (wallet != null) {
+      queryUrl = queryUrl + "&wallet=" + wallet;
+    }
+
+    console.log("request:", queryUrl);
+    req = $.get(queryUrl, function(data) {
+      resolve(data);
+    });
+  });
+}
+
 //Get the tree data and create markers with corresponding data
 var initMarkers = function(viewportBounds, zoomLevel) {
   console.log("initMarkers:", viewportBounds, zoomLevel);
@@ -102,196 +148,161 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     return;
   }
 
-  clusterRadius =
-    getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
-
-  console.log("Cluster radius: " + clusterRadius);
-  if (req != null) {
-    console.log("initMarkers abort");
-    req.abort();
-  }
-  var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
-  queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
-  if (
-    currentZoom >= 4 &&
-    !(
-      (token != null ||
-        organization != null ||
-        treeid != null ||
-        userid !== null) &&
-      firstRender == true
-    )
-  ) {
-    queryUrl = queryUrl + "&bounds=" + viewportBounds;
-  }
-  if (token != null) {
-    queryUrl = queryUrl + "&token=" + token;
-  } else if (organization != null) {
-    queryUrl = queryUrl + "&organization=" + organization;
-  } else if (treeid != null) {
-    queryUrl = queryUrl + "&treeid=" + treeid;
-  } else if (userid != null) {
-    queryUrl = queryUrl + "&userid=" + userid;
-  } else if (flavor != null) {
-    queryUrl = queryUrl + "&flavor=" + flavor;
-  } else if (wallet != null) {
-    queryUrl = queryUrl + "&wallet=" + wallet;
-  }
-
-  console.log("request:", queryUrl);
-  req = $.get(queryUrl, function(data) {
-    console.log("initMarkers, get");
-    if (userid && data.data.length === 0) {
-      showAlert();
-    }
-
-    // clear everything
-    points = [];
-    markerByPointId = {};
-    clearOverlays(markers);
-    // console.log(data);
-
-    $.each(data.data, function(i, item) {
-      if (item.type == "cluster") {
-        var centroid = JSON.parse(item.centroid);
-        var latLng = new google.maps.LatLng(
-          centroid.coordinates[1],
-          centroid.coordinates[0]
-        );
-        determineInitialSize(latLng);
-
-        var iconUrl = null,
-          labelOrigin = null,
-          anchor = null;
-        if (item.count <= 300) {
-          iconUrl = "/img/cluster_46px.png";
-          labelOrigin = new google.maps.Point(23, 23);
-          anchor = new google.maps.Point(23, 23);
-        } else {
-          iconUrl = "/img/cluster_63px.png";
-          labelOrigin = new google.maps.Point(32, 32);
-          anchor = new google.maps.Point(32, 32);
-        }
-
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          label: {
-            text: shortenLargeNumber(item.count).toString(),
-            color: "#000"
-          },
-          icon: {
-            url: iconUrl,
-            labelOrigin: labelOrigin,
-            anchor: anchor
-          }
-        });
-
-        google.maps.event.addListener(marker, "click", function() {
-          fetchMarkers = false;
-          var zoomLevel = map.getZoom();
-          map.setZoom(zoomLevel + 2);
-          map.panTo(marker.position);
-        });
-        markers.push(marker);
-      } else if (item.type == "point") {
-        var latLng = new google.maps.LatLng(item.lat, item.lon);
-        determineInitialSize(latLng);
-        var infowindow = new google.maps.InfoWindow({
-          content: "/img/loading.gif"
-        });
-
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: "Tree",
-          icon: {
-            url: "/img/pin_29px.png"
-          },
-          zIndex: undefined,
-          payload: {
-            id: item["id"]
-          }
-        });
-
-        if (
-          selectedTreeMarker &&
-          marker.payload.id === selectedTreeMarker.payload.id
-        ) {
-          selectedTreeMarker = marker;
-          changeTreeMarkSelected();
-        }
-
-        // set the field for sorting
-        item._sort_field = new Date(item.time_created);
-
-        // hold the reference to our points
-        points.push(item);
-        markerByPointId[item["id"]] = marker;
-        markers.push(marker);
+  //change to use 'request' (promise) to get data from server
+  request(viewportBounds, zoomLevel)
+    .then(data => {
+      console.log("initMarkers, get");
+      if (userid && data.data.length === 0) {
+        showAlert();
       }
-    });
 
-    // set the markers once we are done
-    setPointMarkerListeners();
+      // clear everything
+      points = [];
+      markerByPointId = {};
+      clearOverlays(markers);
+      // console.log(data);
 
-    if (firstRender) {
-      if (
-        data.data.length > 0 &&
-        (organization != null ||
-          token != null ||
-          treeid != null ||
-          userid != null ||
-          wallet != null)
-      ) {
-        console.log("first render!!!!");
-//Fri Jul 17 12:04:12 CST 2020 to change to new algorithm to fit map
-//        map.fitBounds(initialBounds);
-//        map.setCenter(initialBounds.getCenter());
-//        map.setZoom(map.getZoom() - 1);
-//        if (map.getZoom() > 15) {
-//          map.setZoom(15);
-//        }
-        const bounds = mapTools.getInitialBounds(
-          data.data.map(i => {
-            if(i.type === "cluster"){
-              const c = JSON.parse(i.centroid);
-              return {
-                lat: c.coordinates[1],
-                lng: c.coordinates[0],
-              };
-            }else if(i.type === "point"){
-              return {
-                lat: i.lat,
-                lng: i.lon,
-              };
+      $.each(data.data, function(i, item) {
+        if (item.type == "cluster") {
+          var centroid = JSON.parse(item.centroid);
+          var latLng = new google.maps.LatLng(
+            centroid.coordinates[1],
+            centroid.coordinates[0]
+          );
+          determineInitialSize(latLng);
+
+          var iconUrl = null,
+            labelOrigin = null,
+            anchor = null;
+          if (item.count <= 300) {
+            iconUrl = "/img/cluster_46px.png";
+            labelOrigin = new google.maps.Point(23, 23);
+            anchor = new google.maps.Point(23, 23);
+          } else {
+            iconUrl = "/img/cluster_63px.png";
+            labelOrigin = new google.maps.Point(32, 32);
+            anchor = new google.maps.Point(32, 32);
+          }
+
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            label: {
+              text: shortenLargeNumber(item.count).toString(),
+              color: "#000"
+            },
+            icon: {
+              url: iconUrl,
+              labelOrigin: labelOrigin,
+              anchor: anchor
             }
-          }),
-          window.innerWidth,
-          window.innerHeight,
-        );
-        map.panTo(bounds.center);
-        map.setZoom(bounds.zoomLevel);
-      }
+          });
 
-      // create infowindow object
-      var infowindow = new google.maps.InfoWindow({
-        content: "<div style='float:left'><img src='/img/TipPopupIcon.png' height=40 width=40></div><div style='float:right; padding: 10px;'><b>Click on the cluster to zoom into trees</b></div>"
+          google.maps.event.addListener(marker, "click", function() {
+            fetchMarkers = false;
+            var zoomLevel = map.getZoom();
+            map.setZoom(zoomLevel + 2);
+            map.panTo(marker.position);
+          });
+          markers.push(marker);
+        } else if (item.type == "point") {
+          var latLng = new google.maps.LatLng(item.lat, item.lon);
+          determineInitialSize(latLng);
+          var infowindow = new google.maps.InfoWindow({
+            content: "/img/loading.gif"
+          });
+
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            title: "Tree",
+            icon: {
+              url: "/img/pin_29px.png"
+            },
+            zIndex: undefined,
+            payload: {
+              id: item["id"]
+            }
+          });
+
+          if (
+            selectedTreeMarker &&
+            marker.payload.id === selectedTreeMarker.payload.id
+          ) {
+            selectedTreeMarker = marker;
+            changeTreeMarkSelected();
+          }
+
+          // set the field for sorting
+          item._sort_field = new Date(item.time_created);
+
+          // hold the reference to our points
+          points.push(item);
+          markerByPointId[item["id"]] = marker;
+          markers.push(marker);
+        }
       });
-      //
-      if (!checkSession()) { //only if the user is new
-        // add the infowindow to a random starting marker to be visible by default when the user first loads the screen
-        infowindow.open(map, markers[Math.floor(Math.random() * markers.length)]);
+
+      // set the markers once we are done
+      setPointMarkerListeners();
+
+      if (firstRender) {
+        if (
+          data.data.length > 0 &&
+          (organization != null ||
+            token != null ||
+            treeid != null ||
+            userid != null ||
+            wallet != null)
+        ) {
+          console.log("first render!!!!");
+          //Fri Jul 17 12:04:12 CST 2020 to change to new algorithm to fit map
+          //        map.fitBounds(initialBounds);
+          //        map.setCenter(initialBounds.getCenter());
+          //        map.setZoom(map.getZoom() - 1);
+          //        if (map.getZoom() > 15) {
+          //          map.setZoom(15);
+          //        }
+          const bounds = mapTools.getInitialBounds(
+            data.data.map(i => {
+              if(i.type === "cluster"){
+                const c = JSON.parse(i.centroid);
+                return {
+                  lat: c.coordinates[1],
+                  lng: c.coordinates[0],
+                };
+              }else if(i.type === "point"){
+                return {
+                  lat: i.lat,
+                  lng: i.lon,
+                };
+              }
+            }),
+            window.innerWidth,
+            window.innerHeight,
+          );
+          map.panTo(bounds.center);
+          map.setZoom(bounds.zoomLevel);
+        }
+
+        // create infowindow object
+        var infowindow = new google.maps.InfoWindow({
+          content: "<div style='float:left'><img src='/img/TipPopupIcon.png' height=40 width=40></div><div style='float:right; padding: 10px;'><b>Click on the cluster to zoom into trees</b></div>"
+        });
+        //
+        if (!checkSession()) { //only if the user is new
+          // add the infowindow to a random starting marker to be visible by default when the user first loads the screen
+          infowindow.open(map, markers[Math.floor(Math.random() * markers.length)]);
+        }
+
+        loader.classList.remove("active");
+        firstRender = false;
       }
 
-      loader.classList.remove("active");
-      firstRender = false;
-    }
-
-    console.log("init markert finished, loaded:", markers.length);
-    //debugger;
-    mapModel.checkArrow();
-  });
+      console.log("init markert finished, loaded:", markers.length);
+      //debugger;
+      mapModel.checkArrow();
+    });
 };
 
 // for each point, set the listeners.
