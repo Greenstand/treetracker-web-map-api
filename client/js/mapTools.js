@@ -72,35 +72,36 @@ function getInitialBounds (locations, width, height){
   chai.expect(width).gt(0);
   chai.expect(height).gt(0);
 
-  // If there is only a single cluster, create a bounding box centered on that cluster with a 1 degree latitude height and 1 degree longitude width
+  // If there is only a single cluster, create a bounding box centered on that cluster with a .1 degree latitude height and .1 degree longitude width
   if(locations.length === 1){
     const location = locations[0];
+    const degrees = 0.05
     const cornerWestNorth = 
       go(
         "north",
-        go("west", location, 0.5),
-        0.5
+        go("west", location, degrees),
+        degrees
       );
     locations.push(cornerWestNorth);
     const cornerWestSouth = 
       go(
         "south",
-        go("west", location, 0.5),
-        0.5
+        go("west", location, degrees),
+        degrees
       );
     locations.push(cornerWestSouth);
     const cornerEastNorth = 
       go(
         "north",
-        go("east", location, 0.5),
-        0.5
+        go("east", location, degrees),
+        degrees
       );
     locations.push(cornerEastNorth);
     const cornerEastSouth = 
       go(
         "south",
-        go("east", location, 0.5),
-        0.5
+        go("east", location, degrees),
+        degrees
       );
     locations.push(cornerEastSouth);
   }
