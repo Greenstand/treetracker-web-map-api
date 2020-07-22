@@ -183,11 +183,37 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }
         });
 
+        //add zoomTarget to cluster marker
+        marker.zoomTarget = data.zoomTargets?.reduce((a,c) => {
+          if(a){
+            return a;
+          }else{
+            if(c.region_id === item.id){
+              return c;
+            }else{
+              return a;
+            }
+          }
+        }, undefined);
+
         google.maps.event.addListener(marker, "click", function() {
-          fetchMarkers = false;
-          var zoomLevel = map.getZoom();
-          map.setZoom(zoomLevel + 2);
-          map.panTo(marker.position);
+          if(marker.zoomTarget){
+            fetchMarkers = false;
+            var zoomLevel = map.getZoom();
+            map.setZoom(zoomLevel + 2);
+            const centroid = JSON.parse(marker.zoomTarget.centroid);
+            const position = {
+              lat: centroid.coordinates[1],
+              lng: centroid.coordinates[0],
+            }
+            console.log("zoom target:", position);
+            map.panTo(position);
+          }else{
+            fetchMarkers = false;
+            var zoomLevel = map.getZoom();
+            map.setZoom(zoomLevel + 2);
+            map.panTo(marker.position);
+          }
         });
         markers.push(marker);
       } else if (item.type == "point") {
