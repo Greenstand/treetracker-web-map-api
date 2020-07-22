@@ -84,6 +84,7 @@ app.get("/trees", function (req, res) {
   console.log(clusterRadius);
   var sql, query
   const zoomLevel = parseInt(req.query['zoom_level']);
+  console.log("zoom level " + zoomLevel);
   if (zoomLevel > 15 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
@@ -139,7 +140,7 @@ app.get("/trees", function (req, res) {
     };
     */
 
-  } else if (['12', '13', '14', '15'].includes(zoomLevel)) {
+  } else if ([12, 13, 14, 15].includes(zoomLevel)) {
 
     console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
     sql = `SELECT 'cluster' as type,
