@@ -1,0 +1,19 @@
+version: '3'
+services:
+  reverse-proxy:
+    image: "treetracker-map-reverse-proxy:latest"
+    ports:
+      - "8080:80"
+    restart: always
+    volumes:
+     - ./client:/var/www
+  treetracker-map-api:
+    container_name: "treetracker-map-api"
+    image: "treetracker-map-api:latest"
+    restart: always
+    command: "npm install"
+    ports:
+     - "3000:3000"
+    volumes:
+     - ./server:/usr/app/server
+     - /usr/app/server/node_modules

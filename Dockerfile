@@ -7,11 +7,6 @@ COPY client/ ./
 RUN npm install
 
 
-# Copy nginx config file
-#FROM nginx:latest
-#COPY --from=client /usr/app/client/nginx-reverse-proxy-web-map.conf  /etc/nginx/nginx.conf
-
-
 # Setup the server
 FROM node:8.12-slim as server
 

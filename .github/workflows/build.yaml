@@ -1,0 +1,31 @@
+name: Docker Image CI.
+
+on:
+  release:
+    types: [published]
+
+  push:
+    branches:
+    - test-release
+
+  pull_request:
+    branches:
+    - test-release
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v1
+      - name: "Login to DockerHub Registry"
+        run: "echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin"
+      - name: "Get the version"
+        id: vars
+        run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
+      - name: "Build the tagged Docker image"
+        run: "docker build . -f ./Dockerfile.ReverseProxy -t treetracker-map-reverse-proxy:latest"
+        run: "docker build . -f Dockerfile -t treetracker-map-api"
+#        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-map:${{steps.vars.outputs.tag}}"
+#      - name: "Push the tagged Docker image"
+#        run: "docker push ximena9210/treetracker-web-map:proxy"
+#        run: "docker push ximena9210/treetracker-web-map:${{steps.vars.outputs.tag}}"
