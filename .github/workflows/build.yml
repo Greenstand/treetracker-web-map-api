@@ -24,7 +24,7 @@ jobs:
         run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
       - name: "Build the tagged Docker image"
         run: "docker build . -f ./Dockerfile.ReverseProxy -t treetracker-map-reverse-proxy:latest"
-        run: "docker build . -f Dockerfile -t treetracker-map-api"
+#       run: "docker build . -f ./Dockerfile -t treetracker-map-api"
 #        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-map:${{steps.vars.outputs.tag}}"
 #      - name: "Push the tagged Docker image"
 #        run: "docker push ximena9210/treetracker-web-map:proxy"
