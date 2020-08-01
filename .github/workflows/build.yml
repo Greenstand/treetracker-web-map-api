@@ -1,4 +1,4 @@
-name: Docker Image CI.
+name: Docker Image API CI.
 
 on:
   release:
@@ -22,12 +22,14 @@ jobs:
       - name: "Get the version"
         id: vars
         run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
-      - name: "Build the tagged Docker image proxy"
+      - name: "Build the tagged Docker image Proxy"
         run: "docker build . -f ./Dockerfile.ReverseProxy -t treetracker-map-reverse-proxy:latest"
-      - name: "Build the tagged Docker image api"
+      - name: "Build the tagged Docker image API"
         run: "docker build . -f ./Dockerfile -t treetracker-map-api"
       - name: "Build docker-compose file"
         run: "docker-compose up -d"
+      - name: "Check services running"
+        run: "docker ps"
 #        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-map:${{steps.vars.outputs.tag}}"
 #      - name: "Push the tagged Docker image"
 #        run: "docker push ximena9210/treetracker-web-map:proxy"
