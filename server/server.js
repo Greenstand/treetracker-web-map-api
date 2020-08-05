@@ -83,8 +83,9 @@ app.get("/trees", function (req, res) {
   let clusterRadius = parseFloat(req.query['clusterRadius']);
   console.log(clusterRadius);
   var sql, query
-  const zoomLevel = req.query['zoom_level'];
-  if (parseInt(zoomLevel) > 15 || treeid != null ) {
+  const zoomLevel = parseInt(req.query['zoom_level']);
+  console.log("zoom level " + zoomLevel);
+  if (zoomLevel > 15 || treeid != null ) {
 
     sql = `SELECT DISTINCT ON(trees.id)
     'point' AS type,
@@ -120,7 +121,26 @@ app.get("/trees", function (req, res) {
       values: [clusterRadius]
     };
 
-  } else if (['12', '13', '14', '15'].includes(zoomLevel)) {
+
+    /*
+    var boundingBoxQuery = "";
+    if( bounds ) {
+      boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
+    }
+    query = {
+      text: `SELECT 'cluster' AS type,
+      region_id id, ST_ASGeoJson(centroid) centroid,
+      type_id as region_type,
+      count(id)
+      FROM active_tree_region tree_region
+      WHERE zoom_level = $1
+      ${boundingBoxQuery}
+      GROUP BY region_id, centroid, type_id`,
+      values: [req.query['zoom_level']]
+    };
+    */
+
+  } else if ([12, 13, 14, 15].includes(zoomLevel)) {
 
     console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
     sql = `SELECT 'cluster' as type,
@@ -134,54 +154,23 @@ app.get("/trees", function (req, res) {
 
   } else {
 
-    // check if query is in the cached zone
-    var boundingBox;
-    if(bounds) {
-      boundingBox = bounds.split(',');
-      console.log(boundingBox);
-    }
-
-    var regionBoundingBoxQuery = "";
-
     console.log(zoomLevel);
-    if(zoomLevel >= 10) {
-      console.log('greater eq 10');
-
-      if( bounds ) {
-        regionBoundingBoxQuery = ' AND geom && ST_MakeEnvelope(' + bounds + ', 4326) ';
-      }
-
-      query = {
-        text: `SELECT 'cluster' AS type,
-			  region.id, ST_ASGeoJson(region.centroid) centroid,
-                 region.type_id as region_type,
-                 count(tree_region.id)
-                 FROM tree_region
-                 JOIN trees
-                 ON trees.id = tree_region.tree_id
-                 AND trees.active = TRUE
-                 JOIN region
-                 ON region.id = region_id
-                 WHERE zoom_level = $1
-                 ${regionBoundingBoxQuery}
-                 GROUP BY region.id`,
-        values: [req.query['zoom_level']]
-      };
-
-    } else {
-
-      query = {
-        text: `SELECT 'cluster' AS type,
-             region_id id, ST_ASGeoJson(centroid) centroid,
-             type_id as region_type,
-             count(id)
-             FROM active_tree_region tree_region
-             WHERE zoom_level = $1
-             GROUP BY region_id, centroid, type_id`,
-        values: [req.query['zoom_level']]
-      };
-
+    boundingBoxQuery = "";
+    if( bounds ) {
+      boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
     }
+
+    query = {
+      text: `SELECT 'cluster' AS type,
+      region_id id, ST_ASGeoJson(centroid) centroid,
+      type_id as region_type,
+      count(id)
+      FROM active_tree_region tree_region
+      WHERE zoom_level = $1
+      ${boundingBoxQuery}
+      GROUP BY region_id, centroid, type_id`,
+      values: [req.query['zoom_level']]
+    };
 
   }
 
@@ -190,9 +179,68 @@ app.get("/trees", function (req, res) {
     .then(function (data) {
       console.log('query ok');
       console.log(data.rows)
-      res.status(200).json({
-        data: data.rows
-      })
+
+      // if we are in zoom level 9 or less
+      // get the biggest cluster within each region
+      // at a higher zoom level after zooming (zoom in moves 2 zoom levels ) 
+      if(zoomLevel <= 9){
+        console.log('get zoom targets data');
+
+
+        boundingBoxQuery = "";
+        if( bounds ) {
+          boundingBoxQuery = ' AND region.centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
+        }
+
+        const zoomTargetsQuery = {
+          text: `SELECT DISTINCT ON (region.id)
+                region.id region_id,
+                contained.region_id most_populated_subregion_id,
+                contained.total,
+                contained.zoom_level,
+                ST_ASGeoJson(contained.centroid) centroid
+                FROM
+                 (
+                  SELECT region_id, zoom_level
+                  FROM active_tree_region
+                  WHERE zoom_level = $1
+                  GROUP BY region_id, zoom_level
+                 ) populated_region
+                JOIN region
+                ON region.id = populated_region.region_id
+                JOIN (
+                  SELECT region_id, zoom_level, count(active_tree_region.id) AS total, centroid
+                  FROM active_tree_region
+                  WHERE zoom_level = $2
+                  GROUP BY region_id, zoom_level, centroid
+                ) contained
+                ON ST_CONTAINS(region.geom, contained.centroid)
+                WHERE true ${boundingBoxQuery}
+                ORDER BY region.id, total DESC`,
+          values: [zoomLevel, zoomLevel + 2]
+        }
+        console.log(zoomTargetsQuery);
+        pool.query(zoomTargetsQuery)
+          .then(function (zoomTargetsData) {
+            console.log('got zoom targets data');
+            res.status(200).json({
+              data: data.rows,
+              zoomTargets: zoomTargetsData.rows
+            })
+          })
+          .catch(function(error) {
+            console.log('query not ok');
+            console.log(error);
+            throw(error);
+          });
+
+      } else {
+
+        res.status(200).json({
+          data: data.rows
+        })
+
+      }
     })
     .catch(function(error) {
       console.log('query not ok');
@@ -208,6 +256,10 @@ app.use(Sentry.Handlers.errorHandler());
 const entity = require("./api/entity");
 //app.use(/(\/api\/web)?\/entities/, entity);
 app.use("/entities", entity);
+
+//nearest API
+const nearest = require("./api/nearest");
+app.use("/nearest", nearest);
 
 //add static files, HTML pages
 app.use(express.static(path.join(__dirname, "../client")));

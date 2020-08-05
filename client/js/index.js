@@ -1,6 +1,12 @@
 const logo = require("./logo");
+const MapModel = require("./MapModel");
+const mapTools = require("./mapTools");
 
-//load logo 
-logo.load(window.location.href,document.getElementById("logo-floating-map")); 
+//declare it globally in the browser
+window.logo = logo;
+window.MapModel = MapModel;
+window.mapTools = mapTools;
+
+console.log("bundle loaded");
 
 module.exports = logo;

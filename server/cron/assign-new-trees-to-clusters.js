@@ -20,42 +20,66 @@ const pool = new Pool({
     AND trees.cluster_regions_assigned = false`
   };
   const rval = await client.query(select);
-  if(rval.rows[0].count == 0){
+/*  if(rval.rows[0].count == 0){
     console.log("no new trees");
     client.release();
     pool.end();
     return;
   }
+  */
 
-  await client.query('BEGIN');
-  const insert = {
-    text: `INSERT INTO tree_region
-      (tree_id, zoom_level, region_id)
-      SELECT DISTINCT ON (trees.id, zoom_level) trees.id AS tree_id, zoom_level, region.id
+
+
+  var done = false;
+  while(!done){
+
+    await client.query('BEGIN');
+    const insert = {
+      text: `INSERT INTO tree_region
+        (tree_id, zoom_level, region_id)
+        SELECT DISTINCT ON (trees.id, zoom_level) trees.id AS tree_id, zoom_level, region.id
+        FROM (
+            SELECT *
+            FROM trees
+            WHERE trees.active = true
+            AND trees.cluster_regions_assigned = false
+            LIMIT 1000
+        ) trees
+        JOIN region
+        ON ST_Contains( region.geom, trees.estimated_geometric_location)
+        JOIN region_zoom
+        ON region_zoom.region_id = region.id
+        ORDER BY trees.id, zoom_level, region_zoom.priority DESC
+        `
+    };
+    console.log(insert);
+    await client.query(insert);
+
+    const update = {
+      text: `UPDATE trees
+        SET cluster_regions_assigned = true
+        FROM tree_region
+        WHERE tree_region.tree_id = trees.id
+        AND cluster_regions_assigned = false`
+    };
+    console.log(update);
+    await client.query(update);
+
+    await client.query('COMMIT');
+
+    const select = {
+      text: `SELECT count(id)
       FROM trees
-      JOIN region
-      ON ST_Contains( region.geom, trees.estimated_geometric_location)
-      JOIN region_zoom
-      ON region_zoom.region_id = region.id
       WHERE trees.active = true
-      AND trees.cluster_regions_assigned = false
-      ORDER BY trees.id, zoom_level, region_zoom.priority DESC`
-  };
-  console.log(insert);
-  await client.query(insert);
-  await client.query('COMMIT');
+      AND trees.cluster_regions_assigned = false`
+    };
+    const rval = await client.query(select);
+    if(rval.rows[0].count == 0){
+      done = true;
+    }
+  }
 
   await client.query('BEGIN');
-  const update = {
-    text: `UPDATE trees
-      SET cluster_regions_assigned = true
-      FROM tree_region
-      WHERE tree_region.tree_id = trees.id
-      AND cluster_regions_assigned = false`
-  };
-  console.log(update);
-  await client.query(update);
-
   await client.query('COMMIT');
 
   await client.query('BEGIN');
