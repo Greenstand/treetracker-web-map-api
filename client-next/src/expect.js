@@ -1,3 +1,59 @@
+class Any{
+  constructor(sample){
+    this.sample = sample;
+  }
+
+  equal(other){
+    if (this.sample == String) {
+      return typeof other == 'string' || other instanceof String;
+    }
+
+    if (this.sample == Number) {
+      return typeof other == 'number' || other instanceof Number;
+    }
+
+    if (this.sample == Function) {
+      return typeof other == 'function' || other instanceof Function;
+    }
+
+    if (this.sample == Object) {
+      return typeof other == 'object';
+    }
+
+    if (this.sample == Boolean) {
+      return typeof other == 'boolean';
+    }
+
+    /* global BigInt */
+    if (this.sample == BigInt) {
+      return typeof other == 'bigint';
+    }
+
+    if (this.sample == Symbol) {
+      return typeof other == 'symbol';
+    }
+
+    return other instanceof this.sample;
+  }
+}
+
+class Anything{
+  equal(other){
+    if(other !== undefined){
+      return true;
+    }else{
+      return false;
+    }
+  }
+}
+
+function equal(actual, ex){
+  if(ex instanceof Anything || ex instanceof Any){
+    return ex.equal(actual);
+  }else{
+    return actual === ex;
+  }
+}
 
 class Expectation{
 
@@ -16,23 +72,74 @@ class Expectation{
   }
 
   defined(){
-    console.log("this.actual:", this.actual);
     if(this.flags.includes("not")){
       if(this.actual === undefined){
         //pass
         return this;
       }else{
-        throw Error("defined");
+        this.throw("not be defined");
       }
     }else{
       if(this.actual !== undefined){
         //pass
         return this;
       }else{
-        throw Error("not defined");
+        this.throw("be defined");
       }
     }
   }
+
+  number(){
+    if(typeof this.actual === "number"){
+      //pass
+      return this;
+    }else{
+      this.throw("be number");
+    }
+  }
+
+  property(propertyName){
+    const propertyValue = this.actual[propertyName];
+    if(propertyValue === undefined){
+      this.throw(`has property:${propertyName}`);
+    }else{
+      const expectation = new Expectation(propertyValue);
+      return expectation;
+    }
+  }
+
+  throw(expectMessage){
+    throw Error(`[assert failed] expect ${JSON.stringify(this.actual, null, 2)} --to--> ${expectMessage}`);
+  }
+
+  match(object){
+    if(object instanceof RegExp){
+      if(!object.test(this.actual)){
+        this.throw(`match ${object.toString()}`);
+      }else{
+        return this;
+      }
+    }else if(typeof object === "object"){
+      let matched = true;
+      Object.keys(object).forEach(key => {
+        const value = object[key];
+        const actualValue = this.actual[key];
+        if(equal(actualValue, value)){
+        }else{
+          matched = false;
+        }
+      });
+      if(matched === false){
+        this.throw(`match ${JSON.stringify(object, null, 2)}`);
+      }else{
+        return this;
+      }
+    }else {
+      this.throw(`match ${object}`);
+    }
+  }
+
+
 }
 
 
@@ -40,5 +147,13 @@ function expect(actual){
   const expectation = new Expectation(actual);
   return expectation;
 }
+
+expect.any = function(type){
+    return new Any(type);
+  }
+
+expect.anything = function(){
+    return new Anything();
+  }
 
 export default expect;

@@ -21,5 +21,40 @@ describe("expect", () => {
     }).toThrow();
   });
 
+  it("{a:1} defined.property('a').number()", () => {
+    let o = {a:1};
+    myExpect(o).defined().property("a").number();
+  });
+
+  it("{a:[1]} defined.property('a').property(0).number()", () => {
+    let o = {a:[1]};
+    myExpect(o).defined().property("a").property(0).number();
+  });
+
+  it("{a:1, b:'s'} match({a:1,b:'s'))", () => {
+    myExpect({a:1, b:'s'}).match({a:1,b:'s'});
+  });
+
+  it("{a:1, b:'s'} match({a:'1',b:'s')) should throw", () => {
+    expect(() => {
+      myExpect({a:1, b:'s'}).match({a:'1',b:'s'});
+    }).toThrow();
+  });
+
+  it("{a:1, b:'s', c:true} match({a:expect.any(Number),b:expect.any(String),c:expect.anything()))", () => {
+    myExpect({a:1, b:'s', c: true}).match({
+      a:myExpect.any(Number),
+      b:myExpect.any(String),
+      c:myExpect.anything(),});
+  });
+
+  it("'123' match(/\\d+/)", () => {
+    myExpect('123').match(/\d+/);
+  });
+
+  it("'abc' match(/^a/)", () => {
+    myExpect('abc').match(/^a/);
+  });
+
 });
 
