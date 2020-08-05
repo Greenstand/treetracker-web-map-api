@@ -1,3 +1,7 @@
+body {
+  margin: 0px;
+}
+
 .map {
   position: absolute;
   width: 100%;
