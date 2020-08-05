@@ -20,6 +20,8 @@ const dataString = '{"data":[{"type":"cluster","id":3,"centroid":{"type":"Point"
 const dataString2 = '{"data":[{"type":"point","id":1,"lng": 116.677917, "lat":39.916175},{"type":"point","id":2,"lng": 116.657892, "lat":39.912553},{"type":"point","id":3,"lng": 116.657738, "lat":39.912228}]}';
 
 function App() {
+  console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  const [isPanel, setPanel] = React.useState(false);
   const mapRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -119,11 +121,16 @@ function App() {
               },
               map: map,
               label: {
-                text: "tree",
+                text: "tree" + item.id,
+              },
+              payload: {
+                id: item.id,
               },
             });
             window.google.maps.event.addListener(marker, "click", function(){
-              console.log("click tree");
+              expect(marker.payload.id).number();
+              console.log("click tree", marker.payload.id);
+              setPanel(true);
             });
             marker.triggerClick = () => {
               window.google.maps.event.trigger(marker, "click");
@@ -142,6 +149,11 @@ function App() {
 
   return (
     <div>
+      {isPanel &&
+        <div className="side" >
+          Dadior Chen
+        </div>
+      }
       <div className="map" id="map-canvas" ref={mapRef}/>
     </div>
   );

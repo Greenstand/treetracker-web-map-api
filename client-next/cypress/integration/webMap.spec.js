@@ -21,7 +21,22 @@ describe("Web Map", () => {
           };
         });
       });
-    cy.contains("tree");
+    cy.contains("tree3");
+    cy.wait(2000*scale);
+    cy.get("#map-canvas")
+      .then(el => {
+        console.log("el:", el);
+        //click
+        el[0].markers.forEach(marker => {
+          console.log("marker:", marker);
+          if(marker.getLabel().text === "tree3"){
+            console.log("trigger");
+            marker.triggerClick();
+            //window.google.maps.event.trigger(marker, 'click');
+          };
+        });
+      });
+    cy.contains("Dadior");
   });
 
 });
