@@ -1,5 +1,8 @@
-class Any{
+class Matcher{}
+
+class Any extends Matcher{
   constructor(sample){
+    super();
     this.sample = sample;
   }
 
@@ -37,7 +40,7 @@ class Any{
   }
 }
 
-class Anything{
+class Anything extends Matcher{
   equal(other){
     if(other !== undefined){
       return true;
@@ -113,6 +116,9 @@ class Expectation{
   }
 
   match(object){
+    if(this.actual === undefined){
+      this.throw(`match ${JSON.stringify(object, null, 2)}`);
+    }
     if(object instanceof RegExp){
       if(!object.test(this.actual)){
         this.throw(`match ${object.toString()}`);
@@ -124,9 +130,14 @@ class Expectation{
       Object.keys(object).forEach(key => {
         const value = object[key];
         const actualValue = this.actual[key];
-        if(equal(actualValue, value)){
+        if(typeof value === "object" && !(value instanceof Matcher)){
+          //nest object
+          expect(actualValue).match(value);
         }else{
-          matched = false;
+          if(equal(actualValue, value)){
+          }else{
+            matched = false;
+          }
         }
       });
       if(matched === false){

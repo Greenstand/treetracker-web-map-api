@@ -56,5 +56,23 @@ describe("expect", () => {
     myExpect('abc').match(/^a/);
   });
 
+  it("undefined match {a:1} should throw", () => {
+    expect(() => {
+      myExpect(undefined).match({a:1});
+    }).toThrow();
+  });
+
+  it("{a: {b: 1}}", () => {
+    myExpect({a: {b:1}}).match({a: {b:1}});
+  });
+
+  it("{a: {b: {c: 1}}}", () => {
+    myExpect({a: {b: {c:1}}}).match({a: {b: {c:1}}});
+  });
+
+  it("{a: [1, 2]}}", () => {
+    myExpect({a: [1,2]}).match({a: myExpect.any(Array)});
+  });
+
 });
 
