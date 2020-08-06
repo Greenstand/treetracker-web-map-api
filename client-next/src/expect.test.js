@@ -74,5 +74,33 @@ describe("expect", () => {
     myExpect({a: [1,2]}).match({a: myExpect.any(Array)});
   });
 
+  it("{a:1} to.has.property('a').which.is.defined().that.is.number()", () => {
+    myExpect({a:1}).to.has.property("a").which.is.defined().and.that.is.number();
+  });
+
+  it("[1,2] to.have.lengthOf(2)", () => {
+    myExpect([1,2]).to.have.lengthOf(2);
+  });
+
+  it("1 to.be(1)", () => {
+    myExpect(1).to.be.a(1);
+  });
+
+  it("1 to.be.a(expect.any(Number))", () => {
+    myExpect(1).to.be.a(myExpect.any(Number));
+  });
+
+  it("1 to.be.a(expect.any(String)) should throw", () => {
+    expect(() => {
+      myExpect(1).to.be.a(myExpect.any(String));
+    }).toThrow();
+  });
+
+  it("{a: 'abc'} match({a: expect.stringMatching(/^a/)})", () => {
+    myExpect({a:"abc"}).match({
+      a: myExpect.stringMatching(/^a/),
+    });
+  });
+
 });
 

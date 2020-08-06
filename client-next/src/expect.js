@@ -38,6 +38,10 @@ class Any extends Matcher{
 
     return other instanceof this.sample;
   }
+
+  toString(){
+    return `any of ${this.sample}`;
+  }
 }
 
 class Anything extends Matcher{
@@ -50,8 +54,19 @@ class Anything extends Matcher{
   }
 }
 
+class StringMatching extends Matcher{
+  constructor(regex){
+    super(regex);
+    this.regex = regex;
+  }
+
+  equal(other){
+    return (this.regex.test(other));
+  }
+}
+
 function equal(actual, ex){
-  if(ex instanceof Anything || ex instanceof Any){
+  if(ex instanceof Matcher){
     return ex.equal(actual);
   }else{
     return actual === ex;
@@ -64,6 +79,23 @@ class Expectation{
     this.actual = actual;
     this.flags = [];
   }
+
+  get to(){return this;}
+  get be(){return this;}
+  get been(){return this;}
+  get is(){return this;}
+  get and(){return this;}
+  get has(){return this;}
+  get have(){return this;}
+  get with(){return this;}
+  get that(){return this;}
+  get which(){return this;}
+  get at(){return this;}
+  get of(){return this;}
+  get same(){return this;}
+  get but(){return this;}
+  get does(){return this;}
+  get still(){return this;}
 
   get not() {
     this.addFlag("not");
@@ -150,6 +182,21 @@ class Expectation{
     }
   }
 
+  lengthOf(length){
+    if(this.actual.length === length){
+      return this;
+    }else{
+      this.throw(`length of ${length}`);
+    }
+  }
+
+  a(target){
+    if(equal(this.actual, target)){
+      return this;
+    }else {
+      this.throw(`be ${target}`)
+    }
+  }
 
 }
 
@@ -160,11 +207,15 @@ function expect(actual){
 }
 
 expect.any = function(type){
-    return new Any(type);
-  }
+  return new Any(type);
+}
 
 expect.anything = function(){
-    return new Anything();
-  }
+  return new Anything();
+}
+
+expect.stringMatching = function(regex){
+  return new StringMatching(regex);
+}
 
 export default expect;
