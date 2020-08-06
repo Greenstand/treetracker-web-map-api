@@ -22,7 +22,43 @@ const dataString2 = '{"data":[{"type":"point","id":1,"lng": 116.677917, "lat":39
 function App() {
   console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const [isPanel, setPanel] = React.useState(false);
+  const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
+
+  function handlePrev(){
+    console.log("prev");
+  }
+
+  function handleNext(){
+    console.log("next");
+    const {markers} = mapRef.current;
+    expect(markers).defined();
+    expect(tree.id).number();
+    const index = markers.reduce((a,c,i) => {
+      expect(c.payload.id).number();
+      if(c.payload.id === tree.id){
+        return i;
+      }else{ 
+        return a;
+      }
+    }, -1);
+    expect(index).least(0);
+    const next = markers[(index + 1) % markers.length]
+    setTree(next.payload);
+    //move the map
+    expect(next.payload.lat).number();
+    expect(next.payload.lng).number();
+    const {greenstandMap} = mapRef.current;
+    expect(greenstandMap).defined();
+    greenstandMap.panTo({
+      lat: next.payload.lat,
+      lng: next.payload.lng,
+    });
+  }
+
+  function handleClose(){
+    setPanel(false);
+  }
 
   React.useEffect(() => {
     const script = document.createElement('script');
@@ -124,13 +160,23 @@ function App() {
                 text: "tree" + item.id,
               },
               payload: {
-                id: item.id,
+                ...item,
               },
             });
             window.google.maps.event.addListener(marker, "click", function(){
               expect(marker.payload.id).number();
               console.log("click tree", marker.payload.id);
               setPanel(true);
+              setTree(marker.payload);
+              //move map
+              expect(marker.payload.lat).number();
+              expect(marker.payload.lng).number();
+              const position = {
+                lat: marker.payload.lat,
+                lng: marker.payload.lng,
+              }
+              console.log("pan to:", position); 
+              map.panTo(position);
             });
             marker.triggerClick = () => {
               window.google.maps.event.trigger(marker, "click");
@@ -152,6 +198,10 @@ function App() {
       {isPanel &&
         <div className="side" >
           Dadior Chen
+          Tree #{tree?.id}
+          <div><a onClick={handlePrev} href="javascript:" >prev</a></div>
+          <div><a onClick={handleNext} href="javascript:" >next</a></div>
+          <div><button onClick={handleClose} >close</button></div>
         </div>
       }
       <div className="map" id="map-canvas" ref={mapRef}/>

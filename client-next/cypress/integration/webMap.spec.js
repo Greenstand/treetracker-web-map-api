@@ -21,7 +21,7 @@ describe("Web Map", () => {
           };
         });
       });
-    cy.contains("tree3");
+    cy.contains("tree1");
     cy.wait(2000*scale);
     cy.get("#map-canvas")
       .then(el => {
@@ -29,7 +29,7 @@ describe("Web Map", () => {
         //click
         el[0].markers.forEach(marker => {
           console.log("marker:", marker);
-          if(marker.getLabel().text === "tree3"){
+          if(marker.getLabel().text === "tree1"){
             console.log("trigger");
             marker.triggerClick();
             //window.google.maps.event.trigger(marker, 'click');
@@ -37,6 +37,15 @@ describe("Web Map", () => {
         });
       });
     cy.contains("Dadior");
+    cy.contains(/tree #1/i);
+    cy.wait(2000*scale);
+    cy.contains("next")
+      .click();
+    cy.contains(/tree #2/i);
+    cy.wait(2000*scale);
+    cy.contains("next")
+      .click();
+    cy.contains(/tree #3/i);
   });
 
 });
