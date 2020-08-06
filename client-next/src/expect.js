@@ -144,7 +144,14 @@ class Expectation{
   }
 
   throw(expectMessage){
-    throw Error(`[assert failed] expect ${JSON.stringify(this.actual, null, 2)} --to--> ${expectMessage}`);
+    let jsonString;
+    try{
+      jsonString = JSON.stringify(this.actual, null, 2);
+    }catch(e){
+      console.error("stringify failed:", e, "the source:", this.actual);
+      jsonString = this.actual
+    }
+    throw Error(`[assert failed] expect ${jsonString} --to--> ${expectMessage}`);
   }
 
   match(object){
@@ -195,6 +202,38 @@ class Expectation{
       return this;
     }else {
       this.throw(`be ${target}`)
+    }
+  }
+
+  least(number){
+    if(this.actual >= number){
+      return this;
+    }else {
+      this.throw(`least ${number}`)
+    }
+  }
+
+  most(number){
+    if(this.actual <= number){
+      return this;
+    }else {
+      this.throw(`most ${number}`)
+    }
+  }
+
+  above(number){
+    if(this.actual > number){
+      return this;
+    }else {
+      this.throw(`above ${number}`)
+    }
+  }
+
+  below(number){
+    if(this.actual < number){
+      return this;
+    }else {
+      this.throw(`below ${number}`)
     }
   }
 

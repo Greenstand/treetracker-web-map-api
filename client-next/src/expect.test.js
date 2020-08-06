@@ -102,5 +102,29 @@ describe("expect", () => {
     });
   });
 
+  it("most;least;above;below", () => {
+    myExpect(1).least(1);
+    myExpect(2).least(1);
+    expect(() => {
+      myExpect(1).least(2);
+    }).toThrow();
+
+    myExpect(2).most(2);
+    myExpect(1).most(2);
+    expect(() => {
+      myExpect(2).most(1);
+    }).toThrow();
+
+    myExpect(2).above(1);
+    expect(() => {
+      myExpect(1).above(1);
+    }).toThrow();
+
+    myExpect(1).below(2);
+    expect(() => {
+      myExpect(1).below(1);
+    }).toThrow();
+  });
+
 });
 
