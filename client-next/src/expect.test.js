@@ -82,6 +82,10 @@ describe("expect", () => {
     myExpect([1,2]).to.have.lengthOf(2);
   });
 
+  it("[1,2] to.have.lengthOf.above(0)", () => {
+    myExpect([1,2]).to.have.lengthOf.above(0);
+  });
+
   it("1 to.be(1)", () => {
     myExpect(1).to.be.a(1);
   });
@@ -124,6 +128,20 @@ describe("expect", () => {
     expect(() => {
       myExpect(1).below(1);
     }).toThrow();
+  });
+
+  it("1 to.equal(1)", () => {
+    myExpect(1).to.equal(1);
+  });
+
+  it("1 to.equal(2) throw", () => {
+    expect(() => {
+      myExpect(1).to.equal(2);
+    }).toThrow();
+  });
+
+  it("1 to.not.equal(2)", () => {
+    myExpect(1).to.not.equal(2);
   });
 
 });

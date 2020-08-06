@@ -65,19 +65,16 @@ class StringMatching extends Matcher{
   }
 }
 
-function equal(actual, ex){
-  if(ex instanceof Matcher){
-    return ex.equal(actual);
-  }else{
-    return actual === ex;
-  }
-}
 
 class Expectation{
 
   constructor(actual){
     this.actual = actual;
     this.flags = [];
+    this.lengthOf.above = (...args) => {
+      this.addFlag("lengthOf");
+      this.above(...args);
+    }
   }
 
   get to(){return this;}
@@ -104,6 +101,30 @@ class Expectation{
 
   addFlag(flag){
     this.flags.push(flag);
+  }
+
+  _equal(expectation){
+    if(expectation instanceof Matcher){
+      return expectation.equal(this.actual);
+    }else{
+      if(this.flags.includes("not")){
+        return this.actual !== expectation;
+      }else{
+        return this.actual === expectation;
+      }
+    }
+  }
+
+  _equalWithActual(actual, expectation){
+    if(expectation instanceof Matcher){
+      return expectation.equal(actual);
+    }else{
+      if(this.flags.includes("not")){
+        return actual !== expectation;
+      }else{
+        return actual === expectation;
+      }
+    }
   }
 
   defined(){
@@ -151,7 +172,8 @@ class Expectation{
       console.error("stringify failed:", e, "the source:", this.actual);
       jsonString = this.actual
     }
-    throw Error(`[assert failed] expect ${jsonString} --to--> ${expectMessage}`);
+    let flagsString = this.flags.join(" ");
+    throw Error(`[assert failed] expect ${jsonString} --to--> ${flagsString} ${expectMessage}`);
   }
 
   match(object){
@@ -173,7 +195,7 @@ class Expectation{
           //nest object
           expect(actualValue).match(value);
         }else{
-          if(equal(actualValue, value)){
+          if(this._equalWithActual(actualValue, value)){
           }else{
             matched = false;
           }
@@ -198,10 +220,10 @@ class Expectation{
   }
 
   a(target){
-    if(equal(this.actual, target)){
+    if(this._equal(target)){
       return this;
     }else {
-      this.throw(`be ${target}`)
+      this.throw(`a ${target}`)
     }
   }
 
@@ -222,10 +244,18 @@ class Expectation{
   }
 
   above(number){
-    if(this.actual > number){
-      return this;
-    }else {
-      this.throw(`above ${number}`)
+    if(this.flags.includes("lengthOf")){
+      if(this.actual.length > number){
+        return this;
+      }else {
+        this.throw(`above ${number}`)
+      }
+    }else{
+      if(this.actual > number){
+        return this;
+      }else {
+        this.throw(`above ${number}`)
+      }
     }
   }
 
@@ -237,7 +267,17 @@ class Expectation{
     }
   }
 
+  equal(other){
+    if(this._equal(other)){
+      return this;
+    }else{
+      this.throw(`equal ${other}`);
+    }
+  }
+
 }
+
+
 
 
 function expect(actual){
