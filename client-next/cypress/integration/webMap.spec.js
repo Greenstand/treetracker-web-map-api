@@ -5,6 +5,8 @@ describe("Web Map", () => {
 
   it("Web map", () => {
     cy.visit("http://localhost:3000/");
+    cy.get("img[alt=logo]");
+    //cy.contains("Search Greenstand");
     cy.contains("3");
     cy
       .wait(2000*scale)
@@ -22,7 +24,6 @@ describe("Web Map", () => {
         });
       });
     cy.contains("tree1");
-    cy.pause();
     cy.wait(2000*scale);
     cy.get("#map-canvas")
       .then(el => {

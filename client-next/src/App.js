@@ -182,21 +182,35 @@ function App() {
                   lat: item.lat,
                   lng: item.lng,
                 },
-                icon: {
-                  path: "M213.333,0C130.88,0,64,66.88,64,149.333c0,112,149.333,277.333,149.333,277.333s149.333-165.333,149.333-277.333 C362.667,66.88,295.787,0,213.333,0z M213.333,202.667c-29.44,0-53.333-23.893-53.333-53.333S183.893,96,213.333,96 s53.333,23.893,53.333,53.333S242.773,202.667,213.333,202.667z",
-                  fillColor: '#FF0000',
-                  fillOpacity: 1,
-                  anchor: new window.google.maps.Point(0,0),
-                  strokeWeight: 0,
-                  scale: .1,
+//                icon: {
+//                  path: "M213.333,0C130.88,0,64,66.88,64,149.333c0,112,149.333,277.333,149.333,277.333s149.333-165.333,149.333-277.333 C362.667,66.88,295.787,0,213.333,0z M213.333,202.667c-29.44,0-53.333-23.893-53.333-53.333S183.893,96,213.333,96 s53.333,23.893,53.333,53.333S242.773,202.667,213.333,202.667z",
+//                  fillColor: '#FF0000',
+//                  fillOpacity: 1,
+//                  anchor: new window.google.maps.Point(0,0),
+//                  strokeWeight: 0,
+//                  scale: .1,
+//                },
+                icon:{
+                  url: "http://localhost:3000/marker.svg",
+                  scaledSize: new window.google.maps.Size(40, 60),
                 },
                 map: map,
-                label: {
-                  text: "tree" + item.id,
-                },
+//                label: {
+//                  text: "tree" + item.id,
+//                },
                 payload: {
                   ...item,
                 },
+              });
+              window.google.maps.event.addListener(marker, "mouseover", function(){
+                const icon = marker.getIcon();
+                icon.url = "http://localhost:3000/marker2.svg";
+                marker.setIcon(icon);
+              });
+              window.google.maps.event.addListener(marker, "mouseout", function(){
+                const icon = marker.getIcon();
+                icon.url = "http://localhost:3000/marker.svg";
+                marker.setIcon(icon);
               });
               window.google.maps.event.addListener(marker, "click", function(){
                 expect(marker.payload.id).number();
@@ -241,6 +255,9 @@ function App() {
         </div>
       }
       <div className="map" id="map-canvas" ref={mapRef}/>
+      <div className="logo">
+        <img alt="logo" src={require("./images/logo_floating_map.svg")} />
+      </div>
     </div>
   );
 }

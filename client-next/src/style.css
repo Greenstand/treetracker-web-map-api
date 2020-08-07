@@ -16,3 +16,9 @@ body {
   width: 250px;
   height: 100%;
 }
+
+.logo {
+  position: absolute;
+  right: 60px;
+  bottom: 20px;
+}
