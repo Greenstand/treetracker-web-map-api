@@ -4,8 +4,8 @@ const scale = 1;
 describe("Web Map", () => {
 
   it("Web map", () => {
-    cy.visit("http://localhost:3000/")
-      .contains("3")
+    cy.visit("http://localhost:3000/");
+    cy.contains("3");
     cy
       .wait(2000*scale)
       .get("#map-canvas")
@@ -22,6 +22,7 @@ describe("Web Map", () => {
         });
       });
     cy.contains("tree1");
+    cy.pause();
     cy.wait(2000*scale);
     cy.get("#map-canvas")
       .then(el => {

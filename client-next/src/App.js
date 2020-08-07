@@ -1,5 +1,6 @@
 import React from 'react';
 import expect from "./expect";
+import * as tools from "./tools";
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -91,104 +92,139 @@ function App() {
       mapRef.current.greenstandMap = map;
       mapRef.current.markers = [];
 
-      const data = JSON.parse(dataString);
-      data.data.forEach(d => {
-        expect(d.centroid)
-          .defined()
-          .property("coordinates")
-          .property(1)
-          .number();
-        const latLng = new window.google.maps.LatLng(
-          d.centroid.coordinates[1],
-          d.centroid.coordinates[0]
-        );
-        expect(d.count).match(/\d+/);
-        const marker = new window.google.maps.Marker({
-          position: latLng,
-          map: map,
-          label: {
-            text: shortenLargeNumber(d.count).toString(),
-          },
-        });
-        marker.zoomTarget = data.zoomTargets?.reduce((a,c) => {
-          if(a){
-            return a;
-          }else{
-            if(c.region_id === d.id){
-              console.error("xxxxxxxxxxxxxxxxx");
-              return c;
-            }else{
-              return a;
-            }
-          }
-        }, undefined);
-        window.google.maps.event.addListener(marker, "click", function(){
-          console.log("click", marker);
-          expect(marker.zoomTarget).match({
-            zoom_level: expect.any(Number),
-            centroid: {
-              coordinates: expect.any(Array),
+      window.google.maps.event.addListenerOnce(map,"tilesloaded", function(){
+        const data = JSON.parse(dataString);
+        data.data.forEach(d => {
+          expect(d.centroid)
+            .defined()
+            .property("coordinates")
+            .property(1)
+            .number();
+          const latLng = new window.google.maps.LatLng(
+            d.centroid.coordinates[1],
+            d.centroid.coordinates[0]
+          );
+          expect(d.count).match(/\d+/);
+          const marker = new window.google.maps.Marker({
+            position: latLng,
+            map: map,
+            //animation: window.google.maps.Animation.BOUNCE,
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: tools.scale(d.count),
+              fillColor: "#85c232",
+              fillOpacity: 0.3,
+              strokeWeight: 1,
+              strokeColor: "#85c232",
+            },
+            label: {
+              text: shortenLargeNumber(d.count).toString(),
+              color: "#ffffff",
+              fontSize: tools.scaleFontSize(d.count) + "px",
             },
           });
-          map.setZoom(marker.zoomTarget.zoom_level);
-          map.panTo({
-            lat: marker.zoomTarget.centroid.coordinates[1],
-            lng: marker.zoomTarget.centroid.coordinates[0],
-          });
-          //remove all markers and insert trees
-          mapRef.current.markers.forEach(marker => {
-            marker.setMap(null);
-          });
-          mapRef.current.markers = [];
-          const data2 = JSON.parse(dataString2);
-          expect(data2).match({
-            data: expect.any(Array),
-          });
-          data2.data.forEach(item => {
-            console.log("add tree:", item);
-            expect(item).match({
-              lat: expect.any(Number),
-              lng: expect.any(Number),
-            });
-            const marker = new window.google.maps.Marker({
-              position: {
-                lat: item.lat,
-                lng: item.lng,
-              },
-              map: map,
-              label: {
-                text: "tree" + item.id,
-              },
-              payload: {
-                ...item,
-              },
-            });
-            window.google.maps.event.addListener(marker, "click", function(){
-              expect(marker.payload.id).number();
-              console.log("click tree", marker.payload.id);
-              setPanel(true);
-              setTree(marker.payload);
-              //move map
-              expect(marker.payload.lat).number();
-              expect(marker.payload.lng).number();
-              const position = {
-                lat: marker.payload.lat,
-                lng: marker.payload.lng,
+          marker.zoomTarget = data.zoomTargets?.reduce((a,c) => {
+            if(a){
+              return a;
+            }else{
+              if(c.region_id === d.id){
+                console.error("xxxxxxxxxxxxxxxxx");
+                return c;
+              }else{
+                return a;
               }
-              console.log("pan to:", position); 
-              map.panTo(position);
-            });
-            marker.triggerClick = () => {
-              window.google.maps.event.trigger(marker, "click");
             }
-            mapRef.current.markers.push(marker);
-            console.log("added marker:", marker, marker.getPosition().toJSON());
+          }, undefined);
+          window.google.maps.event.addListener(marker, "mouseover", function(){
+            const icon = marker.getIcon();
+            icon.scale += 5;
+            icon.fillColor = "#c3f184";
+            icon.strokeColor = "#c3f184";
+            marker.setIcon(icon);
           });
+          window.google.maps.event.addListener(marker, "mouseout", function(){
+            const icon = marker.getIcon();
+            icon.scale -= 5;
+            icon.fillColor = "#85c232";
+            icon.strokeColor = "#85c232";
+            marker.setIcon(icon);
+          });
+          window.google.maps.event.addListener(marker, "click", function(){
+            console.log("click", marker);
+            expect(marker.zoomTarget).match({
+              zoom_level: expect.any(Number),
+              centroid: {
+                coordinates: expect.any(Array),
+              },
+            });
+            map.setZoom(marker.zoomTarget.zoom_level);
+            map.panTo({
+              lat: marker.zoomTarget.centroid.coordinates[1],
+              lng: marker.zoomTarget.centroid.coordinates[0],
+            });
+            //remove all markers and insert trees
+            mapRef.current.markers.forEach(marker => {
+              marker.setMap(null);
+            });
+            mapRef.current.markers = [];
+            const data2 = JSON.parse(dataString2);
+            expect(data2).match({
+              data: expect.any(Array),
+            });
+            data2.data.forEach(item => {
+              console.log("add tree:", item);
+              expect(item).match({
+                lat: expect.any(Number),
+                lng: expect.any(Number),
+              });
+              const marker = new window.google.maps.Marker({
+                position: {
+                  lat: item.lat,
+                  lng: item.lng,
+                },
+                icon: {
+                  path: "M213.333,0C130.88,0,64,66.88,64,149.333c0,112,149.333,277.333,149.333,277.333s149.333-165.333,149.333-277.333 C362.667,66.88,295.787,0,213.333,0z M213.333,202.667c-29.44,0-53.333-23.893-53.333-53.333S183.893,96,213.333,96 s53.333,23.893,53.333,53.333S242.773,202.667,213.333,202.667z",
+                  fillColor: '#FF0000',
+                  fillOpacity: 1,
+                  anchor: new window.google.maps.Point(0,0),
+                  strokeWeight: 0,
+                  scale: .1,
+                },
+                map: map,
+                label: {
+                  text: "tree" + item.id,
+                },
+                payload: {
+                  ...item,
+                },
+              });
+              window.google.maps.event.addListener(marker, "click", function(){
+                expect(marker.payload.id).number();
+                console.log("click tree", marker.payload.id);
+                setPanel(true);
+                setTree(marker.payload);
+                //move map
+                expect(marker.payload.lat).number();
+                expect(marker.payload.lng).number();
+                const position = {
+                  lat: marker.payload.lat,
+                  lng: marker.payload.lng,
+                }
+                console.log("pan to:", position); 
+                map.panTo(position);
+              });
+              marker.triggerClick = () => {
+                window.google.maps.event.trigger(marker, "click");
+              }
+              mapRef.current.markers.push(marker);
+              console.log("added marker:", marker, marker.getPosition().toJSON());
+            });
+          });
+          marker.triggerClick = () => {
+            window.google.maps.event.trigger(marker, "click");
+          }
+          mapRef.current.markers.push(marker);
         });
-        marker.triggerClick = () => {
-          window.google.maps.event.trigger(marker, "click");
-        }
-        mapRef.current.markers.push(marker);
       });
     };
   }, []);
