@@ -2,7 +2,12 @@ import React from 'react';
 import expect from "./expect";
 import * as tools from "./tools";
 import Paper from "@material-ui/core/Paper";
+//import Grid from "@material-ui/core/Grid";
+import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
+import Menu from "@material-ui/icons/Menu";
+import Search from "@material-ui/icons/Search";
+import IconButton from "@material-ui/core/IconButton";
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -28,13 +33,15 @@ const useStyles = makeStyles({
     position: 'absolute',
     marginTop: 8,
     marginLeft: 8,
-    padding: 10,
-    width: 392,
-    height: 48,
+    padding: 2,
+    //width: 392,
     borderRadius: 8,
   },
   searchInput: {
     borderWidth: 0,
+    marginLeft: 20,
+    fontSize: 16,
+    width: 250,
   },
 });
 
@@ -275,7 +282,21 @@ function App() {
       }
       <div className="side-panel" >
       <Paper className={classes.paper} elevation={3}>
-      <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
+        <Grid container alignItems="center" wrap="nowrap" >
+          <Grid item>
+            <IconButton>
+              <Menu/>
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
+          </Grid>
+          <Grid item>
+            <IconButton>
+              <Search/>
+            </IconButton>
+          </Grid>
+        </Grid>
       </Paper>
       </div>
       <div className="map" id="map-canvas" ref={mapRef}/>
