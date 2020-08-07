@@ -22,3 +22,18 @@ body {
   right: 60px;
   bottom: 20px;
 }
+
+.side-panel {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 300px;
+  height: 100%;
+  z-index: 999;
+}
+
+.search-box {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}

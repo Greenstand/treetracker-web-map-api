@@ -1,6 +1,8 @@
 import React from 'react';
 import expect from "./expect";
 import * as tools from "./tools";
+import Paper from "@material-ui/core/Paper";
+import {makeStyles} from "@material-ui/core/styles";
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -20,8 +22,25 @@ const dataString = '{"data":[{"type":"cluster","id":3,"centroid":{"type":"Point"
 
 const dataString2 = '{"data":[{"type":"point","id":1,"lng": 116.677917, "lat":39.916175},{"type":"point","id":2,"lng": 116.657892, "lat":39.912553},{"type":"point","id":3,"lng": 116.657738, "lat":39.912228}]}';
 
+
+const useStyles = makeStyles({
+  paper: {
+    position: 'absolute',
+    marginTop: 8,
+    marginLeft: 8,
+    padding: 10,
+    width: 392,
+    height: 48,
+    borderRadius: 8,
+  },
+  searchInput: {
+    borderWidth: 0,
+  },
+});
+
 function App() {
   console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  const classes = useStyles();
   const [isPanel, setPanel] = React.useState(false);
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
@@ -254,6 +273,11 @@ function App() {
           <div><button onClick={handleClose} >close</button></div>
         </div>
       }
+      <div className="side-panel" >
+      <Paper className={classes.paper} elevation={3}>
+      <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
+      </Paper>
+      </div>
       <div className="map" id="map-canvas" ref={mapRef}/>
       <div className="logo">
         <img alt="logo" src={require("./images/logo_floating_map.svg")} />
