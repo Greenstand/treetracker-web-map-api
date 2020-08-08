@@ -39,6 +39,7 @@ describe("Web Map", () => {
         });
       });
     cy.contains("Clyde");
+    cy.pause();
     cy.contains(/#1/i);
     cy.wait(2000*scale);
     cy.get("button[title='next tree']")
