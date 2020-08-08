@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Check from '@material-ui/icons/CheckCircle';
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import Slide from '@material-ui/core/Slide';
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -58,7 +59,6 @@ const useStyles = makeStyles({
     width: 396,
     backgroundColor: "white",
     zIndex: 1,
-    display: "none",
   },
   treePicture: {
     height: 300,
@@ -339,15 +339,6 @@ function App() {
 
   return (
     <div>
-      {isPanel &&
-        <div className="side" >
-          Dadior Chen
-          Tree #{tree?.id}
-          <div><a onClick={handlePrev} href="javascript:" >prev</a></div>
-          <div><a onClick={handleNext} href="javascript:" >next</a></div>
-          <div><button onClick={handleClose} >close</button></div>
-        </div>
-      }
       <div className="side-panel" >
       <Paper className={classes.paper} elevation={2}>
         <Grid container alignItems="center" wrap="nowrap" >
@@ -366,55 +357,57 @@ function App() {
           </Grid>
         </Grid>
       </Paper>
-      <Paper square={true} className={classes.sidePaper} elevation={3}>
-        <Card className={classes.card} >
-          <CardMedia
-            className={classes.treePicture}
-            image="http://localhost:3000/images/tree.jpg"
-          >
-            <Grid container className={classes.arrowBox} >
-              <Grid item>
-                <IconButton>
-                  <ArrowBackIosIcon className={classes.arrow} />
-                </IconButton>
+      <Slide direction="right" in={isPanel} mountOnEnter unmountOnExit>
+        <Paper square={true} className={classes.sidePaper} elevation={3}>
+          <Card className={classes.card} >
+            <CardMedia
+              className={classes.treePicture}
+              image="http://localhost:3000/images/tree.jpg"
+            >
+              <Grid container className={classes.arrowBox} >
+                <Grid item>
+                  <IconButton>
+                    <ArrowBackIosIcon className={classes.arrow} />
+                  </IconButton>
+                </Grid>
+                <Grid item>
+                  <IconButton>
+                    <ArrowForwardIosIcon className={classes.arrow} />
+                  </IconButton>
+                </Grid>
               </Grid>
-              <Grid item>
-                <IconButton>
-                  <ArrowForwardIosIcon className={classes.arrow} />
-                </IconButton>
+            </CardMedia>
+            <CardContent>
+              <Grid container className={classes.titleBox} >
+                <Grid item>
+                  <Paper elevation={2} className={classes.avatarPaper} >
+                    <Avatar className={classes.avatar} src="http://localhost:3000/images/avatar.jpg" />
+                  </Paper>
+                </Grid>
+                <Grid item className={classes.nameBox} >
+                  <Typography variant="h4" >Clyde V</Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          </CardMedia>
-          <CardContent>
-            <Grid container className={classes.titleBox} >
-              <Grid item>
-                <Paper elevation={2} className={classes.avatarPaper} >
-                  <Avatar className={classes.avatar} src="http://localhost:3000/images/avatar.jpg" />
-                </Paper>
+              <Grid container className={classes.verify} >
+                <Grid item>
+                  <Check style={{ color: "#abe38f"}} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1" >
+                    Tree Verified
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item className={classes.nameBox} >
-                <Typography variant="h4" >Clyde V</Typography>
-              </Grid>
-            </Grid>
-            <Grid container className={classes.verify} >
-              <Grid item>
-                <Check style={{ color: "#abe38f"}} />
-              </Grid>
-              <Grid item>
-                <Typography variant="body1" >
-                  Tree Verified
-                </Typography>
-              </Grid>
-            </Grid>
-            <Typography className={classes.item} variant="body2" >
-              09/28/2019 05:15 PM
-            </Typography>
-            <Typography className={classes.item} variant="body2" >
-              Tree Id: 183674
-            </Typography>
-          </CardContent>
-        </Card>
-      </Paper>
+              <Typography className={classes.item} variant="body2" >
+                09/28/2019 05:15 PM
+              </Typography>
+              <Typography className={classes.item} variant="body2" >
+                Tree Id: #{tree?.id}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Paper>
+      </Slide>
       </div>
       <div className="map" id="map-canvas" ref={mapRef}/>
       <div className="logo">

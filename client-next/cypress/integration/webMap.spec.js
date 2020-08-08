@@ -23,7 +23,7 @@ describe("Web Map", () => {
           };
         });
       });
-    cy.contains("tree1");
+    //cy.contains("tree1");
     cy.wait(2000*scale);
     cy.get("#map-canvas")
       .then(el => {
@@ -31,7 +31,7 @@ describe("Web Map", () => {
         //click
         el[0].markers.forEach(marker => {
           console.log("marker:", marker);
-          if(marker.getLabel().text === "tree1"){
+          if(marker.payload.id === 1){
             console.log("trigger");
             marker.triggerClick();
             //window.google.maps.event.trigger(marker, 'click');
