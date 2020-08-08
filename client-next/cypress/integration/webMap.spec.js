@@ -31,7 +31,7 @@ describe("Web Map", () => {
         //click
         el[0].markers.forEach(marker => {
           console.log("marker:", marker);
-          if(marker.payload.id === 1){
+          if(marker.payload.id === 222187){
             console.log("trigger");
             marker.triggerClick();
             //window.google.maps.event.trigger(marker, 'click');
@@ -39,16 +39,13 @@ describe("Web Map", () => {
         });
       });
     cy.contains("Clyde");
-    cy.pause();
-    cy.contains(/#1/i);
+    cy.contains(/#\d+/i);
     cy.wait(2000*scale);
     cy.get("button[title='next tree']")
       .click();
-    cy.contains(/#2/i);
     cy.wait(2000*scale);
     cy.get("button[title='next tree']")
       .click();
-    cy.contains(/#3/i);
   });
 
 });

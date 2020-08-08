@@ -20,6 +20,10 @@ import Slide from '@material-ui/core/Slide';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import AccessTime from '@material-ui/icons/AccessTime';
+import Nature from '@material-ui/icons/Nature';
+import Room from '@material-ui/icons/Room';
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -110,6 +114,12 @@ const useStyles = makeStyles({
     height: 48,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
+  },
+  infoItem: {
+    marginBottom: 10,
+    "&>div": {
+      marginRight: 5,
+    },
   },
 });
 
@@ -428,17 +438,43 @@ function App() {
                   <Check style={{ color: "#abe38f"}} />
                 </Grid>
                 <Grid item>
-                  <Typography variant="body1" >
+                  <Typography variant="subtitle1" >
                     Tree Verified
                   </Typography>
                 </Grid>
               </Grid>
-              <Typography className={classes.item} variant="body2" >
-                09/28/2019 05:15 PM
-              </Typography>
-              <Typography className={classes.item} variant="body2" >
-                Tree Id: #{tree?.id}
-              </Typography>
+              <Divider/>
+              <Box height={15} />
+              <Grid container className={classes.infoItem} >
+                <Grid item>
+                  <AccessTime/>
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.item} variant="body1" >
+                    09/28/2019 05:15 PM
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid container className={classes.infoItem} >
+                <Grid item>
+                  <Nature/>
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.item} variant="body1" >
+                    Tree Id: #{tree?.id}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid container className={classes.infoItem} >
+                <Grid item>
+                  <Room />
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.item} variant="body1" >
+                    {tree?.lat},{tree?.lng}
+                  </Typography>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Paper>
