@@ -7,7 +7,6 @@ describe("Web Map", () => {
     cy.visit("http://localhost:3000/");
     cy.get("img[alt=logo]");
     cy.get("input[placeholder='Search Greenstand'");
-    cy.pause();
     cy.contains("3");
     cy
       .wait(2000*scale)

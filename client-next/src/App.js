@@ -58,6 +58,7 @@ const useStyles = makeStyles({
     width: 396,
     backgroundColor: "white",
     zIndex: 1,
+    display: "none",
   },
   treePicture: {
     height: 300,
@@ -93,8 +94,7 @@ const useStyles = makeStyles({
   },
   arrow: {
     color: "white",
-    fontSize: 36,
-  },
+    fontSize: 36, },
 });
 
 function App() {
@@ -269,8 +269,8 @@ function App() {
 //                  scale: .1,
 //                },
                 icon:{
-                  url: "http://localhost:3000/marker.svg",
-                  scaledSize: new window.google.maps.Size(40, 60),
+                  url: "http://localhost:3000/images/icon_tree1/icon_tree.svg",
+                  scaledSize: new window.google.maps.Size(60, 70),
                 },
                 map: map,
 //                label: {
@@ -282,12 +282,18 @@ function App() {
               });
               window.google.maps.event.addListener(marker, "mouseover", function(){
                 const icon = marker.getIcon();
-                icon.url = "http://localhost:3000/marker2.svg";
+                if(icon.url.match(/active/)){
+                  return;
+                }
+                icon.url = "http://localhost:3000/images/icon_tree1/icon_tree_hover.svg";
                 marker.setIcon(icon);
               });
               window.google.maps.event.addListener(marker, "mouseout", function(){
                 const icon = marker.getIcon();
-                icon.url = "http://localhost:3000/marker.svg";
+                if(icon.url.match(/active/)){
+                  return;
+                }
+                icon.url = "http://localhost:3000/images/icon_tree1/icon_tree.svg";
                 marker.setIcon(icon);
               });
               window.google.maps.event.addListener(marker, "click", function(){
@@ -304,6 +310,16 @@ function App() {
                 }
                 console.log("pan to:", position); 
                 map.panTo(position);
+                //marker icon
+                //disable other active
+                mapRef.current.markers.forEach(m => {
+                  const icon = m.getIcon();
+                  icon.url = "http://localhost:3000/images/icon_tree1/icon_tree.svg";
+                  marker.setIcon(icon);
+                });
+                const icon = marker.getIcon();
+                icon.url = "http://localhost:3000/images/icon_tree1/icon_tree_active.svg";
+                marker.setIcon(icon);
               });
               marker.triggerClick = () => {
                 window.google.maps.event.trigger(marker, "click");
