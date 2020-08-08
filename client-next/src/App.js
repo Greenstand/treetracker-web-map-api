@@ -8,6 +8,14 @@ import {makeStyles} from "@material-ui/core/styles";
 import Menu from "@material-ui/icons/Menu";
 import Search from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Check from '@material-ui/icons/CheckCircle';
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -36,12 +44,56 @@ const useStyles = makeStyles({
     padding: 2,
     //width: 392,
     borderRadius: 8,
+    zIndex: 2,
   },
   searchInput: {
     borderWidth: 0,
     marginLeft: 20,
     fontSize: 16,
     width: 250,
+  },
+  sidePaper: {
+    position: 'absolute',
+    height: "100vh",
+    width: 396,
+    backgroundColor: "white",
+    zIndex: 1,
+  },
+  treePicture: {
+    height: 300,
+  },
+  avatarPaper: {
+    borderRadius: "50%",
+  },
+  avatar: {
+    height: 108,
+    width: 108,
+    marginTop: -77,
+    border: "6px solid white",
+  },
+  titleBox: {
+    marginBottom: 15,
+  },
+  nameBox: {
+    marginLeft: 15,
+  },
+  verify: {
+    marginBottom: 15,
+  },
+  item: {
+    marginBottom: 15,
+  },
+  card: {
+    height: "100%",
+  }, 
+  arrowBox: {
+    height: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  arrow: {
+    color: "white",
+    fontSize: 36,
   },
 });
 
@@ -281,7 +333,7 @@ function App() {
         </div>
       }
       <div className="side-panel" >
-      <Paper className={classes.paper} elevation={3}>
+      <Paper className={classes.paper} elevation={2}>
         <Grid container alignItems="center" wrap="nowrap" >
           <Grid item>
             <IconButton>
@@ -297,6 +349,55 @@ function App() {
             </IconButton>
           </Grid>
         </Grid>
+      </Paper>
+      <Paper square={true} className={classes.sidePaper} elevation={3}>
+        <Card className={classes.card} >
+          <CardMedia
+            className={classes.treePicture}
+            image="http://localhost:3000/images/tree.jpg"
+          >
+            <Grid container className={classes.arrowBox} >
+              <Grid item>
+                <IconButton>
+                  <ArrowBackIosIcon className={classes.arrow} />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton>
+                  <ArrowForwardIosIcon className={classes.arrow} />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </CardMedia>
+          <CardContent>
+            <Grid container className={classes.titleBox} >
+              <Grid item>
+                <Paper elevation={2} className={classes.avatarPaper} >
+                  <Avatar className={classes.avatar} src="http://localhost:3000/images/avatar.jpg" />
+                </Paper>
+              </Grid>
+              <Grid item className={classes.nameBox} >
+                <Typography variant="h4" >Clyde V</Typography>
+              </Grid>
+            </Grid>
+            <Grid container className={classes.verify} >
+              <Grid item>
+                <Check style={{ color: "#abe38f"}} />
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" >
+                  Tree Verified
+                </Typography>
+              </Grid>
+            </Grid>
+            <Typography className={classes.item} variant="body2" >
+              09/28/2019 05:15 PM
+            </Typography>
+            <Typography className={classes.item} variant="body2" >
+              Tree Id: 183674
+            </Typography>
+          </CardContent>
+        </Card>
       </Paper>
       </div>
       <div className="map" id="map-canvas" ref={mapRef}/>
