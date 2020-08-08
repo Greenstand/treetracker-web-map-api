@@ -24,6 +24,39 @@ import Divider from '@material-ui/core/Divider';
 import AccessTime from '@material-ui/icons/AccessTime';
 import Nature from '@material-ui/icons/Nature';
 import Room from '@material-ui/icons/Room';
+import { ThemeProvider } from '@material-ui/core/styles'
+import {createMuiTheme}		from '@material-ui/core/styles'
+
+const colorPrimary		= '#76BB23'
+const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
+const colorPrimaryHover		= 'rgba(118, 187, 35, 0.1)'
+
+const theme = createMuiTheme({
+	spacing		: 4,
+	typography		: {
+		//fontSize		: 11,
+		//htmlFontSize		: 20,
+		fontFamily: [
+			'Roboto',
+			'Lato',
+			'Helvetica',
+			'Arial',
+			'sans-serif',
+		].join(','),
+	},
+  palette: {
+    primary: {
+      main: colorPrimary,
+			//very light primary color, for background sometimes
+			lightVery		: '#F9FCF4',
+    },
+		action		: {
+			active		: 'rgba(135, 195, 46, .64)',
+			hover		: 'rgba(135, 195, 46, .08)',
+			selected		: 'rgba(135, 195, 46, .32)',
+		},
+  },
+});
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -374,117 +407,119 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <div className="side-panel" >
-      <Paper className={classes.paper} elevation={2}>
-        <Grid container alignItems="center" wrap="nowrap" >
-          <Grid item>
-            <IconButton>
-              <Menu/>
-            </IconButton>
+    <ThemeProvider theme={theme}>
+      <div>
+        <div className="side-panel" >
+        <Paper className={classes.paper} elevation={2}>
+          <Grid container alignItems="center" wrap="nowrap" >
+            <Grid item>
+              <IconButton>
+                <Menu/>
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
+            </Grid>
+            <Grid item>
+              <IconButton>
+                <Search/>
+              </IconButton>
+            </Grid>
           </Grid>
-          <Grid item>
-            <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
-          </Grid>
-          <Grid item>
-            <IconButton>
-              <Search/>
-            </IconButton>
-          </Grid>
-        </Grid>
-      </Paper>
-      <Slide direction="right" in={isPanel} >
-        <Paper square={true} className={classes.sidePaper} elevation={3}>
-          <div style={{position: "relative"}} >
-            <Paper onClick={handleClose} elevation={3} className={classes.closeButton} >
-              <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
-                <Grid item>
-                  <ArrowLeft/> 
-                </Grid>
-              </Grid>
-            </Paper>
-          </div>
-          <Card className={classes.card} >
-            <CardMedia
-              className={classes.treePicture}
-              image={/*"http://localhost:3000/images/tree.jpg"*/tree?.image_url}
-            >
-              <Grid container className={classes.arrowBox} >
-                <Grid item>
-                  <IconButton title="previous tree" onClick={handlePrev} >
-                    <ArrowBackIosIcon className={classes.arrow} />
-                  </IconButton>
-                </Grid>
-                <Grid item>
-                  <IconButton title="next tree" onClick={handleNext} >
-                    <ArrowForwardIosIcon className={classes.arrow} />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            </CardMedia>
-            <CardContent>
-              <Grid container className={classes.titleBox} >
-                <Grid item>
-                  <Paper elevation={2} className={classes.avatarPaper} >
-                    <Avatar className={classes.avatar} src="http://localhost:3000/images/avatar.jpg" />
-                  </Paper>
-                </Grid>
-                <Grid item className={classes.nameBox} >
-                  <Typography variant="h4" >Clyde V</Typography>
-                </Grid>
-              </Grid>
-              <Grid container className={classes.verify} >
-                <Grid item>
-                  <Check style={{ color: "#abe38f"}} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1" >
-                    Tree Verified
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Divider/>
-              <Box height={15} />
-              <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <AccessTime/>
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.item} variant="body1" >
-                    09/28/2019 05:15 PM
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Nature/>
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.item} variant="body1" >
-                    Tree Id: #{tree?.id}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Room />
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.item} variant="body1" >
-                    {tree?.lat},{tree?.lng}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
         </Paper>
-      </Slide>
+        <Slide direction="right" in={isPanel} >
+          <Paper square={true} className={classes.sidePaper} elevation={3}>
+            <div style={{position: "relative"}} >
+              <Paper onClick={handleClose} elevation={3} className={classes.closeButton} >
+                <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
+                  <Grid item>
+                    <ArrowLeft/> 
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+            <Card className={classes.card} >
+              <CardMedia
+                className={classes.treePicture}
+                image={/*"http://localhost:3000/images/tree.jpg"*/tree?.image_url}
+              >
+                <Grid container className={classes.arrowBox} >
+                  <Grid item>
+                    <IconButton title="previous tree" onClick={handlePrev} >
+                      <ArrowBackIosIcon className={classes.arrow} />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <IconButton title="next tree" onClick={handleNext} >
+                      <ArrowForwardIosIcon className={classes.arrow} />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </CardMedia>
+              <CardContent>
+                <Grid container className={classes.titleBox} >
+                  <Grid item>
+                    <Paper elevation={2} className={classes.avatarPaper} >
+                      <Avatar className={classes.avatar} src="http://localhost:3000/images/avatar.jpg" />
+                    </Paper>
+                  </Grid>
+                  <Grid item className={classes.nameBox} >
+                    <Typography variant="h4" >Clyde V</Typography>
+                  </Grid>
+                </Grid>
+                <Grid container className={classes.verify} >
+                  <Grid item>
+                    <Check style={{ color: "#abe38f"}} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1" >
+                      Tree Verified
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Divider/>
+                <Box height={15} />
+                <Grid container className={classes.infoItem} >
+                  <Grid item>
+                    <AccessTime/>
+                  </Grid>
+                  <Grid item>
+                    <Typography className={classes.item} variant="body1" >
+                      09/28/2019 05:15 PM
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container className={classes.infoItem} >
+                  <Grid item>
+                    <Nature/>
+                  </Grid>
+                  <Grid item>
+                    <Typography className={classes.item} variant="body1" >
+                      Tree Id: #{tree?.id}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container className={classes.infoItem} >
+                  <Grid item>
+                    <Room />
+                  </Grid>
+                  <Grid item>
+                    <Typography className={classes.item} variant="body1" >
+                      {tree?.lat},{tree?.lng}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Paper>
+        </Slide>
+        </div>
+        <div className="map" id="map-canvas" ref={mapRef}/>
+        <div className="logo">
+          <img alt="logo" src={require("./images/logo_floating_map.svg")} />
+        </div>
       </div>
-      <div className="map" id="map-canvas" ref={mapRef}/>
-      <div className="logo">
-        <img alt="logo" src={require("./images/logo_floating_map.svg")} />
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
