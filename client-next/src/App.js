@@ -338,9 +338,10 @@ function App() {
                 //marker icon
                 //disable other active
                 mapRef.current.markers.forEach(m => {
+                  console.log("clear icon");
                   const icon = m.getIcon();
                   icon.url = "http://localhost:3000/images/icon_tree1/icon_tree.svg";
-                  marker.setIcon(icon);
+                  m.setIcon(icon);
                 });
                 const icon = marker.getIcon();
                 icon.url = "http://localhost:3000/images/icon_tree1/icon_tree_active.svg";
