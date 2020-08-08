@@ -38,16 +38,16 @@ describe("Web Map", () => {
           };
         });
       });
-    cy.contains("Dadior");
-    cy.contains(/tree #1/i);
+    cy.contains("Clyde");
+    cy.contains(/#1/i);
     cy.wait(2000*scale);
-    cy.contains("next")
+    cy.get("button[title='next tree']")
       .click();
-    cy.contains(/tree #2/i);
+    cy.contains(/#2/i);
     cy.wait(2000*scale);
-    cy.contains("next")
+    cy.get("button[title='next tree']")
       .click();
-    cy.contains(/tree #3/i);
+    cy.contains(/#3/i);
   });
 
 });

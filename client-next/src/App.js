@@ -366,12 +366,12 @@ function App() {
             >
               <Grid container className={classes.arrowBox} >
                 <Grid item>
-                  <IconButton>
+                  <IconButton title="previous tree" onClick={handlePrev} >
                     <ArrowBackIosIcon className={classes.arrow} />
                   </IconButton>
                 </Grid>
                 <Grid item>
-                  <IconButton>
+                  <IconButton title="next tree" onClick={handleNext} >
                     <ArrowForwardIosIcon className={classes.arrow} />
                   </IconButton>
                 </Grid>
