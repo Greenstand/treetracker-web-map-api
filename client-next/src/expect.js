@@ -27,10 +27,10 @@ class Any extends Matcher{
       return typeof other == 'boolean';
     }
 
-    /* global BigInt */
-    if (this.sample == BigInt) {
-      return typeof other == 'bigint';
-    }
+//    /* global BigInt */
+//    if (this.sample == BigInt) {
+//      return typeof other == 'bigint';
+//    }
 
     if (this.sample == Symbol) {
       return typeof other == 'symbol';

@@ -1,4 +1,12 @@
+html {
+  position: fixed;
+}
+
 body {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
   margin: 0px;
 }
 
