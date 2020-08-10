@@ -4,7 +4,12 @@ const scale = 1;
 describe("Web Map", () => {
 
   it("Web map", () => {
-    cy.visit("http://localhost:3000/");
+    //cy.viewport("ipad-2");
+//    cy.viewport("iphone-x");
+//    cy.viewport("macbook-13");
+    //cy.viewport("samsung-note9");
+//    cy.visit("http://localhost:3000/");
+    cy.visit("http://test.dadiorchen.com");
     cy.get("img[alt=logo]");
     cy.get("input[placeholder='Search Greenstand'");
     cy.contains("3");
