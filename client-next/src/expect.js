@@ -156,6 +156,7 @@ class Expectation{
 
   property(propertyName){
     const propertyValue = this.actual[propertyName];
+    console.log("!!!!!!!!!!!!!!!:", propertyValue);
     if(propertyValue === undefined){
       this.throw(`has property:${propertyName}`);
     }else{

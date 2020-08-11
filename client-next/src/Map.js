@@ -47,6 +47,8 @@ var selectedOldTreeMarker;
 //var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
 var treetrackerApiUrl = "/api/web/";
 
+let isLoadingMarkers = false;
+
 if (typeof configTreetrackerApi !== "undefined") {
   treetrackerApiUrl = configTreetrackerApi;
 }
@@ -129,6 +131,7 @@ function getTreeQueryParametersFromRequestedFilters(){
 //Get the tree data and create markers with corresponding data
 var initMarkers = function(viewportBounds, zoomLevel) {
   console.log("initMarkers:", viewportBounds, zoomLevel);
+  isLoadingMarkers = true;
   // no need to load this up at every tiny movement
   if (!fetchMarkers) {
     console.log("initMarkers quit");
@@ -248,6 +251,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
               map.panTo(marker.position);
             }
           });
+          marker.triggerClick = () => {
+            window.google.maps.event.trigger(marker, "click");
+          };
           markers.push(marker);
         } else if (item.type == "point") {
           var latLng = new window.google.maps.LatLng(item.lat, item.lon);
@@ -283,6 +289,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           // hold the reference to our points
           points.push(item);
           markerByPointId[item["id"]] = marker;
+          marker.triggerClick = () => {
+            window.google.maps.event.trigger(marker, "click");
+          };
           markers.push(marker);
         }
       });
@@ -305,6 +314,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         firstRender = false;
       }
       console.log("init markert finished, loaded:", markers.length);
+      isLoadingMarkers = false;
       //debugger;
       mapModel.checkArrow();
     });
@@ -323,6 +333,8 @@ function setPointMarkerListeners() {
   points.forEach(function(point, i) {
     var marker = markerByPointId[point.id];
     window.google.maps.event.addListener(marker, "click", function() {
+      console.warn("click pointer!", point);
+      return;
       panelLoader.classList.add("active");
       showMarkerInfo(point, marker, i);
       $("#tree-image").on("load", function() {
@@ -819,9 +831,13 @@ var initialize = function() {
   mapModel.markers = markers;
 };
 
-
-
 window.google.maps.event.addDomListener(window, "load", initialize);
+
+return {
+  getMap: () => map,
+  getMarkers: () => markers,
+  getLoadingMarkers: () => isLoadingMarkers,
+}
 
 }
 

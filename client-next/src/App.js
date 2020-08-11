@@ -26,7 +26,7 @@ import Nature from '@material-ui/icons/Nature';
 import Room from '@material-ui/icons/Room';
 import { ThemeProvider } from '@material-ui/core/styles'
 import {createMuiTheme}		from '@material-ui/core/styles'
-import map from "./map";
+import load from "./map";
 
 const colorPrimary		= '#76BB23'
 const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
@@ -222,7 +222,8 @@ function App() {
 
     script.onload = () => {
       //map.initialize();
-      map();
+      const map = load();
+      mapRef.current.map = map;
 //      var mapOptions = {
 //        zoom: 2,
 //        //minZoom: minZoom,

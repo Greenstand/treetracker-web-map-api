@@ -21,6 +21,16 @@ describe("expect", () => {
     }).toThrow();
   });
 
+  it("{a:1} property('a')", () => {
+    myExpect({a:1}).property("a");
+  });
+
+  it("{a:1} property('b') should throw", () => {
+    expect(() => {
+      myExpect({a:1}).property("b");
+    });
+  });
+
   it("{a:1} defined.property('a').number()", () => {
     let o = {a:1};
     myExpect(o).defined().property("a").number();

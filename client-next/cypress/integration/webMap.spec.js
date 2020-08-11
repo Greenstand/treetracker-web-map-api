@@ -1,4 +1,4 @@
-
+//import expect from "../../src/expect";
 const scale = 1;
 
 describe("Web Map", () => {
@@ -13,24 +13,94 @@ describe("Web Map", () => {
     cy.visit("http://localhost:3000");
     cy.get("img[alt=logo]");
     cy.get("input[placeholder='Search Greenstand'");
-    cy.contains("3");
+    cy.contains(/137K/,{timeout: 1000*30});
     cy
-      .wait(2000*scale)
       .get("#map-canvas")
       .then(el => {
-        console.log("el:", el);
         //click
-        el[0].markers.forEach(marker => {
-          console.log("marker:", marker);
-          if(marker.getLabel().text === "3"){
-            console.log("trigger");
+        el[0].map.getMarkers().forEach(marker => {
+          if(marker.getLabel().text === "137K"){
             marker.triggerClick();
-            //window.google.maps.event.trigger(marker, 'click');
           };
         });
       });
-    //cy.contains("tree1");
-    cy.wait(2000*scale);
+    cy.wait(1000);
+    cy.get("#map-canvas", {timeout:1000*30})
+      .should(e1 => {
+        expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
+      });
+    cy.contains(/3/,{timeout: 1000*30});
+    cy
+      .get("#map-canvas")
+      .then(el => {
+        //click
+        el[0].map.getMarkers().forEach(marker => {
+          if(marker.getLabel().text === "3"){
+            marker.triggerClick();
+          };
+        });
+      });
+    cy.wait(1000);
+    cy.get("#map-canvas", {timeout:1000*30})
+      .should(e1 => {
+        expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
+      });
+    cy.contains(/2/,{timeout: 1000*30});
+    cy
+      .get("#map-canvas")
+      .then(el => {
+        //click
+        el[0].map.getMarkers().reverse().forEach(marker => {
+          if(marker.getLabel().text === "2"){
+            marker.triggerClick();
+          };
+        });
+      });
+    cy.wait(1000);
+    cy.get("#map-canvas", {timeout:1000*30})
+      .should(e1 => {
+        expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
+      });
+    cy.contains(/2/,{timeout: 1000*30});
+    cy
+      .get("#map-canvas")
+      .then(el => {
+        //click
+        el[0].map.getMarkers().forEach(marker => {
+          if(marker.getLabel().text === "2"){
+            marker.triggerClick();
+          };
+        });
+      });
+    cy.wait(1000);
+    cy.get("#map-canvas", {timeout:1000*30})
+      .should(e1 => {
+        expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
+      });
+    cy.contains(/1/,{timeout: 1000*30});
+    cy
+      .get("#map-canvas")
+      .then(el => {
+        //click
+        el[0].map.getMarkers().forEach(marker => {
+          if(marker.getLabel().text === "1"){
+            marker.triggerClick();
+          };
+        });
+      });
+    cy.wait(1000);
+    cy.get("#map-canvas", {timeout:1000*30})
+      .should(e1 => {
+        expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
+      });
+    cy.get("img[src='/img/pin_29px.png']");
+    cy.get("#map-canvas")
+      .then(el => {
+        //click
+        el[0].map.getMarkers()[0].triggerClick();
+      });
+    cy.pause();
+    cy.wait(10000*scale);
     cy.get("#map-canvas")
       .then(el => {
         console.log("el:", el);
