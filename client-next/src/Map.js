@@ -334,6 +334,9 @@ function setPointMarkerListeners() {
     var marker = markerByPointId[point.id];
     window.google.maps.event.addListener(marker, "click", function() {
       console.warn("click pointer!", point);
+      const mapElement = document.getElementById("map-canvas");
+      expect(mapElement).property("showPanel").defined();
+      mapElement.showPanel(point);
       return;
       panelLoader.classList.add("active");
       showMarkerInfo(point, marker, i);

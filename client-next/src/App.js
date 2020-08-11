@@ -214,6 +214,14 @@ function App() {
     setPanel(false);
   }
 
+  function showPanel(tree){
+    console.log("show panel...");
+    setPanel(true);
+    setTree(tree);
+  }
+
+  if(mapRef.current) mapRef.current.showPanel = showPanel;
+
   React.useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
@@ -224,6 +232,9 @@ function App() {
       //map.initialize();
       const map = load();
       mapRef.current.map = map;
+      expect(mapRef)
+        .property("current").defined();
+      mapRef.current.showPanel = showPanel;
 //      var mapOptions = {
 //        zoom: 2,
 //        //minZoom: minZoom,

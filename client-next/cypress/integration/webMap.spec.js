@@ -93,12 +93,13 @@ describe("Web Map", () => {
       .should(e1 => {
         expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
       });
-    cy.get("img[src='/img/pin_29px.png']");
+    cy.get("img[src='/img/pin_29px.png']",{timeout:1000*30});
     cy.get("#map-canvas")
       .then(el => {
         //click
         el[0].map.getMarkers()[0].triggerClick();
       });
+    cy.contains(/Tree Id: #\d+/);
     cy.pause();
     cy.wait(10000*scale);
     cy.get("#map-canvas")
