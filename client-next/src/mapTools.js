@@ -107,7 +107,7 @@ function getInitialBounds (locations, width, height){
     locations.push(cornerEastSouth);
   }
 
-  const bounds = new google.maps.LatLngBounds();
+  const bounds = new window.google.maps.LatLngBounds();
   for(let location of locations){
     bounds.extend(location);
   }
@@ -146,7 +146,7 @@ function getInitialBounds (locations, width, height){
   return result;
 }
 
-module.exports = {
+export {
   go,
   getAngleLat,
   getAngleLng,

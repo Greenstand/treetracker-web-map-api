@@ -9,7 +9,8 @@ describe("Web Map", () => {
 //    cy.viewport("macbook-13");
     //cy.viewport("samsung-note9");
 //    cy.visit("http://localhost:3000/");
-    cy.visit("http://test.dadiorchen.com");
+//    cy.visit("http://test.dadiorchen.com");
+    cy.visit("http://localhost:3000");
     cy.get("img[alt=logo]");
     cy.get("input[placeholder='Search Greenstand'");
     cy.contains("3");

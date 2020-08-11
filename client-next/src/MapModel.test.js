@@ -1,4 +1,4 @@
-const MapModel = require("./MapModel");
+import MapModel from "./MapModel";
 const axios = require("axios");
 
 jest.mock("axios");

@@ -4,6 +4,15 @@
 import expect from "./expect";
 const axios = require("axios");
 
+const $ = () => {
+  console.warn("fake jQuery!");
+  return {
+    removeClass: () => {console.warn("Fake jQuery!");},
+    addClass: () => {console.warn("Fake jQuery!");},
+    show: () => {console.warn("Fake jQuery!");},
+  }
+}
+
 class MapModel {
   constructor(apiUrl){
     console.log('ok' + apiUrl);
@@ -57,18 +66,18 @@ class MapModel {
             lat: nearest.lat,
             lng: nearest.lng,
           };
-          const distanceLat = google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLat = window.google.maps.geometry.spherical.computeDistanceBetween(
             center,
-            new google.maps.LatLng(
+            new window.google.maps.LatLng(
               dist.lat,
               center.lng()
               ),
           );
           console.log("distanceLat:", distanceLat);
           expect(distanceLat).number();
-          const distanceLng = google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLng = window.google.maps.geometry.spherical.computeDistanceBetween(
             center,
-            new google.maps.LatLng(
+            new window.google.maps.LatLng(
               center.lat(),
               dist.lng,
               ),
@@ -184,4 +193,4 @@ class MapModel {
   }
 }
 
-module.exports = MapModel;
+export default MapModel;

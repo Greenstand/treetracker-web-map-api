@@ -1,4 +1,4 @@
-const mapTools = require("./mapTools");
+import * as mapTools from "./mapTools";
 
 describe("MapTools", () => {
 
