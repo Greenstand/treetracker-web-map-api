@@ -275,6 +275,14 @@ class Expectation{
     }
   }
 
+  oneOf(array){
+    if(array.includes(this.actual)){
+      return this;
+    }else{
+      this.throw(`one of ${JSON.stringify(array)}`);
+    }
+  }
+
 }
 
 

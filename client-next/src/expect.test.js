@@ -144,5 +144,15 @@ describe("expect", () => {
     myExpect(1).to.not.equal(2);
   });
 
+  it("'a' oneOf(['a', 'b'])", () => {
+    myExpect('a').oneOf(['a', 'b']);
+  });
+
+  it("'c' oneOf(['a', 'b']) should throw", () => {
+    expect(() => {
+      myExpect('c').oneOf(['a', 'b']);
+    }).toThrow();
+  });
+
 });
 

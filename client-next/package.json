@@ -35,6 +35,7 @@
     ]
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "cypress": "^4.12.0"
   }
 }
