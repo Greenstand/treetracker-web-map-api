@@ -10,6 +10,7 @@ const $ = () => {
     removeClass: () => {console.warn("Fake jQuery!");},
     addClass: () => {console.warn("Fake jQuery!");},
     show: () => {console.warn("Fake jQuery!");},
+    hide: () => {console.warn("Fake jQuery!");},
   }
 }
 

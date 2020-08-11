@@ -100,6 +100,16 @@ describe("expect", () => {
     }).toThrow();
   });
 
+  it("[1] to.be.a(expect.any(Array))", () => {
+    myExpect([1]).to.be.a(myExpect.any(Array));
+  });
+
+  it("1 to.be.a(expect.any(Array)) should throw", () => {
+    expect(() => {
+      myExpect(1).to.be.a(myExpect.any(Array));
+    }).toThrow();
+  });
+
   it("{a: 'abc'} match({a: expect.stringMatching(/^a/)})", () => {
     myExpect({a:"abc"}).match({
       a: myExpect.stringMatching(/^a/),

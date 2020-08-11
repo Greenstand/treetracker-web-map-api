@@ -221,7 +221,8 @@ function App() {
     document.body.appendChild(script);
 
     script.onload = () => {
-      map.initialize();
+      //map.initialize();
+      map();
 //      var mapOptions = {
 //        zoom: 2,
 //        //minZoom: minZoom,
