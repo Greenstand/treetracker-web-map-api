@@ -174,5 +174,25 @@ describe("expect", () => {
     }).toThrow();
   });
 
+  it("1 within(0,1)", () => {
+    myExpect(1).within(0,1);
+  });
+
+  it("2 within(0,1) should throw", () => {
+    expect(() => {
+      myExpect(2).within(0,1);
+    }).toThrow();
+  });
+
+  it("-1 within(0,1) should throw", () => {
+    expect(() => {
+      myExpect(-1).within(0,1);
+    });
+  });
+
+  it("() => a(any(Function)) ", () => {
+    myExpect(() => {}).a(myExpect.any(Function));
+  });
+
 });
 

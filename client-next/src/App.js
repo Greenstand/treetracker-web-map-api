@@ -27,6 +27,7 @@ import Room from '@material-ui/icons/Room';
 import { ThemeProvider } from '@material-ui/core/styles'
 import {createMuiTheme}		from '@material-ui/core/styles'
 import load from "./map";
+import moment from "moment";
 
 const colorPrimary		= '#76BB23'
 const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
@@ -179,36 +180,7 @@ function App() {
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
 
-  function handlePrev(){
-    console.log("prev");
-  }
 
-  function handleNext(){
-    console.log("next");
-    const {markers} = mapRef.current;
-    expect(markers).defined();
-    expect(tree.id).number();
-    const index = markers.reduce((a,c,i) => {
-      expect(c.payload.id).number();
-      if(c.payload.id === tree.id){
-        return i;
-      }else{ 
-        return a;
-      }
-    }, -1);
-    expect(index).least(0);
-    const next = markers[(index + 1) % markers.length]
-    setTree(next.payload);
-    //move the map
-    expect(next.payload.lat).number();
-    expect(next.payload.lng).number();
-    const {greenstandMap} = mapRef.current;
-    expect(greenstandMap).defined();
-    greenstandMap.panTo({
-      lat: next.payload.lat,
-      lng: next.payload.lng,
-    });
-  }
 
   function handleClose(){
     setPanel(false);
@@ -218,6 +190,31 @@ function App() {
     console.log("show panel...");
     setPanel(true);
     setTree(tree);
+  }
+
+  function handleNext(){
+    console.log("next");
+    const {map} = mapRef.current;
+    expect(map).defined()
+      .property("getNextPoint")
+      .a(expect.any(Function));
+    const point = map.getNextPoint(tree);
+    expect(point).match({
+      id: expect.any(Number),
+    });
+    showPanel(point);
+  }
+
+  function handlePrev(){
+    const {map} = mapRef.current;
+    expect(map).defined()
+      .property("getPrevPoint")
+      .a(expect.any(Function));
+    const point = map.getPrevPoint(tree);
+    expect(point).match({
+      id: expect.any(Number),
+    });
+    showPanel(point);
   }
 
   if(mapRef.current) mapRef.current.showPanel = showPanel;
@@ -460,6 +457,7 @@ function App() {
             </div>
             <Card className={classes.card} >
               <CardMedia
+                id="tree-img"
                 className={classes.treePicture}
                 image={/*"http://localhost:3000/images/tree.jpg"*/tree?.image_url}
               >
@@ -480,11 +478,13 @@ function App() {
                 <Grid container className={classes.titleBox} >
                   <Grid item>
                     <Paper elevation={2} className={classes.avatarPaper} >
-                      <Avatar className={classes.avatar} src="/images/avatar.jpg" />
+                      <Avatar id="planter-img" className={classes.avatar} src={tree?.user_image_url} />
                     </Paper>
                   </Grid>
                   <Grid item className={classes.nameBox} >
-                    <Typography variant="h4" >Clyde V</Typography>
+                    <Typography variant="h4" >
+                      {tree && `${tree.first_name} ${tree.last_name.slice(0, 1)}`}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid container className={classes.verify} >
@@ -493,7 +493,7 @@ function App() {
                   </Grid>
                   <Grid item>
                     <Typography variant="subtitle1" >
-                      Tree Verified
+                      Tree Verified{/*TODO wallet: token issued*/}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -505,7 +505,7 @@ function App() {
                   </Grid>
                   <Grid item>
                     <Typography className={classes.item} variant="body1" >
-                      09/28/2019 05:15 PM
+                      {tree && moment(tree.time_created).format("MM/DD/YYYY hh:mm A")}
                     </Typography>
                   </Grid>
                 </Grid>

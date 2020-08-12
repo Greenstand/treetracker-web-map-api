@@ -29,6 +29,7 @@ describe("Web Map", () => {
       .should(e1 => {
         expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
       });
+    cy.wait(3000);
     cy.contains(/3/,{timeout: 1000*30});
     cy
       .get("#map-canvas")
@@ -88,7 +89,7 @@ describe("Web Map", () => {
           };
         });
       });
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get("#map-canvas", {timeout:1000*30})
       .should(e1 => {
         expect(e1[0].map.getLoadingMarkers()).to.be.equal(false);
@@ -100,29 +101,49 @@ describe("Web Map", () => {
         el[0].map.getMarkers()[0].triggerClick();
       });
     cy.contains(/Tree Id: #\d+/);
-    cy.pause();
-    cy.wait(10000*scale);
+    //planter pic
+    //cy.get("img[src*='1232954293620066732.jpg']");
+    cy.contains("Tree Verified");
+    cy.contains("Sebastian G");
+    cy.contains("11/19/2018 09:10 PM");
+    cy.get("#planter-img")
+      .find("img")
+      .should("has.attr", "src")
+      .and("match", /.jpg/);
+    cy.get("#tree-img")
+      .should("has.attr", "style")
+      .and("match", /.jpg/);
     cy.get("#map-canvas")
-      .then(el => {
-        console.log("el:", el);
-        //click
-        el[0].markers.forEach(marker => {
-          console.log("marker:", marker);
-          if(marker.payload.id === 222187){
-            console.log("trigger");
-            marker.triggerClick();
-            //window.google.maps.event.trigger(marker, 'click');
-          };
-        });
+      .then($map => {
+        expect($map[0].map.getPoints()).lengthOf.least(1);
       });
-    cy.contains("Clyde");
-    cy.contains(/#\d+/i);
-    cy.wait(2000*scale);
     cy.get("button[title='next tree']")
       .click();
-    cy.wait(2000*scale);
-    cy.get("button[title='next tree']")
+    cy.get("button[title='previous tree']")
       .click();
+//    cy.pause();
+//    cy.wait(10000*scale);
+//    cy.get("#map-canvas")
+//      .then(el => {
+//        console.log("el:", el);
+//        //click
+//        el[0].markers.forEach(marker => {
+//          console.log("marker:", marker);
+//          if(marker.payload.id === 222187){
+//            console.log("trigger");
+//            marker.triggerClick();
+//            //window.google.maps.event.trigger(marker, 'click');
+//          };
+//        });
+//      });
+//    cy.contains("Clyde");
+//    cy.contains(/#\d+/i);
+//    cy.wait(2000*scale);
+//    cy.get("button[title='next tree']")
+//      .click();
+//    cy.wait(2000*scale);
+//    cy.get("button[title='next tree']")
+//      .click();
   });
 
 });

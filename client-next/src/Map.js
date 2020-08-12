@@ -840,6 +840,42 @@ return {
   getMap: () => map,
   getMarkers: () => markers,
   getLoadingMarkers: () => isLoadingMarkers,
+  getPoints: () => points,
+  getNextPoint: (point) => {
+    expect(point).property("id").number();
+    const index = points.reduce((a,c,i) => {
+      if(c.id === point.id){
+        return i;
+      }else{
+        return a;
+      }
+    }, -1);
+    if(index === -1){
+      throw Error("can not find point");
+    }
+    const nextIndex = (index + 1) % points.length;
+    expect(nextIndex).within(0, points.length);
+    return points[nextIndex];
+  },
+  getPrevPoint: (point) => {
+    expect(point).property("id").number();
+    const index = points.reduce((a,c,i) => {
+      if(c.id === point.id){
+        return i;
+      }else{
+        return a;
+      }
+    }, -1);
+    if(index === -1){
+      throw Error("can not find point");
+    }
+    const prevIndex = (index - 1)>= 0?
+      ((index -1) % points.length)
+    :
+      points.length + (index -1);
+    expect(prevIndex).within(0, points.length);
+    return points[prevIndex];
+  },
 }
 
 }

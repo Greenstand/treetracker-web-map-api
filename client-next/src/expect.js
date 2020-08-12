@@ -268,6 +268,14 @@ class Expectation{
     }
   }
 
+  within(left, right){
+    if(this.actual <= right && this.actual >= left){
+      return this;
+    }else{
+      this.throw(`within [${left},${right}]`);
+    }
+  }
+
   equal(other){
     if(this._equal(other)){
       return this;
