@@ -19,6 +19,7 @@ import Room from '@material-ui/icons/Room';
 import moment from "moment";
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
   sidePaper: {
@@ -31,8 +32,37 @@ const useStyles = makeStyles(theme => ({
       width: "calc(100vw - 22px)",
     },
   },
-  treePicture: {
+  progress: {
+    position: "absolute",
+    width: "100%",
+    zIndex: 9,
+  },
+  pictureBox: {
+    position: "relative",
+  },
+  backgroundBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 51,
+    fontWeight: 700,
+    fontFamily: "roboto",
+    //color: "#d4d4d4",
+    color: "#bebcbc",
+    letterSpacing: "1px",
+    //textShadow: "1px 1px 2px #ffffff, -1px -1px 1px #4d4c4c",
+    background: "#d4d4d4",
     height: 300,
+  },
+  treePictureBox: {
+    top: 0,
+    left: 0,
+    position: "absolute",
+    height: 300,
+  },
+  treePicture: {
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
   },
   avatarPaper: {
     borderRadius: "50%",
@@ -62,6 +92,10 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     justifyContent: "space-between",
     alignItems: "center",
+    position: "absolute",
+    zIndex: 19,
+    top: 0,
+    height: 300,
   },
   arrow: {
     color: "white",
@@ -77,6 +111,7 @@ const useStyles = makeStyles(theme => ({
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     cursor: "pointer",
+    opacity: .8,
   },
   infoItem: {
     marginBottom: 10,
@@ -90,12 +125,16 @@ const useStyles = makeStyles(theme => ({
 function SidePanel(props){
   const classes = useStyles();
   const {tree} = props;
+  const {hasPrevious = true} = props;
+  const {hasNext = true} = props;
+  const [isTreePictureLoaded, setTreePictureLoaded] = React.useState(false);
   function handleClose(){
 //    setPanel(false);
   }
 
   function handleNext(){
     console.log("next");
+    props.onNext();
 //    const {map} = mapRef.current;
 //    expect(map).defined()
 //      .property("getNextPoint")
@@ -118,6 +157,14 @@ function SidePanel(props){
 //    });
 //    showPanel(point);
   }
+
+  function handleLoad(){
+    setTreePictureLoaded(true);
+  }
+
+  if(tree === undefined){
+    return null;
+  }
   return (
     <Paper square={true} className={classes.sidePaper} elevation={3}>
       <div style={{position: "relative"}} >
@@ -129,30 +176,39 @@ function SidePanel(props){
           </Grid>
         </Paper>
       </div>
-      <Card className={classes.card} >
-        <CardMedia
-          id="tree-img"
-          className={classes.treePicture}
-          image={/*"http://localhost:3000/images/tree.jpg"*/tree?.image_url}
-        >
-          <Grid container className={classes.arrowBox} >
-            <Grid item>
+      <Card className={classes.card + ` ${isTreePictureLoaded?"treePictureLoaded":"treePictureLoading"}`} >
+        {!isTreePictureLoaded &&
+          <LinearProgress className={classes.progress} />
+        }
+        <div className={classes.pictureBox} >
+          <Grid container className={classes.backgroundBox}>
+            <Box>GREENSTAND</Box>
+          </Grid>
+          <div className={classes.treePictureBox} >
+            <img onLoad={handleLoad} className={classes.treePicture} alt="tree_image" src={tree.image_url} />
+          </div>
+        </div>
+        <Grid container className={classes.arrowBox} >
+          <Grid item>
+            {hasPrevious &&
               <IconButton title="previous tree" onClick={handlePrev} >
                 <ArrowBackIosIcon className={classes.arrow} />
               </IconButton>
-            </Grid>
-            <Grid item>
+            }
+          </Grid>
+          <Grid item>
+            {hasNext &&
               <IconButton title="next tree" onClick={handleNext} >
                 <ArrowForwardIosIcon className={classes.arrow} />
               </IconButton>
-            </Grid>
+            }
           </Grid>
-        </CardMedia>
+        </Grid>
         <CardContent>
           <Grid container className={classes.titleBox} >
             <Grid item>
-              <Paper elevation={2} className={classes.avatarPaper} >
-                <Avatar id="planter-img" className={classes.avatar} src={tree?.user_image_url} />
+              <Paper elevation={8} className={classes.avatarPaper} >
+                <Avatar id="planter-img" className={classes.avatar} src={tree.user_image_url || require("../images/greenstand_logo.svg")} />
               </Paper>
             </Grid>
             <Grid item className={classes.nameBox} >
