@@ -1,2 +1,5 @@
 {
+  "testFiles": "**/*.cy.{js,jsx,ts,tsx}",
+  "experimentalComponentTesting": true,
+  "componentFolder": "src"
 }

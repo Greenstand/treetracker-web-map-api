@@ -7,27 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
 import Menu from "@material-ui/icons/Menu";
 import Search from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Check from '@material-ui/icons/CheckCircle';
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Slide from '@material-ui/core/Slide';
-import ArrowLeft from '@material-ui/icons/ArrowLeft';
-import ArrowRight from '@material-ui/icons/ArrowRight';
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-import AccessTime from '@material-ui/icons/AccessTime';
-import Nature from '@material-ui/icons/Nature';
-import Room from '@material-ui/icons/Room';
 import { ThemeProvider } from '@material-ui/core/styles'
 import {createMuiTheme}		from '@material-ui/core/styles'
 import load from "./map";
-import moment from "moment";
+import SidePanel from "./components/SidePanel";
 
 const colorPrimary		= '#76BB23'
 const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
@@ -182,9 +166,6 @@ function App() {
 
 
 
-  function handleClose(){
-    setPanel(false);
-  }
 
   function showPanel(tree){
     console.log("show panel...");
@@ -192,30 +173,6 @@ function App() {
     setTree(tree);
   }
 
-  function handleNext(){
-    console.log("next");
-    const {map} = mapRef.current;
-    expect(map).defined()
-      .property("getNextPoint")
-      .a(expect.any(Function));
-    const point = map.getNextPoint(tree);
-    expect(point).match({
-      id: expect.any(Number),
-    });
-    showPanel(point);
-  }
-
-  function handlePrev(){
-    const {map} = mapRef.current;
-    expect(map).defined()
-      .property("getPrevPoint")
-      .a(expect.any(Function));
-    const point = map.getPrevPoint(tree);
-    expect(point).match({
-      id: expect.any(Number),
-    });
-    showPanel(point);
-  }
 
   if(mapRef.current) mapRef.current.showPanel = showPanel;
 
@@ -445,93 +402,7 @@ function App() {
           </Paper>
         </Box>
         <Slide direction="right" in={isPanel} >
-          <Paper square={true} className={classes.sidePaper} elevation={3}>
-            <div style={{position: "relative"}} >
-              <Paper onClick={handleClose} elevation={3} className={classes.closeButton} >
-                <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
-                  <Grid item>
-                    <ArrowLeft/> 
-                  </Grid>
-                </Grid>
-              </Paper>
-            </div>
-            <Card className={classes.card} >
-              <CardMedia
-                id="tree-img"
-                className={classes.treePicture}
-                image={/*"http://localhost:3000/images/tree.jpg"*/tree?.image_url}
-              >
-                <Grid container className={classes.arrowBox} >
-                  <Grid item>
-                    <IconButton title="previous tree" onClick={handlePrev} >
-                      <ArrowBackIosIcon className={classes.arrow} />
-                    </IconButton>
-                  </Grid>
-                  <Grid item>
-                    <IconButton title="next tree" onClick={handleNext} >
-                      <ArrowForwardIosIcon className={classes.arrow} />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </CardMedia>
-              <CardContent>
-                <Grid container className={classes.titleBox} >
-                  <Grid item>
-                    <Paper elevation={2} className={classes.avatarPaper} >
-                      <Avatar id="planter-img" className={classes.avatar} src={tree?.user_image_url} />
-                    </Paper>
-                  </Grid>
-                  <Grid item className={classes.nameBox} >
-                    <Typography variant="h4" >
-                      {tree && `${tree.first_name} ${tree.last_name.slice(0, 1)}`}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.verify} >
-                  <Grid item>
-                    <Check style={{ color: "#abe38f"}} />
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle1" >
-                      Tree Verified{/*TODO wallet: token issued*/}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Divider/>
-                <Box height={15} />
-                <Grid container className={classes.infoItem} >
-                  <Grid item>
-                    <AccessTime/>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      {tree && moment(tree.time_created).format("MM/DD/YYYY hh:mm A")}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.infoItem} >
-                  <Grid item>
-                    <Nature/>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      Tree Id: #{tree?.id}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.infoItem} >
-                  <Grid item>
-                    <Room />
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      {tree?.lat},{tree?.lng}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Paper>
+          <SidePanel tree={tree} />
         </Slide>
         <div className="map" id="map-canvas" ref={mapRef}/>
         <div className="logo">
