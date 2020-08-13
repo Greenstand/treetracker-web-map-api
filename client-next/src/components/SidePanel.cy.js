@@ -44,14 +44,14 @@ describe("SidePanel", () => {
     cy.contains("Dadior");
     //is loading
     //cy.get(".treePictureLoading");
-    cy.get(".treePictureLoaded");
+    cy.get(".treePictureLoaded", {timeout: 1000* 30});
     cy.get("button[title='previous tree']").should("not.exist");
     cy.get("button[title='next tree']")
       .click();
     cy.contains("Ezra");
     cy.get("button[title='previous tree']");
     cy.get("button[title='next tree']").should("not.exist");
-    cy.get(".treePictureLoaded");
+    cy.get(".treePictureLoaded", {timeout:1000*30});
 //    //should placed logo as avatar, cuz no image
 //    cy.get("#planter-img")
 //      .find("img")

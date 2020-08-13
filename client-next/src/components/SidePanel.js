@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   backgroundBox: {
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 51,
+    fontSize: 40,
     fontWeight: 700,
     fontFamily: "roboto",
     //color: "#d4d4d4",
@@ -149,9 +149,17 @@ function SidePanel(props){
     setTreePictureLoaded(true);
   }
 
+  React.useEffect(() => {
+    console.log("tree changed"); 
+    if(tree && tree.image_url){
+      setTreePictureLoaded(false);
+    }
+  }, [props.tree]);
+
   if(tree === undefined){
     return null;
   }
+
   return (
     <Slide in={open} direction="right" >
       <Paper square={true} className={classes.sidePaper} elevation={3}>
@@ -174,7 +182,7 @@ function SidePanel(props){
             </Grid>
             <div className={classes.treePictureBox} >
               {tree && tree.image_url &&
-                <img id="tree_img" onLoad={handleLoad} className={classes.treePicture} alt="tree planted" src={tree.image_url} />
+                <img key={tree.id} id="tree_img" onLoad={handleLoad} className={classes.treePicture} alt="tree planted" src={tree.image_url} />
               }
             </div>
           </div>
