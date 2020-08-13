@@ -4,10 +4,11 @@ import * as tools from "./tools";
 import Paper from "@material-ui/core/Paper";
 //import Grid from "@material-ui/core/Grid";
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
 import {makeStyles} from "@material-ui/core/styles";
 import Menu from "@material-ui/icons/Menu";
 import Search from "@material-ui/icons/Search";
-import Slide from '@material-ui/core/Slide';
 import { ThemeProvider } from '@material-ui/core/styles'
 import {createMuiTheme}		from '@material-ui/core/styles'
 import load from "./map";
@@ -160,18 +161,41 @@ const useStyles = makeStyles(theme => ({
 function App() {
   console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const classes = useStyles();
-  const [isPanel, setPanel] = React.useState(false);
+  const [isPanel, setPanel] = React.useState(true);
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
-
-
-
 
   function showPanel(tree){
     console.log("show panel...");
     setPanel(true);
     setTree(tree);
   }
+
+  function handlePrev(){
+    const {map} = mapRef.current;
+    expect(map).defined()
+      .property("getPrevPoint")
+      .a(expect.any(Function));
+    const point = map.getPrevPoint(tree);
+    expect(point).match({
+      id: expect.any(Number),
+    });
+    showPanel(point);
+  }
+
+  function handleNext(){
+    console.log("next");
+    const {map} = mapRef.current;
+    expect(map).defined()
+      .property("getNextPoint")
+      .a(expect.any(Function));
+    const point = map.getNextPoint(tree);
+    expect(point).match({
+      id: expect.any(Number),
+    });
+    showPanel(point);
+  }
+
 
 
   if(mapRef.current) mapRef.current.showPanel = showPanel;
@@ -401,9 +425,7 @@ function App() {
             </Grid>
           </Paper>
         </Box>
-        <Slide direction="right" in={isPanel} >
-          <SidePanel tree={tree} />
-        </Slide>
+        <SidePanel tree={tree} open={isPanel} onNext={handleNext} onPrevious={handlePrev}/>
         <div className="map" id="map-canvas" ref={mapRef}/>
         <div className="logo">
           <img alt="logo" src={require("./images/logo_floating_map.svg")} />

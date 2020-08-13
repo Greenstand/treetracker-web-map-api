@@ -110,8 +110,8 @@ describe("Web Map", () => {
       .find("img")
       .should("has.attr", "src")
       .and("match", /.jpg/);
-    cy.get("#tree-img")
-      .should("has.attr", "style")
+    cy.get("#tree_img")
+      .should("has.attr", "src")
       .and("match", /.jpg/);
     cy.get("#map-canvas")
       .then($map => {
