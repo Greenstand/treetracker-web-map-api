@@ -282,15 +282,17 @@ function SidePanel(props){
         </Card>
       </Paper>
     </Slide>
-    <div style={{position: "relative"}} >
-      <Paper title="show" onClick={handleShow} elevation={3} className={classes.showButton} >
-        <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
-          <Grid item>
-            <ArrowRight/> 
+    {state === "hide" &&
+      <div style={{position: "relative"}} >
+        <Paper title="show" onClick={handleShow} elevation={3} className={classes.showButton} >
+          <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
+            <Grid item>
+              <ArrowRight/> 
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </div>
+        </Paper>
+      </div>
+    }
     </>
   );
 }

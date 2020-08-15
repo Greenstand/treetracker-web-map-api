@@ -78,9 +78,14 @@ describe("SidePanel", () => {
       function handleShow(){
         setState("show");
       }
+
+      function handleDisable(){
+        setState("none");
+      }
       return(
         <div>
           <button onClick={handleClick}>show</button>
+          <button onClick={handleDisable}>disable</button>
           <SidePanel state={state} tree={tree} onClose={handleClose} onShow={handleShow} />
         </div>
       )
@@ -102,6 +107,10 @@ describe("SidePanel", () => {
       .click();
     cy.contains("Dadior")
       .should("visible");
+    cy.contains("disable")
+      .click();
+    cy.get("div[title='show']")
+      .should("not.exist");
   });
 
 });
