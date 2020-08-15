@@ -29,7 +29,7 @@ describe("SidePanel", () => {
       return(
         <div style={{background:"gray",height:"1000px"}} >
           <SidePanel 
-            open={true}
+            state={"show"}
             tree={trees[treeIndex]} 
             onNext={handleNext}
             hasNext={treeIndex < trees.length - 1}
@@ -62,19 +62,26 @@ describe("SidePanel", () => {
   it("SidePanelEmpty", () => {
 
     function Test(){
-      const [open, setOpen] = React.useState(false);
+      const [state, setState] = React.useState("none");
       const [tree, setTree] = React.useState(undefined);
       function handleClick(){
         setTree({
           first_name: "Dadior",
           last_name: "Chen",
         });
-        setOpen(true);
+        setState("show");
+      }
+      function handleClose(){
+        setState("hide");
+      }
+
+      function handleShow(){
+        setState("show");
       }
       return(
         <div>
           <button onClick={handleClick}>show</button>
-          <SidePanel open={open} tree={tree} />
+          <SidePanel state={state} tree={tree} onClose={handleClose} onShow={handleShow} />
         </div>
       )
     }
@@ -85,6 +92,16 @@ describe("SidePanel", () => {
     cy.contains("Dadior");
     cy.get(".treePictureLoading").should("not.exist");
     cy.get("img[alt='tree planted']").should("not.exist");
+
+    //close it
+    cy.get("div[title='hide']")
+      .click();
+    cy.contains("Dadior")
+      .should("not.visible");
+    cy.get("div[title='show']")
+      .click();
+    cy.contains("Dadior")
+      .should("visible");
   });
 
 });

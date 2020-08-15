@@ -21,6 +21,7 @@ import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
+import expect from "expect-runtime";
 
 const useStyles = makeStyles(theme => ({
   placeholder:{
@@ -125,6 +126,19 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     opacity: .8,
   },
+  showButton: {
+    position: "absolute",
+    left: 0,
+    top: 34,
+    margin: -23,
+    marginLeft: 0,
+    width: 23,
+    height: 48,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    cursor: "pointer",
+    opacity: .8,
+  },
   infoItem: {
     marginBottom: 10,
     "&>div": {
@@ -136,12 +150,18 @@ const useStyles = makeStyles(theme => ({
 
 function SidePanel(props){
   const classes = useStyles();
-  const {tree, open} = props;
+  const {tree, state} = props;
+  expect(state).oneOf(["none", "show", "hide"]);
   const {hasPrevious = true} = props;
   const {hasNext = true} = props;
   const [isTreePictureLoaded, setTreePictureLoaded] = React.useState((tree && tree.image_url)?false:true);
+
   function handleClose(){
-//    setPanel(false);
+    props.onClose();
+  }
+
+  function handleShow(){
+    props.onShow();
   }
 
   function handleLoad(){
@@ -161,10 +181,11 @@ function SidePanel(props){
   }
 
   return (
-    <Slide in={open} direction="right" >
+    <>
+    <Slide in={state === "show"} direction="right" >
       <Paper square={true} className={classes.sidePaper} elevation={3}>
         <div style={{position: "relative"}} >
-          <Paper onClick={handleClose} elevation={3} className={classes.closeButton} >
+          <Paper title="hide" onClick={handleClose} elevation={3} className={classes.closeButton} >
             <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
               <Grid item>
                 <ArrowLeft/> 
@@ -261,6 +282,16 @@ function SidePanel(props){
         </Card>
       </Paper>
     </Slide>
+    <div style={{position: "relative"}} >
+      <Paper title="show" onClick={handleShow} elevation={3} className={classes.showButton} >
+        <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
+          <Grid item>
+            <ArrowRight/> 
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
+    </>
   );
 }
 
