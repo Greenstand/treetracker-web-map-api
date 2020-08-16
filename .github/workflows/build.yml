@@ -30,6 +30,7 @@ jobs:
         run: "docker-compose up -d"
       - name: "Check services running"
         run: "docker ps"
+      - name: "Tag docker-image"  
         run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-map:${{steps.vars.outputs.tag}}"
 #      - name: "Push the tagged Docker image"
 #        run: "docker push ximena9210/treetracker-web-map:proxy"
