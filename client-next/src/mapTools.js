@@ -1,7 +1,7 @@
 /*
  * Some tool for map calculation
  */
-import expect from "./expect";
+import expect from "expect-runtime";
 
 function go(direction, location, degree){
   expect(direction).oneOf(["east", "west", "north", "south"]);

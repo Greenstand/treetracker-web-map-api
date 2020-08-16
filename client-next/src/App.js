@@ -1,5 +1,5 @@
 import React from 'react';
-import expect from "./expect";
+import expect from "expect-runtime";
 import * as tools from "./tools";
 import Paper from "@material-ui/core/Paper";
 //import Grid from "@material-ui/core/Grid";
@@ -425,7 +425,7 @@ function App() {
             </Grid>
           </Paper>
         </Box>
-        <SidePanel tree={tree} open={isPanel} onNext={handleNext} onPrevious={handlePrev}/>
+        <SidePanel tree={tree} state={isPanel?"show":"none"} onNext={handleNext} onPrevious={handlePrev}/>
         <div className="map" id="map-canvas" ref={mapRef}/>
         <div className="logo">
           <img alt="logo" src={require("./images/logo_floating_map.svg")} />

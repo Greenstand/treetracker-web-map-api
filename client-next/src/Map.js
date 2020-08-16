@@ -1,6 +1,6 @@
 import * as mapTools from "./mapTools";
 import MapModel from "./MapModel";
-import expect from "./expect";
+import expect from "expect-runtime";
 import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
 

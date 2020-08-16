@@ -1,7 +1,7 @@
 /*
  * The module to handle greenstand map
  */
-import expect from "./expect";
+import expect from "expect-runtime";
 const axios = require("axios");
 
 const $ = () => {
