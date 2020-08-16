@@ -227,7 +227,7 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={8} className={classes.avatarPaper} >
-                  <Avatar id="planter-img" className={classes.avatar} src={tree.user_image_url || require("../images/greenstand_logo.svg")} />
+                  <Avatar id="planter-img" className={classes.avatar} src={tree.user_image_url} />
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >
