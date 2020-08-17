@@ -89,6 +89,7 @@ const useStyles = makeStyles(theme => ({
   avatarLogo: {
     backgroundColor: "white",
     "& .MuiAvatar-img": {
+      width: "70%",
       objectFit: "unset",
     },
   },
