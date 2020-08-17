@@ -95,6 +95,8 @@ describe("SidePanel", () => {
     );
     cy.contains("show").click();
     cy.contains("Dadior");
+    //shoudl have the default greenstand logo
+    cy.get("img[src=*logo.svg]");
     cy.get(".treePictureLoading").should("not.exist");
     cy.get("img[alt='tree planted']").should("not.exist");
 

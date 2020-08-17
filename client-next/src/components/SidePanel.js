@@ -86,6 +86,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: -77,
     border: "6px solid white",
   },
+  avatarLogo: {
+    backgroundColor: "white",
+    "& .MuiAvatar-img": {
+      objectFit: "unset",
+    },
+  },
   titleBox: {
     marginBottom: 15,
   },
@@ -227,7 +233,7 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={8} className={classes.avatarPaper} >
-                  <Avatar id="planter-img" className={classes.avatar} src={tree.user_image_url} />
+                  <Avatar id="planter-img" className={` ${classes.avatar} ${tree.user_image_url?'':classes.avatarLogo}`} src={tree.user_image_url || require("../images/greenstand_logo.svg")} />
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >

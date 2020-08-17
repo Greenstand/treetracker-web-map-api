@@ -1,4 +1,4 @@
-//import expect from "../../src/expect";
+import expectRuntime from "expect-runtime";
 const scale = 1;
 
 describe("Web Map", () => {
@@ -144,6 +144,22 @@ describe("Web Map", () => {
 //    cy.wait(2000*scale);
 //    cy.get("button[title='next tree']")
 //      .click();
+  });
+
+  it.only("SidePanel", () => {
+    cy.visit("http://localhost:3000");
+    cy.get("img[alt=logo]");
+    cy.get("#map-canvas")
+      .then($map => {
+        expectRuntime($map[0])
+          .property("showPanel")
+          .retrieve({
+            id: 1,
+            first_name: "Dadior",
+            last_name: "Chen",
+          });
+      });
+    cy.get("img[src*='greenstand_logo']");
   });
 
 });
