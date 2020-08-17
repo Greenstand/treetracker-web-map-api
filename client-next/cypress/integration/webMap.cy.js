@@ -1,4 +1,5 @@
 import expectRuntime from "expect-runtime";
+import * as mapTools from "../../src/mapTools";
 const scale = 1;
 
 describe("Web Map", () => {
@@ -146,20 +147,53 @@ describe("Web Map", () => {
 //      .click();
   });
 
-  it.only("SidePanel", () => {
+  it("SidePanel", () => {
     cy.visit("http://localhost:3000");
     cy.get("img[alt=logo]");
     cy.get("#map-canvas")
       .then($map => {
         expectRuntime($map[0])
           .property("showPanel")
-          .retrieve({
+          .actual({
             id: 1,
             first_name: "Dadior",
             last_name: "Chen",
           });
       });
     cy.get("img[src*='greenstand_logo']");
+  });
+
+  it.only("ZoomIn", () => {
+    cy.visit("http://localhost:3000");
+    cy.contains(/\dK/, {timeout: 1000*30});
+    //draw the map
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const mapCanvas = $mapCanvas[0];
+        expectRuntime(mapCanvas)
+          .property("map")
+          .defined()
+          .property("getMarkers")
+          .defined();
+        const map = mapCanvas.map.getMap();
+        map.setCenter({
+          lat: -6.772665100606061,
+          lng: 39.220384056645706,
+        });
+        map.setZoom(16);
+      });
+    cy.get("img[src='/img/pin_29px.png']", {timeout: 1000*30});
+    //draw the tree on the left of the screen
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const map = $mapCanvas[0].map;
+        map.addMarkerByPixel(300, 20, {id:1});
+        
+//        map.setCenter({
+//          lat: -6.772665100606061,
+//          lng: 39.220384056645706,
+//        });
+      });
   });
 
 });

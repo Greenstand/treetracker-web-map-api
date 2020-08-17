@@ -836,46 +836,72 @@ var initialize = function() {
 
 window.google.maps.event.addDomListener(window, "load", initialize);
 
+function getNextPoint(point) {
+  expect(point).property("id").number();
+  const index = points.reduce((a,c,i) => {
+    if(c.id === point.id){
+      return i;
+    }else{
+      return a;
+    }
+  }, -1);
+  if(index === -1){
+    throw Error("can not find point");
+  }
+  const nextIndex = (index + 1) % points.length;
+  expect(nextIndex).within(0, points.length);
+  return points[nextIndex];
+}
+
+function getPrevPoint(point){
+  expect(point).property("id").number();
+  const index = points.reduce((a,c,i) => {
+    if(c.id === point.id){
+      return i;
+    }else{
+      return a;
+    }
+  }, -1);
+  if(index === -1){
+    throw Error("can not find point");
+  }
+  const prevIndex = (index - 1)>= 0?
+    ((index -1) % points.length)
+    :
+    points.length + (index -1);
+  expect(prevIndex).within(0, points.length);
+  return points[prevIndex];
+}
+
+function addMarker(LatLng, tree){
+  var marker = new window.google.maps.Marker({
+    position: LatLng,
+    map: map,
+    title: "Tree",
+    icon: {
+      url: "/img/pin_29px.png"
+    },
+    zIndex: undefined,
+    payload: {
+      id: tree.id,
+    }
+  });
+  markers.push(marker);
+}
+
+function addMarkerByPixel(top, left, tree){
+  const pointLeft = mapTools.getLatLngCoordinateByPixel(top, left, map);
+  addMarker(pointLeft, tree);
+}
+
 return {
   getMap: () => map,
   getMarkers: () => markers,
   getLoadingMarkers: () => isLoadingMarkers,
   getPoints: () => points,
-  getNextPoint: (point) => {
-    expect(point).property("id").number();
-    const index = points.reduce((a,c,i) => {
-      if(c.id === point.id){
-        return i;
-      }else{
-        return a;
-      }
-    }, -1);
-    if(index === -1){
-      throw Error("can not find point");
-    }
-    const nextIndex = (index + 1) % points.length;
-    expect(nextIndex).within(0, points.length);
-    return points[nextIndex];
-  },
-  getPrevPoint: (point) => {
-    expect(point).property("id").number();
-    const index = points.reduce((a,c,i) => {
-      if(c.id === point.id){
-        return i;
-      }else{
-        return a;
-      }
-    }, -1);
-    if(index === -1){
-      throw Error("can not find point");
-    }
-    const prevIndex = (index - 1)>= 0?
-      ((index -1) % points.length)
-    :
-      points.length + (index -1);
-    expect(prevIndex).within(0, points.length);
-    return points[prevIndex];
-  },
+  getPrevPoint,
+  getNextPoint,
+  addMarkerByPixel,
 }
 
 }
