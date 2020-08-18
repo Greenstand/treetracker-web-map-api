@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "treetracker-web-map-api"
-        image: "ximena9210/treetracker-web-map-api-test-release"
+        image: "ximena9210/treetracker-web-map-api:test-release"
 
 ---
 apiVersion: v1
