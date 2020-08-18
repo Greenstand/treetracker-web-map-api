@@ -15,9 +15,21 @@ import load from "./map";
 import SidePanel from "./components/SidePanel";
 import * as mapTools from "./mapTools";
 
-const colorPrimary		= '#76BB23'
-const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
-const colorPrimaryHover		= 'rgba(118, 187, 35, 0.1)'
+//solution 1
+//const PRIMARY = "#8bc34a"
+//const SECONDARY = "#ffca28"
+
+////solution 2
+//const PRIMARY = "#4caf50"
+//const SECONDARY = "#ef6c00"
+//
+////solution 3
+const PRIMARY = "#2e7d32"
+const SECONDARY = "#fbc02d"
+
+
+//const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
+//const colorPrimaryHover		= 'rgba(118, 187, 35, 0.1)'
 
 const theme = createMuiTheme({
 	spacing		: 4,
@@ -34,15 +46,20 @@ const theme = createMuiTheme({
 	},
   palette: {
     primary: {
-      main: colorPrimary,
+      main: PRIMARY,
 			//very light primary color, for background sometimes
-			lightVery		: '#F9FCF4',
+//			lightVery		: '#F9FCF4',
     },
-		action		: {
-			active		: 'rgba(135, 195, 46, .64)',
-			hover		: 'rgba(135, 195, 46, .08)',
-			selected		: 'rgba(135, 195, 46, .32)',
-		},
+    secondary: {
+      main: SECONDARY,
+			//very light primary color, for background sometimes
+//			lightVery		: '#F9FCF4',
+    },
+//		action		: {
+//			active		: 'rgba(135, 195, 46, .64)',
+//			hover		: 'rgba(135, 195, 46, .08)',
+//			selected		: 'rgba(135, 195, 46, .32)',
+//		},
   },
 });
 
@@ -460,4 +477,9 @@ function App() {
   );
 }
 
+export {
+  PRIMARY,
+  SECONDARY,
+  theme,
+}
 export default App;

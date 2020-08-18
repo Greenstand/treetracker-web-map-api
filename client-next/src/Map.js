@@ -3,6 +3,7 @@ import MapModel from "./MapModel";
 import expect from "expect-runtime";
 import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
+import {theme,PRIMARY} from "./App";
 
 const $ = {
 }
@@ -710,7 +711,9 @@ var initialize = function() {
     mapTypeId: "hybrid",
     mapTypeControl: false,
     streetViewControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+//    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.grey.A100,
   };
 
   console.log(mapOptions);
