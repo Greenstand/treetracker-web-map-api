@@ -1,7 +1,7 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "$treetracker-web-map-api-test-release-deployment"
+  name: "treetracker-web-map-api-test-release-deployment"
   namespace: "default"
   labels:
     app: "treetracker-web-map-api"
