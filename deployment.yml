@@ -1,4 +1,4 @@
-apiVersion: "extensions/v1beta1"
+apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   name: "treetracker-web-map-api-test-release-deployment"
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "treetracker-web-map-api"
-        image: "gcr.io/firm-processor-246122/$APP_NAME:$CI_COMMIT_SHORT_SHA"
+        image: "ximena9210/treetracker-web-map-api-test-release"
 
 ---
 apiVersion: v1
