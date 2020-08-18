@@ -32,3 +32,10 @@ jobs:
         run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-web-map-api:${{steps.vars.outputs.tag}}"
       - name: "Push the tagged Docker image API"
         run: "docker push ximena9210/treetracker-web-map-api:${{steps.vars.outputs.tag}}"
+      - name: Set up kubectl
+        uses: matootie/dokube@v1.3.2
+        with:
+          personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          clusterName: treetracker-experimental-cluster
+      - name: Get nodes
+        run: kubectl get nodes
