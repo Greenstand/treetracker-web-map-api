@@ -78,10 +78,6 @@ describe("MapTools", () => {
 describe("getInitialBounds", () => {
 
   beforeAll(() => {
-  });
-
-
-  it("getInitialBounds(0,0)", () => {
     global.google = {
       maps: {
         LatLngBounds: jest.fn().mockImplementation(() => ({
@@ -101,6 +97,10 @@ describe("getInitialBounds", () => {
         })),
       },
     };
+  });
+
+
+  it("getInitialBounds(0,0)", () => {
     const result = mapTools.getInitialBounds([{lat:0, lng:0}], 500, 500);
     expect(result).toMatchObject({
       center: {
@@ -110,4 +110,29 @@ describe("getInitialBounds", () => {
       zoomLevel: expect.anything(),
     });
   });
+
+  it("getInitialBounds('0','0')", () => {
+    const result = mapTools.getInitialBounds([{lat:"0", lng:"0"}], 500, 500);
+    expect(result).toMatchObject({
+      center: {
+        lat: 0,
+        lng: 0,
+      },
+      zoomLevel: expect.anything(),
+    });
+  });
+
+  it("getInitialBounds('s','s') shoudl throw", () => {
+    expect(() => {
+      const result = mapTools.getInitialBounds([{lat:"s", lng:"s"}], 500, 500);
+      expect(result).toMatchObject({
+        center: {
+          lat: 0,
+          lng: 0,
+        },
+        zoomLevel: expect.anything(),
+      });
+    }).toThrow();
+  });
+
 });
