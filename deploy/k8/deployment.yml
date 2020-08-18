@@ -1,7 +1,7 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "${{ secrets.APP}}-${{GITHUB_REF:11}}-deployment"
+  name: "$APP-$GITHUB_REF:11-deployment"
   namespace: "default"
   labels:
     app: "treetracker-web-map-api"
