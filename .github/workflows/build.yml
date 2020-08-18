@@ -39,4 +39,4 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save treetracker-experimental-cluster
       - name: Creating service and deployment to k8
-        run: kubectl apply -f deployment.yml
+        run: kubectl apply -f ./deploy/k8/deployment.yml
