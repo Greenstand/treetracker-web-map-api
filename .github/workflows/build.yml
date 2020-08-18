@@ -38,3 +38,5 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save treetracker-experimental-cluster
+      - name: get pods 
+        run: kubectl get nodes
