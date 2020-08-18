@@ -163,7 +163,7 @@ describe("Web Map", () => {
     cy.get("img[src*='greenstand_logo']");
   });
 
-  it.only("ZoomIn", () => {
+  it("ZoomIn", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
     //draw the map
@@ -203,6 +203,11 @@ describe("Web Map", () => {
       });
     cy.get("div[title='hide']")
       .click();
+  });
+
+  it.only("Loading", () => {
+    cy.visit("http://localhost:3000");
+    cy.contains(/\dK/, {timeout: 1000*30});
   });
 
 });

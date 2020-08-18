@@ -309,6 +309,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         }
 
         //loader.classList.remove("active");
+        const mapElement = document.getElementById("map-canvas");
+        expect(mapElement).property("loaded").defined();
+        mapElement.loaded();
         firstRender = false;
       }
       console.log("init markert finished, loaded:", markers.length);
@@ -713,7 +716,7 @@ var initialize = function() {
     streetViewControl: false,
     fullscreenControl: false,
 //    backgroundColor: theme.palette.primary.main,
-    backgroundColor: theme.palette.grey.A100,
+    backgroundColor: theme.palette.grey.A200,
   };
 
   console.log(mapOptions);

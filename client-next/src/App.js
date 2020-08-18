@@ -14,18 +14,21 @@ import {createMuiTheme}		from '@material-ui/core/styles'
 import load from "./map";
 import SidePanel from "./components/SidePanel";
 import * as mapTools from "./mapTools";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Loader from "./components/Loader";
+import Fade from "@material-ui/core/Fade";
 
 //solution 1
-//const PRIMARY = "#8bc34a"
-//const SECONDARY = "#ffca28"
+const PRIMARY = "#8bc34a"
+const SECONDARY = "#ffca28"
 
 ////solution 2
 //const PRIMARY = "#4caf50"
 //const SECONDARY = "#ef6c00"
 //
 ////solution 3
-const PRIMARY = "#2e7d32"
-const SECONDARY = "#fbc02d"
+//const PRIMARY = "#2e7d32"
+//const SECONDARY = "#fbc02d"
 
 
 //const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
@@ -63,6 +66,8 @@ const theme = createMuiTheme({
   },
 });
 
+console.log("theme:", theme);
+
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
     decimal;
@@ -88,6 +93,16 @@ const dataString3 = '{"data":[{"type":"point","id":222046,"time_created":"2020-0
 //}}}
 
 const useStyles = makeStyles(theme => ({
+  mapContainer: {
+    transform: "scale(1.02)",
+    transition: "all 2s",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+  mapLoaded: {
+    transform: "scale(1)",
+  },
   searchBox: {
     position: 'absolute',
     width: 350,
@@ -174,6 +189,14 @@ const useStyles = makeStyles(theme => ({
       marginRight: 5,
     },
   },
+  loadingContainer:{
+    position: "absolute",
+    width: "100%",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.25)",
+  },
 }));
 
 function App() {
@@ -182,6 +205,7 @@ function App() {
   const [sidePanelState, setSidePanelState] = React.useState("none");
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
+  const [isLoading, setLoading] = React.useState(true);
 
   function showPanel(tree){
     console.log("show panel...");
@@ -251,9 +275,15 @@ function App() {
     setSidePanelState("hide");
   }
 
+  function loaded(){
+    setLoading(false);
+  }
 
 
-  if(mapRef.current) mapRef.current.showPanel = showPanel;
+  if(mapRef.current) {
+    mapRef.current.showPanel = showPanel;
+    mapRef.current.loaded = loaded;
+  }
 
   React.useEffect(() => {
     const script = document.createElement('script');
@@ -268,6 +298,7 @@ function App() {
       expect(mapRef)
         .property("current").defined();
       mapRef.current.showPanel = showPanel;
+      mapRef.current.loaded = loaded;
 //{{{      
 //      var mapOptions = {
 //        zoom: 2,
@@ -469,7 +500,14 @@ function App() {
         onNext={handleNext} 
         onPrevious={handlePrev}
       />
-      <div className="map" id="map-canvas" ref={mapRef}/>
+      <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef}/>
+      <Fade in={isLoading} timeout={{apear:0,exit: 1000}}>
+        <Grid container className={classes.loadingContainer} >
+          <Grid item>
+            <Loader/>
+          </Grid>
+        </Grid>
+      </Fade>
       <div className="logo">
         <img alt="logo" src={require("./images/logo_floating_map.svg")} />
       </div>
