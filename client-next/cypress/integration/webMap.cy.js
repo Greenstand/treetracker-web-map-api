@@ -201,6 +201,8 @@ describe("Web Map", () => {
         expectRuntime(marker).defined();
         marker.triggerClick4Test();
       });
+    cy.get("div[title='hide']")
+      .click();
   });
 
 });

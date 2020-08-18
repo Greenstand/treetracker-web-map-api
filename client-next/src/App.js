@@ -162,13 +162,13 @@ const useStyles = makeStyles(theme => ({
 function App() {
   console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const classes = useStyles();
-  const [isPanel, setPanel] = React.useState(true);
+  const [sidePanelState, setSidePanelState] = React.useState("none");
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
 
   function showPanel(tree){
     console.log("show panel...");
-    setPanel(true);
+    setSidePanelState("show");
     setTree(tree);
     //consider the visible of the point
     const {map} = mapRef.current;
@@ -228,6 +228,10 @@ function App() {
       id: expect.any(Number),
     });
     showPanel(point);
+  }
+
+  function handleSidePanelClose(){
+    setSidePanelState("hide");
   }
 
 
@@ -461,7 +465,13 @@ function App() {
             </Grid>
           </Paper>
         </Box>
-        <SidePanel tree={tree} state={isPanel?"show":"none"} onNext={handleNext} onPrevious={handlePrev}/>
+        <SidePanel 
+          tree={tree} 
+          state={sidePanelState} 
+          onClose={handleSidePanelClose}
+          onNext={handleNext} 
+          onPrevious={handlePrev}
+        />
         <div className="map" id="map-canvas" ref={mapRef}/>
         <div className="logo">
           <img alt="logo" src={require("./images/logo_floating_map.svg")} />

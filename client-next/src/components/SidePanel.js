@@ -147,6 +147,7 @@ const useStyles = makeStyles(theme => ({
     borderBottomLeftRadius: 0,
     cursor: "pointer",
     opacity: .8,
+    zIndex: 2,
   },
   infoItem: {
     marginBottom: 10,
@@ -191,7 +192,12 @@ function SidePanel(props){
 
   return (
     <>
-    <Slide in={state === "show"} direction="right" >
+    <Slide in={state === "show"} direction="right" 
+      timeout={{
+        enter: 800,
+        exit: 500,
+      }}
+    >
       <Paper square={true} className={classes.sidePaper} elevation={3}>
         <div style={{position: "relative"}} >
           <Paper title="hide" onClick={handleClose} elevation={3} className={classes.closeButton} >
