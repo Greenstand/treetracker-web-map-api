@@ -187,12 +187,19 @@ describe("Web Map", () => {
     cy.get("#map-canvas")
       .then($mapCanvas => {
         const map = $mapCanvas[0].map;
-        map.addMarkerByPixel(300, 20, {id:1});
-        
-//        map.setCenter({
-//          lat: -6.772665100606061,
-//          lng: 39.220384056645706,
-//        });
+        map.addMarkerByPixel(300, 20, {
+          id:1,
+          last_name: "Ezra",
+          first_name: "David",
+        });
+      });
+    //click the point which is close to the left edge
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const map = $mapCanvas[0].map;
+        const marker = map.getMarkerByPointId()[1];
+        expectRuntime(marker).defined();
+        marker.triggerClick4Test();
       });
   });
 

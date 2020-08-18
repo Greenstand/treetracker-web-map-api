@@ -23,6 +23,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
 
+const WIDTH = 396;
+
 const useStyles = makeStyles(theme => ({
   placeholder:{
     position: 'absolute',
@@ -38,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   sidePaper: {
     position: 'absolute',
     height: "100vh",
-    width: 396,
+    width: WIDTH,
     backgroundColor: "white",
     zIndex: 1,
     [theme.breakpoints.down("sm")]: {
@@ -303,5 +305,7 @@ function SidePanel(props){
     </>
   );
 }
+
+SidePanel.WIDTH = WIDTH;
 
 export default SidePanel;

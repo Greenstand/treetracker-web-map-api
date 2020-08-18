@@ -13,6 +13,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import {createMuiTheme}		from '@material-ui/core/styles'
 import load from "./map";
 import SidePanel from "./components/SidePanel";
+import * as mapTools from "./mapTools";
 
 const colorPrimary		= '#76BB23'
 const colorPrimarySelected		= 'rgba(118, 187, 35, 0.3)'
@@ -169,6 +170,39 @@ function App() {
     console.log("show panel...");
     setPanel(true);
     setTree(tree);
+    //consider the visible of the point
+    const {map} = mapRef.current;
+    const marker = map.getMarkerByPointId()[tree.id]
+    expect(marker).defined();
+    const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
+    expect(top).above(0);
+    expect(left).above(0);
+    console.log("the point at:", top, left);
+    expect(SidePanel).property("WIDTH").number();
+    if(left <  SidePanel.WIDTH){
+      //move to right center
+      const print = JSON.stringify(map);
+      console.log("print:", print);
+      console.log("console:", map);
+      const mapElement = mapRef.current;
+      expect(mapElement).property("clientWidth").defined();
+      const containerWidth = mapElement.clientWidth;
+      const containerHeight = mapElement.clientHeight;
+      expect(containerWidth).above(0);
+      expect(containerHeight).above(0);
+      const topCenter = containerHeight / 2;
+      const leftCenter = (containerWidth - SidePanel.WIDTH) / 2 + SidePanel.WIDTH;
+      expect(topCenter).above(0);
+      expect(leftCenter).above(0);
+//      //const latLng = mapTools.getLatLngCoordinateByPixel(top, left, map.getMap());
+//      console.log("tl:", top, left);
+//      expect(latLng).defined();
+//      console.log("ln:", latLng);
+      const x = left - leftCenter;
+      const y = top - topCenter;
+      console.log("pant by x,y:", x, y);
+      map.getMap().panBy(x,y);
+    }
   }
 
   function handlePrev(){
@@ -213,6 +247,7 @@ function App() {
       expect(mapRef)
         .property("current").defined();
       mapRef.current.showPanel = showPanel;
+//{{{      
 //      var mapOptions = {
 //        zoom: 2,
 //        //minZoom: minZoom,
@@ -400,6 +435,7 @@ function App() {
 //          mapRef.current.markers.push(marker);
 //        });
 //      });
+//}}}
     };
   }, []);
 

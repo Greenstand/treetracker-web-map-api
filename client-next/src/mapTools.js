@@ -180,10 +180,33 @@ function getLatLngCoordinateByPixel(top, left, map){
   return resultLatLng;
 }
 
+function getPixelCoordinateByLatLng(lat, lng, map){
+  expect(lat).number();
+  expect(lng).number();
+  expect(map).defined();
+  const northWest = new window.google.maps.LatLng(
+    map.getBounds().getNorthEast().lat(),
+    map.getBounds().getSouthWest().lng());
+  const northWestPixel = map.getProjection().fromLatLngToPoint(northWest);
+  const target = new window.google.maps.LatLng(
+    lat,
+    lng
+  )
+  const targetPixel = map.getProjection().fromLatLngToPoint(target);
+  const pixelSize = Math.pow(2, -map.getZoom());
+  const result = {
+    top: (targetPixel.y - northWestPixel.y)/pixelSize,
+    left: (targetPixel.x - northWestPixel.x)/pixelSize,
+  }
+  expect(result).property("top").above(0);
+  return result;
+}
+
 export {
   go,
   getAngleLat,
   getAngleLng,
   getInitialBounds,
   getLatLngCoordinateByPixel,
+  getPixelCoordinateByLatLng,
 };

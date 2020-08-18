@@ -289,9 +289,6 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           // hold the reference to our points
           points.push(item);
           markerByPointId[item["id"]] = marker;
-          marker.triggerClick = () => {
-            window.google.maps.event.trigger(marker, "click");
-          };
           markers.push(marker);
         }
       });
@@ -332,6 +329,7 @@ function setPointMarkerListeners() {
 
   points.forEach(function(point, i) {
     var marker = markerByPointId[point.id];
+    expect(marker).defined();
     window.google.maps.event.addListener(marker, "click", function() {
       console.warn("click pointer!", point);
       const mapElement = document.getElementById("map-canvas");
@@ -344,6 +342,9 @@ function setPointMarkerListeners() {
         panelLoader.classList.remove("active");
       });
     });
+    marker.triggerClick4Test = () => {
+      window.google.maps.event.trigger(marker, "click");
+    };
   });
 }
 
@@ -887,6 +888,10 @@ function addMarker(LatLng, tree){
     }
   });
   markers.push(marker);
+  expect(tree).property("id").number();
+  markerByPointId[tree.id] = marker;
+  points.push(tree);
+  setPointMarkerListeners();
 }
 
 function addMarkerByPixel(top, left, tree){
@@ -897,6 +902,7 @@ function addMarkerByPixel(top, left, tree){
 return {
   getMap: () => map,
   getMarkers: () => markers,
+  getMarkerByPointId: () => markerByPointId,
   getLoadingMarkers: () => isLoadingMarkers,
   getPoints: () => points,
   getPrevPoint,
