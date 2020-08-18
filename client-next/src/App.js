@@ -445,37 +445,16 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <Box className={classes.searchBox} >
-          <Paper className={{}} elevation={2}>
-            <Grid container alignItems="center" wrap="nowrap" >
-              <Grid item>
-                <IconButton>
-                  <Menu/>
-                </IconButton>
-              </Grid>
-              <Grid item className={classes.searchInputBox} >
-                <input className={classes.searchInput} type="text" placeholder="Search Greenstand" /> 
-              </Grid>
-              <Grid item>
-                <IconButton>
-                  <Search/>
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Box>
-        <SidePanel 
-          tree={tree} 
-          state={sidePanelState} 
-          onClose={handleSidePanelClose}
-          onNext={handleNext} 
-          onPrevious={handlePrev}
-        />
-        <div className="map" id="map-canvas" ref={mapRef}/>
-        <div className="logo">
-          <img alt="logo" src={require("./images/logo_floating_map.svg")} />
-        </div>
+      <SidePanel 
+        tree={tree} 
+        state={sidePanelState} 
+        onClose={handleSidePanelClose}
+        onNext={handleNext} 
+        onPrevious={handlePrev}
+      />
+      <div className="map" id="map-canvas" ref={mapRef}/>
+      <div className="logo">
+        <img alt="logo" src={require("./images/logo_floating_map.svg")} />
       </div>
     </ThemeProvider>
   );
