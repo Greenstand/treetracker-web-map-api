@@ -210,5 +210,10 @@ describe("Web Map", () => {
     cy.contains(/\dK/, {timeout: 1000*30});
   });
 
+  it("First query case", () => {
+    cy.visit("http://localhost:3000/?userid=1");
+    cy.contains(/\dK/, {timeout: 1000*30});
+  });
+
 });
 

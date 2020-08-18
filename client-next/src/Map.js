@@ -4,7 +4,10 @@ import expect from "expect-runtime";
 import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
 import {theme,PRIMARY} from "./App";
+const CancelToken = axios.CancelToken;
+let source;
 
+//TODO 
 const $ = {
 }
 
@@ -143,10 +146,11 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
 
   console.log("Cluster radius: " + clusterRadius);
-  if (req != null) {
-    console.log("initMarkers abort");
-    req.abort();
-  }
+//  if (req != null) {
+//    console.log("initMarkers abort");
+//    req.abort();
+//  }
+  source && source.cancel("clean previous request");
   var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
   queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
   if (
@@ -164,7 +168,10 @@ var initMarkers = function(viewportBounds, zoomLevel) {
   queryUrl = queryUrl + getTreeQueryParametersFromRequestedFilters();
 
   console.log("request:", queryUrl);
-  axios.get(queryUrl)
+  source = CancelToken.source();
+  axios.get(queryUrl,{
+    cancelToken: source.token,
+  })
     .then(response => {
       expect(response)
         .defined()
@@ -318,6 +325,13 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       isLoadingMarkers = false;
       //debugger;
       mapModel.checkArrow();
+    }).catch(function(thrown){
+      if(axios.isCancel(thrown)){
+        //change to handle cancel
+        console.log("request canceld because of:", thrown.message);
+      }else{
+        console.log("request failed", thrown);
+      }
     });
 };
 
@@ -796,6 +810,7 @@ var initialize = function() {
       queryUrl = queryUrl + treeQueryParameters;
 
       console.log("request:", queryUrl);
+      throw new Error("Do not support yet");
       req = $.get(queryUrl, function(result) {
 
         if(result.data.length == 1){
