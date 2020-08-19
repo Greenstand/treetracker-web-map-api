@@ -17,6 +17,8 @@ import * as mapTools from "./mapTools";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Loader from "./components/Loader";
 import Fade from "@material-ui/core/Fade";
+import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 //solution 1
 const PRIMARY = "#8bc34a"
@@ -206,6 +208,7 @@ function App() {
   const [tree, setTree] = React.useState(undefined);
   const mapRef = React.useRef(null);
   const [isLoading, setLoading] = React.useState(true);
+  const [message, setMessage] = React.useState({open: false, message:""});
 
   function showPanel(tree){
     console.log("show panel...");
@@ -279,10 +282,25 @@ function App() {
     setLoading(false);
   }
 
+  function handleMessageClose(){
+    setMessage({
+      open: false,
+      message: "",
+    });
+  };
+
+  function showMessage(messageString){
+    setMessage({
+      open: true,
+      message: messageString,
+    });
+  }
+
 
   if(mapRef.current) {
     mapRef.current.showPanel = showPanel;
     mapRef.current.loaded = loaded;
+    mapRef.current.showMessage = showMessage;
   }
 
   React.useEffect(() => {
@@ -299,6 +317,7 @@ function App() {
         .property("current").defined();
       mapRef.current.showPanel = showPanel;
       mapRef.current.loaded = loaded;
+      mapRef.current.showMessage = showMessage;
 //{{{      
 //      var mapOptions = {
 //        zoom: 2,
@@ -511,6 +530,11 @@ function App() {
       <div className="logo">
         <img alt="logo" src={require("./images/logo_floating_map.svg")} />
       </div>
+      <Snackbar open={message.open} autoHideDuration={6000} onClose={handleMessageClose}>
+        <MuiAlert onClose={handleMessageClose} severity="warning">
+          {message.message}
+        </MuiAlert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

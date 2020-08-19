@@ -919,8 +919,8 @@ var initialize = function() {
             const mapElement = document.getElementById("map-canvas");
             expect(mapElement).property("loaded").defined();
             mapElement.loaded();
-            expect(mapElement).property("warn").defined();
-            mapElement.warn(`Could not find any trees associated with userid ${userid}`);
+            expect(mapElement).property("showMessage").defined();
+            mapElement.showMessage(`Could not find any trees associated with userid ${userid}`);
             return;
           }
           if(data.length == 1){
