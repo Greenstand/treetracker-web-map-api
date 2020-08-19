@@ -18,7 +18,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v1
       - name: "Login to DockerHub Registry"
-        run: "echo  DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin"
+        run: "echo  ${{DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin"
       - name: "Get the version"
         id: vars
         run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
