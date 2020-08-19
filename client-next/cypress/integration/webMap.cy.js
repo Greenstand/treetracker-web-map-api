@@ -163,7 +163,7 @@ describe("Web Map", () => {
     cy.get("img[src*='greenstand_logo']");
   });
 
-  it("ZoomIn", () => {
+  it.only("ZoomIn", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
     //draw the map
@@ -182,7 +182,7 @@ describe("Web Map", () => {
         });
         map.setZoom(16);
       });
-    cy.get("img[src='/img/pin_29px.png']", {timeout: 1000*30});
+    cy.get("div[title=Tree]", {timeout: 1000*30});
     //draw the tree on the left of the screen
     cy.get("#map-canvas")
       .then($mapCanvas => {
@@ -203,9 +203,11 @@ describe("Web Map", () => {
       });
     cy.get("div[title='hide']")
       .click();
+    cy.get("div[title='show']")
+      .click();
   });
 
-  it.only("Loading", () => {
+  it("Loading", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
   });

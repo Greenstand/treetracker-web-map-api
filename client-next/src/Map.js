@@ -923,6 +923,15 @@ var initialize = function() {
             mapElement.showMessage(`Could not find any trees associated with userid ${userid}`);
             return;
           }
+          if (data.length === 0) {
+//            showAlert();
+            const mapElement = document.getElementById("map-canvas");
+            expect(mapElement).property("loaded").defined();
+            mapElement.loaded();
+            expect(mapElement).property("showMessage").defined();
+            mapElement.showMessage(`Could not find any data `);
+            return;
+          }
           if(data.length == 1){
             // rerun at higher zoom level
             let queryZoomLevel12 = 12
