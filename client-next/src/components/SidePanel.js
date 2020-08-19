@@ -162,7 +162,7 @@ function SidePanel(props){
   const classes = useStyles();
   const {tree, state} = props;
   expect(state).oneOf(["none", "show", "hide"]);
-  const {hasPrevious = true} = props;
+  const {hasPrev = true} = props;
   const {hasNext = true} = props;
   const [isTreePictureLoaded, setTreePictureLoaded] = React.useState((tree && tree.image_url)?false:true);
 
@@ -224,7 +224,7 @@ function SidePanel(props){
           </div>
           <Grid container className={classes.arrowBox} >
             <Grid item>
-              {hasPrevious &&
+              {hasPrev &&
                 <IconButton title="previous tree" onClick={props.onPrevious} >
                   <ArrowBackIosIcon className={classes.arrow} />
                 </IconButton>

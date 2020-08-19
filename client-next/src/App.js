@@ -206,6 +206,8 @@ function App() {
   const classes = useStyles();
   const [sidePanelState, setSidePanelState] = React.useState("none");
   const [tree, setTree] = React.useState(undefined);
+  const [hasNext, setHasNext] = React.useState(false);
+  const [hasPrev, setHasPrev] = React.useState(false);
   const mapRef = React.useRef(null);
   const [isLoading, setLoading] = React.useState(true);
   const [message, setMessage] = React.useState({open: false, message:""});
@@ -247,6 +249,8 @@ function App() {
       console.log("pant by x,y:", x, y);
       map.getMap().panBy(x,y);
     }
+    setHasNext(map.hasNextPoint());
+    setHasPrev(map.hasPrevPoint());
   }
 
   function showPanelWithoutTree(){
@@ -547,6 +551,8 @@ function App() {
         onShow={showPanelWithoutTree}
         onNext={handleNext} 
         onPrevious={handlePrev}
+        hasNext={hasNext}
+        hasPrev={hasPrev}
       />
       <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef}/>
       <Fade in={isLoading} timeout={{apear:0,exit: 1000}}>

@@ -433,13 +433,14 @@ function setPointMarkerListeners() {
     window.google.maps.event.addListener(marker, "click", function() {
 //      window.google.maps.event.clearListeners(marker, "mouseover");
 //      window.google.maps.event.clearListeners(marker, "mouseout");
-      const mapElement = document.getElementById("map-canvas");
-      expect(mapElement).property("showPanel").defined();
-      mapElement.showPanel(point);
       //toggle tree mark
       selectedOldTreeMarker = selectedTreeMarker;
       selectedTreeMarker = marker;
       changeTreeMarkSelected();
+
+      const mapElement = document.getElementById("map-canvas");
+      expect(mapElement).property("showPanel").defined();
+      mapElement.showPanel(point);
       return;
 //      panelLoader.classList.add("active");
 //      showMarkerInfo(point, marker, i);
@@ -1059,7 +1060,7 @@ function addMarkerByPixel(top, left, tree){
   addMarker(pointLeft, tree);
 }
 
-function goNextPoint(){
+function getCurrentIndex(){
   expect(selectedTreeMarker)
     .property("payload")
     .property("id")
@@ -1075,6 +1076,11 @@ function goNextPoint(){
   if(index === -1){
     throw Error("can not find point");
   }
+  return index;
+}
+
+function goNextPoint(){
+  const index = getCurrentIndex();
   const nextIndex = (index + 1) % points.length;
   expect(nextIndex).within(0, points.length);
   const nextPoint = points[nextIndex];
@@ -1084,21 +1090,7 @@ function goNextPoint(){
 }
 
 function goPrevPoint(){
-  expect(selectedTreeMarker)
-    .property("payload")
-    .property("id")
-    .number();
-  const currentId = selectedTreeMarker.payload.id;
-  const index = points.reduce((a,c,i) => {
-    if(c.id === currentId){
-      return i;
-    }else{
-      return a;
-    }
-  }, -1);
-  if(index === -1){
-    throw Error("can not find point");
-  }
+  const index = getCurrentIndex();
   const prevIndex = (index - 1)>= 0?
     ((index -1) % points.length)
     :
@@ -1108,6 +1100,24 @@ function goPrevPoint(){
   const marker = markerByPointId[prevPoint.id];
   expect(marker).defined();
   marker.triggerClick4Test();
+}
+
+function hasNextPoint(){
+  const index = getCurrentIndex();
+  if(index < points.length - 1){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+function hasPrevPoint(){
+  const index = getCurrentIndex();
+  if(index > 0){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 return {
@@ -1120,6 +1130,8 @@ return {
   getNextPoint,
   goPrevPoint,
   goNextPoint,
+  hasPrevPoint,
+  hasNextPoint,
   addMarkerByPixel,
 }
 
