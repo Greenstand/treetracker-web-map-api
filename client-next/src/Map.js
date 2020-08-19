@@ -204,11 +204,11 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             labelOrigin = null,
             anchor = null;
           if (item.count <= 300) {
-            iconUrl = "/img/cluster_46px.png";
+            iconUrl = require("./images/cluster_46px.png");
             labelOrigin = new window.google.maps.Point(23, 23);
             anchor = new window.google.maps.Point(23, 23);
           } else {
-            iconUrl = "/img/cluster_63px.png";
+            iconUrl = require("./images/cluster_63px.png");
             labelOrigin = new window.google.maps.Point(32, 32);
             anchor = new window.google.maps.Point(32, 32);
           }
@@ -241,6 +241,17 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }, undefined);
 
           window.google.maps.event.addListener(marker, "click", function() {
+            if (item.count <= 300) {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_46px_clicked.png"),
+              });
+            } else {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_63px_clicked.png"),
+              });
+            }
             if(marker.zoomTarget){
               fetchMarkers = false;
               var zoomLevel = map.getZoom();
@@ -259,6 +270,36 @@ var initMarkers = function(viewportBounds, zoomLevel) {
               map.panTo(marker.position);
             }
           });
+
+          //the hover
+          window.google.maps.event.addListener(marker, "mouseover", function(){
+            if (item.count <= 300) {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_46px_highlight.png"),
+              });
+            } else {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_63px_highlight.png"),
+              });
+            }
+          });
+
+          window.google.maps.event.addListener(marker, "mouseout", function(){
+            if (item.count <= 300) {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_46px.png"),
+              });
+            } else {
+              marker.setIcon({
+                ...marker.getIcon(),
+                url: require("./images/cluster_63px.png"),
+              });
+            }
+          });
+
           marker.triggerClick = () => {
             window.google.maps.event.trigger(marker, "click");
           };
