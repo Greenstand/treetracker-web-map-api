@@ -241,6 +241,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           }, undefined);
 
           window.google.maps.event.addListener(marker, "click", function() {
+            window.google.maps.event.clearListeners(marker, "mouseover");
+            window.google.maps.event.clearListeners(marker, "mouseout");
             if (item.count <= 300) {
               marker.setIcon({
                 ...marker.getIcon(),
@@ -316,7 +318,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             map: map,
             title: "Tree",
             icon: {
-              url: "/img/pin_29px.png"
+              url: require("./images/pin_29px.png"),
             },
             zIndex: undefined,
             payload: {
@@ -331,6 +333,45 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             selectedTreeMarker = marker;
             changeTreeMarkSelected();
           }
+
+          window.google.maps.event.addListener(marker, "mouseover", function(){
+            const icon = marker.getIcon();
+            selectedTreeMarker && expect(selectedTreeMarker)
+              .defined()
+              .property("payload")
+              .property("id")
+              .number();
+            expect(marker)
+              .property("payload")
+              .property("id")
+              .number();
+            marker.setIcon({
+              ...icon,
+              url: selectedTreeMarker && (selectedTreeMarker.payload.id === marker.payload.id)?
+                require("./images/pin_32px_highlight.png")
+              :
+                require("./images/pin_29px_highlight.png"),
+            });
+          });
+          window.google.maps.event.addListener(marker, "mouseout", function(){
+            const icon = marker.getIcon();
+            selectedTreeMarker && expect(selectedTreeMarker)
+              .defined()
+              .property("payload")
+              .property("id")
+              .number();
+            expect(marker)
+              .property("payload")
+              .property("id")
+              .number();
+            marker.setIcon({
+              ...icon,
+              url: selectedTreeMarker && (selectedTreeMarker.payload.id === marker.payload.id)?
+                require("./images/pin_32px.png")
+              :
+                require("./images/pin_29px.png"),
+            });
+          });
 
           // set the field for sorting
           item._sort_field = new Date(item.time_created);
@@ -390,16 +431,21 @@ function setPointMarkerListeners() {
     var marker = markerByPointId[point.id];
     expect(marker).defined();
     window.google.maps.event.addListener(marker, "click", function() {
-      console.warn("click pointer!", point);
+//      window.google.maps.event.clearListeners(marker, "mouseover");
+//      window.google.maps.event.clearListeners(marker, "mouseout");
       const mapElement = document.getElementById("map-canvas");
       expect(mapElement).property("showPanel").defined();
       mapElement.showPanel(point);
+      //toggle tree mark
+      selectedOldTreeMarker = selectedTreeMarker;
+      selectedTreeMarker = marker;
+      changeTreeMarkSelected();
       return;
-      panelLoader.classList.add("active");
-      showMarkerInfo(point, marker, i);
-      $("#tree-image").on("load", function() {
-        panelLoader.classList.remove("active");
-      });
+//      panelLoader.classList.add("active");
+//      showMarkerInfo(point, marker, i);
+//      $("#tree-image").on("load", function() {
+//        panelLoader.classList.remove("active");
+//      });
     });
     marker.triggerClick4Test = () => {
       window.google.maps.event.trigger(marker, "click");
@@ -530,12 +576,12 @@ function showMarkerInfo(point, marker, index) {
 
 function changeTreeMarkSelected() {
   if (selectedOldTreeMarker) {
-    selectedOldTreeMarker.setIcon("/img/pin_29px.png");
+    selectedOldTreeMarker.setIcon(require("./images/pin_29px.png"));
     selectedOldTreeMarker.setZIndex(0);
   }
 
   if (selectedTreeMarker) {
-    selectedTreeMarker.setIcon("/img/pin_32px.png");
+    selectedTreeMarker.setIcon(require("./images/pin_32px.png"));
     selectedTreeMarker.setZIndex(window.google.maps.Marker.MAX_ZINDEX);
   }
 }
@@ -942,7 +988,7 @@ function addMarker(LatLng, tree){
     map: map,
     title: "Tree",
     icon: {
-      url: "/img/pin_29px.png"
+      url: require("./images/pin_29px.png"),
     },
     zIndex: undefined,
     payload: {
