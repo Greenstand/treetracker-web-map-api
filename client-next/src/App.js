@@ -313,7 +313,7 @@ function App() {
   }
 
   function handleSidePanelClose(){
-    setSidePanelState("hide");
+    setSidePanelState("none");
   }
 
   function loaded(){

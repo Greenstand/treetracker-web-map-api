@@ -204,7 +204,7 @@ describe("Web Map", () => {
     cy.get("div[title='hide']")
       .click();
     cy.get("div[title='show']")
-      .click();
+      .should("not.exist");
   });
 
   it("Loading", () => {
