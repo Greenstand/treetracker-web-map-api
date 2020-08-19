@@ -454,6 +454,7 @@ function setPointMarkerListeners() {
 }
 
 function showAlert() {
+  throw Error("not support this fn anymore");
   const alertHtml = `
     <div class="alert alert-info alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -750,6 +751,11 @@ function shortenLargeNumber(number) {
 }
 
 function fitMapToBoundsForSet(data){
+  if(data.length === 0){
+    console.warn("quit cuz data is empty");
+    return;
+  }
+  console.error("data:", data);
   const bounds = mapTools.getInitialBounds(
     data.map(i => {
       if(i.type === "cluster"){
@@ -888,35 +894,72 @@ var initialize = function() {
       var clusterRadius = getQueryStringValue("clusterRadius") || getClusterRadius(queryZoomLevel);
 
       console.log("Cluster radius: " + clusterRadius);
-      if (req != null) {
-        console.log("initMarkers abort");
-        req.abort();
-      }
+//      if (req != null) {
+//        console.log("initMarkers abort");
+//        req.abort();
+//      }
+      source && source.cancel("clean previous request");
       var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
       queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel;
       queryUrl = queryUrl + treeQueryParameters;
 
       console.log("request:", queryUrl);
-      throw new Error("Do not support yet");
-      req = $.get(queryUrl, function(result) {
-
-        if(result.data.length == 1){
-          // rerun at higher zoom level
-          let queryZoomLevel12 = 12
-          var queryClusterRadius12 = getQueryStringValue("clusterRadius") || getClusterRadius(queryZoomLevel12);
-          var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + queryClusterRadius12;
-          queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel12;
-          queryUrl = queryUrl + treeQueryParameters;
-          req = $.get(queryUrl, function(result) {
-            fitMapToBoundsForSet(result.data)
-          });
-
-        } else {
-          fitMapToBoundsForSet(result.data)
-        }
-
-
+      source = CancelToken.source();
+      axios.get(queryUrl,{
+        cancelToken: source.token,
       })
+        .then(response => {
+          expect(response)
+            .property("data")
+            .property("data")
+            .a(expect.any(Array));
+          const data = response.data.data;
+          if (userid && data.length === 0) {
+//            showAlert();
+            const mapElement = document.getElementById("map-canvas");
+            expect(mapElement).property("loaded").defined();
+            mapElement.loaded();
+            expect(mapElement).property("warn").defined();
+            mapElement.warn(`Could not find any trees associated with userid ${userid}`);
+            return;
+          }
+          if(data.length == 1){
+            // rerun at higher zoom level
+            let queryZoomLevel12 = 12
+            var queryClusterRadius12 = getQueryStringValue("clusterRadius") || getClusterRadius(queryZoomLevel12);
+            var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + queryClusterRadius12;
+            queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel12;
+            queryUrl = queryUrl + treeQueryParameters;
+            source = CancelToken.source();
+            axios.get(queryUrl,{
+              cancelToken: source.token,
+            }).then(response => {
+              expect(response)
+                .property("data")
+                .property("data")
+                .a(expect.any(Array));
+              const data = response.data.data;
+              fitMapToBoundsForSet(data)
+            }).catch(function(thrown){
+              if(axios.isCancel(thrown)){
+                //change to handle cancel
+                console.log("request canceled because of:", thrown.message);
+              }else{
+                console.log("request failed", thrown);
+              }
+            });
+
+          } else {
+            fitMapToBoundsForSet(data)
+          }
+        }).catch(function(thrown){
+          if(axios.isCancel(thrown)){
+            //change to handle cancel
+            console.log("request canceled because of:", thrown.message);
+          }else{
+            console.log("request failed", thrown);
+          }
+        });
 
     } else {
       var zoomLevel = map.getZoom();
