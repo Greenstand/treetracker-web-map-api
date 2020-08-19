@@ -199,10 +199,20 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     backgroundColor: "rgba(255,255,255,0.25)",
   },
+  logo: {
+    position: "absolute",
+    right: 60,
+    bottom: 20,
+    transform: "scale(1.1)",
+    transition: "all 2s",
+  },
+  logoLoaded: {
+    transform: "scale(1)",
+  },
 }));
 
 function App() {
-  console.warn("Reander ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.warn("Render ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const classes = useStyles();
   const [sidePanelState, setSidePanelState] = React.useState("none");
   const [tree, setTree] = React.useState(undefined);
@@ -210,6 +220,7 @@ function App() {
   const [hasPrev, setHasPrev] = React.useState(false);
   const mapRef = React.useRef(null);
   const [isLoading, setLoading] = React.useState(true);
+  const [logoLoaded, setLogoLoaded] = React.useState(false);
   const [message, setMessage] = React.useState({open: false, message:""});
 
   function showPanel(tree){
@@ -336,6 +347,7 @@ function App() {
   }
 
   React.useEffect(() => {
+    setLogoLoaded(true);
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
     script.id = 'googleMaps';
@@ -562,7 +574,7 @@ function App() {
           </Grid>
         </Grid>
       </Fade>
-      <div className="logo">
+      <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
         <img alt="logo" src={require("./images/logo_floating_map.svg")} />
       </div>
       <Snackbar open={message.open} autoHideDuration={6000} onClose={handleMessageClose}>

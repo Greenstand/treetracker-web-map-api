@@ -20,11 +20,6 @@ body {
   height: 100%;
 }
 
-.logo {
-  position: absolute;
-  right: 60px;
-  bottom: 20px;
-}
 
 .side-panel {
   position: relative;
