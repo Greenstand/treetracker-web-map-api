@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   generation: 2
   name: treetracker-web-map-api-test-release-ingress
-#  annotations:
-#    kubernetes.io/ingress.global-static-ip-name: ziotag-dashboard-ip
   namespace: default
 spec:
   rules:
