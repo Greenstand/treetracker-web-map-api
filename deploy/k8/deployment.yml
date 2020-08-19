@@ -1,17 +1,3 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  generation: 2
-  name: treetracker-web-map-api-test-release-ingress
-  namespace: default
-spec:
-  rules:
-  - http:
-      paths:
-      - backend:
-          serviceName: treetracker-web-map-api-test-release-service
-          servicePort: 80
-
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
