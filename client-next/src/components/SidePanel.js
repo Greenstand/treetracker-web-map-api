@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Check from '@material-ui/icons/CheckCircle';
+import Face from '@material-ui/icons/Face';
+import Fingerprint from '@material-ui/icons/Fingerprint';
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
@@ -155,6 +157,9 @@ const useStyles = makeStyles(theme => ({
       marginRight: 5,
     },
   },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 
@@ -252,7 +257,7 @@ function SidePanel(props){
               </Grid>
             </Grid>
             <Grid container className={classes.verify} >
-              <Grid item>
+              <Grid item className={classes.icon} >
                 <Check style={{ color: "#abe38f"}} />
               </Grid>
               <Grid item>
@@ -261,6 +266,18 @@ function SidePanel(props){
                 </Typography>
               </Grid>
             </Grid>
+            {tree?.attachedWallet &&
+              <Grid container className={classes.verify} >
+                <Grid item className={classes.icon} >
+                  <Check style={{ color: "#abe38f"}} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1" >
+                    Token issued
+                  </Typography>
+                </Grid>
+              </Grid>
+            }
             <Divider/>
             <Box height={15} />
             <Grid container className={classes.infoItem} >
@@ -283,16 +300,30 @@ function SidePanel(props){
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container className={classes.infoItem} >
-              <Grid item>
-                <Room />
+            {tree?.attachedWallet &&
+              <>
+              <Grid container className={classes.infoItem} >
+                <Grid item>
+                  <Face />
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.item} variant="body1" >
+                    Impace Owner: @{tree?.attachedWallet}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography className={classes.item} variant="body1" >
-                  {tree?.lat},{tree?.lng}
-                </Typography>
+              <Grid container className={classes.infoItem} >
+                <Grid item>
+                  <Fingerprint />
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.item} variant="body1" >
+                    Token: {tree?.token_uuid}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
+              </>
+            }
           </CardContent>
         </Card>
       </Paper>

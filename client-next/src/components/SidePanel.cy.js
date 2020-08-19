@@ -33,7 +33,7 @@ describe("SidePanel", () => {
             tree={trees[treeIndex]} 
             onNext={handleNext}
             hasNext={treeIndex < trees.length - 1}
-            hasPrevious={treeIndex > 0}
+            hasPrev={treeIndex > 0}
           />
         </div>
       )
@@ -95,8 +95,6 @@ describe("SidePanel", () => {
     );
     cy.contains("show").click();
     cy.contains("Dadior");
-    //shoudl have the default greenstand logo
-    cy.get("img[src=*logo.svg]");
     cy.get(".treePictureLoading").should("not.exist");
     cy.get("img[alt='tree planted']").should("not.exist");
 
@@ -113,6 +111,25 @@ describe("SidePanel", () => {
       .click();
     cy.get("div[title='show']")
       .should("not.exist");
+  });
+
+  it("wallet", () => {
+    mount(
+    <SidePanel 
+      state={"show"} 
+      tree={{
+          attachedWallet: "Zaven",
+          id: 1,
+          first_name: "FFF",
+          last_name: "RRR",
+          token_uuid: "TESTTESTTEST",
+        }}
+    />
+    );
+    cy.contains("@Zaven");
+    cy.contains("Token issued");
+    cy.contains("TESTTEST");
+
   });
 
 });

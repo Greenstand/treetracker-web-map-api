@@ -440,6 +440,10 @@ function setPointMarkerListeners() {
 
       const mapElement = document.getElementById("map-canvas");
       expect(mapElement).property("showPanel").defined();
+      //attache wallet
+      if(wallet != null){
+        point.attachedWallet = wallet;
+      }
       mapElement.showPanel(point);
       return;
 //      panelLoader.classList.add("active");
