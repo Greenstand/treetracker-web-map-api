@@ -288,28 +288,18 @@ function App() {
   }
 
   function handlePrev(){
+    console.log("prev");
     const {map} = mapRef.current;
-    expect(map).defined()
-      .property("getPrevPoint")
-      .a(expect.any(Function));
-    const point = map.getPrevPoint(tree);
-    expect(point).match({
-      id: expect.any(Number),
-    });
-    showPanel(point);
+    map.goPrevPoint();
   }
 
   function handleNext(){
     console.log("next");
     const {map} = mapRef.current;
     expect(map).defined()
-      .property("getNextPoint")
+      .property("goNextPoint")
       .a(expect.any(Function));
-    const point = map.getNextPoint(tree);
-    expect(point).match({
-      id: expect.any(Number),
-    });
-    showPanel(point);
+    map.goNextPoint();
   }
 
   function handleSidePanelClose(){

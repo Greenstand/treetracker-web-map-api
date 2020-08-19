@@ -1059,6 +1059,57 @@ function addMarkerByPixel(top, left, tree){
   addMarker(pointLeft, tree);
 }
 
+function goNextPoint(){
+  expect(selectedTreeMarker)
+    .property("payload")
+    .property("id")
+    .number();
+  const currentId = selectedTreeMarker.payload.id;
+  const index = points.reduce((a,c,i) => {
+    if(c.id === currentId){
+      return i;
+    }else{
+      return a;
+    }
+  }, -1);
+  if(index === -1){
+    throw Error("can not find point");
+  }
+  const nextIndex = (index + 1) % points.length;
+  expect(nextIndex).within(0, points.length);
+  const nextPoint = points[nextIndex];
+  const marker = markerByPointId[nextPoint.id];
+  expect(marker).defined();
+  marker.triggerClick4Test();
+}
+
+function goPrevPoint(){
+  expect(selectedTreeMarker)
+    .property("payload")
+    .property("id")
+    .number();
+  const currentId = selectedTreeMarker.payload.id;
+  const index = points.reduce((a,c,i) => {
+    if(c.id === currentId){
+      return i;
+    }else{
+      return a;
+    }
+  }, -1);
+  if(index === -1){
+    throw Error("can not find point");
+  }
+  const prevIndex = (index - 1)>= 0?
+    ((index -1) % points.length)
+    :
+    points.length + (index -1);
+  expect(prevIndex).within(0, points.length);
+  const prevPoint = points[prevIndex];
+  const marker = markerByPointId[prevPoint.id];
+  expect(marker).defined();
+  marker.triggerClick4Test();
+}
+
 return {
   getMap: () => map,
   getMarkers: () => markers,
@@ -1067,6 +1118,8 @@ return {
   getPoints: () => points,
   getPrevPoint,
   getNextPoint,
+  goPrevPoint,
+  goNextPoint,
   addMarkerByPixel,
 }
 

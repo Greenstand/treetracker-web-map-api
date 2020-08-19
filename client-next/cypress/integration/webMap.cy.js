@@ -4,7 +4,7 @@ const scale = 1;
 
 describe("Web Map", () => {
 
-  it("Web map", () => {
+  it.only("Web map", () => {
     //cy.viewport("ipad-2");
 //    cy.viewport("iphone-x");
 //    cy.viewport("macbook-13");
@@ -13,7 +13,6 @@ describe("Web Map", () => {
 //    cy.visit("http://test.dadiorchen.com");
     cy.visit("http://localhost:3000");
     cy.get("img[alt=logo]");
-    cy.get("input[placeholder='Search Greenstand'");
     cy.contains(/137K/,{timeout: 1000*30});
     cy
       .get("#map-canvas")
@@ -163,7 +162,7 @@ describe("Web Map", () => {
     cy.get("img[src*='greenstand_logo']");
   });
 
-  it.only("ZoomIn", () => {
+  it("ZoomIn", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
     //draw the map
