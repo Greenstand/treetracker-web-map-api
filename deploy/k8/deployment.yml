@@ -1,4 +1,20 @@
 apiVersion: "apps/v1"
+kind: Ingress
+metadata:
+  generation: 2
+  name: treetracker-web-map-api-test-release-ingress
+#  annotations:
+#    kubernetes.io/ingress.global-static-ip-name: ziotag-dashboard-ip
+  namespace: default
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: treetracker-web-map-api-test-release-service
+          servicePort: 80
+
+apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   name: "treetracker-web-map-api-test-release-deployment"
@@ -25,7 +41,7 @@ kind: Service
 metadata:
   labels:
     app: treetracker-web-map-api
-  name: treetracker-web-map-api-test-release-deployment-service
+  name: treetracker-web-map-api-test-release-service
   namespace: default
 spec:
   ports:
