@@ -20,6 +20,8 @@ import Fade from "@material-ui/core/Fade";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
+
+const MOBILE_WIDTH = 960;
 //solution 1
 const PRIMARY = "#8bc34a"
 const SECONDARY = "#ffca28"
@@ -251,7 +253,7 @@ function App() {
       expect(left).above(0);
       console.log("the point at:", top, left);
       expect(SidePanel).property("WIDTH").number();
-      if(left <  SidePanel.WIDTH){
+      if(left <  SidePanel.WIDTH && mapRef.current.clientWith > MOBILE_WIDTH){
         //move to right center
         const print = JSON.stringify(map);
         console.log("print:", print);
@@ -620,7 +622,7 @@ function App() {
       <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
         <img alt="logo" src={require("./images/logo_floating_map.svg")} />
       </div>
-      <Snackbar open={message.open} autoHideDuration={6000} onClose={handleMessageClose}>
+      <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
           {message.message}
         </MuiAlert>

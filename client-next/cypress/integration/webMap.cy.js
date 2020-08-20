@@ -166,7 +166,7 @@ describe("Web Map", () => {
     cy.get("img[src*='greenstand_logo']");
   });
 
-  it("ZoomIn", () => {
+  it.only("ZoomIn", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
     //draw the map
@@ -220,7 +220,7 @@ describe("Web Map", () => {
     cy.contains(/\dK/, {timeout: 1000*30});
   });
 
-  it.only("Arrow interaction", () => {
+  it("Arrow interaction", () => {
     cy.visit("http://localhost:3000");
     cy.contains(/\dK/, {timeout: 1000*30});
 
@@ -240,7 +240,6 @@ describe("Web Map", () => {
       });
     
     cy.get(".north");
-    cy.pause();
 
     cy.get("#map-canvas")
       .then($mapCanvas => {
