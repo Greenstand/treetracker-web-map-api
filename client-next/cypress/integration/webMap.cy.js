@@ -226,6 +226,13 @@ describe("Web Map", () => {
 
     cy.get("#map-canvas")
       .then($mapCanvas => {
+        const map = $mapCanvas[0].map.getMap();
+        map.setCenter({lat:0, lng:0});
+        map.setZoom(10);
+      });
+
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
         const {hideArrow, showArrow} = $mapCanvas[0].app;
         expectRuntime(hideArrow).a(expectRuntime.any(Function));
         expectRuntime(showArrow).a(expectRuntime.any(Function));
@@ -233,6 +240,7 @@ describe("Web Map", () => {
       });
     
     cy.get(".north");
+    cy.pause();
 
     cy.get("#map-canvas")
       .then($mapCanvas => {
