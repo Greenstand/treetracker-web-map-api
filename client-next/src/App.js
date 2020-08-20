@@ -354,6 +354,15 @@ function App() {
     });
   }
 
+  function handleArrowClick(){
+    const {map} = mapRef.current;
+    expect(map).defined()
+      .property("getMapModel")
+      .defined();
+    const {getMapModel} = map;
+    getMapModel().gotoNearest();
+  }
+
   function injectApp(){
     if(mapRef.current) {
       mapRef.current.app = {
@@ -612,6 +621,7 @@ function App() {
             {left: `${SidePanel.WIDTH + 10}px`}
             :{}
           }
+          onClick={handleArrowClick}
         >
           <div className="round">
             <div id="cta">

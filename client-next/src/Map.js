@@ -1146,6 +1146,7 @@ function getApp(){
 
 return {
   getMap: () => map,
+  getMapModel: () => mapModel,
   getMarkers: () => markers,
   getMarkerByPointId: () => markerByPointId,
   getLoadingMarkers: () => isLoadingMarkers,
