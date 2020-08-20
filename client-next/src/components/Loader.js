@@ -11,6 +11,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   loader: {
+    userSelect: "none",
+    pointerEvents: "none",
     border: "12px solid #f3f3f3",
     borderTop: "12px solid #ff9800",
     borderRadius: "50%",

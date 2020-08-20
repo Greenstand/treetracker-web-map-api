@@ -194,6 +194,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   loadingContainer:{
+    userSelect: "none",
+    pointerEvents: "none",
     position: "absolute",
     width: "100%",
     height: "100vh",
@@ -202,6 +204,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "rgba(255,255,255,0.25)",
   },
   logo: {
+    userSelect: "none",
+    pointerEvents: "none",
     position: "absolute",
     right: 60,
     bottom: 20,
