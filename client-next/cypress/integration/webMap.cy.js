@@ -3,6 +3,10 @@ import * as mapTools from "../../src/mapTools";
 const scale = 1;
 
 describe("Web Map", () => {
+  
+  before(() => {
+    cy.viewport("iphone-6");
+  });
 
   it("Web map", () => {
     //cy.viewport("ipad-2");

@@ -205,16 +205,19 @@ const useStyles = makeStyles(theme => ({
     bottom: 20,
     transform: "scale(1.1)",
     transition: "all 1s",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       transform: "translate(0, -20px)",
       opacity: 0,
       right: 10,
       top: 10,
+      "& img": {
+        width: "45vw",
+      },
     },
   },
   logoLoaded: {
     transform: "scale(1)",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       transform: "translate(0, 0)",
       opacity: 1,
     },

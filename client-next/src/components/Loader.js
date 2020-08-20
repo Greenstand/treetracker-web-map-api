@@ -1,7 +1,7 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles(theme => ({
   "@keyframes spin": {
     from: {
       transform: "rotate(0deg)",
@@ -17,6 +17,12 @@ const useStyles = makeStyles(_theme => ({
     width: 60,
     height: 60,
     animation: "$spin 1.5s linear infinite",
+    [theme.breakpoints.down("md")]: {
+      border: "8px solid #f3f3f3",
+      borderTop: "8px solid #ff9800",
+      width: 40,
+      height: 40,
+    },
   },
 }));
 
