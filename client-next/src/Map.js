@@ -14,7 +14,14 @@ const $ = {
 
 const moment = () => {console.warn("Fake moment!")};
 
-function load(){
+function load(
+  options
+){
+//  //verify options
+//  expect(options).property("onShowArrow").a(expect.any(Function));
+//  expect(options).property("onHideArrow").a(expect.any(Function));
+//  const {onHideArrow, onShowArrow} = options;
+
 
 const YES = "YES";
 const NO = "NO";
@@ -398,9 +405,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         }
 
         //loader.classList.remove("active");
-        const mapElement = document.getElementById("map-canvas");
-        expect(mapElement).property("loaded").defined();
-        mapElement.loaded();
+        getApp().loaded();
         firstRender = false;
       }
       console.log("init markert finished, loaded:", markers.length);
@@ -438,13 +443,11 @@ function setPointMarkerListeners() {
       selectedTreeMarker = marker;
       changeTreeMarkSelected();
 
-      const mapElement = document.getElementById("map-canvas");
-      expect(mapElement).property("showPanel").defined();
       //attache wallet
       if(wallet != null){
         point.attachedWallet = wallet;
       }
-      mapElement.showPanel(point);
+      getApp().showPanel(point);
       return;
 //      panelLoader.classList.add("active");
 //      showMarkerInfo(point, marker, i);
@@ -919,22 +922,17 @@ var initialize = function() {
             .property("data")
             .a(expect.any(Array));
           const data = response.data.data;
+          const app = getApp()
           if (userid && data.length === 0) {
 //            showAlert();
-            const mapElement = document.getElementById("map-canvas");
-            expect(mapElement).property("loaded").defined();
-            mapElement.loaded();
-            expect(mapElement).property("showMessage").defined();
-            mapElement.showMessage(`Could not find any trees associated with userid ${userid}`);
+            app.loaded();
+            app.showMessage(`Could not find any trees associated with userid ${userid}`);
             return;
           }
           if (data.length === 0) {
 //            showAlert();
-            const mapElement = document.getElementById("map-canvas");
-            expect(mapElement).property("loaded").defined();
-            mapElement.loaded();
-            expect(mapElement).property("showMessage").defined();
-            mapElement.showMessage(`Could not find any data `);
+            app.loaded();
+            app.showMessage(`Could not find any data `);
             return;
           }
           if(data.length == 1){
@@ -994,8 +992,12 @@ var initialize = function() {
 //  });
 
   //initialize MapModel
-  console.log("MAKING MAP MODELL");
-  mapModel = new MapModel(treetrackerApiUrl);
+  console.log("MAKING MAP MODEL");
+  mapModel = new MapModel({
+    apiUrl: treetrackerApiUrl,
+    onShowArrow: handleShowArrow,
+    onHideArrow: handleHideArrow,
+  });
   mapModel.map = map;
   mapModel.markers = markers;
 };
@@ -1122,6 +1124,24 @@ function hasPrevPoint(){
   }else{
     return false;
   }
+}
+
+function handleShowArrow(direction){
+  getApp().showArrow(direction);
+}
+
+function handleHideArrow(){
+  getApp().hideArrow();
+}
+
+function getApp(){
+  const mapElement = document.getElementById("map-canvas");
+  const {app} = mapElement;
+  expect(app).defined();
+  expect(app).property("loaded").defined();
+  expect(app).property("showPanel").defined();
+  expect(app).property("showMessage").defined();
+  return app;
 }
 
 return {

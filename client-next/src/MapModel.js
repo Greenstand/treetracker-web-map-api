@@ -4,20 +4,14 @@
 import expect from "expect-runtime";
 const axios = require("axios");
 
-const $ = () => {
-  console.warn("fake jQuery!");
-  return {
-    removeClass: () => {console.warn("Fake jQuery!");},
-    addClass: () => {console.warn("Fake jQuery!");},
-    show: () => {console.warn("Fake jQuery!");},
-    hide: () => {console.warn("Fake jQuery!");},
-  }
-}
-
 class MapModel {
-  constructor(apiUrl){
-    console.log('ok' + apiUrl);
-    this.apiUrl = apiUrl;
+  constructor(options){
+    expect(options).property("apiUrl").defined();
+    this.apiUrl = options.apiUrl;
+    expect(options).property("onShowArrow").a(expect.any(Function));
+    expect(options).property("onHideArrow").a(expect.any(Function));
+    this._onShowArrow = options.onShowArrow;
+    this._onHideArrow = options.onHideArrow;
     this._markers = [];
     this._map = undefined;
     this._cancelAxios = undefined;
@@ -130,27 +124,28 @@ class MapModel {
    * To show/hide the arrow icon on the map
    */
   hideArrow(){
-    const arrow = $("#arrow");
-    arrow.hide();
+    this._onHideArrow();
+//    const arrow = $("#arrow");
+//    arrow.hide();
   }
 
   showArrow(direction){
-    const arrow = $("#arrow");
-    expect(direction).oneOf(["north", "south", "west", "east"]);
-    if(direction === "north"){
-      arrow.removeClass();
-      arrow.addClass("north");
-    }else if(direction === "south"){
-      arrow.removeClass();
-      arrow.addClass("south");
-    }else if(direction === "west"){
-      arrow.removeClass();
-      arrow.addClass("west");
-    }else if(direction === "east"){
-      arrow.removeClass();
-      arrow.addClass("east");
-    }
-    arrow.show();
+//    const arrow = $("#arrow");
+    this._onShowArrow(direction);
+//    if(direction === "north"){
+//      arrow.removeClass();
+//      arrow.addClass("north");
+//    }else if(direction === "south"){
+//      arrow.removeClass();
+//      arrow.addClass("south");
+//    }else if(direction === "west"){
+//      arrow.removeClass();
+//      arrow.addClass("west");
+//    }else if(direction === "east"){
+//      arrow.removeClass();
+//      arrow.addClass("east");
+//    }
+//    arrow.show();
   }
 
   /*

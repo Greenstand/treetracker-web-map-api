@@ -4,7 +4,7 @@ const scale = 1;
 
 describe("Web Map", () => {
 
-  it.only("Web map", () => {
+  it("Web map", () => {
     //cy.viewport("ipad-2");
 //    cy.viewport("iphone-x");
 //    cy.viewport("macbook-13");
@@ -214,6 +214,64 @@ describe("Web Map", () => {
   it("First query case", () => {
     cy.visit("http://localhost:3000/?userid=1");
     cy.contains(/\dK/, {timeout: 1000*30});
+  });
+
+  it.only("Arrow interaction", () => {
+    cy.visit("http://localhost:3000");
+    cy.contains(/\dK/, {timeout: 1000*30});
+
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const {hideArrow, showArrow} = $mapCanvas[0].app;
+        expectRuntime(hideArrow).a(expectRuntime.any(Function));
+        expectRuntime(showArrow).a(expectRuntime.any(Function));
+        showArrow("north");
+      });
+    
+    cy.get(".north");
+
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const {hideArrow, showArrow} = $mapCanvas[0].app;
+        expectRuntime(hideArrow).a(expectRuntime.any(Function));
+        expectRuntime(showArrow).a(expectRuntime.any(Function));
+        showArrow("east");
+      });
+    
+    cy.get(".east");
+
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const {hideArrow, showArrow} = $mapCanvas[0].app;
+        expectRuntime(hideArrow).a(expectRuntime.any(Function));
+        expectRuntime(showArrow).a(expectRuntime.any(Function));
+        showArrow("south");
+      });
+    
+    cy.get(".south");
+
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const {hideArrow, showArrow} = $mapCanvas[0].app;
+        expectRuntime(hideArrow).a(expectRuntime.any(Function));
+        expectRuntime(showArrow).a(expectRuntime.any(Function));
+        showArrow("west");
+      });
+    
+    cy.get(".west");
+
+    //open side panel
+    cy.get("#map-canvas")
+      .then($mapCanvas => {
+        const {showPanel} = $mapCanvas[0].app;
+        expectRuntime(showPanel).a(expectRuntime.any(Function));
+        showPanel({
+            id: 1,
+            first_name: "Dadior",
+            last_name: "Chen",
+          });
+      });
+    
   });
 
 });

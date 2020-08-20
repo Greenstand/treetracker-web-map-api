@@ -222,6 +222,7 @@ function App() {
   const [isLoading, setLoading] = React.useState(true);
   const [logoLoaded, setLogoLoaded] = React.useState(false);
   const [message, setMessage] = React.useState({open: false, message:""});
+  const [arrow, setArrow] = React.useState({});
 
   function showPanel(tree){
     console.log("show panel...");
@@ -230,38 +231,40 @@ function App() {
     //consider the visible of the point
     const {map} = mapRef.current;
     const marker = map.getMarkerByPointId()[tree.id]
-    expect(marker).defined();
-    const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
-    expect(top).above(0);
-    expect(left).above(0);
-    console.log("the point at:", top, left);
-    expect(SidePanel).property("WIDTH").number();
-    if(left <  SidePanel.WIDTH){
-      //move to right center
-      const print = JSON.stringify(map);
-      console.log("print:", print);
-      console.log("console:", map);
-      const mapElement = mapRef.current;
-      expect(mapElement).property("clientWidth").defined();
-      const containerWidth = mapElement.clientWidth;
-      const containerHeight = mapElement.clientHeight;
-      expect(containerWidth).above(0);
-      expect(containerHeight).above(0);
-      const topCenter = containerHeight / 2;
-      const leftCenter = (containerWidth - SidePanel.WIDTH) / 2 + SidePanel.WIDTH;
-      expect(topCenter).above(0);
-      expect(leftCenter).above(0);
-//      //const latLng = mapTools.getLatLngCoordinateByPixel(top, left, map.getMap());
-//      console.log("tl:", top, left);
-//      expect(latLng).defined();
-//      console.log("ln:", latLng);
-      const x = left - leftCenter;
-      const y = top - topCenter;
-      console.log("pant by x,y:", x, y);
-      map.getMap().panBy(x,y);
+    if(marker){
+      expect(marker).defined();
+      const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
+      expect(top).above(0);
+      expect(left).above(0);
+      console.log("the point at:", top, left);
+      expect(SidePanel).property("WIDTH").number();
+      if(left <  SidePanel.WIDTH){
+        //move to right center
+        const print = JSON.stringify(map);
+        console.log("print:", print);
+        console.log("console:", map);
+        const mapElement = mapRef.current;
+        expect(mapElement).property("clientWidth").defined();
+        const containerWidth = mapElement.clientWidth;
+        const containerHeight = mapElement.clientHeight;
+        expect(containerWidth).above(0);
+        expect(containerHeight).above(0);
+        const topCenter = containerHeight / 2;
+        const leftCenter = (containerWidth - SidePanel.WIDTH) / 2 + SidePanel.WIDTH;
+        expect(topCenter).above(0);
+        expect(leftCenter).above(0);
+  //      //const latLng = mapTools.getLatLngCoordinateByPixel(top, left, map.getMap());
+  //      console.log("tl:", top, left);
+  //      expect(latLng).defined();
+  //      console.log("ln:", latLng);
+        const x = left - leftCenter;
+        const y = top - topCenter;
+        console.log("pant by x,y:", x, y);
+        map.getMap().panBy(x,y);
+      }
+      setHasNext(map.hasNextPoint());
+      setHasPrev(map.hasPrevPoint());
     }
-    setHasNext(map.hasNextPoint());
-    setHasPrev(map.hasPrevPoint());
   }
 
   function showPanelWithoutTree(){
@@ -339,12 +342,32 @@ function App() {
     });
   }
 
-
-  if(mapRef.current) {
-    mapRef.current.showPanel = showPanel;
-    mapRef.current.loaded = loaded;
-    mapRef.current.showMessage = showMessage;
+  function showArrow(direction){
+    expect(direction).oneOf(["north", "south", "west", "east"]);
+    setArrow({
+      direction,
+    });
   }
+
+  function hideArrow(){
+    setArrow({
+    });
+  }
+
+  function injectApp(){
+    if(mapRef.current) {
+      mapRef.current.app = {
+        showPanel,
+        loaded,
+        showMessage,
+        showArrow,
+        hideArrow,
+      };
+    }
+  }
+
+  injectApp();
+
 
   React.useEffect(() => {
     setLogoLoaded(true);
@@ -359,9 +382,7 @@ function App() {
       mapRef.current.map = map;
       expect(mapRef)
         .property("current").defined();
-      mapRef.current.showPanel = showPanel;
-      mapRef.current.loaded = loaded;
-      mapRef.current.showMessage = showMessage;
+      injectApp();
 //{{{      
 //      var mapOptions = {
 //        zoom: 2,
@@ -582,6 +603,24 @@ function App() {
           {message.message}
         </MuiAlert>
       </Snackbar>
+      {arrow.direction &&
+        <div 
+          id="arrow"  
+          className={`${arrow.direction || ''}`} 
+          style={
+            (sidePanelState === "show") && (arrow.direction === "west")?
+            {left: `${SidePanel.WIDTH + 10}px`}
+            :{}
+          }
+        >
+          <div className="round">
+            <div id="cta">
+              <span className="arrow primera next "></span>
+              <span className="arrow segunda next "></span>
+            </div>
+          </div>
+        </div>
+      }
     </ThemeProvider>
   );
 }
