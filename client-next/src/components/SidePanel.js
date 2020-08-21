@@ -89,6 +89,7 @@ const useStyles = makeStyles(theme => ({
     width: 108,
     marginTop: -77,
     border: "6px solid white",
+    backgroundColor: "white",
   },
   avatarLogo: {
     backgroundColor: "white",
@@ -203,7 +204,7 @@ function SidePanel(props){
         exit: 500,
       }}
     >
-      <Paper square={true} className={classes.sidePaper} elevation={3}>
+      <Paper square={true} className={classes.sidePaper} elevation={8}>
         <div style={{position: "relative"}} >
           <Paper title="hide" onClick={handleClose} elevation={3} className={classes.closeButton} >
             <Grid container justify="center" alignItems="center" style={{height: "100%"}} >
@@ -247,7 +248,12 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={8} className={classes.avatarPaper} >
-                  <Avatar id="planter-img" className={` ${classes.avatar} ${tree.user_image_url?'':classes.avatarLogo}`} src={tree.user_image_url || require("../images/greenstand_logo.svg")} />
+                  {tree.user_image_url &&
+                    <Avatar id="planter-img" className={`${classes.avatar}`} src={tree.user_image_url} />
+                  }
+                  {!tree.user_image_url &&
+                    <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
+                  }
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >
