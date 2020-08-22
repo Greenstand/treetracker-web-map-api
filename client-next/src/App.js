@@ -209,11 +209,14 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     right: 60,
     bottom: 20,
-    transform: "scale(1.1)",
+    opacity: 0,
+    transform: "translate(0, 40px)",
     transition: "all 1s",
+    "& img": {
+      maxWidth: 250,
+    },
     [theme.breakpoints.down("sm")]: {
       transform: "translate(0, -20px)",
-      opacity: 0,
       right: 10,
       top: 10,
       "& img": {
@@ -222,11 +225,12 @@ const useStyles = makeStyles(theme => ({
     },
   },
   logoLoaded: {
-    transform: "scale(1)",
-    [theme.breakpoints.down("sm")]: {
-      transform: "translate(0, 0)",
-      opacity: 1,
-    },
+    transform: "translate(0, 0)",
+    opacity: 1,
+//    [theme.breakpoints.down("sm")]: {
+//      transform: "translate(0, 0)",
+//      opacity: 1,
+//    },
   },
 }));
 
