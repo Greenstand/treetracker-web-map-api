@@ -73,6 +73,9 @@ const useStyles = makeStyles(theme => ({
     //textShadow: "1px 1px 2px #ffffff, -1px -1px 1px #4d4c4c",
     background: theme.palette.grey.A200,
     height: HEIGHT,
+    [theme.breakpoints.down("sm")]: {
+      height: `calc((100vw - 22px)/${WIDTH/HEIGHT})`,
+    },
   },
   treePictureBox: {
     top: 0,
@@ -84,6 +87,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      height: `calc((100vw - 22px)/${WIDTH/HEIGHT})`,
+    },
   },
   treePicture: {
     objectFit: "fill",
@@ -131,6 +137,9 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     height: HEIGHT,
     pointerEvents: "none",
+    [theme.breakpoints.down("sm")]: {
+      height: `calc((100vw - 22px)/${WIDTH/HEIGHT})`,
+    },
   },
   arrowIconBox: {
     pointerEvents: "auto",
