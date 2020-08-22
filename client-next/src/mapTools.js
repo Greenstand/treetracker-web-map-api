@@ -65,6 +65,11 @@ function getAngleLat(north, south){
  */
 function getInitialBounds (locations, width, height){
   expect(locations).lengthOf.above(0);
+  //convert
+  locations.forEach(location => {
+    location.lat = parseFloat(location.lat);
+    location.lng = parseFloat(location.lng);
+  });
   locations.every(location => {
     expect(location).property("lat").number();
     expect(location).property("lng").number();
