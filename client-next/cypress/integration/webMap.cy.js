@@ -5,7 +5,9 @@ const scale = 1;
 describe("Web Map", () => {
   
   before(() => {
-    cy.viewport("iphone-6");
+    //cy.viewport("iphone-6");
+    //most popular screen solution
+    cy.viewport(1366,768);
   });
 
   it("Web map", () => {
@@ -204,6 +206,7 @@ describe("Web Map", () => {
         expectRuntime(marker).defined();
         marker.triggerClick4Test();
       });
+    cy.pause();
     cy.get("div[title='hide']")
       .click();
     cy.get("div[title='show']")

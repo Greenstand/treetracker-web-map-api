@@ -13,11 +13,11 @@ const useStyles = makeStyles(theme => ({
   loader: {
     userSelect: "none",
     pointerEvents: "none",
-    border: "12px solid #f3f3f3",
-    borderTop: "12px solid #ff9800",
+    border: "10px solid #f3f3f3",
+    borderTop: "10px solid #ff9800",
     borderRadius: "50%",
-    width: 60,
-    height: 60,
+    width: 52,
+    height: 52,
     animation: "$spin 1.5s linear infinite",
     [theme.breakpoints.down("md")]: {
       border: "8px solid #f3f3f3",

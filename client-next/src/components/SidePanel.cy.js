@@ -131,6 +131,63 @@ describe("SidePanel", () => {
     cy.contains("TESTTEST");
 
   });
+  
+
+
+  describe.only("Image cases", () => {
+    [
+      "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2019.11.08.11.12.43_1a507e4a-ade7-47d7-b7f5-e1a425588483_IMG_20191030_173914_4000805348046989577.jpg",
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.26.09.45.44_96a38beb-b5ac-4262-82d1-9135420474c9_IMG_20190620_120738_1011429861.jpg",
+      "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2020.01.17.10.31.51_1705f1ab-1994-43a8-9534-a76a9e2b48db_IMG_20200117_102352_8862780428939765465.jpg",
+      "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2019.12.04.18.58.38_2834d4b8-30f0-406a-af0c-82064cb1f84a_IMG_20191204_112420_2460689874172711670.jpg",
+      "https://treetracker-dev.nyc3.digitaloceanspaces.com/2018.09.10.16.33.09_ec3c3595-f201-4810-95fe-b579776a59ee_IMG_20180910_134410_7543746528105600776.jpg",
+      "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2019.10.19.17.38.39_c3540511-f5be-41f7-8181-19d0e4fadf15_IMG_20191019_111625_6038961263453035792.jpg",
+      "https://treetracker-dev.nyc3.digitaloceanspaces.com/4268.jpg",
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.03.09.43.26_2171ce9b-12db-49af-b434-084b8a92ec20_IMG_20190703_091728_7632360557292915035.jpg",
+      "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2020.06.26.18.38.39_ba1cab33-9880-4be6-b091-18894e5a9ac6_IMG_20200626_182354_-2006074918.jpg",
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.24.10.18.09_d7af94fb-ff64-43cb-b2e7-bd38e383eb1d_IMG_20190724_100849_4516267486741498296.jpg",
+    ].forEach((url, i) => {
+      it(`image case ${i}`, () => {
+        mount(
+          <SidePanel 
+          state={"show"} 
+          tree={{
+            id: 1,
+              first_name: "FFF",
+              last_name: "RRR",
+              image_url: url,
+          }}
+          />
+        );
+        cy.contains("FFF");
+      });
+    });
+
+  });
+
+  describe.only("Avatar cases", () => {
+    [
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/User1111.jpg",
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/user_1047.jpg",
+      "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.24.13.42.55_0d0c2bc4-a6a1-4521-ae05-6c7c45588443_IMG_20190724_134109_6975244402804446311.jpg",
+    ].forEach((url, i) => {
+      it(`avatar case ${i}`, () => {
+        mount(
+          <SidePanel 
+          state={"show"} 
+          tree={{
+            id: 1,
+              first_name: "FFF",
+              last_name: "RRR",
+              user_image_url: url,
+          }}
+          />
+        );
+        cy.contains("FFF");
+      });
+    });
+
+  });
 
 });
 

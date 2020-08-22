@@ -26,12 +26,13 @@ import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
 
 const WIDTH = 396;
+const HEIGHT = 520;
 
 const useStyles = makeStyles(theme => ({
   placeholder:{
     position: 'absolute',
     height: "100vh",
-    width: 396,
+    width: WIDTH,
     backgroundColor: "#d8d7d7",
     zIndex: 1,
     [theme.breakpoints.down("sm")]: {
@@ -68,13 +69,13 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: "1px",
     //textShadow: "1px 1px 2px #ffffff, -1px -1px 1px #4d4c4c",
     background: "#d4d4d4",
-    height: 300,
+    height: HEIGHT,
   },
   treePictureBox: {
     top: 0,
     left: 0,
     position: "absolute",
-    height: 300,
+    height: HEIGHT,
   },
   treePicture: {
     objectFit: "cover",
@@ -112,15 +113,19 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     height: "100%",
+    overflow: "scroll",
   }, 
   arrowBox: {
-    height: "100%",
     justifyContent: "space-between",
     alignItems: "center",
     position: "absolute",
     zIndex: 19,
     top: 0,
-    height: 300,
+    height: HEIGHT,
+    pointerEvents: "none",
+  },
+  arrowIconBox: {
+    pointerEvents: "auto",
   },
   arrow: {
     color: "white",
@@ -229,14 +234,14 @@ function SidePanel(props){
             </div>
           </div>
           <Grid container className={classes.arrowBox} >
-            <Grid item>
+            <Grid item className={classes.arrowIconBox} >
               {hasPrev &&
                 <IconButton title="previous tree" onClick={props.onPrevious} >
                   <ArrowBackIosIcon className={classes.arrow} />
                 </IconButton>
               }
             </Grid>
-            <Grid item>
+            <Grid item className={classes.arrowIconBox}>
               {hasNext &&
                 <IconButton title="next tree" onClick={props.onNext} >
                   <ArrowForwardIosIcon className={classes.arrow} />
@@ -247,7 +252,7 @@ function SidePanel(props){
           <CardContent>
             <Grid container className={classes.titleBox} >
               <Grid item>
-                <Paper elevation={8} className={classes.avatarPaper} >
+                <Paper elevation={5} className={classes.avatarPaper} >
                   {tree.user_image_url &&
                     <Avatar id="planter-img" className={`${classes.avatar}`} src={tree.user_image_url} />
                   }
