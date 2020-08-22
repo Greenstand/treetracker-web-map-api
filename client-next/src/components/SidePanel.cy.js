@@ -4,6 +4,11 @@ import SidePanel from "./SidePanel";
 
 describe("SidePanel", () => {
 
+  before(() => {
+    cy.viewport(1366,768);
+  });
+
+
   it("SidePanel", () => {
     const trees = [{
       first_name: "Dadior",
@@ -148,6 +153,7 @@ describe("SidePanel", () => {
       "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.24.10.18.09_d7af94fb-ff64-43cb-b2e7-bd38e383eb1d_IMG_20190724_100849_4516267486741498296.jpg",
     ].forEach((url, i) => {
       it(`image case ${i}`, () => {
+        cy.viewport(1366,768);
         mount(
           <SidePanel 
           state={"show"} 

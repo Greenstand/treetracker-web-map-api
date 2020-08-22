@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     color: "#bebcbc",
     letterSpacing: "1px",
     //textShadow: "1px 1px 2px #ffffff, -1px -1px 1px #4d4c4c",
-    background: "#d4d4d4",
+    background: theme.palette.grey.A200,
     height: HEIGHT,
   },
   treePictureBox: {
@@ -79,11 +79,16 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     position: "absolute",
     height: HEIGHT,
+    overflow: "hidden",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   treePicture: {
-    objectFit: "cover",
+    objectFit: "fill",
     width: "100%",
-    height: "100%",
+    height: "auto",
   },
   avatarPaper: {
     borderRadius: "50%",
