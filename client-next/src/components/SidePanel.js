@@ -26,6 +26,7 @@ import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
 
 const WIDTH = 396;
+const MAX_WIDTH = 480;
 const HEIGHT = 520;
 
 const useStyles = makeStyles(theme => ({
@@ -33,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     height: "100vh",
     width: WIDTH,
+    maxWidth: MAX_WIDTH,
     backgroundColor: "#d8d7d7",
     zIndex: 1,
     [theme.breakpoints.down("sm")]: {
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     height: "100vh",
     width: WIDTH,
+    maxWidth: MAX_WIDTH,
     backgroundColor: "white",
     zIndex: 1,
     [theme.breakpoints.down("sm")]: {
@@ -262,7 +265,7 @@ function SidePanel(props){
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >
-                <Typography variant="h4" >
+                <Typography variant="h5" >
                   {tree && `${tree.first_name} ${tree.last_name.slice(0, 1)}`}
                 </Typography>
               </Grid>
