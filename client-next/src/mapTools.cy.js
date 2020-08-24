@@ -100,3 +100,78 @@ describe("mapTools", () => {
     mount(<Test/>);
   });
 });
+
+describe("Test getPixelCoordinateByLatLng", () => {
+
+  it.only("", () => {
+    let map;
+    function Test(){
+      React.useEffect(() => {
+        console.log("load map...");
+        const script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
+        script.id = 'googleMaps';
+        document.body.appendChild(script);
+
+        script.onload = () => {
+          console.log("loaded map file");
+          const chicago = new window.google.maps.LatLng(41.85, -87.65);
+          map = new window.google.maps.Map(document.getElementById("map-canvas"), {
+            zoom: 8,
+            center: chicago,
+          });
+          //marker
+          const marker = new window.google.maps.Marker({
+            position: chicago,
+            map,
+          });
+          window.google.maps.event.addListener(map, "idle", function(){
+            //calculate the corner
+            try{
+              const bounds = map.getBounds();
+              const northWest = new window.google.maps.LatLng(
+                map.getBounds().getNorthEast().lat(),
+                map.getBounds().getSouthWest().lng());
+              const eastSouth = new window.google.maps.LatLng(
+                map.getBounds().getSouthWest().lat(),
+                map.getBounds().getNorthEast().lng());
+              let result = mapTools.getPixelCoordinateByLatLng(northWest.lat(),northWest.lng(),map);
+              console.log("Result:", result);
+              //check, the north west corner shoud be the 0,0 corner of the HTML div
+              expectRuntime(result).match({
+                top: 0,
+                left: 0,
+              });
+              //a point that is located at the point on the above and left of the north west corner
+              result = mapTools.getPixelCoordinateByLatLng(northWest.lat()+0.001,northWest.lng()-0.001,map);
+              console.log("Result:", result);
+              //check, the north west corner shoud be the 0,0 corner of the HTML div
+              expectRuntime(result.top).below(0);
+              expectRuntime(result.left).below(0);
+
+              //a point that is located at the point on the below and right of the east south corner
+              result = mapTools.getPixelCoordinateByLatLng(eastSouth.lat()-0.001,eastSouth.lng()+0.001,map);
+              console.log("Result:", result);
+              //check, the north west corner shoud be the 0,0 corner of the HTML div
+              const div = document.getElementById("map-canvas");
+              console.log("dive:", div.clientHeight, div.clientWidth);
+              expectRuntime(result.top).above(div.clientHeight);
+              expectRuntime(result.left).above(div.clientWidth);
+            }catch(e){
+              console.log(e);
+            }
+          });
+        }
+      }, []);
+      return (
+        <div id="map-canvas" style={{
+          width: "100%",
+          height: "100vh",
+        }}></div>
+      )
+    }
+
+    mount(<Test/>);
+  });
+});
+

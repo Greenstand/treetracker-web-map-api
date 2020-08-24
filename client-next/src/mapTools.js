@@ -203,7 +203,7 @@ function getPixelCoordinateByLatLng(lat, lng, map){
     top: (targetPixel.y - northWestPixel.y)/pixelSize,
     left: (targetPixel.x - northWestPixel.x)/pixelSize,
   }
-  expect(result).property("top").above(0);
+  expect(result).property("top").number();
   return result;
 }
 
