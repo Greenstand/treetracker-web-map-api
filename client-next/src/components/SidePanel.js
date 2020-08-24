@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   sidePaper: {
     position: 'absolute',
-    height: "100vh",
+    height: "100%",
     width: WIDTH,
     maxWidth: MAX_WIDTH,
     backgroundColor: "white",

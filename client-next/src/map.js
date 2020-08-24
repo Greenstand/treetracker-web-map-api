@@ -401,7 +401,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         //
         if (!checkSession()) { //only if the user is new
           // add the infowindow to a random starting marker to be visible by default when the user first loads the screen
-          infowindow.open(map, markers[Math.floor(Math.random() * markers.length)]);
+          // Close it temporarily
+          //infowindow.open(map, markers[Math.floor(Math.random() * markers.length)]);
         }
 
         //loader.classList.remove("active");
