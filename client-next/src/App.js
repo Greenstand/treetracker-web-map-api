@@ -257,12 +257,22 @@ function App() {
     if(marker){
       expect(marker).defined();
       const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
-      expect(top).above(0);
-      expect(left).above(0);
+      expect(top).number();
+      expect(left).number();
       console.log("the point at:", top, left);
       expect(SidePanel).property("WIDTH").number();
-      expect(mapRef.current.clientWidth).above(0);
-      if(left <  SidePanel.WIDTH && mapRef.current.clientWidth > MOBILE_WIDTH){
+      const {clientWidth, clientHeight} = mapRef.current;
+      expect(clientWidth).above(0);
+      expect(clientHeight).above(0);
+      const isOutOfViewport = left < 0 ||
+        top < 0 ||
+        left > clientWidth ||
+        top > clientHeight;
+      const isCoveredBySidePanel = left > 0 &&
+        left < SidePanel.WIDTH &&
+        top > 0 &&
+        top < clientHeight;
+      if((isOutOfViewport || isCoveredBySidePanel) && clientWidth > MOBILE_WIDTH){
         //move to right center
         const print = JSON.stringify(map);
         console.log("print:", print);
@@ -298,7 +308,13 @@ function App() {
   function handlePrev(){
     console.log("prev");
     const {map} = mapRef.current;
-    map.goPrevPoint();
+    try{
+      map.goPrevPoint();
+    }catch(e){
+      //failed, it's possible, when user move the map quickly, and the 
+      //side panel arrow button status is stale
+      console.warn("go prev failed", e);
+    }
   }
 
   function handleNext(){
@@ -307,7 +323,13 @@ function App() {
     expect(map).defined()
       .property("goNextPoint")
       .a(expect.any(Function));
-    map.goNextPoint();
+    try{
+      map.goNextPoint();
+    }catch(e){
+      //failed, it's possible, when user move the map quickly, and the 
+      //side panel arrow button status is stale
+      console.warn("go next failed", e);
+    }
   }
 
   function handleSidePanelClose(){
