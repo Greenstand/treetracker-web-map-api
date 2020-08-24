@@ -271,7 +271,7 @@ function SidePanel(props){
               <Grid item>
                 <Paper elevation={5} className={classes.avatarPaper} >
                   {tree.user_image_url &&
-                    <Avatar id="planter-img" className={`${classes.avatar}`} src={tree.user_image_url} />
+                    <Avatar id="planter-img" className={`${classes.avatar}`} src={tree.user_image_url.startsWith("http")?tree.user_image_url:`http://${tree.user_image_url}`} />
                   }
                   {!tree.user_image_url &&
                     <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
