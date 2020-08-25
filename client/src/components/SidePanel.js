@@ -2,7 +2,6 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -17,8 +16,6 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import AccessTime from '@material-ui/icons/AccessTime';
 import Nature from '@material-ui/icons/Nature';
-import Room from '@material-ui/icons/Room';
-import moment from "moment";
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -314,7 +311,7 @@ function SidePanel(props){
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
-                  {tree && moment(tree.time_created).format("MM/DD/YYYY hh:mm A")}
+                  {tree && new Date(tree.time_created).toLocaleString("en-US")}
                 </Typography>
               </Grid>
             </Grid>

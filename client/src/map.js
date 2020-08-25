@@ -3,7 +3,7 @@ import MapModel from "./MapModel";
 import expect from "expect-runtime";
 import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
-import {theme,PRIMARY} from "./App";
+import {theme} from "./App";
 const CancelToken = axios.CancelToken;
 let source;
 
@@ -60,9 +60,15 @@ var treetrackerApiUrl = "/api/web/";
 
 let isLoadingMarkers = false;
 
-if (typeof configTreetrackerApi !== "undefined") {
-  treetrackerApiUrl = configTreetrackerApi;
+//if (typeof configTreetrackerApi !== "undefined") {
+//  treetrackerApiUrl = configTreetrackerApi;
+//}
+if(process.env.REACT_APP_API){
+  treetrackerApiUrl = process.env.REACT_APP_API;
+}else{
+  console.warn("Did not set REACT_APP_API");
 }
+console.log("api url:", treetrackerApiUrl);
 
 /**
  * Writes to the document's cookie to expire (or not) after a set time from the date of the user's last visit to the webpage.
