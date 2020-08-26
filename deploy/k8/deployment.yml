@@ -1,38 +1,38 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "treetracker-web-map-api-test-release-deployment"
+  name: "treetracker-webmap-api-test-release-deployment"
   namespace: "default"
   labels:
-    app: "treetracker-web-map-api"
+    app: "treetracker-webmap-api"
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: "treetracker-web-map-api"
+      app: "treetracker-webmap-api"
   template:
     metadata:
       labels:
-        app: "treetracker-web-map-api"
+        app: "treetracker-webmap-api"
     spec:
       containers:
-      - name: "treetracker-web-map-api"
-        image: "ximena9210/treetracker-web-map-api:test-release"
+      - name: "treetracker-webmap-api"
+        image: "ximena9210/treetracker-webmap-api:test-release"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: treetracker-web-map-api
-  name: treetracker-web-map-api-test-release-service
+    app: treetracker-webmap-api
+  name: treetracker-webmap-api-test-release-service
   namespace: default
 spec:
   ports:
-  - name: treetracker-web-map-api
+  - name: treetracker-webmap-api
     port: 80
     protocol: TCP
     targetPort: 3000
   selector:
-    app: treetracker-web-map-api
+    app: treetracker-webmap-api
   type: NodePort

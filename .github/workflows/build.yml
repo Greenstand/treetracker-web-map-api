@@ -1,4 +1,4 @@
-name: Docker Image API CI-CD.
+name: Build treetracker-web-map.
 
 on:
   release:
@@ -22,15 +22,15 @@ jobs:
       - name: "Get the version"
         id: vars
         run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
-      - name: "Build the tagged Docker image Proxy"
-        run: "docker build . -f ./Dockerfile.ReverseProxy -t treetracker-map-reverse-proxy:latest"
+      - name: "Build the tagged Docker Nginx"
+        run: "docker build . -f ./Dockerfile.Nginx -t treetracker-webmap-nginx:latest"
       - name: "Build the tagged Docker image API"
-        run: "docker build . -f ./Dockerfile -t treetracker-map-api"
+        run: "docker build . -f ./Dockerfile -t treetracker-webmap-api"
       - name: "Tag docker-image API"  
-        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-web-map-api:${{steps.vars.outputs.tag}}"
+        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
       - name: "Push the tagged Docker image API"
-        run: "docker push ximena9210/treetracker-web-map-api:${{steps.vars.outputs.tag}}"
-      - name: Install doctl for k8
+        run: "docker push ximena9210/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
+      - name: Install doctl for kubernetes
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
