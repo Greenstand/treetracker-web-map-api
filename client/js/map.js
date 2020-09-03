@@ -195,17 +195,20 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         });
 
         //add zoomTarget to cluster marker
-        marker.zoomTarget = data.zoomTargets?.reduce((a,c) => {
-          if(a){
-            return a;
-          }else{
-            if(c.region_id === item.id){
-              return c;
-            }else{
+        marker.zoomTarget = data.zoomTargets?
+          data.zoomTargets.reduce((a,c) => {
+            if(a){
               return a;
+            }else{
+              if(c.region_id === item.id){
+                return c;
+              }else{
+                return a;
+              }
             }
-          }
-        }, undefined);
+          }, undefined)
+        :
+          undefined;
 
         google.maps.event.addListener(marker, "click", function() {
           if(marker.zoomTarget){
