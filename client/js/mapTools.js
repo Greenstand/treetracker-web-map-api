@@ -65,9 +65,14 @@ function getAngleLat(north, south){
  */
 function getInitialBounds (locations, width, height){
   chai.expect(locations).a("array").lengthOf.gte(1);
+  //convert
+  locations.forEach(location => {
+    location.lat = parseFloat(location.lat);
+    location.lng = parseFloat(location.lng);
+  });
   locations.every(location => {
-    chai.expect(location).property("lat").a("number");
-    chai.expect(location).property("lng").a("number");
+    chai.expect(location).property("lat").a("number").not.NaN;
+    chai.expect(location).property("lng").a("number").not.NaN;
   });
   chai.expect(width).gt(0);
   chai.expect(height).gt(0);
