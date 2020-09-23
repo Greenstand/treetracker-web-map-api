@@ -13,9 +13,7 @@ const pool = new Pool({
 
   try {
 
-
-    // sql = `update trees set certificate_id = 154 where planter_id IN (1953,1955,1958,1962,1947,1949,1956,1960,1983) and certificate_id is null`;
-    sql = `UPDATE trees SET certificate_id = 154 FROM planter WHERE trees.planter_id = planter.id and planter.organization like '%OTP%' and trees.certificate_id isnull`;
+    sql = `update trees set certificate_id = 154 where planter_id IN (1953,1955,1958,1962,1947,1949,1956,1960,1983) and certificate_id is null`;
 
     query = {
       text: sql,
