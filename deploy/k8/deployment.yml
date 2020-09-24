@@ -20,10 +20,10 @@ spec:
           image: "ximena9210/treetracker-webmap-api:test-release"
           volumeMounts:
             - name: "config-volume"
-              mountPath: "/usr/app/server/config/config.js"
+              mountPath: "/usr/app/server/client/config.js"
               subPath: "config.js"
             - name: "dbsecret"
-              mountPath: "/usr/app/client/js/config.js"
+              mountPath: "/usr/app/server/config.js"
               subPath: "config.js"
       volumes:
         - name: "config-volume"
