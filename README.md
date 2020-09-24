@@ -1,6 +1,6 @@
 # Treetracker Web
 
-## Current Milestones and Issue Topics
+## Current Milestones and Issue Topics.
 
 Developers please see current milestones here:  
 https://github.com/Greenstand/treetracker-web-map/milestones
