@@ -18,17 +18,17 @@ spec:
       containers:
         - name: "treetracker-webmap-api"
           image: "ximena9210/treetracker-webmap-api:test-release"
-  #        volumeMounts:
-  #          - name: "config-volume"
-  #            mountPath: "/usr/app/client/js/config.js"
-  #            subPath: "config.js"
-  #          - name: "dbsecret"
-  #            mountPath: "/usr/app/server/config/config.js"
-  #            subPath: "config.js"
-  #    volumes:
-  #      - name: "config-volume"
-  #        configMap:
-  #          name: "configmap-client"
-  #      - name: "dbsecret"
-  #        secret:
-  #          secretName: "dbsecret"
+          volumeMounts:
+            - name: "configdb-volume"
+              mountPath: "/usr/app/server/config/config.js"
+              subPath: "config.js"
+            - name: "configclient-volume"
+              mountPath: "/usr/app/client/js/config.js"
+              subPath: "config.js"
+      volumes:
+        - name: "configdb-volume"
+          configMap:
+            name: "configmap-db"
+        - name: "configclient-volume"
+          configMap:
+            name: "configmap-client"
