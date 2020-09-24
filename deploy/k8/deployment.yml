@@ -23,7 +23,7 @@ spec:
               mountPath: "/usr/app/server/config/config.js"
               subPath: "config.js"
             - name: "dbsecret"
-              mountPath: "/usr/src/client/js/client.js"
+              mountPath: "/usr/app/client/js/client.js"
               subPath: "config.js"
       volumes:
         - name: "config-volume"
