@@ -18,21 +18,17 @@ spec:
       containers:
       - name: "treetracker-webmap-api"
         image: "ximena9210/treetracker-webmap-api:test-release"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: treetracker-webmap-api
-  name: treetracker-webmap-api-test-release-service
-  namespace: default
-spec:
-  ports:
-  - name: treetracker-webmap-api
-    port: 80
-    protocol: TCP
-    targetPort: 3000
-  selector:
-    app: treetracker-webmap-api
-  type: NodePort
+        volumeMounts:
+        - name: config-volume
+            mountPath: /usr/app/server/config/config.js
+            subPath: config.js
+        - name: secretdb
+           mountPath: /usr/src/client/js/client.js
+           subPath: config.js
+      volumes:
+     - name: config-volume
+        configMap:
+          name: client-config
+      - name: secretdb
+        secret:
+          secretName: secretdb

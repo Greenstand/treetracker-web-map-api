@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: treetracker-webmap-api
+  name: treetracker-webmap-api-test-release-service
+  namespace: default
+spec:
+  ports:
+  - name: treetracker-webmap-api
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: treetracker-webmap-api
+  type: NodePort
