@@ -28,7 +28,7 @@ spec:
       volumes:
         - name: "config-volume"
           configMap:
-            name: "client-config"
+            name: "configmap-client"
         - name: "dbsecret"
           secret:
             secretName: "dbsecret"
