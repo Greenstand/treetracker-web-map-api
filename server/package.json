@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jest --watchAll --runInBand",
-    "dev": "nodemon ."
+    "dev": "NODE_PORT=3001 nodemon ."
   },
   "dependencies": {
     "@sentry/node": "^5.4.3",

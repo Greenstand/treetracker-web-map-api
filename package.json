@@ -1,0 +1,15 @@
+{
+  "name": "treetracker-web",
+  "version": "1.0.0",
+  "description" : "treetracker web map",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Greenstand/treetracker-web-map.git"
+  },
+  "author": "",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/Greenstand/treetracker-web-map/issues"
+  },
+  "homepage": "https://github.com/Greenstand/treetracker-web-map#readme"
+}
