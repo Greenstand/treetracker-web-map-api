@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save treetracker-experimental-cluster
+        run: doctl kubernetes cluster kubeconfig save ${{secrets.CLUSTER_NAME}}
       - name: Creating service in k8
         run: kubectl apply -f ./deploy/k8/service.yml
       - name: Creating deployment in k8
