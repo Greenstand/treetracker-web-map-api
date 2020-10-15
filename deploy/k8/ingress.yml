@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: treetracker-webmap-api-test-release-ingress
-  namespace: default
+  namespace: development
 spec:
   rules:
   - http:

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: treetracker-webmap-api
   name: treetracker-webmap-api-test-release-service
-  namespace: default
+  namespace: development
 spec:
   ports:
   - name: treetracker-webmap-api
