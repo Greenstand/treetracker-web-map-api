@@ -27,8 +27,8 @@ spec:
               subPath: "config.js"
       volumes:
         - name: "configdb-volume"
-          configMap:
-            name: "configmap-db"
+          secret:
+            secretName: "dbconnection"
         - name: "configclient-volume"
           configMap:
             name: "configmap-client"
