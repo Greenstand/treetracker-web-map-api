@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "treetracker-webmap-api"
-          image: "ximena9210/treetracker-webmap-api:dev"
+          image: "ximena9210/treetracker-webmap-api:test-release"
           volumeMounts:
             - name: "configdb-volume"
               mountPath: "/usr/app/server/config/config.js"
