@@ -29,7 +29,8 @@ if(process.env.NODE_ENV == 'dev'){
 }
 
 //app.get(/(\/api\/web)?\/trees/, function (req, res) {
-app.get("/trees", function (req, res) {
+app.get("/trees", async function (req, res) {
+    try{
   //console.log(req);
 
   let token = req.query['token'];
@@ -38,6 +39,26 @@ app.get("/trees", function (req, res) {
   let treeid = req.query['treeid'];
   let userid = req.query['userid'];
   let wallet = req.query['wallet'];
+  let mapName = req.query['map_name'];
+  console.log("mapName:", mapName);
+  let treeIds = [];
+  if(mapName){
+      console.log("try to get the trees in organization");
+      const sql = 
+`select id from trees where planter_id in (
+  select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
+    (select id from entity where map_name = '${mapName}')
+  ))
+)`
+      query = {
+        text: sql,
+        values: []
+      };
+      const r = await pool.query(query);
+      console.log("trees:", r.rows.length);
+      r.rows.forEach(e => treeIds.push(e.id) );
+  }
+  console.log("treeIds:", treeIds.join(","));
 
   let select = '';
   let join = '';
@@ -59,6 +80,9 @@ app.get("/trees", function (req, res) {
     subset = true;
   } else if(treeid) {
     filter = 'AND trees.id = ' + treeid + ' '
+//    if(treeIds && treeIds.length > 0){
+//      filter += 'AND trees.id in (' + treeIds.join(',') + ') '
+//    }
     subset = true;
   } else if(userid) {
     filter = 'AND trees.planter_id = ' + userid + ' '
@@ -167,6 +191,11 @@ app.get("/trees", function (req, res) {
       count(id)
       FROM active_tree_region tree_region
       WHERE zoom_level = $1
+      ${treeIds && treeIds.length > 0 ?
+        "and tree_region.tree_id in(" + treeIds.join(",") + ")"
+        :
+        ""
+      }
       ${boundingBoxQuery}
       GROUP BY region_id, centroid, type_id`,
       values: [req.query['zoom_level']]
@@ -248,6 +277,10 @@ app.get("/trees", function (req, res) {
       throw(error);
     });
 
+
+    }catch(e){
+      console.error(e);
+    }
 });
 
 app.use(Sentry.Handlers.errorHandler());
