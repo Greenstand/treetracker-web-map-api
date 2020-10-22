@@ -33,7 +33,6 @@ app.get("/trees", async function (req, res) {
   //console.log(req);
 
   let token = req.query['token'];
-  let organization = req.query['organization'];
   let flavor = req.query['flavor'];
   let treeid = req.query['treeid'];
   let userid = req.query['userid'];
@@ -74,12 +73,6 @@ app.get("/trees", async function (req, res) {
   let subset = false;
   if (token) {
     join = "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + token + "'";
-    subset = true;
-  } else if(organization) {
-    join = `JOIN certificates ON trees.certificate_id = certificates.id
-             JOIN donors ON certificates.donor_id = donors.id
-             JOIN organizations ON donors.organization_id = organizations.id`;
-    joinCriteria = "AND organizations.id = " + organization;
     subset = true;
   } else if (flavor) {
     join = "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
