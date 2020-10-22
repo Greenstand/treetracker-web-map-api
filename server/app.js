@@ -5,7 +5,6 @@ var pg = require('pg');
 const { Pool, Client } = require('pg');
 var path = require('path');
 var app = express();
-var port = process.env.NODE_PORT || 3000;
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 
@@ -58,7 +57,6 @@ app.get("/trees", async function (req, res) {
       console.log("trees:", r.rows.length);
       r.rows.forEach(e => treeIds.push(e.id) );
   }
-  console.log("treeIds:", treeIds.join(","));
 
   let select = '';
   let join = '';
@@ -124,7 +122,13 @@ app.get("/trees", async function (req, res) {
     ON note_trees.tree_id = trees.id
     LEFT JOIN notes
     ON notes.id = note_trees.note_id
-    WHERE active = true ` + boundingBoxQuery + filter + joinCriteria;
+    WHERE active = true ` + boundingBoxQuery + filter + joinCriteria + 
+    `${treeIds && treeIds.length > 0 ?
+      " and trees.id in(" + treeIds.join(",") + ") "
+      :
+      " "
+    }`
+    ;
     console.log(sql);
 
     query = {
@@ -164,7 +168,7 @@ app.get("/trees", async function (req, res) {
     };
     */
 
-  } else if ([12, 13, 14, 15].includes(zoomLevel)) {
+  } else if ([12, 13, 14, 15].includes(zoomLevel) && treeIds.length === 0) {
 
     console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
     sql = `SELECT 'cluster' as type,
@@ -204,10 +208,10 @@ app.get("/trees", async function (req, res) {
   }
 
   console.log(query);
-  pool.query(query)
+  await pool.query(query)
     .then(function (data) {
       console.log('query ok');
-      console.log(data.rows)
+      console.log(data.rows.slice(0,2))
 
       // if we are in zoom level 9 or less
       // get the biggest cluster within each region
@@ -241,6 +245,11 @@ app.get("/trees", async function (req, res) {
                   SELECT region_id, zoom_level, count(active_tree_region.id) AS total, centroid
                   FROM active_tree_region
                   WHERE zoom_level = $2
+                  ${treeIds && treeIds.length > 0 ?
+                    "and active_tree_region.tree_id in(" + treeIds.join(",") + ")"
+                    :
+                    ""
+                  }
                   GROUP BY region_id, zoom_level, centroid
                 ) contained
                 ON ST_CONTAINS(region.geom, contained.centroid)
@@ -300,6 +309,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client", "index.html"));
 });
 
-app.listen(port, () => {
-  console.log('listening on port ' + port);
-});
+//app.listen(port, () => {
+//  console.log('listening on port ' + port);
+//});
+module.exports = app;
