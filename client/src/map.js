@@ -30,7 +30,7 @@ var mc = undefined; //Marker Clusterer
 var markers = []; //All the markers
 var mapModel = undefined;
 var token;
-var organization;
+var mapName;
 var treeid;
 var userid;
 var donor;
@@ -131,8 +131,8 @@ function getTreeQueryParametersFromRequestedFilters(){
   var queryUrl = "";
   if (token != null) {
     queryUrl = queryUrl + "&token=" + token;
-  } else if (organization != null) {
-    queryUrl = queryUrl + "&organization=" + organization;
+  } else if (mapName != null) {
+    queryUrl = queryUrl + "&map_name=" + mapName;
   } else if (treeid != null) {
     queryUrl = queryUrl + "&treeid=" + treeid;
   } else if (userid != null) {
@@ -170,7 +170,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     currentZoom >= 4 &&
     !(
       (token != null ||
-        organization != null ||
+        mapName != null ||
         treeid != null ||
         userid !== null) &&
       firstRender == true
@@ -418,14 +418,14 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         getApp().loaded();
         firstRender = false;
       }
-      console.log("init markert finished, loaded:", markers.length);
+      console.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
       //debugger;
       mapModel.checkArrow();
     }).catch(function(thrown){
       if(axios.isCancel(thrown)){
         //change to handle cancel
-        console.log("request canceld because of:", thrown.message);
+        console.log("request cancelled because of:", thrown.message);
       }else{
         console.log("request failed", thrown);
       }
@@ -801,7 +801,7 @@ function fitMapToBoundsForSet(data){
 var initialize = function() {
   console.log(window.location.href);
   token = getQueryStringValue("token") || null;
-  organization = getQueryStringValue("organization") || null;
+  mapName = getQueryStringValue("map_name") || null;
   treeid = getQueryStringValue("treeid") || null;
   userid = getQueryStringValue("userid") || null;
   flavor = getQueryStringValue("flavor") || null;
