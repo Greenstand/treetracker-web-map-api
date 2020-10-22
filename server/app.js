@@ -44,11 +44,20 @@ app.get("/trees", async function (req, res) {
   if(mapName){
       console.log("try to get the trees in organization");
       const sql = 
-`select id from trees where planter_id in (
-  select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
-    (select id from entity where map_name = '${mapName}')
-  ))
-)`
+        `
+        select id from trees where 
+        planter_id in (
+          select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
+            (select id from entity where map_name = '${mapName}')
+          ))
+        )
+        or 
+        trees.planting_organization_id  in (
+        select entity_id from getEntityRelationshipChildren(
+            (select id from entity where map_name = '${mapName}')
+        )
+        )
+        `;
       query = {
         text: sql,
         values: []
