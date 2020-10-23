@@ -177,7 +177,7 @@ app.get("/trees", async function (req, res) {
     };
     */
 
-  } else if ([12, 13, 14, 15].includes(zoomLevel) && treeIds.length === 0) {
+  } else if ([12, 13, 14, 15].includes(zoomLevel) && !mapName) {
 
     console.log('Using cluster cache from zoom level 14  for zoom level ' + zoomLevel);
     sql = `SELECT 'cluster' as type,
