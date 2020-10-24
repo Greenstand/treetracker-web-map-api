@@ -72,6 +72,7 @@ app.get("/trees", async function (req, res) {
   let joinCriteria = '';
   let filter = '';
   let subset = false;
+  let treeCount = 0;
   if (token) {
     join = "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + token + "'";
     subset = true;
@@ -92,6 +93,14 @@ app.get("/trees", async function (req, res) {
 //    }
     subset = true;
   } else if(userid) {
+    //count the trees first
+    const result = await pool.query({
+      text: `select count(*) as count from trees where planter_id = ${userid}`,
+      values:[]
+    });
+    treeCount = result.rows[0].count;
+    parseInt(treeCount);
+
     filter = 'AND trees.planter_id = ' + userid + ' '
     subset = true;
   } else if(wallet) {
@@ -144,19 +153,44 @@ app.get("/trees", async function (req, res) {
       text: sql
     };
   } else if (subset) {
-
-    console.log('Calculating clusters directly');
-    sql = `SELECT 'cluster'                                           AS type,
-       St_asgeojson(St_centroid(clustered_locations))                 centroid,
-       St_numgeometries(clustered_locations)                          count
-      FROM   (
-       SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-       FROM   trees ` + join + `
-       WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
-    query = {
-      text: sql,
-      values: [clusterRadius]
-    };
+    if(userid && treeCount > 2000){
+      console.log("Too many tress %d for userid, use active tree region", treeCount);
+      query = {
+        text: `
+          select
+            'cluster' as type,
+            region_id id,
+            ST_ASGeoJson(centroid) centroid,
+            type_id as region_type,
+            count(tree_region.id)
+          from
+            active_tree_region tree_region
+          join trees on
+            tree_region.tree_id = trees.id
+          where
+            zoom_level = $1
+            and planter_id = ${userid}
+          group by
+            region_id,
+            centroid,
+            type_id
+            `,
+        values: [req.query['zoom_level']]
+      };
+    }else{
+      console.log('Calculating clusters directly');
+      sql = `SELECT 'cluster'                                           AS type,
+         St_asgeojson(St_centroid(clustered_locations))                 centroid,
+         St_numgeometries(clustered_locations)                          count
+        FROM   (
+         SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
+         FROM   trees ` + join + `
+         WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
+      query = {
+        text: sql,
+        values: [clusterRadius]
+      };
+    }
 
 
     /*
