@@ -1,10 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: treetracker-webmap-api-ambassador-svc
+  annotations:
   labels:
     app: treetracker-webmap-api
-  name: treetracker-webmap-api-test-release-service
-  namespace: development
+    name: treetracker-webmap-api-ambassador-svc
+  namespace: webmap
 spec:
   ports:
   - name: treetracker-webmap-api
@@ -13,4 +15,3 @@ spec:
     targetPort: 3000
   selector:
     app: treetracker-webmap-api
-  type: NodePort

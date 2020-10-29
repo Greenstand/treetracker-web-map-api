@@ -2,7 +2,7 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   name: "treetracker-webmap-api-dev-deployment"
-  namespace: "development"
+  namespace: "webmap"
   labels:
     app: "treetracker-webmap-api"
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "treetracker-webmap-api"
-          image: "ximena9210/treetracker-webmap-api:test-release"
+          image: "greenstand/treetracker-webmap-api:master"
           volumeMounts:
             - name: "configdb-volume"
               mountPath: "/usr/app/server/config/config.js"
