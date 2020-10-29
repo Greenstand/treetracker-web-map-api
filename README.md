@@ -1,6 +1,6 @@
 # Treetracker Web
 
-## Current Milestones and Issue Topics
+## Current Milestones and Issue Topics.
 
 Developers please see current milestones here:  
 https://github.com/Greenstand/treetracker-web-map/milestones
@@ -46,26 +46,6 @@ To install on linux, you can run `sudo apt-get install -y docker-ce` but there i
 
 ### Install, build docker containers and go
 
-### Set up NodeJS
-Because of the application architecture, it is absolutely necessary to have NodeJS for package management. Here are the following methods of installation for the most popular operating systems. 
-
-#### Windows
-
-Download it from the official website, [here](https://nodejs.org/en/#download)
-
-#### MacOS
-
-To install NodeJS on MacOS, run this command:
-- brew install node
-#### Linux - Ubuntu
-
-To install NodeJS on Ubuntu, run the following commands:
-
-- sudo apt-get update
-- sudo apt-get install nodejs
-- sudo apt-get install npm
-- nodejs -v
-
 Clone this repository
 
 ```
@@ -73,33 +53,26 @@ git clone git@github.com:Greenstand/treetracker-web-map.git
 cd treetracker-web-map
 ```
 
-Run the setup script.  This script installs node modules, builds docker containers, and starts them
+Place the server's config.js file in the folder server/config/.  You can get this file by asking another contributor for it on Slack.
+
+Place the client's config.js file in the folder client/js/.  You can get this file by asking another contributor for it on Slack.
+
+### To start the dev environment go to the root of the project and execute the following:
+
 ```
-./dev/setup.sh
+docker build -f Dockerfile.Nginx  -t treetracker-map-reverse-proxy:latest .
+docker build -t treetracker-map-api .
+docker-compose up -d
 ```
-
-Install the server's config.js file in the folder server/config/.  You can get this file by asking another contributor for it on Slack.
-
-Install the client's config.js file in the folder client/js/.  You can get this file by asking another contributor for it on Slack.
-
 
 You can now view the treetracker web map at http://localhost:8080
-Note: For older OS (eg. win7, win8) Docker toolbox should be used and the app can be viewed on http://192.168.99.100:8080
- 
 
-To stop the dev environment use
+### To stop the dev environment use:
 
 ```
-./dev/down.sh
+docker stop treetracker-web-map_reverse-proxy_1 && docker rm treetracker-web-map_reverse-proxy_1
+docker stop treetracker-map-api && docker rm treetracker-map-ap
 ```
-
-To start the dev environment back up use
-
-```
-./dev/up.sh
-```
-
-Now to view the map. Goto client folder than to js folder, next make a new file and name it config.js and copy the content in config.js.example and paste it in config.js .(If required make the necessary adjustment to address (eg. http://192.168.99.100:8080) else you are ready to view the map)
 
 Just edit as you normally would to view changes in your development environment.
 
@@ -124,8 +97,7 @@ NODE_ENV=dev supervisor server.js
 ```
 9. Open client/js/config.js from the project root.  It should contain only the following 2 lines
 ```
-var configTreetrackerApi = 'http://localhost:3000/';
-var sentryDSN = null;
+var configTreetrackerApi = 'http://localhost:8080/api/web/;
 ```
 9. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
 

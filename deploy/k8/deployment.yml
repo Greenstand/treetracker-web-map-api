@@ -1,0 +1,34 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "treetracker-webmap-api-dev-deployment"
+  namespace: "webmap"
+  labels:
+    app: "treetracker-webmap-api"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "treetracker-webmap-api"
+  template:
+    metadata:
+      labels:
+        app: "treetracker-webmap-api"
+    spec:
+      containers:
+        - name: "treetracker-webmap-api"
+          image: "greenstand/treetracker-webmap-api:master"
+          volumeMounts:
+            - name: "configdb-volume"
+              mountPath: "/usr/app/server/config/config.js"
+              subPath: "config.js"
+            - name: "configclient-volume"
+              mountPath: "/usr/app/client/js/config.js"
+              subPath: "config.js"
+      volumes:
+        - name: "configdb-volume"
+          secret:
+            secretName: "dbconnection"
+        - name: "configclient-volume"
+          configMap:
+            name: "configmap-client"
