@@ -22,23 +22,23 @@ jobs:
       - name: "Get the version"
         id: vars
         run: "echo ::set-output name=tag::$(echo ${GITHUB_REF:11})"
-      - name: "Build the tagged Docker Nginx"
-        run: "docker build . -f ./Dockerfile.Nginx -t treetracker-webmap-nginx:latest"
+  #    - name: "Build the tagged Docker Nginx"
+  #      run: "docker build . -f ./Dockerfile.Nginx -t treetracker-webmap-nginx:latest"
       - name: "Build the tagged Docker image API"
         run: "docker build . -f ./Dockerfile -t treetracker-webmap-api"
       - name: "Tag docker-image API"  
-        run: "docker build . -f ./Dockerfile  -t ximena9210/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
+        run: "docker build . -f ./Dockerfile  -t greenstand/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
       - name: "Push the tagged Docker image API"
-        run: "docker push ximena9210/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
+        run: "docker push greenstand/treetracker-webmap-api:${{steps.vars.outputs.tag}}"
       - name: Install doctl for kubernetes
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save ${{secrets.CLUSTER_NAME}}
-      - name: Creating service in k8
-        run: kubectl apply -f ./deploy/k8/service.yml
-      - name: Creating deployment in k8
-        run: kubectl apply -f ./deploy/k8/deployment.yml
-      - name: Creating ingress in k8
-        run: kubectl apply -f ./deploy/k8/ingress.yml
+ #     - name: Creating service in k8
+ #       run: kubectl apply -f ./deploy/k8/service.yml
+ #     - name: Creating deployment in k8
+ #       run: kubectl apply -f ./deploy/k8/deployment.yml
+ #     - name: Creating ingress in k8
+ #       run: kubectl apply -f ./deploy/k8/ingress.yml
