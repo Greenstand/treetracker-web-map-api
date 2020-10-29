@@ -35,7 +35,7 @@ describe("nearest", () => {
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
     expect(query).toHaveBeenCalledWith({
-      text: expect.stringMatching(/select.*trees.*/is),
+      text: expect.stringMatching(/select.*trees.*active.*=.*true.*/is),
       values: expect.anything(),
     });
     expect(response.body).toMatchObject({
