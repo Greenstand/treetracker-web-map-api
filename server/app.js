@@ -41,9 +41,9 @@ app.get("/trees", async function (req, res) {
   console.log("mapName:", mapName);
   let treeIds = [];
   if(mapName){
-      console.log("try to get the trees in organization");
-      const sql = 
-        `
+    console.log("try to get the trees in organization");
+    const sql = 
+      `
         select id from trees where 
         planter_id in (
           select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
@@ -57,13 +57,20 @@ app.get("/trees", async function (req, res) {
         )
         )
         `;
-      query = {
-        text: sql,
-        values: []
-      };
-      const r = await pool.query(query);
-      console.log("trees:", r.rows.length);
-      r.rows.forEach(e => treeIds.push(e.id) );
+    query = {
+      text: sql,
+      values: []
+    };
+    const r = await pool.query(query);
+    console.log("trees:", r.rows.length);
+    r.rows.forEach(e => treeIds.push(e.id) );
+    
+    /*
+     * If no trees in this org, then build a case that filter out all trees!
+     */
+    if(treeIds.length === 0){
+      treeIds = [-1]; //this is impossible to match a tree which id is -1
+    }
   }
 
   let select = '';
@@ -273,6 +280,11 @@ app.get("/trees", async function (req, res) {
                   SELECT region_id, zoom_level
                   FROM active_tree_region
                   WHERE zoom_level = $1
+                  ${treeIds && treeIds.length > 0 ?
+                    "and active_tree_region.tree_id in(" + treeIds.join(",") + ")"
+                    :
+                    ""
+                  }
                   GROUP BY region_id, zoom_level
                  ) populated_region
                 JOIN region
@@ -294,7 +306,7 @@ app.get("/trees", async function (req, res) {
           values: [zoomLevel, zoomLevel + 2]
         }
         console.log(zoomTargetsQuery);
-        pool.query(zoomTargetsQuery)
+        return pool.query(zoomTargetsQuery)
           .then(function (zoomTargetsData) {
             console.log('got zoom targets data');
             res.status(200).json({
