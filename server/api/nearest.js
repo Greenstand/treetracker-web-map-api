@@ -72,6 +72,8 @@ router.get("/", async function (req, res, next) {
     ST_ASGeoJson(estimated_geometric_location)
   FROM
     trees
+  WHERE
+    active = true
   ORDER BY
     estimated_geometric_location <->
     ST_SetSRID(ST_MakePoint(${lng}, ${lat}),4326)
