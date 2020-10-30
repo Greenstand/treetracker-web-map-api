@@ -833,6 +833,25 @@ var initialize = function() {
 //    minZoom = null; // use the minimum zoom from the current map type
 //  }
 
+class CoordMapType {
+  constructor(tileSize) {
+    this.tileSize = tileSize;
+  }
+  getTile(coord, zoom, ownerDocument) {
+    const div = ownerDocument.createElement("div");
+
+    div.style.backgroundPosition = 'center center';
+    div.style.backgroundRepeat = 'no-repeat';
+    div.style.height = this.tileSize.height + 'px';
+    div.style.width = this.tileSize.width + 'px';
+    div.tileId = 'x_' + coord.x + '_y_' + coord.y + '_zoom_' + zoom; 
+    div.style.backgroundImage = 'url(' + "https://treetracker-map-tiles.nyc3.cdn.digitaloceanspaces.com/freetown/" + zoom + "/" + coord.x + "/" + (Math.pow(2, zoom) - coord.y - 1)  + ".png" + ')';
+
+    return div;
+  }
+  releaseTile(tile) {}
+}
+
   var mapOptions = {
     zoom: initialZoom,
     minZoom: minZoom,
@@ -847,6 +866,11 @@ var initialize = function() {
   console.log(mapOptions);
 
   map = new window.google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+  map.overlayMapTypes.insertAt(
+    0,
+    new CoordMapType(new google.maps.Size(256, 256))
+  );
 
   // only fetch when the user has made some sort of action
   window.google.maps.event.addListener(map, "dragstart", function() {
