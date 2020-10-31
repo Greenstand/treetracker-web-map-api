@@ -11,6 +11,7 @@ import Loader from "./components/Loader";
 import Fade from "@material-ui/core/Fade";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import getLogo from "./models/logo";
 
 
 console.log("ppppp", process.env.REACT_APP_PPP);
@@ -241,6 +242,7 @@ function App() {
   const [logoLoaded, setLogoLoaded] = React.useState(false);
   const [message, setMessage] = React.useState({open: false, message:""});
   const [arrow, setArrow] = React.useState({});
+  const [logoSrc, setLogoSrc] = React.useState(undefined);
 
   function showPanel(tree){
     console.log("show panel...");
@@ -386,7 +388,6 @@ function App() {
 
 
   React.useEffect(() => {
-    setLogoLoaded(true);
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
     script.id = 'googleMaps';
@@ -400,6 +401,20 @@ function App() {
         .property("current").defined();
       injectApp();
     };
+  }, []);
+
+  /*
+   * Deal with the logo, loading the logo first, for case like wallet, need to
+   * fetch possible logo url in DB
+   */
+  async function loadLogo(){
+    const src = await getLogo(window.location.href);
+    setLogoSrc(src);
+    setLogoLoaded(true);
+  }
+
+  React.useEffect(() => {
+    loadLogo();
   }, []);
 
   return (
@@ -423,7 +438,7 @@ function App() {
         </Grid>
       </Fade>
       <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
-        <img alt="logo" src={require("./images/logo_floating_map.svg")} />
+        <img alt="logo" src={logoSrc} />
       </div>
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
