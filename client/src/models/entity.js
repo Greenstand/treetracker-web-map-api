@@ -23,6 +23,13 @@ const entity = {
     }
     return res.data;
   },
+  getByMapName: async function(name){
+    const res = await axios.get(`${treetrackerApiUrl}entities?map_name=${name}`);
+    if(res.status !== 200){
+      throw Error("entity load fails");
+    }
+    return res.data;
+  },
 };
 
 module.exports = entity;

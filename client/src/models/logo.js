@@ -1,4 +1,6 @@
 const entity = require("./entity");
+const {parseDomain} = require("./utils");
+const {parseMapName} = require("../utils");
 
 async function getLogo(url){
   let src = require("../images/logo_floating_map.svg");
@@ -17,6 +19,34 @@ async function getLogo(url){
     const entities = await entity.getByWallet(wallet);
     if(entities && entities.length > 0 && entities[0].logo_url){
       src = entities[0].logo_url;
+    }
+  }
+  
+  //map name
+  const domain = parseDomain(url);
+  if(domain){
+    const mapName = parseMapName(domain);
+    if(mapName){
+      const entities = await entity.getByMapName(mapName);
+      if(entities && entities.length > 0 && entities[0].logo_url){
+        src = entities[0].logo_url;
+      }
+    }
+  }
+
+  //map name case2
+  {
+    const m = url.match(/.*map_name=(.\S+)/);
+    console.log("m:", m);
+    let mapName;
+    if(m){
+      mapName = m[1];
+    }
+    if(mapName){
+      const entities = await entity.getByMapName(mapName);
+      if(entities && entities.length > 0 && entities[0].logo_url){
+        src = entities[0].logo_url;
+      }
     }
   }
   return src;

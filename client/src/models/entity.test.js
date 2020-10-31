@@ -31,7 +31,7 @@ describe("entity", () => {
       },
     }));
     const e = await entity.getById(1);
-    expect(axios.get).toHaveBeenCalledWith("/api/web/entities/1");
+    expect(axios.get).toHaveBeenCalledWith("/entities/1");
     expect(e).toMatchObject({
       id: 1,
       name: "Zaven",
@@ -49,10 +49,28 @@ describe("entity", () => {
       }],
     }));
     const e = await entity.getByWallet("Zaven");
-    expect(axios.get).toHaveBeenCalledWith("/api/web/entities?wallet=Zaven");
+    expect(axios.get).toHaveBeenCalledWith("/entities?wallet=Zaven");
     expect(e).toMatchObject([{
       id: 1,
       name: "Zaven",
+      logoUrl: "http://logo",
+    }]);
+  });
+
+  it("getByMapName('freetown')", async () => {
+    axios.get = jest.fn(() => ({
+      status: 200,
+      data: [{
+        id: 1,
+        name: "freetown",
+        logoUrl: "http://logo",
+      }],
+    }));
+    const e = await entity.getByMapName("freetown");
+    expect(axios.get).toHaveBeenCalledWith("/entities?map_name=freetown");
+    expect(e).toMatchObject([{
+      id: 1,
+      name: "freetown",
       logoUrl: "http://logo",
     }]);
   });

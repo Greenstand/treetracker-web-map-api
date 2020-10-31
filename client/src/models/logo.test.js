@@ -46,4 +46,22 @@ describe("Logo", () => {
     expect(logo).toBe( logoCustomer);
   });
 
+  it("getLogo('https://freetown.greenstand.org", async () => {
+    entity.getByMapName.mockResolvedValue([{
+      logo_url: logoCustomer,
+    }]);
+    const logo = await getLogo("https://freetown.greenstand.org");
+    expect(entity.getByMapName).toHaveBeenCalled();
+    expect(logo).toBe( logoCustomer);
+  });
+
+  it("getLogo('https://greenstand.org/?map_name=freetown", async () => {
+    entity.getByMapName.mockResolvedValue([{
+      logo_url: logoCustomer,
+    }]);
+    const logo = await getLogo("https://greenstand.org/?map_name=freetown");
+    expect(entity.getByMapName).toHaveBeenCalledWith("freetown");
+    expect(logo).toBe( logoCustomer);
+  });
+
 });
