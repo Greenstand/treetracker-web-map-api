@@ -9,6 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Email from "@material-ui/icons/Email";
 import {makeStyles} from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
   box1:{
@@ -43,11 +44,13 @@ function Share(props){
 
   return(
     <>
-      <IconButton
-        onClick={handleClick}
-      >
-        <ShareIcon/>
-      </IconButton>
+      <Tooltip title="share tree" >
+        <IconButton
+          onClick={handleClick}
+        >
+          <ShareIcon/>
+        </IconButton>
+      </Tooltip>
       <Dialog
         open={isOpen}
         onClose={handleClose}
