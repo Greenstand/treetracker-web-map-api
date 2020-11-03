@@ -8,12 +8,27 @@ import Close from "@material-ui/icons/Close";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Email from "@material-ui/icons/Email";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  box1:{
+    padding: theme.spacing(4),
+  },
+  box2:{
+    padding: theme.spacing(2),
+  }
+}));
 
 function Share(props){
+  const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState(false);
 
   function handleClick(){
     setIsOpen(true);
+  }
+
+  function handleClose(){
+    setIsOpen(false);
   }
 
   function handleTwitter(){
@@ -24,9 +39,7 @@ function Share(props){
     window.open(`https://www.facebook.com/dialog/share?app_id=87741124305&href=${props.shareUrl}&display=popup`);
   }
 
-  function handleEmail(){
-    window.open(`https://www.facebook.com/dialog/share?app_id=87741124305&href=${props.shareUrl}&display=popup`);
-  }
+  const mailString = `mailto:?subject=A tree from Greenstand&body=I want to share this tree from Greenstand with you, please click this linke to check it! ${props.shareUrl}`;
 
   return(
     <>
@@ -37,6 +50,7 @@ function Share(props){
       </IconButton>
       <Dialog
         open={isOpen}
+        onClose={handleClose}
       >
         <DialogTitle>
           <Grid container justify="space-between" alignItems="center" >
@@ -44,12 +58,14 @@ function Share(props){
               Share
             </Grid>
             <Grid item>
-              <Close/>
+              <IconButton onClick={handleClose} >
+                <Close/>
+              </IconButton>
             </Grid>
           </Grid>
         </DialogTitle>
-        <Grid container justify="center" >
-          <Grid item>
+        <Grid container justify="center" className={classes.box1} >
+          <Grid item className={classes.box2} >
             <Grid container direction="column" alignItems="center" >
               <Grid item>
                 <IconButton 
@@ -61,15 +77,13 @@ function Share(props){
                 </IconButton>
               </Grid>
               <Grid item>
-                <a onClick={handleTwitter} >
-                  <Typography variant="body" >
-                    Twitter
-                  </Typography>
-                </a>
+                <Typography variant="body" >
+                  Twitter
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.box2} >
             <Grid container direction="column" alignItems="center" >
               <Grid item>
                 <IconButton 
@@ -81,20 +95,17 @@ function Share(props){
                 </IconButton>
               </Grid>
               <Grid item>
-                <a onClick={handleFaceBook} >
-                  <Typography variant="body" >
-                    Facebook
-                  </Typography>
-                </a>
+                <Typography variant="body" >
+                  Facebook
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.box2} >
             <Grid container direction="column" alignItems="center" >
               <Grid item>
-                <a href={`mailto:some@qq.com?subject=xxxx&body=hhhhhh`} >
+                <a href={mailString} >
                   <IconButton 
-                    onClick={handleEmail}
                   >
                     <Avatar>
                       <Email/>
@@ -103,11 +114,9 @@ function Share(props){
                 </a>
               </Grid>
               <Grid item>
-                <a onClick={handleEmail} >
-                  <Typography variant="body" >
-                    Email
-                  </Typography>
-                </a>
+                <Typography variant="body" >
+                  Email
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
