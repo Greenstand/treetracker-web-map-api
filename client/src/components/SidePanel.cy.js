@@ -166,7 +166,6 @@ describe("SidePanel", () => {
           />
         );
         cy.contains("FFF");
-        cy.pause();
       });
     });
 
