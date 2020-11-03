@@ -68,4 +68,20 @@ describe("entity", () => {
       name: "zaven",
     }]);
   });
+
+  it("/entities?map_name=freetown", async () => {
+    query.mockResolvedValue({rows:[{id:1, name: "freetown"}]});
+    const response = await request(app)
+      .get("/entities?map_name=freetown")
+    expect(response.statusCode).toBe(200);
+    expect(query).toHaveBeenCalledWith({
+      text: "select * from entity where map_name = $1",
+      values: ["freetown"],
+    });
+    expect(response.body).toMatchObject([{
+      id: 1,
+      name: "freetown",
+    }]);
+  });
+
 });

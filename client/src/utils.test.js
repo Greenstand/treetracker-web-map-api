@@ -6,6 +6,10 @@ describe("parseMapName", () => {
     expect(parseMapName("freetown.treetracker.org")).toBe("freetown");
   });
 
+  it("treetracker.org should return undefined", () => {
+    expect(parseMapName("treetracker.org")).toBeUndefined();
+  });
+
   it("test.treetracker.org should return undefined", () => {
     expect(parseMapName("test.treetracker.org")).toBeUndefined();
   });

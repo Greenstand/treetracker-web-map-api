@@ -1,13 +1,15 @@
-
 function parseMapName(domain){
   const matcher = domain.match(/^((\w+\.?)+org|localhost)$/);
   if(matcher){
     if(domain === "localhost"){
       return undefined;
     }
-    const sub = domain.match(/^([^.]+)\..*$/);
-    if(sub[1] !== "test" && sub[1] !== "dev"){
-      return sub[1];
+    const sub = domain.match(/([^.]+)/g);
+    //discard primary domain
+    sub.pop();
+    sub.pop();
+    if(sub.length > 0 && sub[0] !== "test" && sub[0] !== "dev"){
+      return sub[0];
     }else{
       return undefined;
     }
