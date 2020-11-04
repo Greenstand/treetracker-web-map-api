@@ -343,7 +343,7 @@ function SidePanel(props){
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle1" >
-                    Token issued
+                    Token Issued
                   </Typography>
                 </Grid>
               </Grid>
@@ -372,7 +372,7 @@ function SidePanel(props){
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
-                  Tree Id: #{tree?.id}
+                  Tree ID: #{tree?.id}
                 </Typography>
               </Grid>
             </Grid>
@@ -442,19 +442,19 @@ function SidePanel(props){
                   DBH: {tree?.domain_specific_data && tree.domain_specific_data["diameter (cm)"] || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
-                  Tree healthy: {tree?.domain_specific_data?.tree_health || NONE}
+                  Tree Healthy: {tree?.domain_specific_data?.tree_health || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
                   Proximity to: {tree?.domain_specific_data && tree.domain_specific_data["threat to"] || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
-                  Base around tree: {tree?.domain_specific_data?.tree_base || NONE}
+                  Base Around Tree: {tree?.domain_specific_data?.tree_base || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
                   Site: {tree?.domain_specific_data?.tree_site || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
-                  Functional uses: {tree?.domain_specific_data?.functional_uses || NONE}
+                  Functional Uses: {tree?.domain_specific_data?.functional_uses || NONE}
                 </Typography>
               </Grid>
             </Grid>
