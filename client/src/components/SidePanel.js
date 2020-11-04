@@ -439,13 +439,13 @@ function SidePanel(props){
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
-                  DBH: {tree["domain_specific_data"]["diameter (cm)"] || NONE}
+                  DBH: {tree?.domain_specific_data && tree.domain_specific_data["diameter (cm)"] || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
                   Tree healthy: {tree?.domain_specific_data?.tree_health || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
-                  Proximity to: {tree["domain_specific_data"]["threat to"] || NONE}
+                  Proximity to: {tree?.domain_specific_data && tree.domain_specific_data["threat to"] || NONE}
                 </Typography>
                 <Typography className={classes.item} variant="body1" >
                   Base around tree: {tree?.domain_specific_data?.tree_base || NONE}
