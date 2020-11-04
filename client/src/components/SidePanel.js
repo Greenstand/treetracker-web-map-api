@@ -21,10 +21,22 @@ import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
+import Tooltip from "@material-ui/core/Tooltip";
+import Explore from "@material-ui/icons/Explore";
+import Place from "@material-ui/icons/Place";
+import Eco from "@material-ui/icons/Eco";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
+import Public from "@material-ui/icons/Public";
+import InsertPhoto from "@material-ui/icons/InsertPhoto";
+import Search from "@material-ui/icons/Search";
+import ImageShower from "./ImageShower";
+
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
 const HEIGHT = 520;
+
+const NONE = "--";
 
 const useStyles = makeStyles(theme => ({
   placeholder:{
@@ -119,8 +131,17 @@ const useStyles = makeStyles(theme => ({
   verify: {
     marginBottom: 15,
   },
+  detailIcon: {
+      fontSize: 20,
+  },
+  detailIconBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingTop: 2,
+    paddingRight: 7,
+  }, 
   item: {
-    marginBottom: 15,
   },
   card: {
     height: "100%",
@@ -180,6 +201,12 @@ const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(1),
   },
+  hash: {
+    width: 18,
+    height: 18,
+    background: "#212121",
+    fontSize: 15,
+  },
 }));
 
 
@@ -190,6 +217,8 @@ function SidePanel(props){
   const {hasPrev = true} = props;
   const {hasNext = true} = props;
   const [isTreePictureLoaded, setTreePictureLoaded] = React.useState((tree && tree.image_url)?false:true);
+  const [isBasePictureShown, setBasePictureShown] = React.useState(false);
+  const [isLeafPictureShown, setLeafPictureShown] = React.useState(false);
 
   function handleClose(){
     props.onClose();
@@ -202,6 +231,22 @@ function SidePanel(props){
   function handleLoad(){
     console.log("loaded....");
     setTreePictureLoaded(true);
+  }
+
+  function handleBasePictureClick(){
+    setBasePictureShown(true);
+  }
+
+  function handleBasePictureClose(){
+    setBasePictureShown(false);
+  }
+
+  function handleLeafPictureClick(){
+    setLeafPictureShown(true);
+  }
+
+  function handleLeafPictureClose(){
+    setLeafPictureShown(false);
   }
 
   React.useEffect(() => {
@@ -306,8 +351,10 @@ function SidePanel(props){
             <Divider/>
             <Box height={15} />
             <Grid container className={classes.infoItem} >
-              <Grid item>
-                <AccessTime/>
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="create date" >
+                  <AccessTime className={classes.detailIcon} />
+                </Tooltip>
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
@@ -316,8 +363,12 @@ function SidePanel(props){
               </Grid>
             </Grid>
             <Grid container className={classes.infoItem} >
-              <Grid item>
-                <Nature/>
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="Tree ID">
+                  <Avatar className={`${classes.detailIcon} ${classes.hash}`} >
+                    #
+                  </Avatar>
+                </Tooltip>
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
@@ -328,18 +379,18 @@ function SidePanel(props){
             {tree?.attachedWallet &&
               <>
               <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Face />
+                <Grid item className={classes.detailIconBox}>
+                  <Face className={classes.detailIcon} />
                 </Grid>
                 <Grid item>
                   <Typography className={classes.item} variant="body1" >
-                    Impace Owner: @{tree?.attachedWallet}
+                    Impact Owner: @{tree?.attachedWallet}
                   </Typography>
                 </Grid>
               </Grid>
               <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Fingerprint />
+                <Grid item className={classes.detailIconBox}>
+                  <Fingerprint className={classes.detailIcon}/>
                 </Grid>
                 <Grid item>
                   <Typography className={classes.item} variant="body1" >
@@ -349,6 +400,107 @@ function SidePanel(props){
               </Grid>
               </>
             }
+            <Grid container className={classes.infoItem} >
+              <Grid item className={classes.detailIconBox} >
+                <Place className={classes.detailIcon} />
+              </Grid>
+              <Grid item>
+                <Typography className={classes.item} variant="body1" >
+                  Lat: {tree?.lat || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Lon: {tree?.lon || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Altitude: {tree?.domain_specific_data?._coordinates_altitude || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  GPS Accuracy: {tree?.domain_specific_data?._coordinates_precision || NONE}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container className={classes.infoItem} >
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="tree species">
+                  <Eco className={classes.detailIcon} />
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Typography className={classes.item} variant="body1" >
+                  Species: {tree?.domain_specific_data?.tree_species || NONE}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container className={classes.infoItem} >
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="other information" >
+                  <Nature className={classes.detailIcon} />
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Typography className={classes.item} variant="body1" >
+                  DBH: {tree["domain_specific_data"]["diameter (cm)"] || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Tree healthy: {tree?.domain_specific_data?.tree_health || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Proximity to: {tree["domain_specific_data"]["threat to"] || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Base around tree: {tree?.domain_specific_data?.tree_base || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Site: {tree?.domain_specific_data?.tree_site || NONE}
+                </Typography>
+                <Typography className={classes.item} variant="body1" >
+                  Functional uses: {tree?.domain_specific_data?.functional_uses || NONE}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container className={classes.infoItem} >
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="images" >
+                  <InsertPhoto className={classes.detailIcon} />
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Grid container>
+                  <Grid item>
+                    <Typography className={classes.item} variant="body1" >
+                      Base Picture: 
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+{tree?.images?.picture_base_url ? 
+                          <IconButton onClick={handleBasePictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                            <Search  />
+                            <ImageShower src={tree.images.picture_base_url} title="Base picture" onClose={handleBasePictureClose} open={isBasePictureShown} className={classes.imageIcon} />
+                          </IconButton>
+                          :
+                          <span>{NONE}</span>
+                      }
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item>
+                    <Typography className={classes.item} variant="body1" >
+                      Leaf Picture: 
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+{tree?.images?.picture_leaf_url ? 
+                          <IconButton onClick={handleLeafPictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                            <Search  />
+                            <ImageShower src={tree.images.picture_leaf_url} title="Leaf picture" onClose={handleLeafPictureClose} open={isLeafPictureShown} className={classes.imageIcon} />
+                          </IconButton>
+                          :
+                          <span>{NONE}</span>
+                      }
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Paper>
