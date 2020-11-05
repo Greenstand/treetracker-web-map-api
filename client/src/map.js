@@ -419,6 +419,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         //loader.classList.remove("active");
         getApp().loaded();
         firstRender = false;
+        if (treeid != null) {
+          getApp().showPanel(points[0]);
+        }
       }
       console.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
