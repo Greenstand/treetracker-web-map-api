@@ -417,6 +417,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         //loader.classList.remove("active");
         getApp().loaded();
         firstRender = false;
+        if (treeid != null) {
+          getApp().showPanel(points[0]);
+        }
       }
       console.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
@@ -869,7 +872,7 @@ class CoordMapType {
 
   map.overlayMapTypes.insertAt(
     0,
-    new CoordMapType(new google.maps.Size(256, 256))
+    new CoordMapType(new window.google.maps.Size(256, 256))
   );
 
   // only fetch when the user has made some sort of action
