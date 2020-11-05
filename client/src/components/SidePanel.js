@@ -21,6 +21,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
+import Share from "./Share";
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
@@ -281,28 +282,39 @@ function SidePanel(props){
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container className={classes.verify} >
-              <Grid item className={classes.icon} >
-                <Check style={{ color: "#abe38f"}} />
+            <Grid container justify="space-between" alignItems="center" >
+              <Grid item>
+                <Grid container className={classes.verify} >
+                  <Grid item className={classes.icon} >
+                    <Check style={{ color: "#abe38f"}} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1" >
+                      Tree Verified{/*TODO wallet: token issued*/}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                {tree?.attachedWallet &&
+                  <Grid container className={classes.verify} >
+                    <Grid item className={classes.icon} >
+                      <Check style={{ color: "#abe38f"}} />
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle1" >
+                        Token issued
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                }
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1" >
-                  Tree Verified{/*TODO wallet: token issued*/}
-                </Typography>
+                {tree?.id &&
+                  <Share
+                    shareUrl={`https://treetracker.org/?treeid=${tree.id}`}
+                  />
+                }
               </Grid>
             </Grid>
-            {tree?.attachedWallet &&
-              <Grid container className={classes.verify} >
-                <Grid item className={classes.icon} >
-                  <Check style={{ color: "#abe38f"}} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1" >
-                    Token issued
-                  </Typography>
-                </Grid>
-              </Grid>
-            }
             <Divider/>
             <Box height={15} />
             <Grid container className={classes.infoItem} >
