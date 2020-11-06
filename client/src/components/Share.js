@@ -10,6 +10,10 @@ import Typography from "@material-ui/core/Typography";
 import Email from "@material-ui/icons/Email";
 import {makeStyles} from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
+import Code from "@material-ui/icons/Code";
+import TextField from "@material-ui/core/TextField";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   box1:{
@@ -17,12 +21,18 @@ const useStyles = makeStyles(theme => ({
   },
   box2:{
     padding: theme.spacing(2),
-  }
+  },
+  code: {
+    minWidth: 400,
+    margin: 10,
+  },
 }));
 
 function Share(props){
   const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isEmbedOpen, setEmbedOpen] = React.useState(false);
+  const [embedCode, setEmbedCode] = React.useState("");
 
   function handleClick(){
     setIsOpen(true);
@@ -41,6 +51,39 @@ function Share(props){
   }
 
   const mailString = `mailto:?subject=A tree from Greenstand&body=I want to share this tree from Greenstand with you, please click this linke to check it! ${props.shareUrl}`;
+
+  function handleEmbed(){
+    setIsOpen(false);
+    setEmbedOpen(true);
+  }
+
+  function handleEmbedClose(){
+    setEmbedOpen(false);
+  }
+
+  function handleChange(e){
+    setEmbedCode(e.target.value);
+  }
+
+  React.useEffect(() => {
+    setEmbedCode(`<iframe width="560" height="315" src="${props.shareUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+  }, []);
+
+  function handleCopy(){
+    console.log("copy...");
+    var copyTextarea = document.getElementById('EmbedCode');
+    copyTextarea.focus();
+    copyTextarea.select();
+
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+    window.alert("Code has been copied!");
+  }
 
   return(
     <>
@@ -72,6 +115,25 @@ function Share(props){
             <Grid container direction="column" alignItems="center" >
               <Grid item>
                 <IconButton 
+                  id="EmbedButton"
+                  onClick={handleEmbed}
+                >
+                  <Avatar>
+                    <Code/>
+                  </Avatar>
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography variant="button" >
+                  Embed
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item className={classes.box2} >
+            <Grid container direction="column" alignItems="center" >
+              <Grid item>
+                <IconButton 
                   onClick={handleTwitter}
                 >
                   <Avatar
@@ -80,7 +142,7 @@ function Share(props){
                 </IconButton>
               </Grid>
               <Grid item>
-                <Typography variant="body" >
+                <Typography variant="button" >
                   Twitter
                 </Typography>
               </Grid>
@@ -98,7 +160,7 @@ function Share(props){
                 </IconButton>
               </Grid>
               <Grid item>
-                <Typography variant="body" >
+                <Typography variant="button" >
                   Facebook
                 </Typography>
               </Grid>
@@ -117,13 +179,43 @@ function Share(props){
                 </a>
               </Grid>
               <Grid item>
-                <Typography variant="body" >
+                <Typography variant="button" >
                   Email
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
+      </Dialog>
+      <Dialog
+        open={isEmbedOpen}
+        onClose={handleEmbedClose}
+      >
+        <DialogTitle>
+          <Grid container justify="space-between" alignItems="center" >
+            <Grid item xs={8} >
+              Embed Greenstand
+            </Grid>
+            <Grid item>
+              <IconButton onClick={handleEmbedClose} >
+                <Close/>
+              </IconButton>
+            </Grid>
+          </Grid>
+        </DialogTitle>
+        <TextField
+          id="EmbedCode"
+          multiline
+          variant="outlined"
+          value={embedCode}
+          rowsMax={4}
+          onChange={handleChange}
+          className={classes.code}
+        />
+        <DialogActions>
+          <Button onClick={handleEmbedClose} >Cancel</Button>
+          <Button onClick={handleCopy} >Copy</Button>
+        </DialogActions>
       </Dialog>
     </>
   )
