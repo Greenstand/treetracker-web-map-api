@@ -17,6 +17,8 @@ describe("Share", () => {
       .click();
     cy.get("#EmbedButton")
       .click();
+    cy.contains(/copy/i)
+      .click();
   });
 });
 

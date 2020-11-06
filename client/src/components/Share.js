@@ -14,6 +14,7 @@ import Code from "@material-ui/icons/Code";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles(theme => ({
   box1:{
@@ -33,6 +34,8 @@ function Share(props){
   const [isOpen, setIsOpen] = React.useState(false);
   const [isEmbedOpen, setEmbedOpen] = React.useState(false);
   const [embedCode, setEmbedCode] = React.useState("");
+  const [isMessageOpen, setMessageOpen] = React.useState(false);
+  const [message, setMessage] = React.useState("");
 
   function handleClick(){
     setIsOpen(true);
@@ -82,7 +85,17 @@ function Share(props){
     } catch (err) {
       console.log('Oops, unable to copy');
     }
-    window.alert("Code has been copied!");
+    showMessage("Code has been copied!");
+  }
+
+  function handleMessageClose(){
+    setMessageOpen(false);
+    setMessage("");
+  }
+
+  function showMessage(text){
+    setMessage(text);
+    setMessageOpen(true);
   }
 
   return(
@@ -217,6 +230,19 @@ function Share(props){
           <Button onClick={handleCopy} >Copy</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={isMessageOpen}
+        autoHideDuration={6000}
+        onClose={handleMessageClose}
+        message={message}
+        action={
+          <React.Fragment>
+            <IconButton color="primary" onClick={handleMessageClose}>
+              <Close/>
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </>
   )
 }
