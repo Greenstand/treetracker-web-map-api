@@ -52,4 +52,4 @@ async function getLogo(url){
   return src;
 }
 
-module.exports = getLogo;
+export default getLogo;

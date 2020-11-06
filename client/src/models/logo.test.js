@@ -1,5 +1,6 @@
+import getLogo from "./logo";
 const entity = require("./entity");
-const getLogo = require("./logo.js");
+//const getLogo = require("./logo.js");
 
 jest.mock("./entity");
 
