@@ -296,9 +296,22 @@ class Map{
   }
 
   async getPoints(){
+    const query = await this.getQuery();
+    console.log(query);
+    const data = await this.pool.query(query);
+    console.log(data.rows.slice(0,2))
+    return data.rows;
   }
 
-  async getZoomTarget(){
+  async getZoomTargets(){
+    const zoomTargetsQuery = await this.getZoomTargetQuery();
+    let zoomTargets;
+    if(zoomTargetsQuery){
+      const result = await this.pool.query(zoomTargetsQuery);
+      console.log('got zoom targets data');
+      zoomTargets = result.rows;
+    }
+    return zoomTargets;
   }
 }
 

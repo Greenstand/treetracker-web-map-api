@@ -30,28 +30,12 @@ if(process.env.NODE_ENV == 'dev'){
 
 //app.get(/(\/api\/web)?\/trees/, function (req, res) {
 app.get("/trees", async function (req, res) {
-  try{
-    const map = new Map();
-    await map.init(req.query);
-    const query = await map.getQuery();
-
-
-    console.log(query);
-    const response = {};
-    const data = await pool.query(query);
-    console.log('query ok');
-    console.log(data.rows.slice(0,2))
-    response.data = data;
-    const zoomTargetsQuery = await map.getZoomTargetQuery();
-    if(zoomTargetsQuery){
-      const zoomTargetData = await pool.query(zoomTargetsQuery);
-      console.log('got zoom targets data');
-      response.zoomTargets = zoomTargetData.rows;
-    }
-    res.status(200).json(response);
-  }catch(e){
-    console.error(e);
-  }
+  const map = new Map();
+  await map.init(req.query);
+  const response = {};
+  response.data = await map.getPoints();
+  response.zoomTargets = await map.getZoomTargets();
+  res.status(200).json(response);
 });
 
 app.use(Sentry.Handlers.errorHandler());
