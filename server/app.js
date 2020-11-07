@@ -232,7 +232,9 @@ app.get("/trees", async function (req, res) {
     }
 
     query = {
-      text: `SELECT 'cluster' AS type,
+      text: `
+      /* case1 */
+      SELECT 'cluster' AS type,
       region_id id, ST_ASGeoJson(centroid) centroid,
       type_id as region_type,
       count(id)

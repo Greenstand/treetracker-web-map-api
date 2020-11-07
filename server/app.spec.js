@@ -64,4 +64,20 @@ describe("App", () => {
       values: expect.anything(),
     });
   });
+
+  it("/trees?clusterRadius=8&zoom_level=2", async () => {
+    const queryA = jest.fn()
+      .mockResolvedValue({
+        rows: [1,2],
+      });
+    query.mockImplementation(queryA);
+    const res = await request(app)
+      .get("/trees?clusterRadius=8&zoom_level=2");
+    expect(res.statusCode).toBe(200);
+    expect(queryA).toBeCalledWith({
+      //should call the new query with `join` to the tree, 
+      text: expect.stringMatching(/case1/is),
+      values: expect.anything(),
+    });
+  });
 });
