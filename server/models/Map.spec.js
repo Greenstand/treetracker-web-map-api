@@ -11,60 +11,288 @@ describe("Map", () => {
     Pool.prototype.query = query;
   })
 
-  it("{clusterRadius=8, zoom_level=2} should call SQL case1 ", async () => {
-    const map = new Map();
-    await map.init({
-      clusterRadius: 8,
-      zoom_level: 2,
+  describe("Query", () => {
+    it("{clusterRadius=8, zoom_level=2} should call SQL case1 ", async () => {
+      const map = new Map();
+      await map.init({
+        clusterRadius: 8,
+        zoom_level: 2,
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case1/i),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case6/i),
+        values: expect.anything(),
+      });
     });
-    const query = await map.getQuery();
-    expect(query).toMatchObject({
-      text: expect.stringMatching(/case1/i),
-      values: expect.anything(),
+
+    it("with userid, and trees count under this user < 2000", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:1999}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.05,
+        zoom_level: 9,
+        userid:1,
+      });
+      let result = await map.getQuery();
+      expect(queryCount).toBeCalledWith({
+        text: expect.stringMatching(/count/i),
+        values: []
+      });
+      expect(result).toMatchObject({
+        //case 3
+        text: expect.stringMatching(/case3/i),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case6/i),
+        values: expect.anything(),
+      });
+    });
+
+    it("with userid, and trees count under this user > 2000", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:2001}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.05,
+        zoom_level: 9,
+        userid: 12
+      });
+      let result = await map.getQuery();
+      expect(queryCount).toBeCalledWith({
+        text: expect.stringMatching(/count/i),
+        values: []
+      });
+      expect(result).toMatchObject({
+        //should call the new query with `join` to the tree, 
+        text: expect.stringMatching(/case5/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case6/is),
+        values: expect.anything(),
+      });
+    });
+
+    it("{treeid:1, clusterRadius:0.05, zoom_level:10}, SQL should be case 2", async () => {
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.05,
+        zoom_level: 10,
+        treeid: 12
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call the new query with `join` to the tree, 
+        text: expect.stringMatching(/case2/is),
+        values: expect.anything(),
+      });
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
+
+    it("{wallet:'fortest', clusterRadius:0.05, zoom_level:10}, SQL should be case 3", async () => {
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.05,
+        zoom_level: 10,
+        wallet: "fortest",
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call the new query with `join` to the tree, 
+        text: expect.stringMatching(/case3/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
+
+    it("{userid:1, clusterRadius:0.095, zoom_level:9}, SQL should be case 3", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:1999}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.095,
+        zoom_level: 9,
+        userid: 1,
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call case3 with planter filter
+        text: expect.stringMatching(/case3.*AND trees.planter_id =/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case6/is),
+        values: expect.anything(),
+      });
+    });
+
+    it("/trees?clusterRadius=0.03&zoom_level=11&bounds=37.93124715513169,-3.2148087439778705,36.74472371763169,-3.494479867143523&userid=1", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:1999}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.03,
+        zoom_level: 11,
+        bounds: "37.93124715513169,-3.2148087439778705,36.74472371763169,-3.494479867143523",
+        userid: 1,
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call case3 with planter filter and bounds filter
+        text: expect.stringMatching(/case3.*estimated_geometric_location.*ST_MakeEnvelope.*AND trees.planter_id =/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
+    
+    it("/trees?clusterRadius=0&zoom_level=17&bounds=37.30692471435548,-3.3515417307543633,37.288385285644544,-3.3559115991882575&userid=1", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:1999}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0,
+        zoom_level: 17,
+        bounds: "37.93124715513169,-3.2148087439778705,36.74472371763169,-3.494479867143523",
+        userid: 1,
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call case2 with planter filter and bounds filter
+        text: expect.stringMatching(/case2.*estimated_geometric_location.*ST_MakeEnvelope.*AND trees.planter_id =/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
+
+    it("/trees?clusterRadius=0.005&zoom_level=14&bounds=-13.100891610856054,8.430363406583758,-13.249207040543554,8.395721322779956", async () => {
+      const queryCount = jest.fn()
+        .mockResolvedValue({
+          rows: [{count:1999}],
+        });
+      query.mockImplementationOnce(queryCount);
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0.005,
+        zoom_level: 14,
+        bounds: "37.93124715513169,-3.2148087439778705,36.74472371763169,-3.494479867143523",
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        //should call case2 with planter filter and bounds filter
+        text: expect.stringMatching(/case4/is),
+        values: expect.anything(),
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
+
+    describe("mapName, ", () => {
+
+      it("/trees?clusterRadius=0.05&zoom_level=10&map_name=freetown", async () => {
+        const queryOrg = jest.fn()
+          .mockResolvedValue({
+            rows: [{id:1}],
+          });
+        query.mockImplementationOnce(queryOrg);
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 10,
+          map_name: "freetown",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case1.*tree_region.tree_id in\(/is),
+          values: expect.anything(),
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
+
+        it("/trees?clusterRadius=0.005&zoom_level=14&bounds=-13.093788230138243,8.435735998833929,-13.242103659825743,8.401094395636814&map_name=freetown", async () => {
+          const queryOrg = jest.fn()
+            .mockResolvedValue({
+              rows: [{id:1}],
+            });
+          query.mockImplementationOnce(queryOrg);
+          const map =new Map();
+          await map.init({
+            clusterRadius: 0.005,
+            zoom_level: 14,
+            map_name: "freetown",
+            bounds: "-13.093788230138243,8.435735998833929,-13.242103659825743,8.401094395636814",
+          });
+          let result = await map.getQuery();
+          expect(result).toMatchObject({
+            text: expect.stringMatching(/case1.*tree_region.tree_id in\(/is),
+              values: expect.anything(),
+            });
+
+          result = await map.getZoomTargetQuery();
+          expect(result).toBeUndefined();
+        });
+
+        it("/trees?clusterRadius=0.003&zoom_level=16&bounds=-13.149406516271055,8.422745649932644,-13.18648537369293,8.414085249049373&map_name=freetown", async () => {
+          const queryOrg = jest.fn()
+            .mockResolvedValue({
+              rows: [{id:1}],
+            });
+          query.mockImplementationOnce(queryOrg);
+          const map =new Map();
+          await map.init({
+            clusterRadius: 0.003,
+            zoom_level: 16,
+            map_name: "freetown",
+            bounds: "-13.093788230138243,8.435735998833929,-13.242103659825743,8.401094395636814",
+          });
+          let result = await map.getQuery();
+          expect(result).toMatchObject({
+            text: expect.stringMatching(/case2.*trees.id in\(/is),
+              values: expect.anything(),
+            });
+
+          result = await map.getZoomTargetQuery();
+          expect(result).toBeUndefined();
+        });
     });
   });
 
-  it("with userid, and trees count under this user < 2000", async () => {
-    const queryCount = jest.fn()
-      .mockResolvedValue({
-        rows: [{count:1999}],
-      });
-    query.mockImplementationOnce(queryCount);
-    const map =new Map();
-    await map.init({userid:1});
-    const result = await map.getQuery();
-    expect(queryCount).toBeCalledWith({
-      text: expect.stringMatching(/count/i),
-      values: []
-    });
-    expect(result).toMatchObject({
-      //case 3
-      text: expect.stringMatching(/case3/i),
-      values: expect.anything(),
-    });
-  });
-
-  it("with userid, and trees count under this user > 2000", async () => {
-    const queryCount = jest.fn()
-      .mockResolvedValue({
-        rows: [{count:2001}],
-      });
-    query.mockImplementationOnce(queryCount);
-    const map =new Map();
-    await map.init({
-      clusterRadius: 0.05,
-      zoom_level: 10,
-      userid: 12
-    });
-    const result = await map.getQuery();
-    expect(queryCount).toBeCalledWith({
-      text: expect.stringMatching(/count/i),
-      values: []
-    });
-    expect(result).toMatchObject({
-      //should call the new query with `join` to the tree, 
-      text: expect.stringMatching(/case5/is),
-      values: expect.anything(),
-    });
-  });
 });

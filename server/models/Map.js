@@ -131,7 +131,8 @@ class Map{
       console.log(sql);
 
       this.query = {
-        text: sql
+        text: sql,
+        values: [],
       };
     } else if (subset) {
       if(this.userid && treeCount > 2000){
@@ -205,7 +206,8 @@ class Map{
              FROM clusters
              WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
       this.query = {
-        text: sql
+        text: sql,
+        values: [],
       }
 
     } else {
@@ -235,6 +237,7 @@ class Map{
       };
 
     }
+    console.log("query:", JSON.stringify(this.query, undefined, 2));
     return this.query;
   }
 
@@ -252,7 +255,9 @@ class Map{
       }
 
       const zoomTargetsQuery = {
-        text: `SELECT DISTINCT ON (region.id)
+        text: `
+              /* case6 zoom target */
+              SELECT DISTINCT ON (region.id)
                 region.id region_id,
                 contained.region_id most_populated_subregion_id,
                 contained.total,
