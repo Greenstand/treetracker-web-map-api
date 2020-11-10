@@ -20,6 +20,7 @@ class Map{
     this.mapName = settings.map_name;
     this.bounds = settings.bounds;
     this.wallet = settings.wallet;
+    this.flavor = settings.flavor;
     if(this.treeid){
       /*
        * Single tree map mode
@@ -66,6 +67,20 @@ class Map{
         this.sql = new SQLCase3();
         this.sql.setClusterRadius(this.clusterRadius);
         this.sql.addFilterByWallet(this.wallet);
+        this.sql.setBounds(this.bounds);
+      }
+    }else if(this.flavor){
+      /*
+       * flavor map mode
+       */
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.setBounds(this.bounds);
+        this.sql.addFilterByFlavor(this.flavor);
+      }else{
+        this.sql = new SQLCase3();
+        this.sql.setClusterRadius(this.clusterRadius);
+        this.sql.addFilterByFlavor(this.flavor);
         this.sql.setBounds(this.bounds);
       }
     }else if(this.mapName){
