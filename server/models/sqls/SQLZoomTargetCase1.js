@@ -2,7 +2,7 @@
  * Case6, to search cluster for next zoom target
  */
 
-class SQLCase6{
+class SQLZoomTargetCase1{
 
   constructor(){
   }
@@ -84,4 +84,4 @@ class SQLCase6{
   }
 }
 
-module.exports = SQLCase6;
+module.exports = SQLZoomTargetCase1;

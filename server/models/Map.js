@@ -4,7 +4,7 @@ const SQLCase2 = require("./sqls/SQLCase2");
 const SQLCase1 = require("./sqls/SQLCase1");
 const SQLCase3 = require("./sqls/SQLCase3");
 const SQLCase4 = require("./sqls/SQLCase4");
-const SQLCase6 = require("./sqls/SQLCase6");
+const SQLZoomTargetCase1 = require("./sqls/SQLZoomTargetCase1");
 
 
 class Map{
@@ -58,7 +58,7 @@ class Map{
         }
       }
       if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLCase6();
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
@@ -77,7 +77,7 @@ class Map{
         this.sql.setBounds(this.bounds);
       }
       if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLCase6();
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
@@ -96,7 +96,7 @@ class Map{
         this.sql.setBounds(this.bounds);
       }
       if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLCase6();
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
@@ -123,7 +123,7 @@ class Map{
         this.sql.setZoomLevel(this.zoomLevel);
       }
       if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLCase6();
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
         this.sqlZoomTarget.setTreeIds(this.treeIds);
@@ -145,7 +145,7 @@ class Map{
         this.sql.setZoomLevel(this.zoomLevel);
       }
       if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLCase6();
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
