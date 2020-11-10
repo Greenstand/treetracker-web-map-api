@@ -1,6 +1,6 @@
 # Treetracker Web
 
-## Current Milestones and Issue Topics
+## Current Milestones and Issue Topics.
 
 Developers please see current milestones here:  
 https://github.com/Greenstand/treetracker-web-map/milestones
@@ -25,86 +25,7 @@ For more details see the [Tree Tracker Web Map Wiki] (https://github.com/Greenst
 
 ## Development Environment Quick Start
 
-We provide a development environment through docker that can run on your local environment.  You can also develop locally without docker if you are willing to install Postgres and postGIS (see 'Developing locally without docker' below)
-
-### Set Up Docker
-To run docker on a local machine, you will have to install Docker first. Docker is a linux container technology, so running it on Mac or Windows requires an application with an attached linux VM. Docker provides one for each OS by default.
-
-[Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
-
-You can alternatively install Docker for Mac using homebrew, using the following command
-
-```
-$ brew cask install docker
-```
-
-[Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
-Please note Docker for Windows only works for Windows 10 Enterprise and Windows 10 Pro editions. 
-
-To install on linux, you can run `sudo apt-get install -y docker-ce` but there is [additional setup](https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository) to verify keys, etc.
-
-
-### Install, build docker containers and go
-
-### Set up NodeJS
-Because of the application architecture, it is absolutely necessary to have NodeJS for package management. Here are the following methods of installation for the most popular operating systems. 
-
-#### Windows
-
-Download it from the official website, [here](https://nodejs.org/en/#download)
-
-#### MacOS
-
-To install NodeJS on MacOS, run this command:
-- brew install node
-#### Linux - Ubuntu
-
-To install NodeJS on Ubuntu, run the following commands:
-
-- sudo apt-get update
-- sudo apt-get install nodejs
-- sudo apt-get install npm
-- nodejs -v
-
-Clone this repository
-
-```
-git clone git@github.com:Greenstand/treetracker-web-map.git
-cd treetracker-web-map
-```
-
-Run the setup script.  This script installs node modules, builds docker containers, and starts them
-```
-./dev/setup.sh
-```
-
-Install the server's config.js file in the folder server/config/.  You can get this file by asking another contributor for it on Slack.
-
-Install the client's config.js file in the folder client/js/.  You can get this file by asking another contributor for it on Slack.
-
-
-You can now view the treetracker web map at http://localhost:8080
-Note: For older OS (eg. win7, win8) Docker toolbox should be used and the app can be viewed on http://192.168.99.100:8080
- 
-
-To stop the dev environment use
-
-```
-./dev/down.sh
-```
-
-To start the dev environment back up use
-
-```
-./dev/up.sh
-```
-
-Now to view the map. Goto client folder than to js folder, next make a new file and name it config.js and copy the content in config.js.example and paste it in config.js .(If required make the necessary adjustment to address (eg. http://192.168.99.100:8080) else you are ready to view the map)
-
-Just edit as you normally would to view changes in your development environment.
-
-### Developing locally without docker
-
+### Local development 
 1. Install postgres
 2. Install postGIS
 3. Create a database named 'treetracker'
@@ -124,13 +45,13 @@ NODE_ENV=dev supervisor server.js
 ```
 9. Open client/js/config.js from the project root.  It should contain only the following 2 lines
 ```
-var configTreetrackerApi = 'http://localhost:3000/';
-var sentryDSN = null;
+var configTreetrackerApi = 'http://localhost:8080/api/web/;
 ```
 9. Open the index.html file of the webmap in a web browser.  Use file:/// protocol, not a localhost address.
 
-### Developing without docker, but using online DB.
+### Using online DB
 
+1. Skip installation of postgres/postgis
 1. Make sure all npm modules are installed under client and server.
 ```
 cd client
@@ -159,13 +80,6 @@ npm start
 NOTE: in this way, the server would run on port 3001, and client would run on port 3000.
 
 
-### MS Windows setup details
-
-Our docker-compose settings for volume mounting don't work out of the box for at least some versions of Windows.  Please see this thread for more information, and update this document with usage details if this solves your issue.
-
-https://github.com/docker/compose/issues/4303
-
-
 ### Alternative development environment for MS Windows (Works on Linux and Mac also)
 On Windows, the easiest way to develop and debug Node.js applications is using Visual Studio Code.
 It comes with Node.js support out of the box.
@@ -177,30 +91,7 @@ https://code.visualstudio.com/docs
 
 ## Web App installation issues
 
-Ubuntu:
-docker-compose - command not found:
- - $ sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
- - $ sudo mv ./docker-compose /usr/bin/docker-compose
- - $ sudo chmod +x /usr/bin/docker-compose
-
-docker-compose - permission denied:
-- cd to /usr/bin
-- Enter command sudo chmod 777 docker-compose
-
-docker: Got permission denied while trying to connect to the Docker daemon socket
- - $ sudo groupadd docker
- - $ sudo usermod -aG docker $USER
-
-Version in "./dev/docker-compose.yml" is unsupported. 
- - confirm docker-compose is installed
- - $ docker-compose -v 
- - If docker-compose is installed:
- - $ sudo curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
- - $ sudo chmod +x /usr/local/bin/docker-compose
- - if docker-compose is not installed:
- - $sudo apt-get install docker-compose
-
-Error: Failed to load resource: the server responded with a status of 404 (Not Found)
+### Error: Failed to load resource: the server responded with a status of 404 (Not Found)
 map.js:18 Uncaught ReferenceError: configTreetrackerApi is not defined
     at map.js:18
 

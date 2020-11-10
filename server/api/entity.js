@@ -25,6 +25,10 @@ router.get("/", async function(req, res, next){
     where = " where wallet = $1";
     values.push(req.query.wallet);
   }
+  if(req.query.map_name){
+    where = " where map_name = $1";
+    values.push(req.query.map_name);
+  }
   const query = {
     text: "select * from entity" + where, 
     values,
