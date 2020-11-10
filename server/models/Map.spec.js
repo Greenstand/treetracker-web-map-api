@@ -80,7 +80,7 @@ describe("Map", () => {
       });
       expect(result).toMatchObject({
         //should call the new query with `join` to the tree, 
-        text: expect.stringMatching(/case5.*and planter_id =/is),
+        text: expect.stringMatching(/case1.*join trees on.*and planter_id =/is),
         values: [9],
       });
 
@@ -224,7 +224,7 @@ describe("Map", () => {
 
     describe("mapName, ", () => {
 
-      it("/trees?clusterRadius=0.05&zoom_level=10&map_name=freetown", async () => {
+      it("mapName case1: /trees?clusterRadius=0.05&zoom_level=10&map_name=freetown", async () => {
         const queryOrg = jest.fn()
           .mockResolvedValue({
             rows: [{id:1}],
@@ -246,7 +246,7 @@ describe("Map", () => {
         expect(result).toBeUndefined();
       });
 
-      it("/trees?clusterRadius=0.005&zoom_level=14&bounds=-13.093788230138243,8.435735998833929,-13.242103659825743,8.401094395636814&map_name=freetown", async () => {
+      it("mapName case2: /trees?clusterRadius=0.005&zoom_level=14&bounds=-13.093788230138243,8.435735998833929,-13.242103659825743,8.401094395636814&map_name=freetown", async () => {
         const queryOrg = jest.fn()
           .mockResolvedValue({
             rows: [{id:1}],
@@ -269,7 +269,7 @@ describe("Map", () => {
         expect(result).toBeUndefined();
       });
 
-      it("/trees?clusterRadius=0.003&zoom_level=16&bounds=-13.149406516271055,8.422745649932644,-13.18648537369293,8.414085249049373&map_name=freetown", async () => {
+      it("mapName case3: /trees?clusterRadius=0.003&zoom_level=16&bounds=-13.149406516271055,8.422745649932644,-13.18648537369293,8.414085249049373&map_name=freetown", async () => {
         const queryOrg = jest.fn()
           .mockResolvedValue({
             rows: [{id:1}],

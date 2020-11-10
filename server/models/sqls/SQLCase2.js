@@ -1,3 +1,7 @@
+/*
+ * Search DB by trees table directly, like in the high zoom level, show trees
+ * on the map;
+ */
 
 class SQLCase2{
   
@@ -6,12 +10,43 @@ class SQLCase2{
     this.treeid = treeid;
   }
 
+  addTreesFilter(treeIds){
+    this.treeIds = treeIds;
+  }
+
+  addFilterByUserId(userId){
+    this.userId = userId;
+  }
+
   getFilter(){
-    let result;
+    let result = "";
     if(this.treeid){
-      result = 'AND trees.id = ' + this.treeid + ' '
+      result += 'AND trees.id = ' + this.treeid + ' \n';
+    }
+    if(this.treeIds && this.treeIds.length > 0){
+      result += "AND trees.id IN(" + this.treeIds.join(",") + ") ";
+    }
+    if(this.userId){
+      result += "AND trees.planter_id = " + this.userId + " \n";
     }
     return result;
+  }
+
+  setBounds(bounds){
+    this.bounds = bounds;
+  }
+
+  getBoundingBoxQuery(){
+    let result = "";
+    if (this.bounds) {
+      result += 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
+    }
+    return result;
+  }
+
+  getJoinCriteria(){
+    //TODO
+    return "";
   }
 
   getQuery(){
@@ -30,7 +65,11 @@ class SQLCase2{
       ON note_trees.tree_id = trees.id
       LEFT JOIN notes
       ON notes.id = note_trees.note_id
-      WHERE active = true ` /* + boundingBoxQuery*/ + this.getFilter() /*+ joinCriteria + */ 
+      WHERE active = true 
+      ${this.getBoundingBoxQuery()}
+      ${this.getFilter()}
+      ${this.getJoinCriteria()}
+    ` 
 //      `${this.treeIds && this.treeIds.length > 0 ?
 //          " and trees.id in(" + this.treeIds.join(",") + ") "
 //          :

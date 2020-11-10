@@ -1,6 +1,9 @@
 const { Pool} = require('pg');
 const config = require('../config/config');
 const SQLCase2 = require("./sqls/SQLCase2");
+const SQLCase1 = require("./sqls/SQLCase1");
+const SQLCase3 = require("./sqls/SQLCase3");
+const SQLCase4 = require("./sqls/SQLCase4");
 
 
 class Map{
@@ -11,248 +14,330 @@ class Map{
   async init(settings){
     console.debug("init map with settings:", settings);
     this.treeid = settings.treeid;
+    this.zoomLevel = parseInt(settings.zoom_level);
+    this.userid = settings.userid;
+    this.clusterRadius = settings.clusterRadius;
+    this.mapName = settings.map_name;
+    this.bounds = settings.bounds;
+    this.wallet = settings.wallet;
     if(this.treeid){
       /*
-       * tree id map
+       * Single tree map mode
        */
       this.sql = new SQLCase2();
       this.sql.addTreeFilter(this.treeid);
-      return;
-    }
-    this.clusterRadius = settings.clusterRadius;
-    this.token = settings.token;
-    this.flavor = settings.flavor;
-    this.treeid = settings.treeid;
-    this.userid = settings.userid;
-    this.wallet = settings.wallet;
-    this.mapName = settings.map_name;
-    this.bounds = settings.bounds;
-    this.clusterRadius = parseFloat(settings.clusterRadius);
-    this.zoomLevel = parseInt(settings.zoom_level);
-    this.treeIds = [];
-    if(this.mapName){
-      console.log("try to get the trees in organization");
-      const sql = 
-        `
-          select id from trees where 
-          planter_id in (
-            select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
-              (select id from entity where map_name = '${this.mapName}')
-            ))
-          )
-          or 
-          trees.planting_organization_id  in (
-          select entity_id from getEntityRelationshipChildren(
-              (select id from entity where map_name = '${this.mapName}')
-          )
-          )
-          `;
-      const query = {
-        text: sql,
-        values: []
-      };
-      const r = await this.pool.query(query);
-      console.log("trees:", r.rows.length);
-      r.rows.forEach(e => this.treeIds.push(e.id) );
-      
+    }else if(this.userid){
       /*
-       * If no trees in this org, then build a case that filter out all trees!
+       * User map mode
        */
-      if(this.treeIds.length === 0){
-        this.treeIds = [-1]; //this is impossible to match a tree which id is -1
-      }
-    }
-
-  }
-
-  async getQuery(){
-    if(this.sql){
-      this.query = this.sql.getQuery();
-      return this.query;
-    }
-    let select = '';
-    let join = '';
-    let joinCriteria = '';
-    let filter = '';
-    let subset = false;
-    let treeCount = 0;
-    if (this.token) {
-      join = "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + this.token + "'";
-      subset = true;
-    } else if (this.flavor) {
-      join = "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
-      joinCriteria = "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + this.flavor + "'";
-      subset = true;
-    } else if(this.treeid) {
-      filter = 'AND trees.id = ' + this.treeid + ' '
-  //    if(treeIds && treeIds.length > 0){
-  //      filter += 'AND trees.id in (' + treeIds.join(',') + ') '
-  //    }
-      subset = true;
-    } else if(this.userid) {
-      //count the trees first
+      //count the trees amount first
       const result = await this.pool.query({
         text: `select count(*) as count from trees where planter_id = ${this.userid}`,
         values:[]
       });
-      treeCount = result.rows[0].count;
+      const treeCount = result.rows[0].count;
       parseInt(treeCount);
-
-      filter = 'AND trees.planter_id = ' + this.userid + ' '
-      subset = true;
-    } else if(this.wallet) {
-      select = ', token.uuid AS token_uuid '
-      join = 'INNER JOIN token ON token.tree_id = trees.id'
-      join += ' INNER JOIN entity ON entity.id = token.entity_id'
-      filter = "AND entity.wallet = '" + this.wallet + "'"
-      subset = true
-    }
-
-    let boundingBoxQuery = '';
-    let clusterBoundingBoxQuery = '';
-    if (this.bounds) {
-      boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
-      clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
-      console.log(this.bounds);
-    }
-
-    var sql;
-
-    if (this.zoomLevel > 15 || this.treeid != null ) {
-
-      sql = `
-      /* case2 */
-      SELECT DISTINCT ON(trees.id)
-      'point' AS type,
-       trees.*, planter.first_name as first_name, planter.last_name as last_name,
-      planter.image_url as user_image_url `
-      + select + `
-      FROM trees `
-      + join + `
-      INNER JOIN planter
-      ON planter.id = trees.planter_id
-      LEFT JOIN note_trees
-      ON note_trees.tree_id = trees.id
-      LEFT JOIN notes
-      ON notes.id = note_trees.note_id
-      WHERE active = true ` + boundingBoxQuery + filter + joinCriteria + 
-      `${this.treeIds && this.treeIds.length > 0 ?
-        " and trees.id in(" + this.treeIds.join(",") + ") "
-        :
-        " "
-      }`
-      ;
-      console.log(sql);
-
-      this.query = {
-        text: sql,
-        values: [],
-      };
-    } else if (subset) {
-      if(this.userid && treeCount > 2000){
-        console.log("Too many tress %d for userid, use active tree region", treeCount);
-        this.query = {
-          text: `
-            /* case5 */
-            select
-              'cluster' as type,
-              region_id id,
-              ST_ASGeoJson(centroid) centroid,
-              type_id as region_type,
-              count(tree_region.id)
-            from
-              active_tree_region tree_region
-            join trees on
-              tree_region.tree_id = trees.id
-            where
-              zoom_level = $1
-              and planter_id = ${this.userid}
-            group by
-              region_id,
-              centroid,
-              type_id
-              `,
-          values: [this.zoomLevel]
-        };
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.setBounds(this.bounds);
+        this.sql.addFilterByUserId(this.userid);
       }else{
-        console.log('Calculating clusters directly');
-        this.query = {
-          text: `
-          /* case3 */
-          SELECT 'cluster'                                           AS type,
-          St_asgeojson(St_centroid(clustered_locations))                 centroid,
-          St_numgeometries(clustered_locations)                          count
-          FROM   (
-          SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-          FROM   trees ${join}
-          WHERE  active = true ${boundingBoxQuery} ${filter} ${joinCriteria}  ) clusters`,
-          values: [this.clusterRadius]
-        };
-      }
-
-
-      /*
-      var boundingBoxQuery = "";
-      if( bounds ) {
-        boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
-      }
-      query = {
-        text: `SELECT 'cluster' AS type,
-        region_id id, ST_ASGeoJson(centroid) centroid,
-        type_id as region_type,
-        count(id)
-        FROM active_tree_region tree_region
-        WHERE zoom_level = $1
-        ${boundingBoxQuery}
-        GROUP BY region_id, centroid, type_id`,
-        values: [req.query['zoom_level']]
-      };
-      */
-
-    } else if ([12, 13, 14, 15].includes(this.zoomLevel) && !this.mapName) {
-
-      console.log('Using cluster cache from zoom level 14  for zoom level ' + this.zoomLevel);
-      sql = `
-            /* case4 */
-            SELECT 'cluster' as type,
-             St_asgeojson(location) centroid, count
-             FROM clusters
-             WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
-      this.query = {
-        text: sql,
-        values: [],
-      }
-
-    } else {
-
-      boundingBoxQuery = "";
-      if( this.bounds ) {
-        boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
-      }
-
-      this.query = {
-        text: `
-        /* case1 */
-        SELECT 'cluster' AS type,
-        region_id id, ST_ASGeoJson(centroid) centroid,
-        type_id as region_type,
-        count(id)
-        FROM active_tree_region tree_region
-        WHERE zoom_level = $1
-        ${this.treeIds && this.treeIds.length > 0 ?
-          "and tree_region.tree_id in(" + this.treeIds.join(",") + ")"
-          :
-          ""
+        if(treeCount > 2000){
+          this.sql = new SQLCase1();
+          this.sql.addFilterByUserId(this.userid);
+          this.sql.setZoomLevel(this.zoomLevel);
+          this.sql.setBounds(this.bounds);
+        }else{
+          this.sql = new SQLCase3();
+          this.sql.setClusterRadius(this.clusterRadius);
+          this.sql.addFilterByUserid(this.userid);
+          this.sql.setBounds(this.bounds);
         }
-        ${boundingBoxQuery}
-        GROUP BY region_id, centroid, type_id`,
-        values: [this.zoomLevel]
-      };
+      }
+    }else if(this.wallet){
+      /*
+       * wallet map mode
+       */
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.setBounds(this.bounds);
+        this.sql.addFilterByWallet(this.wallet);
+      }else{
+        this.sql = new SQLCase3();
+        this.sql.setClusterRadius(this.clusterRadius);
+        this.sql.addFilterByWallet(this.wallet);
+        this.sql.setBounds(this.bounds);
+      }
+    }else if(this.mapName){
+      /*
+       * Organization map mode
+       */
+      let treeIds = await this.getTreesUnderOrg(this.mapName);
+      
+      /*
+       * If no trees in this org, then build a case that filter out all trees!
+       */
+      if(treeIds.length === 0){
+        treeIds = [-1]; //this is impossible to match a tree which id is -1
+      }
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.addTreesFilter(treeIds);
+        this.sql.setBounds(this.bounds);
+      }else{
+        this.sql = new SQLCase1();
+        this.sql.addTreesFilter(treeIds);
+        this.sql.setBounds(this.bounds);
+        this.sql.setZoomLevel(this.zoomLevel);
+      }
 
+    }else{
+      /*
+       * Normal map mode
+       */
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.addTreeFilter(this.treeid);
+      } else if ([12, 13, 14, 15].includes(this.zoomLevel)) {
+        this.sql = new SQLCase4();
+        this.sql.setBounds(this.bounds)
+      }else{
+        this.sql = new SQLCase1();
+        this.sql.setBounds(this.bounds)
+        this.sql.setZoomLevel(this.zoomLevel);
+      }
     }
-    //console.log("query:", JSON.stringify(this.query, undefined, 2));
-    console.log("the query:", this.query);
-    return this.query;
+    return;
+
+//    this.token = settings.token;
+//    this.flavor = settings.flavor;
+//    this.treeid = settings.treeid;
+//    this.clusterRadius = parseFloat(settings.clusterRadius);
+//    this.treeIds = [];
+//    if(this.mapName){
+//      console.log("try to get the trees in organization");
+//      const sql = 
+//        `
+//          select id from trees where 
+//          planter_id in (
+//            select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
+//              (select id from entity where map_name = '${this.mapName}')
+//            ))
+//          )
+//          or 
+//          trees.planting_organization_id  in (
+//          select entity_id from getEntityRelationshipChildren(
+//              (select id from entity where map_name = '${this.mapName}')
+//          )
+//          )
+//          `;
+//      const query = {
+//        text: sql,
+//        values: []
+//      };
+//      const r = await this.pool.query(query);
+//      console.log("trees:", r.rows.length);
+//      r.rows.forEach(e => this.treeIds.push(e.id) );
+//      
+//      /*
+//       * If no trees in this org, then build a case that filter out all trees!
+//       */
+//      if(this.treeIds.length === 0){
+//        this.treeIds = [-1]; //this is impossible to match a tree which id is -1
+//      }
+//    }
+
+  }
+
+  async getQuery(){
+    return this.sql.getQuery();
+//    if(this.sql){
+//      this.query = this.sql.getQuery();
+//      return this.query;
+//    }
+//    let select = '';
+//    let join = '';
+//    let joinCriteria = '';
+//    let filter = '';
+//    let subset = false;
+//    let treeCount = 0;
+//    if (this.token) {
+//      join = "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + this.token + "'";
+//      subset = true;
+//    } else if (this.flavor) {
+//      join = "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
+//      joinCriteria = "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + this.flavor + "'";
+//      subset = true;
+//    } else if(this.treeid) {
+//      filter = 'AND trees.id = ' + this.treeid + ' '
+//  //    if(treeIds && treeIds.length > 0){
+//  //      filter += 'AND trees.id in (' + treeIds.join(',') + ') '
+//  //    }
+//      subset = true;
+//    } else if(this.userid) {
+//      //count the trees first
+//      const result = await this.pool.query({
+//        text: `select count(*) as count from trees where planter_id = ${this.userid}`,
+//        values:[]
+//      });
+//      treeCount = result.rows[0].count;
+//      parseInt(treeCount);
+//
+//      filter = 'AND trees.planter_id = ' + this.userid + ' '
+//      subset = true;
+//    } else if(this.wallet) {
+//      select = ', token.uuid AS token_uuid '
+//      join = 'INNER JOIN token ON token.tree_id = trees.id'
+//      join += ' INNER JOIN entity ON entity.id = token.entity_id'
+//      filter = "AND entity.wallet = '" + this.wallet + "'"
+//      subset = true
+//    }
+//
+//    let boundingBoxQuery = '';
+//    let clusterBoundingBoxQuery = '';
+//    if (this.bounds) {
+//      boundingBoxQuery = 'AND trees.estimated_geometric_location && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
+//      clusterBoundingBoxQuery = 'AND location && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
+//      console.log(this.bounds);
+//    }
+//
+//    var sql;
+//
+//    if (this.zoomLevel > 15 || this.treeid != null ) {
+//
+//      sql = `
+//      /* case2 */
+//      SELECT DISTINCT ON(trees.id)
+//      'point' AS type,
+//       trees.*, planter.first_name as first_name, planter.last_name as last_name,
+//      planter.image_url as user_image_url `
+//      + select + `
+//      FROM trees `
+//      + join + `
+//      INNER JOIN planter
+//      ON planter.id = trees.planter_id
+//      LEFT JOIN note_trees
+//      ON note_trees.tree_id = trees.id
+//      LEFT JOIN notes
+//      ON notes.id = note_trees.note_id
+//      WHERE active = true ` + boundingBoxQuery + filter + joinCriteria + 
+//      `${this.treeIds && this.treeIds.length > 0 ?
+//        " and trees.id in(" + this.treeIds.join(",") + ") "
+//        :
+//        " "
+//      }`
+//      ;
+//      console.log(sql);
+//
+//      this.query = {
+//        text: sql,
+//        values: [],
+//      };
+//    } else if (subset) {
+//      if(this.userid && treeCount > 2000){
+//        console.log("Too many tress %d for userid, use active tree region", treeCount);
+//        this.query = {
+//          text: `
+//            /* case5 */
+//            select
+//              'cluster' as type,
+//              region_id id,
+//              ST_ASGeoJson(centroid) centroid,
+//              type_id as region_type,
+//              count(tree_region.id)
+//            from
+//              active_tree_region tree_region
+//            join trees on
+//              tree_region.tree_id = trees.id
+//            where
+//              zoom_level = $1
+//              and planter_id = ${this.userid}
+//            group by
+//              region_id,
+//              centroid,
+//              type_id
+//              `,
+//          values: [this.zoomLevel]
+//        };
+//      }else{
+//        console.log('Calculating clusters directly');
+//        this.query = {
+//          text: `
+//          /* case3 */
+//          SELECT 'cluster'                                           AS type,
+//          St_asgeojson(St_centroid(clustered_locations))                 centroid,
+//          St_numgeometries(clustered_locations)                          count
+//          FROM   (
+//          SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
+//          FROM   trees ${join}
+//          WHERE  active = true ${boundingBoxQuery} ${filter} ${joinCriteria}  ) clusters`,
+//          values: [this.clusterRadius]
+//        };
+//      }
+//
+//
+//      /*
+//      var boundingBoxQuery = "";
+//      if( bounds ) {
+//        boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + bounds + ', 4326) ';
+//      }
+//      query = {
+//        text: `SELECT 'cluster' AS type,
+//        region_id id, ST_ASGeoJson(centroid) centroid,
+//        type_id as region_type,
+//        count(id)
+//        FROM active_tree_region tree_region
+//        WHERE zoom_level = $1
+//        ${boundingBoxQuery}
+//        GROUP BY region_id, centroid, type_id`,
+//        values: [req.query['zoom_level']]
+//      };
+//      */
+//
+//    } else if ([12, 13, 14, 15].includes(this.zoomLevel) && !this.mapName) {
+//
+//      console.log('Using cluster cache from zoom level 14  for zoom level ' + this.zoomLevel);
+//      sql = `
+//            /* case4 */
+//            SELECT 'cluster' as type,
+//             St_asgeojson(location) centroid, count
+//             FROM clusters
+//             WHERE zoom_level = 14 ${clusterBoundingBoxQuery}`
+//      this.query = {
+//        text: sql,
+//        values: [],
+//      }
+//
+//    } else {
+//
+//      boundingBoxQuery = "";
+//      if( this.bounds ) {
+//        boundingBoxQuery = ' AND centroid && ST_MakeEnvelope(' + this.bounds + ', 4326) ';
+//      }
+//
+//      this.query = {
+//        text: `
+//        /* case1 */
+//        SELECT 'cluster' AS type,
+//        region_id id, ST_ASGeoJson(centroid) centroid,
+//        type_id as region_type,
+//        count(id)
+//        FROM active_tree_region tree_region
+//        WHERE zoom_level = $1
+//        ${this.treeIds && this.treeIds.length > 0 ?
+//          "and tree_region.tree_id in(" + this.treeIds.join(",") + ")"
+//          :
+//          ""
+//        }
+//        ${boundingBoxQuery}
+//        GROUP BY region_id, centroid, type_id`,
+//        values: [this.zoomLevel]
+//      };
+//
+//    }
+//    //console.log("query:", JSON.stringify(this.query, undefined, 2));
+//    console.log("the query:", this.query);
+//    return this.query;
   }
 
   async getZoomTargetQuery(){
@@ -331,6 +416,34 @@ class Map{
       zoomTargets = result.rows;
     }
     return zoomTargets;
+  }
+  
+  async getTreesUnderOrg(mapName){
+    console.log("try to get the trees in organization");
+    const sql = 
+      `
+        select id from trees where 
+        planter_id in (
+          select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
+            (select id from entity where map_name = '${mapName}')
+          ))
+        )
+        or 
+        trees.planting_organization_id  in (
+        select entity_id from getEntityRelationshipChildren(
+            (select id from entity where map_name = '${mapName}')
+        )
+        )
+        `;
+    const query = {
+      text: sql,
+      values: []
+    };
+    const r = await this.pool.query(query);
+    console.log("trees:", r.rows.length);
+    let treeIds = [];
+    r.rows.forEach(e => treeIds.push(e.id) );
+    return treeIds;
   }
 }
 
