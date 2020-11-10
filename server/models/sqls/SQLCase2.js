@@ -49,7 +49,14 @@ class SQLCase2{
     return "";
   }
 
+  check(){
+    if(!this.bounds && !this.treeid && !this.treeIds && !this.userId){
+      throw new Error("please narrow down the data set");
+    }
+  }
+
   getQuery(){
+    this.check();
     let sql = `
       /* sql case2 */
       SELECT DISTINCT ON(trees.id)

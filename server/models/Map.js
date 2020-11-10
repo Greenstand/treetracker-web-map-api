@@ -97,7 +97,7 @@ class Map{
        */
       if(this.zoomLevel > 15){
         this.sql = new SQLCase2();
-        this.sql.addTreeFilter(this.treeid);
+        this.sql.setBounds(this.bounds);
       } else if ([12, 13, 14, 15].includes(this.zoomLevel)) {
         this.sql = new SQLCase4();
         this.sql.setBounds(this.bounds)

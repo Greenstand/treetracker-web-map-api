@@ -42,7 +42,7 @@ class SQLCase1{
     let result = "";
     if(this.wallet){
       result += 'INNER JOIN token ON token.tree_id = trees.id \n';
-      result += 'INNER JOIN entity ON entity.id = token.entity_id |n';
+      result += 'INNER JOIN entity ON entity.id = token.entity_id \n';
     }
     return result;
   }

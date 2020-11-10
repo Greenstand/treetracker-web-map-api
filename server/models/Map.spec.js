@@ -175,6 +175,23 @@ describe("Map", () => {
       result = await map.getZoomTargetQuery();
       expect(result).toBeUndefined();
     });
+
+    it("/trees?clusterRadius=0&zoom_level=17&bounds=-7.822425451587485,38.40904457076313,-7.840964880298422,38.40561440621655", async () => {
+      const map =new Map();
+      await map.init({
+        clusterRadius: 0,
+        zoom_level: 17,
+        bounds: "37.93124715513169,-3.2148087439778705,36.74472371763169,-3.494479867143523",
+      });
+      let result = await map.getQuery();
+      expect(result).toMatchObject({
+        text: expect.stringMatching(/case2.*estimated_geometric_location && ST_MakeEnvelope/is),
+        values: [],
+      });
+
+      result = await map.getZoomTargetQuery();
+      expect(result).toBeUndefined();
+    });
     
     it("/trees?clusterRadius=0&zoom_level=17&bounds=37.30692471435548,-3.3515417307543633,37.288385285644544,-3.3559115991882575&userid=1", async () => {
       const queryCount = jest.fn()
