@@ -32,4 +32,4 @@ const entity = {
   },
 };
 
-module.exports = entity;
+export default entity;
