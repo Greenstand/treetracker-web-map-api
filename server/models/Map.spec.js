@@ -101,7 +101,7 @@ describe("Map", () => {
       let result = await map.getQuery();
       expect(result).toMatchObject({
         //should call the new query with `join` to the tree, 
-        text: expect.stringMatching(/case2/is),
+        text: expect.stringMatching(/case2.*AND trees.id =/is),
         values: expect.anything(),
       });
       result = await map.getZoomTargetQuery();

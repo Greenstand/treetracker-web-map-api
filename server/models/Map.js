@@ -1,5 +1,6 @@
 const { Pool} = require('pg');
 const config = require('../config/config');
+const SQLCase2 = require("./sqls/SQLCase2");
 
 
 class Map{
@@ -9,6 +10,15 @@ class Map{
 
   async init(settings){
     console.debug("init map with settings:", settings);
+    this.treeid = settings.treeid;
+    if(this.treeid){
+      /*
+       * tree id map
+       */
+      this.sql = new SQLCase2();
+      this.sql.addTreeFilter(this.treeid);
+      return;
+    }
     this.clusterRadius = settings.clusterRadius;
     this.token = settings.token;
     this.flavor = settings.flavor;
@@ -56,6 +66,10 @@ class Map{
   }
 
   async getQuery(){
+    if(this.sql){
+      this.query = this.sql.getQuery();
+      return this.query;
+    }
     let select = '';
     let join = '';
     let joinCriteria = '';
