@@ -25,7 +25,7 @@ class SQLCase1{
   getFilter(){
     let result = "";
     if(this.isFilteringByUserId){
-      result += "AND planter_id = {this.userId}";
+      result += "AND planter_id = " + this.userId + " ";
     }
     if(this.treeIds && this.treeIds.length > 0){
       result += "AND tree_region.tree_id IN(" + this.treeIds.join(",") + ") ";

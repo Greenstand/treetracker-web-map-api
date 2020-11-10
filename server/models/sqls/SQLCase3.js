@@ -27,12 +27,19 @@ class SQLCase1{
     this.wallet = wallet;
   }
 
+  addFilterByFlavor(flavor){
+    this.flavor = flavor;
+  }
+
   getFilter(){
     let result = "";
     if(this.userid){
       result += 'AND trees.planter_id = ' + this.userid + ' ';
     }
     if(this.wallet) {
+      result += "AND entity.wallet = '" + this.wallet + "'"
+    }
+    if(this.flavor) {
       result += "AND entity.wallet = '" + this.wallet + "'"
     }
     return result;
@@ -44,12 +51,18 @@ class SQLCase1{
       result += 'INNER JOIN token ON token.tree_id = trees.id \n';
       result += 'INNER JOIN entity ON entity.id = token.entity_id \n';
     }
+    if(this.flavor){
+      result += "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
+    }
     return result;
   }
 
   getJoinCriteria(){
-    //TODO
-    return "";
+    let result = "";
+    if(this.flavor){
+      result += "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + this.flavor + "'";
+    }
+    return result;
   }
 
   setBounds(bounds){

@@ -251,6 +251,61 @@ describe("Map", () => {
         result = await map.getZoomTargetQuery();
         expect(result).toBeUndefined();
       });
+
+      it("{wallet:'fortest', clusterRadius:0.003, zoom_level:17}, SQL should be case 3", async () => {
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 16,
+          wallet: "fortest",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case2.*AND entity.wallet =/is),
+          values: [],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe("Flavor map cases", () => {
+
+      it("{flavor:'fortest', clusterRadius:0.05, zoom_level:10}, SQL should be case 3", async () => {
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 10,
+          flavor: "fortest",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          //should call the new query with `join` to the tree, 
+          text: expect.stringMatching(/case3.*inner join tree_attributes.*and tree_attributes.key =/is),
+          values: [0.05],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
+
+      it("{flavor:'fortest', clusterRadius:0.003, zoom_level:17}, SQL should be case 3", async () => {
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 16,
+          flavor: "fortest",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case2.*inner join tree_attributes.*and tree_attributes.key =/is),
+          values: [],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
     });
 
     describe("Org map cases", () => {

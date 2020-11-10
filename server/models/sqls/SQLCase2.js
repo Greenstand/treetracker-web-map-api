@@ -18,6 +18,14 @@ class SQLCase2{
     this.userId = userId;
   }
 
+  addFilterByWallet(wallet){
+    this.wallet = wallet;
+  }
+
+  addFilterByFlavor(flavor){
+    this.flavor = flavor;
+  }
+
   getFilter(){
     let result = "";
     if(this.treeid){
@@ -28,6 +36,12 @@ class SQLCase2{
     }
     if(this.userId){
       result += "AND trees.planter_id = " + this.userId + " \n";
+    }
+    if(this.userId){
+      result += "AND trees.planter_id = " + this.userId + " \n";
+    }
+    if(this.wallet) {
+      result += "AND entity.wallet = '" + this.wallet + "'"
     }
     return result;
   }
@@ -45,14 +59,29 @@ class SQLCase2{
   }
 
   getJoinCriteria(){
-    //TODO
-    return "";
+    let result = "";
+    if(this.flavor){
+      result += "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + this.flavor + "'";
+    }
+    return result;
   }
 
   check(){
-    if(!this.bounds && !this.treeid && !this.treeIds && !this.userId){
+    if(!this.bounds && !this.treeid && !this.treeIds && !this.userId && !this.wallet && !this.flavor){
       throw new Error("please narrow down the data set");
     }
+  }
+
+  getJoin(){
+    let result = "";
+    if(this.wallet){
+      result += 'INNER JOIN token ON token.tree_id = trees.id \n';
+      result += 'INNER JOIN entity ON entity.id = token.entity_id \n';
+    }
+    if(this.flavor){
+      result += "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
+    }
+    return result;
   }
 
   getQuery(){
@@ -64,8 +93,8 @@ class SQLCase2{
        trees.*, planter.first_name as first_name, planter.last_name as last_name,
       planter.image_url as user_image_url `
       + /*select + */ `
-      FROM trees `
-      + /*join +*/ `
+      FROM trees 
+      ${this.getJoin()}
       INNER JOIN planter
       ON planter.id = trees.planter_id
       LEFT JOIN note_trees
