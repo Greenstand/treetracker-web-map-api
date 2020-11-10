@@ -172,21 +172,20 @@ class Map{
               centroid,
               type_id
               `,
-          values: [this.zoom_level]
+          values: [this.zoomLevel]
         };
       }else{
         console.log('Calculating clusters directly');
-        sql = `
+        this.query = {
+          text: `
           /* case3 */
           SELECT 'cluster'                                           AS type,
-           St_asgeojson(St_centroid(clustered_locations))                 centroid,
-           St_numgeometries(clustered_locations)                          count
+          St_asgeojson(St_centroid(clustered_locations))                 centroid,
+          St_numgeometries(clustered_locations)                          count
           FROM   (
-           SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
-           FROM   trees ` + join + `
-           WHERE  active = true ` + boundingBoxQuery + filter + joinCriteria + ` ) clusters`;
-        this.query = {
-          text: sql,
+          SELECT Unnest(St_clusterwithin(estimated_geometric_location, $1)) clustered_locations
+          FROM   trees ${join}
+          WHERE  active = true ${boundingBoxQuery} ${filter} ${joinCriteria}  ) clusters`,
           values: [this.clusterRadius]
         };
       }
@@ -251,7 +250,8 @@ class Map{
       };
 
     }
-    console.log("query:", JSON.stringify(this.query, undefined, 2));
+    //console.log("query:", JSON.stringify(this.query, undefined, 2));
+    console.log("the query:", this.query);
     return this.query;
   }
 
@@ -307,7 +307,7 @@ class Map{
                 ORDER BY region.id, total DESC`,
         values: [this.zoomLevel, this.zoomLevel + 2]
       }
-      console.log(zoomTargetsQuery);
+      console.log("zoom target query:", zoomTargetsQuery);
       return zoomTargetsQuery;
     }else{
       return;
