@@ -21,6 +21,7 @@ class Map{
     this.bounds = settings.bounds;
     this.wallet = settings.wallet;
     this.flavor = settings.flavor;
+    this.treeIds = [];
     if(this.treeid){
       /*
        * Single tree map mode
@@ -87,21 +88,21 @@ class Map{
       /*
        * Organization map mode
        */
-      let treeIds = await this.getTreesUnderOrg(this.mapName);
+      this.treeIds = await this.getTreesUnderOrg(this.mapName);
       
       /*
        * If no trees in this org, then build a case that filter out all trees!
        */
-      if(treeIds.length === 0){
-        treeIds = [-1]; //this is impossible to match a tree which id is -1
+      if(this.treeIds.length === 0){
+        this.treeIds = [-1]; //this is impossible to match a tree which id is -1
       }
       if(this.zoomLevel > 15){
         this.sql = new SQLCase2();
-        this.sql.addTreesFilter(treeIds);
+        this.sql.addTreesFilter(this.treeIds);
         this.sql.setBounds(this.bounds);
       }else{
         this.sql = new SQLCase1();
-        this.sql.addTreesFilter(treeIds);
+        this.sql.addTreesFilter(this.treeIds);
         this.sql.setBounds(this.bounds);
         this.sql.setZoomLevel(this.zoomLevel);
       }

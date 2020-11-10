@@ -310,6 +310,31 @@ describe("Map", () => {
 
     describe("Org map cases", () => {
 
+      it("mapName case0: /trees?clusterRadius=0.05&zoom_level=3&map_name=freetown", async () => {
+        const queryOrg = jest.fn()
+          .mockResolvedValue({
+            rows: [{id:1}],
+          });
+        query.mockImplementationOnce(queryOrg);
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 3,
+          map_name: "freetown",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case1.*tree_region.tree_id in/is),
+          values: [3],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case6.*and active_tree_region.tree_id IN/is),
+          values: [3, 3+2],
+        });
+      });
+
       it("mapName case1: /trees?clusterRadius=0.05&zoom_level=10&map_name=freetown", async () => {
         const queryOrg = jest.fn()
           .mockResolvedValue({
