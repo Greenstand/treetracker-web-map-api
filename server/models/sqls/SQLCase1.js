@@ -15,11 +15,11 @@ class SQLCase1{
   }
 
   getJoin(){
+    let result = "";
     if(this.isFilteringByUserId){
-      return "JOIN trees ON tree_region.tree_id = trees.id";
-    }else{
-      return "";
+      result += "JOIN trees ON tree_region.tree_id = trees.id";
     }
+    return result;
   }
 
   getFilter(){
@@ -29,6 +29,35 @@ class SQLCase1{
     }
     if(this.treeIds && this.treeIds.length > 0){
       result += "AND tree_region.tree_id IN(" + this.treeIds.join(",") + ") ";
+    }
+    if(this.mapName){
+      result += `
+        AND tree_region.tree_id IN(
+          select distinct * from ( 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          union all 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          ) t1
+        )
+      `;
     }
     return result;
   }
@@ -56,8 +85,8 @@ class SQLCase1{
     return result;
   }
 
-  addTreesFilter(treeIds){
-    this.treeIds = treeIds;
+  addMapNameFilter(mapName){
+    this.mapName = mapName;
   }
 
   getQuery(){
