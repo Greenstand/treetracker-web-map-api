@@ -30,6 +30,7 @@ class Map{
        */
       this.sql = new SQLCase2();
       this.sql.addTreeFilter(this.treeid);
+
     }else if(this.userid){
       /*
        * User map mode
@@ -63,6 +64,7 @@ class Map{
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
+
     }else if(this.wallet){
       /*
        * wallet map mode
@@ -82,6 +84,7 @@ class Map{
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
+
     }else if(this.flavor){
       /*
        * flavor map mode
@@ -101,6 +104,7 @@ class Map{
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
+
     }else if(this.token){
       /*
        * Token map mode
@@ -120,18 +124,8 @@ class Map{
         this.sqlZoomTarget.setBounds(this.bounds);
         this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
       }
+
     }else if(this.mapName){
-//      /*
-//       * Organization map mode
-//       */
-//      this.treeIds = await this.getTreesUnderOrg(this.mapName);
-//      
-//      /*
-//       * If no trees in this org, then build a case that filter out all trees!
-//       */
-//      if(this.treeIds.length === 0){
-//        this.treeIds = [-1]; //this is impossible to match a tree which id is -1
-//      }
       if(this.zoomLevel > 15){
         this.sql = new SQLCase2();
         this.sql.addFilterByMapName(this.mapName);
@@ -208,35 +202,6 @@ class Map{
     return zoomTargets;
   }
   
-  async getTreesUnderOrg(mapName){
-    console.log("try to get the trees in organization");
-    const sql = 
-      `
-        select id from trees where 
-        planter_id in (
-          select id from planter where organization_id in (select entity_id from getEntityRelationshipChildren(
-            (select id from entity where map_name = '${mapName}')
-          ))
-        )
-        or 
-        trees.planting_organization_id  in (
-        select entity_id from getEntityRelationshipChildren(
-            (select id from entity where map_name = '${mapName}')
-        )
-        )
-        `;
-    const query = {
-      text: sql,
-      values: []
-    };
-    const beginTime = Date.now();
-    const r = await this.pool.query(query);
-    console.log("count trees took time:%d ms", Date.now() - beginTime);
-    console.log("trees:", r.rows.length);
-    let treeIds = [];
-    r.rows.forEach(e => treeIds.push(e.id) );
-    return treeIds;
-  }
 }
 
 module.exports = Map;
