@@ -133,11 +133,6 @@ class SQLCase2{
       ${this.getFilter()}
       ${this.getJoinCriteria()}
     ` 
-//      `${this.treeIds && this.treeIds.length > 0 ?
-//          " and trees.id in(" + this.treeIds.join(",") + ") "
-//          :
-//          " "
-//      }`
     ;
     console.log(sql);
 
