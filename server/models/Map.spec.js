@@ -348,7 +348,7 @@ describe("Map", () => {
 
     describe("Org map cases", () => {
 
-      it.only("mapName case0: /trees?clusterRadius=0.05&zoom_level=3&map_name=freetown", async () => {
+      it("mapName case0: /trees?clusterRadius=0.05&zoom_level=3&map_name=freetown", async () => {
         const queryOrg = jest.fn()
           .mockResolvedValue({
             rows: [{id:1}],
@@ -362,13 +362,13 @@ describe("Map", () => {
         });
         let result = await map.getQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case1.*map_name =/is),
+          text: expect.stringMatching(/case1.*tree_region.tree_id in.*map_name =/is),
           values: [3],
         });
 
         result = await map.getZoomTargetQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case6.*map_name =/is),
+          text: expect.stringMatching(/case6.*tree_region.tree_id in.*map_name =/is),
           values: [3, 3+2],
         });
       });
@@ -387,7 +387,7 @@ describe("Map", () => {
         });
         let result = await map.getQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case1.*tree_region.tree_id in/is),
+          text: expect.stringMatching(/case1.*tree_region.tree_id in.*map_name =/is),
           values: [10],
         });
 
@@ -410,7 +410,7 @@ describe("Map", () => {
         });
         let result = await map.getQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case1.*tree_region.tree_id in/is),
+          text: expect.stringMatching(/case1.*tree_region.tree_id in.*map_name =/is),
           values: [14],
         });
 
@@ -433,7 +433,7 @@ describe("Map", () => {
         });
         let result = await map.getQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case2.*location && ST_MakeEnvelope.*trees.id in/is),
+          text: expect.stringMatching(/case2.*location && ST_MakeEnvelope.*trees.id in.*map_name =/is),
           values: [],
         });
 

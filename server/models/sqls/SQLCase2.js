@@ -10,8 +10,8 @@ class SQLCase2{
     this.treeid = treeid;
   }
 
-  addTreesFilter(treeIds){
-    this.treeIds = treeIds;
+  addTreesFilter(){
+    throw new Error("dedicated");
   }
 
   addFilterByUserId(userId){
@@ -30,16 +30,43 @@ class SQLCase2{
     this.token = token;
   }
 
+  addFilterByMapName(mapName){
+    this.mapName = mapName;
+  }
+
   getFilter(){
     let result = "";
     if(this.treeid){
       result += 'AND trees.id = ' + this.treeid + ' \n';
     }
-    if(this.treeIds && this.treeIds.length > 0){
-      result += "AND trees.id IN(" + this.treeIds.join(",") + ") ";
-    }
-    if(this.userId){
-      result += "AND trees.planter_id = " + this.userId + " \n";
+    if(this.mapName){
+      result += `
+        AND trees.id IN(
+          select distinct * from ( 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          union all 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          ) t1
+        )
+      `;
     }
     if(this.userId){
       result += "AND trees.planter_id = " + this.userId + " \n";
