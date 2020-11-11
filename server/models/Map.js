@@ -188,7 +188,9 @@ class Map{
   async getPoints(){
     const query = await this.getQuery();
     console.log(query);
+    const beginTime = Date.now();
     const data = await this.pool.query(query);
+    console.log("get points took time:%d ms", Date.now() - beginTime);
     console.log(data.rows.slice(0,2))
     return data.rows;
   }
@@ -197,7 +199,9 @@ class Map{
     const zoomTargetsQuery = await this.getZoomTargetQuery();
     let zoomTargets;
     if(zoomTargetsQuery){
+      const beginTime = Date.now();
       const result = await this.pool.query(zoomTargetsQuery);
+      console.log("get zoom target took time:%d ms", Date.now() - beginTime);
       console.log('got zoom targets data');
       zoomTargets = result.rows;
     }
@@ -225,7 +229,9 @@ class Map{
       text: sql,
       values: []
     };
+    const beginTime = Date.now();
     const r = await this.pool.query(query);
+    console.log("count trees took time:%d ms", Date.now() - beginTime);
     console.log("trees:", r.rows.length);
     let treeIds = [];
     r.rows.forEach(e => treeIds.push(e.id) );

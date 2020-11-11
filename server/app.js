@@ -31,10 +31,12 @@ if(process.env.NODE_ENV == 'dev'){
 //app.get(/(\/api\/web)?\/trees/, function (req, res) {
 app.get("/trees", async function (req, res) {
   const map = new Map();
+  const beginTime = Date.now();
   await map.init(req.query);
   const response = {};
   response.data = await map.getPoints();
   response.zoomTargets = await map.getZoomTargets();
+  console.log("/trees took time:%d ms", Date.now() - beginTime);
   res.status(200).json(response);
 });
 
