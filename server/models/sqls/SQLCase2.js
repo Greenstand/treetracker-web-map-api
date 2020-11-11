@@ -26,6 +26,10 @@ class SQLCase2{
     this.flavor = flavor;
   }
 
+  addFilterByToken(token){
+    this.token = token;
+  }
+
   getFilter(){
     let result = "";
     if(this.treeid){
@@ -63,13 +67,10 @@ class SQLCase2{
     if(this.flavor){
       result += "AND tree_attributes.key = 'app_flavor' AND tree_attributes.value = '" + this.flavor + "'";
     }
-    return result;
-  }
-
-  check(){
-    if(!this.bounds && !this.treeid && !this.treeIds && !this.userId && !this.wallet && !this.flavor){
-      throw new Error("please narrow down the data set");
+    if(this.token){
+      result += "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + this.token + "'";
     }
+    return result;
   }
 
   getJoin(){
@@ -85,7 +86,6 @@ class SQLCase2{
   }
 
   getQuery(){
-    this.check();
     let sql = `
       /* sql case2 */
       SELECT DISTINCT ON(trees.id)

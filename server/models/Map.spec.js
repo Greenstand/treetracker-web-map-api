@@ -270,6 +270,44 @@ describe("Map", () => {
       });
     });
 
+    describe("Token map cases", () => {
+
+      it("{token:'fortest', clusterRadius:0.05, zoom_level:10}, SQL should be case 3", async () => {
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 10,
+          token: "fortest",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          //should call the new query with `join` to the tree, 
+          text: expect.stringMatching(/case3.*INNER JOIN certificates/is),
+          values: [0.05],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
+
+      it("{token:'fortest', clusterRadius:0.003, zoom_level:17}, SQL should be case 3", async () => {
+        const map =new Map();
+        await map.init({
+          clusterRadius: 0.05,
+          zoom_level: 16,
+          token: "fortest",
+        });
+        let result = await map.getQuery();
+        expect(result).toMatchObject({
+          text: expect.stringMatching(/case2.*INNER JOIN certificates/is),
+          values: [],
+        });
+
+        result = await map.getZoomTargetQuery();
+        expect(result).toBeUndefined();
+      });
+    });
+
     describe("Flavor map cases", () => {
 
       it("{flavor:'fortest', clusterRadius:0.05, zoom_level:10}, SQL should be case 3", async () => {

@@ -22,6 +22,7 @@ class Map{
     this.bounds = settings.bounds;
     this.wallet = settings.wallet;
     this.flavor = settings.flavor;
+    this.token = settings.token;
     this.treeIds = [];
     if(this.treeid){
       /*
@@ -93,6 +94,25 @@ class Map{
         this.sql = new SQLCase3();
         this.sql.setClusterRadius(this.clusterRadius);
         this.sql.addFilterByFlavor(this.flavor);
+        this.sql.setBounds(this.bounds);
+      }
+      if(this.zoomLevel <= 9){
+        this.sqlZoomTarget = new SQLZoomTargetCase1();
+        this.sqlZoomTarget.setBounds(this.bounds);
+        this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
+      }
+    }else if(this.token){
+      /*
+       * Token map mode
+       */
+      if(this.zoomLevel > 15){
+        this.sql = new SQLCase2();
+        this.sql.setBounds(this.bounds);
+        this.sql.addFilterByToken(this.token);
+      }else{
+        this.sql = new SQLCase3();
+        this.sql.setClusterRadius(this.clusterRadius);
+        this.sql.addFilterByToken(this.token);
         this.sql.setBounds(this.bounds);
       }
       if(this.zoomLevel <= 9){

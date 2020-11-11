@@ -31,15 +31,16 @@ class SQLCase1{
     this.flavor = flavor;
   }
 
+  addFilterByToken(token){
+    this.token = token;
+  }
+
   getFilter(){
     let result = "";
     if(this.userid){
       result += 'AND trees.planter_id = ' + this.userid + ' ';
     }
     if(this.wallet) {
-      result += "AND entity.wallet = '" + this.wallet + "'"
-    }
-    if(this.flavor) {
       result += "AND entity.wallet = '" + this.wallet + "'"
     }
     return result;
@@ -53,6 +54,9 @@ class SQLCase1{
     }
     if(this.flavor){
       result += "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
+    }
+    if(this.token){
+      result += "INNER JOIN certificates ON trees.certificate_id = certificates.id AND certificates.token = '" + this.token + "'";
     }
     return result;
   }
