@@ -9,7 +9,7 @@ describe("SidePanel", () => {
   });
 
 
-  it.only("SidePanel", () => {
+  it("SidePanel", () => {
     const trees = [{
       approved: false,
       first_name: "Dadior",
