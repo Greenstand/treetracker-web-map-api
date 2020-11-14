@@ -262,14 +262,11 @@ function SidePanel(props){
     if(tree){
       setTreePictureLoaded(false);
     }
-  }, [props.tree]);
-
-  React.useEffect(() => {
     axios.get(`${treetrackerApiUrl}/tree?tree_id=${tree.id}`)
       .then(r => {
         setTreeDetail(r.data);
       });
-  }, []);
+  }, [props.tree]);
 
   if(tree === undefined){
     return null;
@@ -354,6 +351,7 @@ function SidePanel(props){
                     </Typography>
                   </Grid>
                 </Grid>
+                }
                 {treeDetail?.attachedWallet &&
                   <Grid container className={classes.verify} >
                     <Grid item className={classes.icon} >

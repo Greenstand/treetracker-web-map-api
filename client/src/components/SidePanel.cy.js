@@ -30,8 +30,14 @@ describe("SidePanel", () => {
     cy.server();
     cy.route({
       method: "GET",
-      url: '*',
+      url: /.*tree.*1/i,
       response: trees[0],
+      delay: 1000,
+    });
+    cy.route({
+      method: "GET",
+      url: /.*tree.*2/i,
+      response: trees[1],
       delay: 1000,
     });
 
