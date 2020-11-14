@@ -324,23 +324,22 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={5} className={classes.avatarPaper} >
-                  {treeDetail?.user_image_url &&
+                  {treeDetail && treeDetail.user_image_url?
                     <Avatar id="planter-img" className={`${classes.avatar}`} src={treeDetail.user_image_url.startsWith("http")?treeDetail.user_image_url:`http://${treeDetail.user_image_url}`} />
-                  }
-                  {!treeDetail?.user_image_url &&
+                  :
                     <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
                   }
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >
                 <Typography variant="h5" >
-                  {treeDetail && `${treeDetail?.first_name || ""} ${treeDetail?.last_name?.slice(0, 1) || ""}`}
+                  {treeDetail && `${treeDetail.first_name || ""} ${treeDetail.last_name?.slice(0, 1) || ""}`}
                 </Typography>
               </Grid>
             </Grid>
             <Grid container justify="space-between" alignItems="center" >
               <Grid item>
-                {tree?.approved &&
+                {tree.approved &&
                 <Grid container className={classes.verify} >
                   <Grid item className={classes.icon} >
                     <Check style={{ color: "#abe38f"}} />
@@ -352,7 +351,7 @@ function SidePanel(props){
                   </Grid>
                 </Grid>
                 }
-                {treeDetail?.attachedWallet &&
+                {treeDetail && treeDetail.attachedWallet &&
                   <Grid container className={classes.verify} >
                     <Grid item className={classes.icon} >
                       <Check style={{ color: "#abe38f"}} />
@@ -366,14 +365,14 @@ function SidePanel(props){
                 }
               </Grid>
               <Grid item>
-                {tree?.id &&
+                {tree.id &&
                   <Share
                     shareUrl={`https://treetracker.org/?treeid=${tree.id}`}
                   />
                 }
               </Grid>
             </Grid>
-            {treeDetail?.attachedWallet &&
+            {treeDetail && treeDetail.attachedWallet &&
               <Grid container className={classes.verify} >
                 <Grid item className={classes.icon} >
                   <Check style={{ color: "#abe38f"}} />
@@ -397,7 +396,7 @@ function SidePanel(props){
               </Grid>
               <Grid item>
                 <Typography className={classes.item} variant="body1" >
-                  Tree ID: #{tree?.id}
+                  Tree ID: #{tree.id}
                 </Typography>
               </Grid>
             </Grid>
@@ -422,7 +421,7 @@ function SidePanel(props){
                     </Typography>
                   </Grid>
                 </Grid>
-                {treeDetail?.attachedWallet &&
+                {treeDetail.attachedWallet &&
                   <>
                   <Grid container className={classes.infoItem} >
                     <Grid item className={classes.detailIconBox}>
@@ -430,7 +429,7 @@ function SidePanel(props){
                     </Grid>
                     <Grid item>
                       <Typography className={classes.item} variant="body1" >
-                        Impact Owner: @{treeDetail?.attachedWallet}
+                        Impact Owner: @{treeDetail.attachedWallet}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -440,7 +439,7 @@ function SidePanel(props){
                     </Grid>
                     <Grid item>
                       <Typography className={classes.item} variant="body1" >
-                        Token: {treeDetail?.token_uuid}
+                        Token: {treeDetail.token_uuid}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -452,16 +451,16 @@ function SidePanel(props){
                   </Grid>
                   <Grid item>
                     <Typography className={classes.item} variant="body1" >
-                      Lat: {treeDetail?.lat || NONE}
+                      Lat: {treeDetail.lat || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Lon: {treeDetail?.lon || NONE}
+                      Lon: {treeDetail.lon || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Altitude: {treeDetail?.domain_specific_data?._coordinates_altitude || NONE}
+                      Altitude: {treeDetail.domain_specific_data._coordinates_altitude || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      GPS Accuracy: {treeDetail?.domain_specific_data?._coordinates_precision || NONE}
+                      GPS Accuracy: {treeDetail.domain_specific_data._coordinates_precision || NONE}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -473,7 +472,7 @@ function SidePanel(props){
                   </Grid>
                   <Grid item>
                     <Typography className={classes.item} variant="body1" >
-                      Species: {treeDetail?.domain_specific_data?.tree_species || NONE}
+                      Species: {treeDetail.domain_specific_data.tree_species || NONE}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -485,22 +484,22 @@ function SidePanel(props){
                   </Grid>
                   <Grid item>
                     <Typography className={classes.item} variant="body1" >
-                      DBH: {treeDetail?.domain_specific_data && treeDetail.domain_specific_data["diameter (cm)"] || NONE}
+                      DBH: {treeDetail.domain_specific_data && treeDetail.domain_specific_data["diameter (cm)"] || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Tree Healthy: {treeDetail?.domain_specific_data?.tree_health || NONE}
+                      Tree Healthy: {treeDetail.domain_specific_data.tree_health || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Proximity to: {treeDetail?.domain_specific_data && treeDetail.domain_specific_data["threat to"] || NONE}
+                      Proximity to: {treeDetail.domain_specific_data && treeDetail.domain_specific_data["threat to"] || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Base Around Tree: {treeDetail?.domain_specific_data?.tree_base || NONE}
+                      Base Around Tree: {treeDetail.domain_specific_data.tree_base || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Site: {treeDetail?.domain_specific_data?.tree_site || NONE}
+                      Site: {treeDetail.domain_specific_data.tree_site || NONE}
                     </Typography>
                     <Typography className={classes.item} variant="body1" >
-                      Functional Uses: {treeDetail?.domain_specific_data?.functional_uses || NONE}
+                      Functional Uses: {treeDetail.domain_specific_data.functional_uses || NONE}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -518,7 +517,7 @@ function SidePanel(props){
                         </Typography>
                       </Grid>
                       <Grid item>
-    {treeDetail?.images?.picture_base_url ? 
+    {treeDetail.images.picture_base_url ? 
                               <IconButton onClick={handleBasePictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
                                 <Search  />
                                 <ImageShower src={treeDetail.images.picture_base_url} title="Base picture" onClose={handleBasePictureClose} open={isBasePictureShown} className={classes.imageIcon} />
@@ -535,7 +534,7 @@ function SidePanel(props){
                         </Typography>
                       </Grid>
                       <Grid item>
-    {treeDetail?.images?.picture_leaf_url ? 
+    {treeDetail.images.picture_leaf_url ? 
                               <IconButton onClick={handleLeafPictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
                                 <Search  />
                                 <ImageShower src={treeDetail.images.picture_leaf_url} title="Leaf picture" onClose={handleLeafPictureClose} open={isLeafPictureShown} className={classes.imageIcon} />

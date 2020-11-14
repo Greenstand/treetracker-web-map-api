@@ -11,12 +11,30 @@ describe("Tree", () => {
   })
 
   it("getTree", async () => {
-    query.mockResolvedValue({
-      id: 1,
-    });
+    query
+      .mockResolvedValueOnce({
+        rows: [{
+          id: 1,
+          domain_specific_data: {},
+        }],
+      })
+      .mockResolvedValueOnce({
+        rows: [{
+            key: "key1",
+            value: "value1",
+          },{
+            key: "key2",
+            value: "value2",
+          }],
+      });
     const tree = new Tree();
     const treeDetail = await tree.getTreeById(1);
     expect(treeDetail.id).toBe(1);
+    expect(treeDetail.domain_specific_data).toMatchObject({});
+    expect(treeDetail.attributes).toMatchObject({
+      key1: "value1",
+      key2: "value2",
+    });
   });
 
 });

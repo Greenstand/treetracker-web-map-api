@@ -12,7 +12,24 @@ class Tree{
     sql.setTreeId(treeId);
     const query = await sql.getQuery();
     const result = await this.pool.query(query);
-    return result;
+    if(result.rows.length === 0){
+      throw new Error("can not find tree", treeId);
+    }
+    const treeObject = result.rows[0];
+    //attribute
+    {
+      const query = {
+        text: "select * from tree_attributes where tree_id = $1",
+        values: [treeId],
+      };
+      const attributes = await this.pool.query(query);
+      const attributeJson = {};
+      for(const r of attributes.rows){
+        attributeJson[r.key] = r.value;
+      }
+      treeObject.attributes = attributeJson;
+    }
+    return treeObject;
   }
 }
 
