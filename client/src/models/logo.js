@@ -2,7 +2,7 @@ const entity = require("./entity");
 const {parseDomain} = require("./utils");
 const {parseMapName} = require("../utils");
 
-async function getLogo(url){
+export default async function(url){
   let src = require("../images/logo_floating_map.svg");
   const m = url.match(/.*wallet=(.\S+)/);
   console.log("m:", m);
@@ -52,4 +52,3 @@ async function getLogo(url){
   return src;
 }
 
-module.exports = getLogo;

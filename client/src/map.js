@@ -4,6 +4,8 @@ import expect from "expect-runtime";
 import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
 import {theme} from "./App";
+import {parseMapName} from "./utils";
+
 const CancelToken = axios.CancelToken;
 let source;
 
@@ -417,6 +419,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         //loader.classList.remove("active");
         getApp().loaded();
         firstRender = false;
+        if (treeid != null) {
+          getApp().showPanel(points[0]);
+        }
       }
       console.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
@@ -801,7 +806,7 @@ function fitMapToBoundsForSet(data){
 var initialize = function() {
   console.log(window.location.href);
   token = getQueryStringValue("token") || null;
-  mapName = getQueryStringValue("map_name") || null;
+  mapName = getQueryStringValue("map_name") || parseMapName(window.location.hostname) || null;
   treeid = getQueryStringValue("treeid") || null;
   userid = getQueryStringValue("userid") || null;
   flavor = getQueryStringValue("flavor") || null;

@@ -30,7 +30,7 @@ import Public from "@material-ui/icons/Public";
 import InsertPhoto from "@material-ui/icons/InsertPhoto";
 import Search from "@material-ui/icons/Search";
 import ImageShower from "./ImageShower";
-
+import Share from "./Share";
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
@@ -326,14 +326,37 @@ function SidePanel(props){
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container className={classes.verify} >
-              <Grid item className={classes.icon} >
-                <Check style={{ color: "#abe38f"}} />
+            <Grid container justify="space-between" alignItems="center" >
+              <Grid item>
+                <Grid container className={classes.verify} >
+                  <Grid item className={classes.icon} >
+                    <Check style={{ color: "#abe38f"}} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1" >
+                      Tree Verified{/*TODO wallet: token issued*/}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                {tree?.attachedWallet &&
+                  <Grid container className={classes.verify} >
+                    <Grid item className={classes.icon} >
+                      <Check style={{ color: "#abe38f"}} />
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle1" >
+                        Token issued
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                }
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1" >
-                  Tree Verified{/*TODO wallet: token issued*/}
-                </Typography>
+                {tree?.id &&
+                  <Share
+                    shareUrl={`https://treetracker.org/?treeid=${tree.id}`}
+                  />
+                }
               </Grid>
             </Grid>
             {tree?.attachedWallet &&
