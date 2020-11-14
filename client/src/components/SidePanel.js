@@ -31,6 +31,7 @@ import InsertPhoto from "@material-ui/icons/InsertPhoto";
 import Search from "@material-ui/icons/Search";
 import ImageShower from "./ImageShower";
 import Share from "./Share";
+import axios from "axios";
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
@@ -255,6 +256,13 @@ function SidePanel(props){
       setTreePictureLoaded(false);
     }
   }, [props.tree]);
+
+  React.useEffect(() => {
+    axios.get("http://localhost:3000/test")
+      .then(r => {
+        console.log("!!!!!!!!!!!!!!!!!r:", r);
+      });
+  }, []);
 
   if(tree === undefined){
     return null;

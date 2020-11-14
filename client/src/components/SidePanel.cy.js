@@ -9,7 +9,14 @@ describe("SidePanel", () => {
   });
 
 
-  it("SidePanel", () => {
+  it.only("SidePanel", () => {
+    cy.server();
+    cy.route({
+      method: "GET",
+      url: '*',
+      response: [{test:"xxxxxxxxxx"}],
+      delay: 1000,
+    });
     const trees = [{
       first_name: "Dadior",
       last_name: "Chen",

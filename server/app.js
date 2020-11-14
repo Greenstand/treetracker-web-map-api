@@ -8,6 +8,7 @@ var app = express();
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 const Map = require('./models/Map');
+const Tree = require("./models/Tree");
 
 const pool = new Pool({ connectionString: config.connectionString });
 Sentry.init({ dsn: config.sentryDSN });
@@ -50,6 +51,17 @@ app.use("/entities", entity);
 //nearest API
 const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
+
+app.get("/tree", async function (req, res){
+  const tree = new Tree();
+  const treeId = req.query.tree_id;
+  if(!treeId){
+    console.warn("no tree id", treeId);
+    res.status(400).json({message:"no tree id"});
+  }
+  const treeDetail = await tree.getTreeById(treeId);
+  res.status(200).json(treeDetail);
+});
 
 ////add static files, HTML pages
 //app.use(express.static(path.join(__dirname, "../client")));
