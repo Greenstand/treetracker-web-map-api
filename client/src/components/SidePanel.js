@@ -343,6 +343,7 @@ function SidePanel(props){
             </Grid>
             <Grid container justify="space-between" alignItems="center" >
               <Grid item>
+                {tree?.approved &&
                 <Grid container className={classes.verify} >
                   <Grid item className={classes.icon} >
                     <Check style={{ color: "#abe38f"}} />

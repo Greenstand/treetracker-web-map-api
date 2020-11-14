@@ -7,11 +7,7 @@ on:
   push:
     branches:
     - master
-
-  pull_request:
-    branches:
-    - master
-
+      
 jobs: 
   build: 
     runs-on: ubuntu-latest
@@ -38,7 +34,7 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save ${{secrets.CLUSTER_NAME}}
  #     - name: Creating service in k8
  #       run: kubectl apply -f ./deploy/k8/service.yml
- #     - name: Creating deployment in k8
- #       run: kubectl apply -f ./deploy/k8/deployment.yml
+      - name: Creating deployment in k8
+        run: kubectl apply -f ./deploy/k8/deployment.yml
  #     - name: Creating ingress in k8
  #       run: kubectl apply -f ./deploy/k8/ingress.yml

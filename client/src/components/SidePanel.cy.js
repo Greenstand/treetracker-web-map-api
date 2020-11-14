@@ -11,6 +11,7 @@ describe("SidePanel", () => {
 
   it.only("SidePanel", () => {
     const trees = [{
+      approved: false,
       first_name: "Dadior",
       last_name: "Chen",
       image_url: "https://treetracker-production.nyc3.digitaloceanspaces.com/2018.11.20.12.11.07_e7a81cf4-2d37-45ee-9d5a-47bdfd7c43cc_IMG_20181120_121037_7990135604649410080.jpg",
@@ -18,6 +19,7 @@ describe("SidePanel", () => {
       id: 1,
       time_created: new Date(),
     },{
+      approved: true,
       first_name: "Ezra",
       last_name: "David",
       image_url: "https://treetracker-dev.nyc3.digitaloceanspaces.com/2018.09.07.11.04.27_3ae160d9-58f7-4373-a4c2-3b39edbacd2e_IMG_20180907_095704_764193446.jpg",
