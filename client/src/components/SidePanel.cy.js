@@ -295,7 +295,7 @@ describe("SidePanel", () => {
       );
     });
 
-    it.skip("Some data from tree_attributes table", () => {
+    it.only("Some data from tree_attributes table", () => {
       const tree = {
         approved: false,
         first_name: "Dadior",
@@ -309,6 +309,7 @@ describe("SidePanel", () => {
           height_color: "orange",
           dbh: 12,
         },
+        species_name: "Mango",
         images: {},
       };
 

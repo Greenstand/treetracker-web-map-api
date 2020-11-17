@@ -12,7 +12,15 @@ class SQLTree{
 
     return {
       text: `
-        select * from trees where id = $1
+        SELECT
+          trees.*,
+          tree_species.name AS species_name
+        FROM
+          trees
+        LEFT JOIN tree_species ON
+          trees.species_id = tree_species.id
+        WHERE
+          trees.id = $1
       `,
       values: [this.treeId],
     };

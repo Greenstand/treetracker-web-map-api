@@ -446,7 +446,7 @@ function SidePanel(props){
                   icon={Nature}
                   tooltip="Tree information"
                 >
-                    <Item title="Species" value={domainSpecificData(treeDetail, "tree_species")} />
+                    <Item title="Species" value={treeDetail.species_name || domainSpecificData(treeDetail, "tree_species")} />
                     <Item title="DBH" value={domainSpecificData(treeDetail, "diameter (cm)") || attribute(treeDetail, "dbh")} />
                     {attribute(treeDetail, "height_color") &&
                       <Grid container>
