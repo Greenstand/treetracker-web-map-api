@@ -9,7 +9,7 @@ describe("SidePanel", () => {
   });
 
 
-  it.only("SidePanel", () => {
+  it("SidePanel", () => {
     const trees = [{
       approved: false,
       first_name: "Dadior",
@@ -18,6 +18,9 @@ describe("SidePanel", () => {
       user_image_url: "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.10.18.32.42_b4fad89a-10b6-40cc-a134-0085d0e581d2_IMG_20190710_183201_8089920786231467340.jpg",
       id: 1,
       time_created: new Date(),
+      domain_specific_data: {},
+      attributes: {},
+      images: {},
     },{
       approved: true,
       first_name: "Ezra",
@@ -26,6 +29,9 @@ describe("SidePanel", () => {
       user_image_url: "https://treetracker-production.nyc3.digitaloceanspaces.com/Miti%20Aliance%20Image2.png",
       id: 2,
       time_created: new Date(),
+      domain_specific_data: {},
+      attributes: {},
+      images: {},
     }];
     cy.server();
     cy.route({
@@ -83,13 +89,27 @@ describe("SidePanel", () => {
 
   it("SidePanelEmpty", () => {
 
+    cy.server();
+    cy.route({
+      method: "GET",
+      url: /.*tree.*1/i,
+      response: {
+        first_name: "Dadior",
+        last_name: "Chen",
+        domain_specific_data: {},
+        attributes: {},
+        images: {},
+      },
+      images: {},
+      delay: 1000,
+    });
+
     function Test(){
       const [state, setState] = React.useState("none");
       const [tree, setTree] = React.useState(undefined);
       function handleClick(){
         setTree({
-          first_name: "Dadior",
-          last_name: "Chen",
+          id: 1,
         });
         setState("show");
       }
@@ -136,15 +156,28 @@ describe("SidePanel", () => {
   });
 
   it("wallet", () => {
+    cy.server();
+    cy.route({
+      method: "GET",
+      url: /.*tree.*1/i,
+      response: {
+        domain_specific_data: {},
+        attributes: {},
+        images: {},
+        attachedWallet: "Zaven",
+        first_name: "FFF",
+        last_name: "RRR",
+        token_uuid: "TESTTESTTEST",
+        approved: true,
+      },
+      images: {},
+      delay: 1000,
+    });
     mount(
     <SidePanel 
       state={"show"} 
       tree={{
-          attachedWallet: "Zaven",
           id: 1,
-          first_name: "FFF",
-          last_name: "RRR",
-          token_uuid: "TESTTESTTEST",
         }}
     />
     );
@@ -170,19 +203,31 @@ describe("SidePanel", () => {
       "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.24.10.18.09_d7af94fb-ff64-43cb-b2e7-bd38e383eb1d_IMG_20190724_100849_4516267486741498296.jpg",
     ].forEach((url, i) => {
       it(`image case ${i}`, () => {
+        cy.server();
+        cy.route({
+          method: "GET",
+          url: new RegExp(`.*tree.*${i}`),
+          response: {
+            id: i,
+            first_name: "FFF",
+            last_name: "RRR",
+            image_url: url,
+            domain_specific_data: {},
+            attributes: {},
+            images: {},
+          },
+        });
         cy.viewport(1366,768);
         mount(
           <SidePanel 
           state={"show"} 
           tree={{
-            id: 1,
-              first_name: "FFF",
-              last_name: "RRR",
-              image_url: url,
+            id: i,
           }}
           />
         );
         cy.contains("FFF");
+        cy.get(".treePictureLoading", {timeout: 30000}).should("not.exist");
       });
     });
 
@@ -195,40 +240,52 @@ describe("SidePanel", () => {
       "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.24.13.42.55_0d0c2bc4-a6a1-4521-ae05-6c7c45588443_IMG_20190724_134109_6975244402804446311.jpg",
     ].forEach((url, i) => {
       it(`avatar case ${i}`, () => {
+        cy.server();
+        cy.route({
+          method: "GET",
+          url: new RegExp(`.*tree.*${i}`),
+          response: {
+            id: i,
+            first_name: "FFF",
+            last_name: "RRR",
+            user_image_url: url,
+            domain_specific_data: {},
+            attributes: {},
+            images: {},
+          },
+        });
         mount(
           <SidePanel 
           state={"show"} 
           tree={{
-            id: 1,
-              first_name: "FFF",
-              last_name: "RRR",
-              user_image_url: url,
+            id: i,
           }}
           />
         );
         cy.contains("FFF");
+        cy.get(".treePictureLoading").should("not.exist");
       });
     });
 
   });
 
-  describe("Extra info case", () => {
+  describe.only("Extra info case", () => {
 
     it("Some data from dar... map", () => {
       const tree = JSON.parse('{"type":"point","id":385,"time_created":"+052162-03-21T19:06:36.999Z","time_updated":"+052162-03-21T19:06:36.999Z","missing":false,"priority":false,"cause_of_death_id":null,"planter_id":25877,"primary_location_id":null,"settings_id":null,"override_settings_id":null,"dead":0,"photo_id":null,"image_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913408280.jpg","certificate_id":null,"estimated_geometric_location":"0101000020E6100000C93CF20703A14340A04AE4BADD181BC0","lat":"-6.774283333","lon":"39.257905","gps_accuracy":4,"active":true,"planter_photo_url":"","planter_identifier":"","device_id":null,"sequence":null,"note":"","verified":false,"uuid":"0790f91a-0321-49da-8a30-5ba978a79f70","approved":false,"status":"planted","cluster_regions_assigned":false,"species_id":null,"planting_organization_id":null,"payment_id":null,"contract_id":null,"token_issued":false,"morphology":null,"age":null,"species":null,"capture_approval_tag":null,"rejection_reason":null,"matching_hash":null,"device_identifier":"357621080522271","images":{"picture_base_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913260124.jpg","picture_leaf_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913274073.jpg","picture_whole_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913408280.jpg"},"domain_specific_data":{"":1267,"af":"2020-03-11T10:57:47.197+03:00","__1":103,"__2":561,"__3":379,"__4":654.5,"_id":1747,"other":"","today":"2020-03-11","_index":6,"deviceid":357621080522271,"angle_top":"","other_001":"","other_002":"","simserial":8930000000000000000,"threat to":"building/structures","tree_base":"Open soil","tree_site":"public_property","coordinates":"-6.774283333333333 39.257905 1.9 4.9","threat/road":0,"tree_health":"healthy","angle_bottom":"","photo_height":12.18,"picture_base":"1583913260124.jpg","picture_leaf":"1583913274073.jpg","threat/other":0,"tree_species":"other","circumference":128,"diameter (cm)":40.76,"picture_whole":"1583913408280.jpg","threat/people":0,"photo_diameter":"","stem_tree_fork":2,"functional_uses":"human","_submission_time":"2020-03-11T09:28:08","comment_stemtree":"Yes with 2 fork","gimp_coordinates":1433,"clinometer_height":"","picture_base_link":"1583913260124.jpg","picture_leaf_link":"1583913274073.jpg","picture_whole_link":"1583913408280.jpg","distance_clinometer":"","threat/water/sewage":0,"_coordinates_altitude":1.9,"_coordinates_latitude":-6.774283333,"functional_uses/human":1,"_coordinates_longitude":39.257905,"_coordinates_precision":4.9,"threat/electricity/wires":0,"%_error_difference_height":"","threat/building/structures":1,"%_error_difference_diameter":"","Diameter_coordinates at DBH":467,"functional_uses/heritage_tree":0},"first_name":"Anonymous","last_name":"Planter","user_image_url":null}');
 
+      cy.server();
+      cy.route({
+        method: "GET",
+        url: new RegExp(`.*tree.*`),
+        response: tree,
+      });
       function Test(){
-        const [treeIndex, setTreeIndex] = React.useState(0);
-
-        function handleNext(){
-          setTreeIndex(treeIndex + 1);
-        }
-
         return(
           <div style={{background:"gray",height:"1000px"}} >
             <SidePanel 
               state={"show"}
-              tree={tree} 
+              tree={{id:tree.id}} 
             />
           </div>
         )
@@ -236,6 +293,39 @@ describe("SidePanel", () => {
       mount(
         <Test/>
       );
+    });
+
+    it.skip("Some data from tree_attributes table", () => {
+      const tree = {
+        approved: false,
+        first_name: "Dadior",
+        last_name: "Chen",
+        image_url: null,
+        user_image_url: null,
+        id: 1,
+        time_created: new Date(),
+        domain_specific_data: {},
+        attributes: {
+          height_color: "orange",
+          dbh: 12,
+        },
+        images: {},
+      };
+
+      cy.server();
+      cy.route({
+        method: "GET",
+        url: new RegExp(`.*tree.*`),
+        response: tree,
+      });
+      mount(
+        <div style={{background:"gray",height:"1000px"}} >
+        <SidePanel 
+        state={"show"}
+        tree={{id:tree.id}} 
+        />
+        </div>
+      )
     });
   });
 

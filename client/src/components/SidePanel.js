@@ -214,6 +214,15 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     width: "100%",
   },
+  colorBox: {
+    width: 16,
+    height: 16,
+  },
+  colorContainer: {
+    height: "100%",
+    paddingLeft: 10,
+    paddingRight: 5,
+  },
 }));
 
 
@@ -261,12 +270,27 @@ function SidePanel(props){
     console.log("tree changed"); 
     if(tree){
       setTreePictureLoaded(false);
+      axios.get(`${treetrackerApiUrl}/tree?tree_id=${tree.id}`)
+        .then(r => {
+          setTreeDetail(r.data);
+          //if there isn't image, close load spin
+          if(!r.data.image_url){
+            setTreePictureLoaded(true);
+          }
+        });
     }
-    axios.get(`${treetrackerApiUrl}/tree?tree_id=${tree.id}`)
-      .then(r => {
-        setTreeDetail(r.data);
-      });
   }, [props.tree]);
+
+  /* update visibility of some list */
+  React.useEffect(() => {
+    document.querySelectorAll(".list-root").forEach(e => {
+      if(e.querySelector(".list-container").childElementCount === 0){
+        e.style.display="none"
+      }else{
+        e.style.display="flex"
+      }
+    });
+  });
 
   if(tree === undefined){
     return null;
@@ -339,7 +363,7 @@ function SidePanel(props){
             </Grid>
             <Grid container justify="space-between" alignItems="center" >
               <Grid item>
-                {tree.approved &&
+                {treeDetail && treeDetail.approved &&
                 <Grid container className={classes.verify} >
                   <Grid item className={classes.icon} >
                     <Check style={{ color: "#abe38f"}} />
@@ -372,18 +396,6 @@ function SidePanel(props){
                 }
               </Grid>
             </Grid>
-            {treeDetail && treeDetail.attachedWallet &&
-              <Grid container className={classes.verify} >
-                <Grid item className={classes.icon} >
-                  <Check style={{ color: "#abe38f"}} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1" >
-                    Token Issued
-                  </Typography>
-                </Grid>
-              </Grid>
-            }
             <Divider/>
             <Box height={15} />
             <Grid container className={classes.infoItem} >
@@ -395,9 +407,7 @@ function SidePanel(props){
                 </Tooltip>
               </Grid>
               <Grid item>
-                <Typography className={classes.item} variant="body1" >
-                  Tree ID: #{tree.id}
-                </Typography>
+                <Item title="Tree ID" prefix="#" value={tree.id} />
               </Grid>
             </Grid>
             {!treeDetail &&
@@ -409,107 +419,65 @@ function SidePanel(props){
             }
             {treeDetail &&
               <>
-                <Grid container className={classes.infoItem} >
-                  <Grid item className={classes.detailIconBox} >
-                    <Tooltip title="create date" >
-                      <AccessTime className={classes.detailIcon} />
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      {treeDetail && new Date(treeDetail.time_created).toLocaleString("en-US")}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                {treeDetail.attachedWallet &&
-                  <>
-                  <Grid container className={classes.infoItem} >
-                    <Grid item className={classes.detailIconBox}>
-                      <Face className={classes.detailIcon} />
-                    </Grid>
-                    <Grid item>
-                      <Typography className={classes.item} variant="body1" >
-                        Impact Owner: @{treeDetail.attachedWallet}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid container className={classes.infoItem} >
-                    <Grid item className={classes.detailIconBox}>
-                      <Fingerprint className={classes.detailIcon}/>
-                    </Grid>
-                    <Grid item>
-                      <Typography className={classes.item} variant="body1" >
-                        Token: {treeDetail.token_uuid}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  </>
-                }
-                <Grid container className={classes.infoItem} >
-                  <Grid item className={classes.detailIconBox} >
-                    <Place className={classes.detailIcon} />
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      Lat: {treeDetail.lat || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Lon: {treeDetail.lon || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Altitude: {treeDetail.domain_specific_data._coordinates_altitude || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      GPS Accuracy: {treeDetail.domain_specific_data._coordinates_precision || NONE}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.infoItem} >
-                  <Grid item className={classes.detailIconBox} >
-                    <Tooltip title="tree species">
-                      <Eco className={classes.detailIcon} />
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      Species: {treeDetail.domain_specific_data.tree_species || NONE}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.infoItem} >
-                  <Grid item className={classes.detailIconBox} >
-                    <Tooltip title="other information" >
-                      <Nature className={classes.detailIcon} />
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.item} variant="body1" >
-                      DBH: {treeDetail.domain_specific_data && treeDetail.domain_specific_data["diameter (cm)"] || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Tree Healthy: {treeDetail.domain_specific_data.tree_health || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Proximity to: {treeDetail.domain_specific_data && treeDetail.domain_specific_data["threat to"] || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Base Around Tree: {treeDetail.domain_specific_data.tree_base || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Site: {treeDetail.domain_specific_data.tree_site || NONE}
-                    </Typography>
-                    <Typography className={classes.item} variant="body1" >
-                      Functional Uses: {treeDetail.domain_specific_data.functional_uses || NONE}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container className={classes.infoItem} >
-                  <Grid item className={classes.detailIconBox} >
-                    <Tooltip title="images" >
-                      <InsertPhoto className={classes.detailIcon} />
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
+                <List icon={AccessTime} tooltip="Create date" >
+                  <Item title="Created at" value={new Date(treeDetail.time_created).toLocaleString("en-US")} />
+                </List>
+                <List
+                  icon={Face}
+                  tooltip="Wallet"
+                >
+                  <Item title="Impact Owner" prefix="@" value={treeDetail.attachedWallet} />
+                </List>
+                <List
+                  icon={Fingerprint}
+                  tooltip="Token assigned to the tree"
+                >
+                  <Item title="Token" prefix="" value={treeDetail.token_uuid} />
+                </List>
+                <List
+                  icon={Place}
+                  tooltip="Location information"
+                >
+                    <Item title="Lat" value={treeDetail.lat} />
+                    <Item title="Lon" value={treeDetail.lon} />
+                    <Item title="Altitude" value={domainSpecificData(treeDetail, "_coordinates_altitude")} />
+                </List>
+                <List
+                  icon={Nature}
+                  tooltip="Tree information"
+                >
+                    <Item title="Species" value={domainSpecificData(treeDetail, "tree_species")} />
+                    <Item title="DBH" value={domainSpecificData(treeDetail, "diameter (cm)") || attribute(treeDetail, "dbh")} />
+                    {attribute(treeDetail, "height_color") &&
+                      <Grid container>
+                        <Grid item>
+                          <Typography className={classes.item} variant="body1" >
+                            Height:  
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Grid container justify="center" alignItems="center" className={classes.colorContainer} >
+                            <div className={classes.colorBox} style={{background: attribute(treeDetail, "height_color")}} />
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Typography className={classes.item} variant="body1" >
+                            {attribute(treeDetail, "height_color")}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    }
+                    <Item title="Tree Healthy" value={domainSpecificData(treeDetail, "tree_health")} />
+                    <Item title="Proximity to" value={domainSpecificData(treeDetail, "threat to")} />
+                    <Item title="Base Around Tree" value={domainSpecificData(treeDetail, "tree_base")} />
+                    <Item title="Site" value={domainSpecificData(treeDetail, "tree_site")} />
+                    <Item title="Functional Uses" value={domainSpecificData(treeDetail, "functional_uses")} />
+                </List>
+                <List
+                  icon={InsertPhoto}
+                  tooltip="Tree images"
+                >
+                  {treeDetail.images.picture_base_url &&
                     <Grid container>
                       <Grid item>
                         <Typography className={classes.item} variant="body1" >
@@ -517,16 +485,14 @@ function SidePanel(props){
                         </Typography>
                       </Grid>
                       <Grid item>
-    {treeDetail.images.picture_base_url ? 
-                              <IconButton onClick={handleBasePictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
-                                <Search  />
-                                <ImageShower src={treeDetail.images.picture_base_url} title="Base picture" onClose={handleBasePictureClose} open={isBasePictureShown} className={classes.imageIcon} />
-                              </IconButton>
-                              :
-                              <span>{NONE}</span>
-                          }
+                        <IconButton onClick={handleBasePictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                          <Search  />
+                          <ImageShower src={treeDetail.images.picture_base_url} title="Base picture" onClose={handleBasePictureClose} open={isBasePictureShown} className={classes.imageIcon} />
+                        </IconButton>
                       </Grid>
                     </Grid>
+                  }
+                  {treeDetail.images.picture_leaf_url &&
                     <Grid container>
                       <Grid item>
                         <Typography className={classes.item} variant="body1" >
@@ -534,18 +500,14 @@ function SidePanel(props){
                         </Typography>
                       </Grid>
                       <Grid item>
-    {treeDetail.images.picture_leaf_url ? 
-                              <IconButton onClick={handleLeafPictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
-                                <Search  />
-                                <ImageShower src={treeDetail.images.picture_leaf_url} title="Leaf picture" onClose={handleLeafPictureClose} open={isLeafPictureShown} className={classes.imageIcon} />
-                              </IconButton>
-                              :
-                              <span>{NONE}</span>
-                          }
+                        <IconButton onClick={handleLeafPictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                          <Search  />
+                          <ImageShower src={treeDetail.images.picture_leaf_url} title="Leaf picture" onClose={handleLeafPictureClose} open={isLeafPictureShown} className={classes.imageIcon} />
+                        </IconButton>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
+                  }
+                </List>
               </>
             }
           </CardContent>
@@ -565,6 +527,43 @@ function SidePanel(props){
     }
     </>
   );
+}
+
+function Item(props){
+  const classes = useStyles();
+  if(!props.value) return null;
+  return(
+    <Typography className={classes.item} variant="body1" >
+      {props.title}: {props.prefix ||""}{props.value || NONE}
+    </Typography>
+  )
+}
+
+function List(props){
+  const classes = useStyles();
+
+  return(
+    <Grid container className={classes.infoItem + " list-root"} >
+      <Grid item className={classes.detailIconBox}>
+        <Tooltip title={props.tooltip} >
+          <props.icon className={classes.detailIcon} />
+        </Tooltip>
+      </Grid>
+      <Grid item className={"list-container"} >
+        {props.children}
+      </Grid>
+    </Grid>
+  );
+}
+
+function domainSpecificData(treeDetail, property){
+  if(!treeDetail || !treeDetail.domain_specific_data) return;
+  return treeDetail.domain_specific_data[property];
+}
+
+function attribute(treeDetail, property){
+  if(!treeDetail || !treeDetail.attributes) return;
+  return treeDetail.attributes[property];
 }
 
 SidePanel.WIDTH = WIDTH;

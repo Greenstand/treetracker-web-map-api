@@ -29,7 +29,7 @@ describe("Integration tests", () => {
     }, 100000);
   });
 
-  describe("/tree", () => {
+  describe.only("/tree", () => {
     it("/tree?tree_id=198081", async () => {
       const res = await request(app)
         .get("/tree?tree_id=198081");
@@ -40,6 +40,7 @@ describe("Integration tests", () => {
         attributes: {
           delta_step_count: "1",
         },
+        images: {},
       });
     }, 100000);
   });
