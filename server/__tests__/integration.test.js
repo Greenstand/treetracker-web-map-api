@@ -15,7 +15,7 @@ describe("Integration tests", () => {
     expect(res.statusCode).toBe(200);
   }, 90000);
 
-  it("/trees?clusterRadius=0.003&zoom_level=16&bounds=0.018839836120605472,0.005394458765216459,-0.018239021301269535,-0.0056519508298092415&map_name=freetown", async () => {
+  it.skip("/trees?clusterRadius=0.003&zoom_level=16&bounds=0.018839836120605472,0.005394458765216459,-0.018239021301269535,-0.0056519508298092415&map_name=freetown", async () => {
     const res = await request(app)
       .get("/trees?clusterRadius=0.003&zoom_level=16&bounds=0.018839836120605472,0.005394458765216459,-0.018239021301269535,-0.0056519508298092415&map_name=freetown");
     expect(res.statusCode).toBe(200);
