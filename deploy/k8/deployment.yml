@@ -1,12 +1,12 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "treetracker-webmap-api-dev-deployment"
+  name: "treetracker-webmap-api-deployment"
   namespace: "webmap"
   labels:
     app: "treetracker-webmap-api"
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: "treetracker-webmap-api"
