@@ -1,6 +1,6 @@
-const entity = require("./entity");
-const {parseDomain} = require("./utils");
-const {parseMapName} = require("../utils");
+import entity from "./entity";
+import {parseDomain} from "./utils";
+import {parseMapName} from "../utils";
 
 export default async function(url){
   let src = require("../images/logo_floating_map.svg");
