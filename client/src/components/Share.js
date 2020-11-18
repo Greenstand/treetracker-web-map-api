@@ -46,7 +46,7 @@ function Share(props){
   }
 
   function handleTwitter(){
-    window.open(`https://twitter.com/intent/tweet?url=${props.shareUrl}&via=Greenstand&related=Greestand,treetracker`);
+    window.open(`https://twitter.com/intent/tweet?url=${props.shareUrl}&via=green_stand&related=Greestand,treetracker`);
   }
 
   function handleFaceBook(){
