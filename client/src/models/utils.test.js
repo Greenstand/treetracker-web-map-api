@@ -1,4 +1,4 @@
-const {parseDomain} = require("./utils");
+import {parseDomain} from "./utils";
 
 describe("parseDomain", () => {
   it("https://freetown.treetracker.org", () => {
