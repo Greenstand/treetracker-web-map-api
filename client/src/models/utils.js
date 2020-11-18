@@ -1,5 +1,5 @@
 
-module.exports.parseDomain = function(url){
+function parseDomain(url){
   const matcher = url.match(/^https?\:\/\/([^\/]*)\/?.*$/);
   if(matcher){
     const domainWithPort = matcher[1];
@@ -13,3 +13,5 @@ module.exports.parseDomain = function(url){
     return undefined;
   }
 }
+
+export {parseDomain};

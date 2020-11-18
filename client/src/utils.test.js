@@ -1,4 +1,4 @@
-const {parseMapName} = require("./utils");
+import {parseMapName} from "./utils";
 
 describe("parseMapName", () => {
 

@@ -2,7 +2,7 @@
  * The module to handle greenstand map
  */
 import expect from "expect-runtime";
-const axios = require("axios");
+import axios from "axios";
 
 class MapModel {
   constructor(options){
