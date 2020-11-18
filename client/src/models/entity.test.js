@@ -1,5 +1,5 @@
-const entity = require("./entity");
-const axios = require("axios");
+import entity from "./entity";
+import axios from "axios";
 
 jest.mock("axios");
 
@@ -10,15 +10,6 @@ describe("entity", () => {
 
   afterAll(() => {
     jest.clearAllMock();
-  });
-
-  it("module defined", async () => {
-    console.log("entity:", entity);
-    expect(entity).toMatchObject({
-      name: "entity",
-    });
-    expect(entity.getById).toBeDefined();
-    expect(entity.getByWallet).toBeDefined();
   });
 
   it("getById(1)", async () => {

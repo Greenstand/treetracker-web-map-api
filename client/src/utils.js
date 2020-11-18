@@ -19,4 +19,4 @@ function parseMapName(domain){
 }
 
 
-module.exports = {parseMapName}
+export {parseMapName}
