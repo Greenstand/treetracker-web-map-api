@@ -5,6 +5,7 @@ import axios from "axios";
 import {configTreetrackerApi, sentryDSN} from "./config";
 import {theme} from "./App";
 import {parseMapName} from "./utils";
+import log from "loglevel";
 
 const CancelToken = axios.CancelToken;
 let source;
@@ -14,7 +15,7 @@ const $ = {
 }
 
 
-const moment = () => {console.warn("Fake moment!")};
+const moment = () => {log.warn("Fake moment!")};
 
 function load(
   options
@@ -68,9 +69,9 @@ let isLoadingMarkers = false;
 if(process.env.REACT_APP_API){
   treetrackerApiUrl = process.env.REACT_APP_API;
 }else{
-  console.warn("Did not set REACT_APP_API");
+  log.warn("Did not set REACT_APP_API");
 }
-console.log("api url:", treetrackerApiUrl);
+log.log("api url:", treetrackerApiUrl);
 
 /**
  * Writes to the document's cookie to expire (or not) after a set time from the date of the user's last visit to the webpage.
@@ -120,9 +121,9 @@ function checkSession(){
   var c = getCookie("visited");
   var past_visitor = true;
   if (c === "yes") {
-    console.log("OLD VISITOR");
+    log.log("OLD VISITOR");
   } else {
-    console.log("NEW VISITOR");
+    log.log("NEW VISITOR");
     past_visitor = false;
   }
   setCookie("visited", "yes", 365); // expire in 1 year; or use null to never expire
@@ -149,20 +150,20 @@ function getTreeQueryParametersFromRequestedFilters(){
 
 //Get the tree data and create markers with corresponding data
 var initMarkers = function(viewportBounds, zoomLevel) {
-  console.log("initMarkers:", viewportBounds, zoomLevel);
+  log.log("initMarkers:", viewportBounds, zoomLevel);
   isLoadingMarkers = true;
   // no need to load this up at every tiny movement
   if (!fetchMarkers) {
-    console.log("initMarkers quit");
+    log.log("initMarkers quit");
     return;
   }
 
   clusterRadius =
     getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
 
-  console.log("Cluster radius: " + clusterRadius);
+  log.log("Cluster radius: " + clusterRadius);
 //  if (req != null) {
-//    console.log("initMarkers abort");
+//    log.log("initMarkers abort");
 //    req.abort();
 //  }
   source && source.cancel("clean previous request");
@@ -182,7 +183,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
   }
   queryUrl = queryUrl + getTreeQueryParametersFromRequestedFilters();
 
-  console.log("request:", queryUrl);
+  log.log("request:", queryUrl);
   source = CancelToken.source();
   axios.get(queryUrl,{
     cancelToken: source.token,
@@ -195,7 +196,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         .property("data")
         .a(expect.any(Array));
       const {data} = response;
-      console.log("initMarkers, get");
+      log.log("initMarkers, get");
       if (userid && data.data.length === 0) {
         showAlert();
       }
@@ -204,7 +205,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       points = [];
       markerByPointId = {};
       clearOverlays(markers);
-      // console.log(data);
+      // log.log(data);
 
       data.data.forEach(function(item,i) {
         if (item.type == "cluster") {
@@ -281,7 +282,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
                 lat: centroid.coordinates[1],
                 lng: centroid.coordinates[0],
               }
-              console.log("zoom target:", position);
+              log.log("zoom target:", position);
               map.panTo(position);
             }else{
               fetchMarkers = false;
@@ -423,16 +424,16 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           getApp().showPanel(points[0]);
         }
       }
-      console.log("init marker finished, loaded:", markers.length);
+      log.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
       //debugger;
       mapModel.checkArrow();
     }).catch(function(thrown){
       if(axios.isCancel(thrown)){
         //change to handle cancel
-        console.log("request cancelled because of:", thrown.message);
+        log.log("request cancelled because of:", thrown.message);
       }else{
-        console.log("request failed", thrown);
+        log.log("request failed", thrown);
       }
     });
 };
@@ -629,9 +630,9 @@ function getCircularPointIndex(index) {
 
 // clear the markers from the map and then clear our the array of markers
 function clearOverlays(overlays) {
-  //console.log(overlays);
+  //log.log(overlays);
   for (var i = 0; i < overlays.length; i++) {
-    //console.log(i);
+    //log.log(i);
     overlays[i].setMap(null);
   }
   overlays.length = 0;
@@ -650,11 +651,11 @@ function getQueryStringValue(name, url) {
 
 function getPathVariable(name, url) {
   if (!url) url = window.location.href;
-  console.log(url);
+  log.log(url);
   var regex = new RegExp("/" + name + "/(.*)");
-  console.log(regex);
+  log.log(regex);
   let results = regex.exec(url);
-  console.log(results);
+  log.log(results);
   if (!results) return null;
   if (!results[1]) return "";
   return results[1];
@@ -662,11 +663,11 @@ function getPathVariable(name, url) {
 
 function getHandleVariable(name, url) {
   if (!url) url = window.location.href;
-  console.log(url);
+  log.log(url);
   var regex = new RegExp("/@(.*)");
-  console.log(regex);
+  log.log(regex);
   let results = regex.exec(url);
-  console.log(results);
+  log.log(results);
   if (!results) return null;
   if (!results[1]) return "";
   return results[1];
@@ -711,7 +712,7 @@ function toUrlValueLonLat(bounds) {
 
 function determineInitialSize(latLng) {
   if (firstRender) {
-    console.log("extends initial bounds");
+    log.log("extends initial bounds");
     initialBounds.extend(latLng);
   }
 }
@@ -775,10 +776,10 @@ function shortenLargeNumber(number) {
 
 function fitMapToBoundsForSet(data){
   if(data.length === 0){
-    console.warn("quit cuz data is empty");
+    log.warn("quit cuz data is empty");
     return;
   }
-  console.error("data:", data);
+  log.error("data:", data);
   const bounds = mapTools.getInitialBounds(
     data.map(i => {
       if(i.type === "cluster"){
@@ -804,7 +805,7 @@ function fitMapToBoundsForSet(data){
 
 //Initialize Google Maps and Marker Clusterer
 var initialize = function() {
-  console.log(window.location.href);
+  log.log(window.location.href);
   token = getQueryStringValue("token") || null;
   mapName = getQueryStringValue("map_name") || parseMapName(window.location.hostname) || null;
   treeid = getQueryStringValue("treeid") || null;
@@ -815,7 +816,7 @@ var initialize = function() {
   if (wallet == null) {
     wallet = getHandleVariable("wallet") || null;
   }
-  console.log(wallet);
+  log.log(wallet);
   loader = document.getElementById("map-loader");
 
   var initialZoom = 2;
@@ -868,7 +869,7 @@ class CoordMapType {
     backgroundColor: theme.palette.grey.A200,
   };
 
-  console.log(mapOptions);
+  log.log(mapOptions);
 
   map = new window.google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
@@ -897,9 +898,9 @@ class CoordMapType {
 
   /*
   window.google.maps.event.addListener(map, "idle", function() {
-    console.log("triger idle...");
+    log.log("triger idle...");
     var zoomLevel = !firstInteraction ? initialZoom : map.getZoom();
-    console.log("New zoom level: " + zoomLevel);
+    log.log("New zoom level: " + zoomLevel);
     currentZoom = zoomLevel;
     initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
   });
@@ -917,20 +918,20 @@ class CoordMapType {
 //        userid !== null ||
 //        donor != null)
 //    ) {
-//      console.log("before first interaction, fit the map", initialBounds.toJSON());
+//      log.log("before first interaction, fit the map", initialBounds.toJSON());
 //      map.fitBounds(initialBounds);
 //    }
 //  });
 
 
   window.google.maps.event.addListener(map, "idle", function() {
-    console.log('IDLE');
+    log.log('IDLE');
     if(firstQuery){
       firstQuery = false
       let treeQueryParameters = getTreeQueryParametersFromRequestedFilters();
       if(treeQueryParameters == ""){
         var zoomLevel = !firstInteraction ? initialZoom : map.getZoom();
-        console.log("New zoom level: " + zoomLevel);
+        log.log("New zoom level: " + zoomLevel);
         currentZoom = zoomLevel;
         initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
         return 
@@ -940,9 +941,9 @@ class CoordMapType {
       let queryZoomLevel = 10;
       var clusterRadius = getQueryStringValue("clusterRadius") || getClusterRadius(queryZoomLevel);
 
-      console.log("Cluster radius: " + clusterRadius);
+      log.log("Cluster radius: " + clusterRadius);
 //      if (req != null) {
-//        console.log("initMarkers abort");
+//        log.log("initMarkers abort");
 //        req.abort();
 //      }
       source && source.cancel("clean previous request");
@@ -950,7 +951,7 @@ class CoordMapType {
       queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel;
       queryUrl = queryUrl + treeQueryParameters;
 
-      console.log("request:", queryUrl);
+      log.log("request:", queryUrl);
       source = CancelToken.source();
       axios.get(queryUrl,{
         cancelToken: source.token,
@@ -994,9 +995,9 @@ class CoordMapType {
             }).catch(function(thrown){
               if(axios.isCancel(thrown)){
                 //change to handle cancel
-                console.log("request canceled because of:", thrown.message);
+                log.log("request canceled because of:", thrown.message);
               }else{
-                console.log("request failed", thrown);
+                log.log("request failed", thrown);
               }
             });
 
@@ -1006,15 +1007,15 @@ class CoordMapType {
         }).catch(function(thrown){
           if(axios.isCancel(thrown)){
             //change to handle cancel
-            console.log("request canceled because of:", thrown.message);
+            log.log("request canceled because of:", thrown.message);
           }else{
-            console.log("request failed", thrown);
+            log.log("request failed", thrown);
           }
         });
 
     } else {
       var zoomLevel = map.getZoom();
-      console.log("New zoom level: " + zoomLevel);
+      log.log("New zoom level: " + zoomLevel);
       currentZoom = zoomLevel;
       initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
     }
@@ -1031,7 +1032,7 @@ class CoordMapType {
 //  });
 
   //initialize MapModel
-  console.log("MAKING MAP MODEL");
+  log.log("MAKING MAP MODEL");
   mapModel = new MapModel({
     apiUrl: treetrackerApiUrl,
     onShowArrow: handleShowArrow,
@@ -1170,6 +1171,7 @@ function handleShowArrow(direction){
 }
 
 function handleHideArrow(){
+  log.debug("handleHideArrow");
   getApp().hideArrow();
 }
 

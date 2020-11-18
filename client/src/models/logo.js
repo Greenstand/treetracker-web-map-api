@@ -1,11 +1,12 @@
 import entity from "./entity";
 import {parseDomain} from "./utils";
 import {parseMapName} from "../utils";
+import log from "loglevel";
 
 export default async function(url){
   let src = require("../images/logo_floating_map.svg");
   const m = url.match(/.*wallet=(.\S+)/);
-  console.log("m:", m);
+  log.log("m:", m);
   let wallet;
   if(m){
     wallet = m[1];
@@ -37,7 +38,7 @@ export default async function(url){
   //map name case2
   {
     const m = url.match(/.*map_name=(.\S+)/);
-    console.log("m:", m);
+    log.log("m:", m);
     let mapName;
     if(m){
       mapName = m[1];

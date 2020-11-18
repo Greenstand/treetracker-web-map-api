@@ -15,6 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
+import log from "loglevel";
 
 const useStyles = makeStyles(theme => ({
   box1:{
@@ -73,7 +74,7 @@ function Share(props){
   }, []);
 
   function handleCopy(){
-    console.log("copy...");
+    log.log("copy...");
     var copyTextarea = document.getElementById('EmbedCode');
     copyTextarea.focus();
     copyTextarea.select();
@@ -81,9 +82,9 @@ function Share(props){
     try {
       var successful = document.execCommand('copy');
       var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
+      log.log('Copying text command was ' + msg);
     } catch (err) {
-      console.log('Oops, unable to copy');
+      log.log('Oops, unable to copy');
     }
     showMessage("Code has been copied!");
   }
