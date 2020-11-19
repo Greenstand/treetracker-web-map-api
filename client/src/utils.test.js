@@ -5,6 +5,9 @@ describe("parseMapName", () => {
   it("freetown.treetracker.org should return freetown", () => {
     expect(parseMapName("freetown.treetracker.org")).toBe("freetown");
   });
+  it("treetracker.org should return undefined", () => {
+    expect(parseMapName("treetracker.org")).toBeUndefined();
+  });
 
   it("treetracker.org should return undefined", () => {
     expect(parseMapName("treetracker.org")).toBeUndefined();
@@ -27,6 +30,14 @@ describe("parseMapName", () => {
     expect(() => {
       parseMapName("http://dev.treetracker.org");
     }).toThrow();
+  });
+
+  it("wallet.treetracker.org should return undefined", () => {
+    expect(parseMapName("wallet.treetracker.org")).toBeUndefined();
+  });
+
+  it("ready.treetracker.org should return undefined", () => {
+    expect(parseMapName("ready.treetracker.org")).toBeUndefined();
   });
 
 });
