@@ -2,6 +2,7 @@
  * Some tool for map calculation
  */
 import expect from "expect-runtime";
+import log from "loglevel";
 
 function go(direction, location, degree){
   expect(direction).oneOf(["east", "west", "north", "south"]);
@@ -45,7 +46,7 @@ function getAngleLng(east, west){
 
 function getAngleLat(north, south){
   let angle = north - south;
-  console.log("angle:", angle);
+  log.log("angle:", angle);
   angle = Math.abs(angle);
   return angle;
 };
@@ -81,7 +82,7 @@ function getInitialBounds (locations, width, height){
   if(locations.length === 1){
     const location = locations[0];
     const degrees = 0.005
-    console.log(degrees);
+    log.log(degrees);
     const cornerWestNorth = 
       go(
         "north",
@@ -116,7 +117,7 @@ function getInitialBounds (locations, width, height){
   for(let location of locations){
     bounds.extend(location);
   }
-  console.log("bounds:", bounds);
+  log.log("bounds:", bounds);
   const center = {
     lat: bounds.getCenter().lat(),
     lng: bounds.getCenter().lng(),
@@ -129,25 +130,25 @@ function getInitialBounds (locations, width, height){
     const east = bounds.getNorthEast().lng();
     const angle = getAngleLng(east, west);
     zoom = Math.round(Math.log(width * 360 / angle / GLOBE_WIDTH) / Math.LN2);
-    console.log("zoom1:", zoom);
+    log.log("zoom1:", zoom);
   }
   let zoom2;
   {
     const south = bounds.getSouthWest().lat();
     const north = bounds.getNorthEast().lat();
     const angle = getAngleLat(north, south);
-    console.log("angle:", angle);
+    log.log("angle:", angle);
     zoom2 = Math.round(Math.log(height * 360 / angle / GLOBE_WIDTH) / Math.LN2);
-    console.log("zoom2:", zoom2);
+    log.log("zoom2:", zoom2);
   }
-  console.log("height:", height, "width:", width);
+  log.log("height:", height, "width:", width);
   const zoomFinal = Math.min(zoom, zoom2) - 1/* to give some padding*/;
-  console.log("zoom final:", zoomFinal);
+  log.log("zoom final:", zoomFinal);
   const result =  {
     center,
     zoomLevel: zoomFinal,
   };
-  console.log("result:", result);
+  log.log("result:", result);
   return result;
 }
 
