@@ -33,6 +33,7 @@ import ImageShower from "./ImageShower";
 import Share from "./Share";
 import axios from "axios";
 import Skeleton from "@material-ui/lab/Skeleton";
+import log from "loglevel";
 const treetrackerApiUrl = process.env.REACT_APP_API;
 
 const WIDTH = 396;
@@ -246,7 +247,7 @@ function SidePanel(props){
   }
 
   function handleLoad(){
-    console.log("loaded....");
+    log.log("loaded....");
     setTreePictureLoaded(true);
   }
 
@@ -267,7 +268,7 @@ function SidePanel(props){
   }
 
   React.useEffect(() => {
-    console.log("tree changed"); 
+    log.log("tree changed"); 
     if(tree){
       setTreePictureLoaded(false);
       axios.get(`${treetrackerApiUrl}/tree?tree_id=${tree.id}`)
