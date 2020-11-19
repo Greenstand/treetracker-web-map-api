@@ -124,7 +124,7 @@ Future:
 * View photo together with tree data
 * View planter profile. 
 
-### How to enable log on console.
+## How to enable log on console.
 
 By default, the client just output logs which are level of `warn` or above, this remains the browser console clean for normal users, to display more logs for debuggering, please follow this guide:
 
