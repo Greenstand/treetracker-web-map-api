@@ -8,7 +8,13 @@ function parseMapName(domain){
     //discard primary domain
     sub.pop();
     sub.pop();
-    if(sub.length > 0 && sub[0] !== "test" && sub[0] !== "dev"){
+    if(
+      sub.length > 0 && 
+      sub[0] !== "test" && 
+      sub[0] !== "dev" &&
+      sub[0] !== "wallet" &&
+      sub[0] !== "ready"
+    ){
       return sub[0];
     }else{
       return undefined;
