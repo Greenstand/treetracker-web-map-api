@@ -36,4 +36,8 @@ describe("parseMapName", () => {
     expect(parseMapName("wallet.treetracker.org")).toBeUndefined();
   });
 
+  it("ready.treetracker.org should return undefined", () => {
+    expect(parseMapName("ready.treetracker.org")).toBeUndefined();
+  });
+
 });
