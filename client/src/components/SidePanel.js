@@ -347,7 +347,7 @@ function SidePanel(props){
                 </Grid>
                 <Grid item>
                   <Typography className={classes.item} variant="body1" >
-                    Impace Owner: @{tree?.attachedWallet}
+                    Impact Owner: @{tree?.attachedWallet}
                   </Typography>
                 </Grid>
               </Grid>
