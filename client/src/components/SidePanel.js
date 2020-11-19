@@ -34,6 +34,10 @@ import Share from "./Share";
 import axios from "axios";
 import Skeleton from "@material-ui/lab/Skeleton";
 import log from "loglevel";
+
+const CancelToken = axios.CancelToken;
+let source;
+
 const treetrackerApiUrl = process.env.REACT_APP_API;
 
 const WIDTH = 396;
@@ -271,14 +275,27 @@ function SidePanel(props){
     log.log("tree changed"); 
     if(tree){
       setTreePictureLoaded(false);
-      axios.get(`${treetrackerApiUrl}/tree?tree_id=${tree.id}`)
+      setTreeDetail(undefined);
+      source && source.cancel("clean previous request");
+      source = CancelToken.source();
+      axios.get(`${treetrackerApiUrl}tree?tree_id=${tree.id}`,{
+        cancelToken: source.token,
+      })
         .then(r => {
           setTreeDetail(r.data);
           //if there isn't image, close load spin
           if(!r.data.image_url){
             setTreePictureLoaded(true);
           }
+        })
+        .catch(function (thrown) {
+          if (axios.isCancel(thrown)) {
+            console.log('Request canceled', thrown.message);
+          } else {
+            throw thrown;
+          }
         });
+
     }
   }, [props.tree]);
 
@@ -349,10 +366,16 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={5} className={classes.avatarPaper} >
-                  {treeDetail && treeDetail.user_image_url?
-                    <Avatar id="planter-img" className={`${classes.avatar}`} src={treeDetail.user_image_url.startsWith("http")?treeDetail.user_image_url:`http://${treeDetail.user_image_url}`} />
+                  {treeDetail ?
+                    <>
+                    {treeDetail.user_image_url?
+                      <Avatar id="planter-img" className={`${classes.avatar}`} src={treeDetail.user_image_url.startsWith("http")?treeDetail.user_image_url:`http://${treeDetail.user_image_url}`} />
+                    :
+                      <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
+                    }
+                    </>
                   :
-                    <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
+                    <Avatar id="planter-img" className={`${classes.avatar}`} />
                   }
                 </Paper>
               </Grid>

@@ -9,7 +9,7 @@ describe("SidePanel", () => {
   });
 
 
-  it("SidePanel", () => {
+  it("SidePanel shown and turn to next page", () => {
     const trees = [{
       approved: false,
       first_name: "Dadior",
@@ -269,7 +269,7 @@ describe("SidePanel", () => {
 
   });
 
-  describe.only("Extra info case", () => {
+  describe("Extra info case", () => {
 
     it("Some data from dar... map", () => {
       const tree = JSON.parse('{"type":"point","id":385,"time_created":"+052162-03-21T19:06:36.999Z","time_updated":"+052162-03-21T19:06:36.999Z","missing":false,"priority":false,"cause_of_death_id":null,"planter_id":25877,"primary_location_id":null,"settings_id":null,"override_settings_id":null,"dead":0,"photo_id":null,"image_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913408280.jpg","certificate_id":null,"estimated_geometric_location":"0101000020E6100000C93CF20703A14340A04AE4BADD181BC0","lat":"-6.774283333","lon":"39.257905","gps_accuracy":4,"active":true,"planter_photo_url":"","planter_identifier":"","device_id":null,"sequence":null,"note":"","verified":false,"uuid":"0790f91a-0321-49da-8a30-5ba978a79f70","approved":false,"status":"planted","cluster_regions_assigned":false,"species_id":null,"planting_organization_id":null,"payment_id":null,"contract_id":null,"token_issued":false,"morphology":null,"age":null,"species":null,"capture_approval_tag":null,"rejection_reason":null,"matching_hash":null,"device_identifier":"357621080522271","images":{"picture_base_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913260124.jpg","picture_leaf_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913274073.jpg","picture_whole_url":"https://d2nbfg2zjsirqs.cloudfront.net/1583913408280.jpg"},"domain_specific_data":{"":1267,"af":"2020-03-11T10:57:47.197+03:00","__1":103,"__2":561,"__3":379,"__4":654.5,"_id":1747,"other":"","today":"2020-03-11","_index":6,"deviceid":357621080522271,"angle_top":"","other_001":"","other_002":"","simserial":8930000000000000000,"threat to":"building/structures","tree_base":"Open soil","tree_site":"public_property","coordinates":"-6.774283333333333 39.257905 1.9 4.9","threat/road":0,"tree_health":"healthy","angle_bottom":"","photo_height":12.18,"picture_base":"1583913260124.jpg","picture_leaf":"1583913274073.jpg","threat/other":0,"tree_species":"other","circumference":128,"diameter (cm)":40.76,"picture_whole":"1583913408280.jpg","threat/people":0,"photo_diameter":"","stem_tree_fork":2,"functional_uses":"human","_submission_time":"2020-03-11T09:28:08","comment_stemtree":"Yes with 2 fork","gimp_coordinates":1433,"clinometer_height":"","picture_base_link":"1583913260124.jpg","picture_leaf_link":"1583913274073.jpg","picture_whole_link":"1583913408280.jpg","distance_clinometer":"","threat/water/sewage":0,"_coordinates_altitude":1.9,"_coordinates_latitude":-6.774283333,"functional_uses/human":1,"_coordinates_longitude":39.257905,"_coordinates_precision":4.9,"threat/electricity/wires":0,"%_error_difference_height":"","threat/building/structures":1,"%_error_difference_diameter":"","Diameter_coordinates at DBH":467,"functional_uses/heritage_tree":0},"first_name":"Anonymous","last_name":"Planter","user_image_url":null}');
@@ -295,7 +295,7 @@ describe("SidePanel", () => {
       );
     });
 
-    it.only("Some data from tree_attributes table", () => {
+    it("Some data from tree_attributes table", () => {
       const tree = {
         approved: false,
         first_name: "Dadior",

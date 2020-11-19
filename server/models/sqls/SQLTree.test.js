@@ -7,7 +7,7 @@ describe("SQLTree", () => {
     sql.setTreeId(1);
     const query = await sql.getQuery();
     expect(query).toMatchObject({
-      text: expect.stringMatching(/select.*trees.*left join tree_species.*id =/is),
+      text: expect.stringMatching(/select.*trees.*inner join planter.*left join tree_species.*id =/is),
       values: [1],
     });
   });
