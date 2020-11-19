@@ -141,7 +141,7 @@ describe("SidePanel", () => {
   
 
 
-  describe.only("Image cases", () => {
+  describe("Image cases", () => {
     [
       "https://treetracker-production-images.s3.eu-central-1.amazonaws.com/2019.11.08.11.12.43_1a507e4a-ade7-47d7-b7f5-e1a425588483_IMG_20191030_173914_4000805348046989577.jpg",
       "https://treetracker-production.nyc3.digitaloceanspaces.com/2019.07.26.09.45.44_96a38beb-b5ac-4262-82d1-9135420474c9_IMG_20190620_120738_1011429861.jpg",
@@ -173,7 +173,7 @@ describe("SidePanel", () => {
 
   });
 
-  describe.only("Avatar cases", () => {
+  describe("Avatar cases", () => {
     [
       "https://treetracker-production.nyc3.digitaloceanspaces.com/User1111.jpg",
       "https://treetracker-production.nyc3.digitaloceanspaces.com/user_1047.jpg",
