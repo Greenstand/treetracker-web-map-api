@@ -26,4 +26,20 @@ describe("Integration tests", () => {
       .get("/trees?clusterRadius=0.05&zoom_level=10&userid=12");
     expect(res.statusCode).toBe(200);
   }, 100000);
+
+
+  describe("wallet map", () => {
+    it("/trees?clusterRadius=0.02&zoom_level=12&wallet=forestmatic_demo", async () => {
+      const res = await request(app)
+        .get("/trees?clusterRadius=0.02&zoom_level=12&wallet=forestmatic_demo");
+      expect(res.statusCode).toBe(200);
+    }, 100000);
+
+    it("/trees?clusterRadius=0.02&zoom_level=16&wallet=forestmatic_demo", async () => {
+      const res = await request(app)
+        .get("/trees?clusterRadius=0.02&zoom_level=16&wallet=forestmatic_demo");
+      expect(res.statusCode).toBe(200);
+    }, 100000);
+  });
+
 });
