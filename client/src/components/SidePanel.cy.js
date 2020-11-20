@@ -155,7 +155,7 @@ describe("SidePanel", () => {
       .should("not.exist");
   });
 
-  it.only("wallet", () => {
+  it("wallet", () => {
     cy.server();
     cy.route({
       method: "GET",

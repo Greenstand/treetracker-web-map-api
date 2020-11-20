@@ -30,7 +30,7 @@ describe("Integration tests", () => {
   });
 
   describe("/tree", () => {
-    it.only("/tree?tree_id=198081", async () => {
+    it("/tree?tree_id=198081", async () => {
       const res = await request(app)
         .get("/tree?tree_id=198081");
       expect(res.statusCode).toBe(200);
