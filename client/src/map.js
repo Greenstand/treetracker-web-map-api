@@ -6,6 +6,7 @@ import {configTreetrackerApi, sentryDSN} from "./config";
 import {theme} from "./App";
 import {parseMapName} from "./utils";
 import log from "loglevel";
+import {mapConfig} from "./mapConfig";
 
 const CancelToken = axios.CancelToken;
 let source;
@@ -860,6 +861,7 @@ class CoordMapType {
 
   var mapOptions = {
     zoom: initialZoom,
+    center: { lat: 20, lng: 0 },
     minZoom: minZoom,
     mapTypeId: "hybrid",
     mapTypeControl: false,
@@ -868,6 +870,11 @@ class CoordMapType {
 //    backgroundColor: theme.palette.primary.main,
     backgroundColor: theme.palette.grey.A200,
   };
+   if(mapName != null && !!mapConfig[mapName]) {
+    mapOptions.zoom = mapConfig[mapName].zoom;
+    mapOptions.center = mapConfig[mapName].center;
+  }
+
 
   log.log(mapOptions);
 
@@ -927,6 +934,10 @@ class CoordMapType {
   window.google.maps.event.addListener(map, "idle", function() {
     log.log('IDLE');
     if(firstQuery){
+        if(mapName != null){
+          initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), mapOptions.zoom);
+          return
+        }
       firstQuery = false
       let treeQueryParameters = getTreeQueryParametersFromRequestedFilters();
       if(treeQueryParameters == ""){
@@ -1022,8 +1033,6 @@ class CoordMapType {
   });
 
   currentZoom = initialZoom;
-  //map.setCenter({ lat: -3.33313276473463, lng: 37.142856230615735 });
-  map.setCenter({ lat: 20, lng: 0 });
 
 //  $("#close-button").click(function() {
 //    $("#tree_info_div").hide("slide", "swing", 600);
