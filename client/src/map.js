@@ -18,6 +18,10 @@ const $ = {
 
 const moment = () => {log.warn("Fake moment!")};
 
+/*
+ * options:
+ *  isCapture: boolean  //the map is in capture mode
+ */
 function load(
   options
 ){
@@ -168,7 +172,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 //    req.abort();
 //  }
   source && source.cancel("clean previous request");
-  var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
+  var queryUrl = `${treetrackerApiUrl}${options.isCapture?"captures":"trees"}?clusterRadius=${clusterRadius}`;
   queryUrl = queryUrl + "&zoom_level=" + zoomLevel;
   if (
     currentZoom >= 4 &&
@@ -958,7 +962,7 @@ class CoordMapType {
 //        req.abort();
 //      }
       source && source.cancel("clean previous request");
-      var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + clusterRadius;
+      var queryUrl = `${treetrackerApiUrl}${options.isCapture?"captures":"trees"}?clusterRadius=${clusterRadius}`;
       queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel;
       queryUrl = queryUrl + treeQueryParameters;
 
@@ -990,7 +994,7 @@ class CoordMapType {
             // rerun at higher zoom level
             let queryZoomLevel12 = 12
             var queryClusterRadius12 = getQueryStringValue("clusterRadius") || getClusterRadius(queryZoomLevel12);
-            var queryUrl = treetrackerApiUrl + "trees?clusterRadius=" + queryClusterRadius12;
+            var queryUrl = `${treetrackerApiUrl}${options.isCapture?"captures":"trees"}?clusterRadius=${queryClusterRadius12}`;
             queryUrl = queryUrl + "&zoom_level=" + queryZoomLevel12;
             queryUrl = queryUrl + treeQueryParameters;
             source = CancelToken.source();

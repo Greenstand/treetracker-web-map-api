@@ -395,8 +395,12 @@ function App() {
   injectApp();
 
 
+  /*
+   * Load map
+   */
   React.useEffect(() => {
     log.debug("useEffect 1");
+    //before load map, load google map toolkit first
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
     script.id = 'googleMaps';
@@ -404,7 +408,12 @@ function App() {
 
     script.onload = () => {
       //map.initialize();
-      const map = load();
+      const url = new URL(window.location.href);
+      const options = {};
+      if(url.pathname === "/capture"){
+        options.isCapture = true;
+      }
+      const map = load(options);
       mapRef.current.map = map;
       expect(mapRef)
         .property("current").defined();
