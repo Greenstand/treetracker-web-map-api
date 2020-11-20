@@ -29,11 +29,12 @@ describe("Integration tests", () => {
     }, 100000);
   });
 
-  describe.only("/tree", () => {
-    it("/tree?tree_id=198081", async () => {
+  describe("/tree", () => {
+    it.only("/tree?tree_id=198081", async () => {
       const res = await request(app)
         .get("/tree?tree_id=198081");
       expect(res.statusCode).toBe(200);
+      console.log("tree detail:", res.body);
       expect(res.body).toMatchObject({
         id: 198081,
         domain_specific_data: {},
@@ -41,6 +42,8 @@ describe("Integration tests", () => {
           delta_step_count: "1",
         },
         images: {},
+        token_uuid: expect.any(String),
+        wallet: expect.any(String),
       });
     }, 100000);
   });

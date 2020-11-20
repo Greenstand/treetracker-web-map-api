@@ -399,7 +399,7 @@ function SidePanel(props){
                   </Grid>
                 </Grid>
                 }
-                {treeDetail && treeDetail.attachedWallet &&
+                {treeDetail && treeDetail.token_uuid &&
                   <Grid container className={classes.verify} >
                     <Grid item className={classes.icon} >
                       <Check style={{ color: "#abe38f"}} />
@@ -450,7 +450,7 @@ function SidePanel(props){
                   icon={Face}
                   tooltip="Wallet"
                 >
-                  <Item title="Impact Owner" prefix="@" value={treeDetail.attachedWallet} />
+                  <Item title="Impact Owner" prefix="@" value={treeDetail.wallet} />
                 </List>
                 <List
                   icon={Fingerprint}

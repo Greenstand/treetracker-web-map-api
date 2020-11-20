@@ -155,7 +155,7 @@ describe("SidePanel", () => {
       .should("not.exist");
   });
 
-  it("wallet", () => {
+  it.only("wallet", () => {
     cy.server();
     cy.route({
       method: "GET",
@@ -164,7 +164,7 @@ describe("SidePanel", () => {
         domain_specific_data: {},
         attributes: {},
         images: {},
-        attachedWallet: "Zaven",
+        wallet: "Zaven",
         first_name: "FFF",
         last_name: "RRR",
         token_uuid: "TESTTESTTEST",
