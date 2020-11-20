@@ -8,6 +8,7 @@ var app = express();
 var config = require('./config/config');
 const Sentry = require('@sentry/node');
 const Map = require('./models/Map');
+const MapCapture = require('./models/MapCapture');
 
 const pool = new Pool({ connectionString: config.connectionString });
 Sentry.init({ dsn: config.sentryDSN });
@@ -37,6 +38,17 @@ app.get("/trees", async function (req, res) {
   response.data = await map.getPoints();
   response.zoomTargets = await map.getZoomTargets();
   console.log("/trees took time:%d ms", Date.now() - beginTime);
+  res.status(200).json(response);
+});
+
+app.get("/captures", async function (req, res) {
+  const map = new MapCapture();
+  const beginTime = Date.now();
+  await map.init(req.query);
+  const response = {};
+  response.data = await map.getPoints();
+  response.zoomTargets = await map.getZoomTargets();
+  console.log("/captures took time:%d ms", Date.now() - beginTime);
   res.status(200).json(response);
 });
 
