@@ -115,9 +115,9 @@ class SQLCase2{
   getQuery(){
     let sql = `
       /* sql case2 */
-      SELECT DISTINCT ON(trees.id)
+      SELECT /* DISTINCT ON(trees.id) */
       'point' AS type,
-       trees.*, 
+       trees.id, trees.lat, trees.lon 
       FROM trees 
       ${this.getJoin()}
       WHERE active = true 
