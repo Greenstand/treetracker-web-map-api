@@ -410,7 +410,9 @@ function App() {
       //map.initialize();
       const url = new URL(window.location.href);
       const options = {};
-      if(url.pathname === "/capture"){
+      if(url.pathname === "/tree"){
+        options.isCapture = false;
+      }else{
         options.isCapture = true;
       }
       const map = load(options);
