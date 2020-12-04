@@ -1,3 +1,4 @@
+const log = require("loglevel");
 const { Pool} = require('pg');
 const config = require('../config/config');
 const SQLCase2 = require("./sqls/SQLCase2");
@@ -13,7 +14,8 @@ class Map{
   }
 
   async init(settings){
-    console.debug("init map with settings:", settings);
+    log.debug("init map with settings:", settings);
+    this.settings = settings
     this.treeid = settings.treeid;
     this.zoomLevel = parseInt(settings.zoom_level);
     this.userid = settings.userid;
@@ -181,11 +183,11 @@ class Map{
 
   async getPoints(){
     const query = await this.getQuery();
-    console.log(query);
+    log.log(query);
     const beginTime = Date.now();
     const data = await this.pool.query(query);
-    console.log("get points took time:%d ms", Date.now() - beginTime);
-    console.log(data.rows.slice(0,2))
+    log.log("get points took time:%d ms, settings: %o", Date.now() - beginTime, this.settings);
+    log.log(data.rows.slice(0,2))
     return data.rows;
   }
 
@@ -195,8 +197,7 @@ class Map{
     if(zoomTargetsQuery){
       const beginTime = Date.now();
       const result = await this.pool.query(zoomTargetsQuery);
-      console.log("get zoom target took time:%d ms", Date.now() - beginTime);
-      console.log('got zoom targets data');
+      log.log("get zoom target took time:%d ms, settings: %o", Date.now() - beginTime, this.settings);
       zoomTargets = result.rows;
     }
     return zoomTargets;
