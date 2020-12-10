@@ -126,7 +126,7 @@ class Map{
       }
 
     }else if(this.mapName){
-      if(this.zoomLevel > 15){
+      if(this.zoomLevel >= 15){
         this.sql = new SQLCase2();
         this.sql.addFilterByMapName(this.mapName);
         this.sql.setBounds(this.bounds);
