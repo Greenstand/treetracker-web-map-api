@@ -951,11 +951,11 @@ class freetownOverlay {
   window.google.maps.event.addListener(map, "idle", function() {
     log.log('IDLE');
     if(firstQuery){
-        if(mapName != null){
-          initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), mapOptions.zoom);
-          return
-        }
       firstQuery = false
+      if(mapName != null){
+        initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), mapOptions.zoom);
+        return
+      }
       let treeQueryParameters = getTreeQueryParametersFromRequestedFilters();
       if(treeQueryParameters == ""){
         var zoomLevel = !firstInteraction ? initialZoom : map.getZoom();
