@@ -112,30 +112,14 @@ class SQLCase2{
     return result;
   }
 
-  getSelect(){
-    let result = "";
-    if(this.wallet){
-      result += ', token.uuid AS token_uuid ';
-    }
-    return result;
-  }
-
   getQuery(){
     let sql = `
       /* sql case2 */
-      SELECT DISTINCT ON(trees.id)
+      SELECT /* DISTINCT ON(trees.id) */
       'point' AS type,
-       trees.*, planter.first_name as first_name, planter.last_name as last_name,
-      planter.image_url as user_image_url 
-      ${this.getSelect()}
+       trees.id, trees.lat, trees.lon 
       FROM trees 
       ${this.getJoin()}
-      INNER JOIN planter
-      ON planter.id = trees.planter_id
-      LEFT JOIN note_trees
-      ON note_trees.tree_id = trees.id
-      LEFT JOIN notes
-      ON notes.id = note_trees.note_id
       WHERE active = true 
       ${this.getBoundingBoxQuery()}
       ${this.getFilter()}
