@@ -186,7 +186,14 @@ class Map{
     log.log(query);
     const beginTime = Date.now();
     const data = await this.pool.query(query);
-    log.log("get points took time:%d ms, settings: %o", Date.now() - beginTime, this.settings);
+    const timeConsuming = Date.now() - beginTime;
+    log.log("get points took time:%d ms, settings: %o", timeConsuming, this.settings);
+    log.log("json-log:", JSON.stringify({
+      name: "getPoints",
+      settings: this.settings,
+      query,
+      timeConsuming,
+    }));
     log.log(data.rows.slice(0,2))
     return data.rows;
   }
@@ -197,7 +204,14 @@ class Map{
     if(zoomTargetsQuery){
       const beginTime = Date.now();
       const result = await this.pool.query(zoomTargetsQuery);
-      log.log("get zoom target took time:%d ms, settings: %o", Date.now() - beginTime, this.settings);
+      const timeConsuming = Date.now() - beginTime;
+      log.log("get zoom target took time:%d ms, settings: %o", timeConsuming, this.settings);
+      log.log("json-log:", JSON.stringify({
+        name: "getZoomTargets",
+        query: zoomTargetsQuery,
+        settings: this.settings,
+        timeConsuming,
+      }));
       zoomTargets = result.rows;
     }
     return zoomTargets;
