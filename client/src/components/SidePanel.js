@@ -501,7 +501,7 @@ function SidePanel(props){
                   icon={InsertPhoto}
                   tooltip="Tree images"
                 >
-                  {treeDetail.images.picture_base_url &&
+                  {treeDetail.images && treeDetail.images.picture_base_url &&
                     <Grid container>
                       <Grid item>
                         <Typography className={classes.item} variant="body1" >
@@ -516,7 +516,7 @@ function SidePanel(props){
                       </Grid>
                     </Grid>
                   }
-                  {treeDetail.images.picture_leaf_url &&
+                  {treeDetail.images && treeDetail.images.picture_leaf_url &&
                     <Grid container>
                       <Grid item>
                         <Typography className={classes.item} variant="body1" >
