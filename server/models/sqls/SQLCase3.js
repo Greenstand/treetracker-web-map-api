@@ -41,7 +41,7 @@ class SQLCase1{
       result += 'AND trees.planter_id = ' + this.userid + ' ';
     }
     if(this.wallet) {
-      result += "AND entity.wallet = '" + this.wallet + "'"
+      result += "AND wallets.wallet.name = '" + this.wallet + "'"
     }
     return result;
   }
@@ -49,8 +49,8 @@ class SQLCase1{
   getJoin(){
     let result = "";
     if(this.wallet){
-      result += 'INNER JOIN token ON token.tree_id = trees.id \n';
-      result += 'INNER JOIN entity ON entity.id = token.entity_id \n';
+      result += 'INNER JOIN wallets.token ON wallets.token.tree_id = trees.id \n';
+      result += 'INNER JOIN wallets.wallet ON wallets.wallet.id = wallets.token.entity_id \n';
     }
     if(this.flavor){
       result += "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";
