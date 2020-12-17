@@ -2,7 +2,7 @@
  * Case3, to filter and count all stuff via trees table directly, it would be slow if the data set is huge
  */
 
-class SQLCase1{
+class SQLCase3{
 
   constructor(){
     this.isFilteringByUserId = false;
@@ -35,6 +35,10 @@ class SQLCase1{
     this.token = token;
   }
 
+  addFilterByMapName(mapName){
+    this.mapName = mapName;
+  }
+
   getFilter(){
     let result = "";
     if(this.userid){
@@ -42,6 +46,35 @@ class SQLCase1{
     }
     if(this.wallet) {
       result += "AND wallets.wallet.name = '" + this.wallet + "'"
+    }
+    if(this.mapName){
+      result += `
+        AND trees.id IN(
+          select distinct * from ( 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          union all 
+            SELECT trees.id as id from trees
+              INNER JOIN (
+                SELECT id FROM planter
+                JOIN (
+                  SELECT entity_id FROM getEntityRelationshipChildren(
+                    (SELECT id FROM entity WHERE map_name = '${this.mapName}')
+                  )
+                ) org ON planter.organization_id = org.entity_id
+              ) planter_ids
+              ON trees.planter_id = planter_ids.id
+          ) t1
+        )
+      `;
     }
     return result;
   }
@@ -104,4 +137,4 @@ class SQLCase1{
   }
 }
 
-module.exports = SQLCase1;
+module.exports = SQLCase3;
