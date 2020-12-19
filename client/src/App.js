@@ -12,9 +12,7 @@ import Fade from "@material-ui/core/Fade";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import getLogo from "./models/logo";
-
-
-console.log("ppppp", process.env.REACT_APP_PPP);
+import log from "loglevel";
 
 
 const MOBILE_WIDTH = 960;
@@ -66,7 +64,7 @@ const theme = createMuiTheme({
   },
 });
 
-console.log("theme:", theme);
+log.info("theme:", theme);
 
 function shortenLargeNumber(number) {
   var units = ["K", "M"],
@@ -231,7 +229,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
-  console.warn("Render ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  log.warn("Render ................ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const classes = useStyles();
   const [sidePanelState, setSidePanelState] = React.useState("none");
   const [tree, setTree] = React.useState(undefined);
@@ -245,7 +243,7 @@ function App() {
   const [logoSrc, setLogoSrc] = React.useState(undefined);
 
   function showPanel(tree){
-    console.log("show panel...");
+    log.log("show panel...");
     setSidePanelState("show");
     setTree(tree);
     //consider the visible of the point
@@ -256,7 +254,7 @@ function App() {
       const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
       expect(top).number();
       expect(left).number();
-      console.log("the point at:", top, left);
+      log.log("the point at:", top, left);
       expect(SidePanel).property("WIDTH").number();
       const {clientWidth, clientHeight} = mapRef.current;
       expect(clientWidth).above(0);
@@ -272,8 +270,8 @@ function App() {
       if((isOutOfViewport || isCoveredBySidePanel) && clientWidth > MOBILE_WIDTH){
         //move to right center
         const print = JSON.stringify(map);
-        console.log("print:", print);
-        console.log("console:", map);
+        log.log("print:", print);
+        log.log("con,sole:", map);
         const mapElement = mapRef.current;
         expect(mapElement).property("clientWidth").defined();
         const containerWidth = mapElement.clientWidth;
@@ -285,12 +283,12 @@ function App() {
         expect(topCenter).above(0);
         expect(leftCenter).above(0);
   //      //const latLng = mapTools.getLatLngCoordinateByPixel(top, left, map.getMap());
-  //      console.log("tl:", top, left);
+  //      log.log("tl:", top, left);
   //      expect(latLng).defined();
-  //      console.log("ln:", latLng);
+  //      log.log("ln:", latLng);
         const x = left - leftCenter;
         const y = top - topCenter;
-        console.log("pant by x,y:", x, y);
+        log.log("pant by x,y:", x, y);
         map.getMap().panBy(x,y);
       }
       setHasNext(map.hasNextPoint());
@@ -299,23 +297,24 @@ function App() {
   }
 
   function showPanelWithoutTree(){
+    log.debug("showPanelWithoutTree");
     showPanelWithoutTree(true);
   }
 
   function handlePrev(){
-    console.log("prev");
+    log.debug("prev");
     const {map} = mapRef.current;
     try{
       map.goPrevPoint();
     }catch(e){
       //failed, it's possible, when user move the map quickly, and the 
       //side panel arrow button status is stale
-      console.warn("go prev failed", e);
+      log.warn("go prev failed", e);
     }
   }
 
   function handleNext(){
-    console.log("next");
+    log.debug("next");
     const {map} = mapRef.current;
     expect(map).defined()
       .property("goNextPoint")
@@ -325,15 +324,17 @@ function App() {
     }catch(e){
       //failed, it's possible, when user move the map quickly, and the 
       //side panel arrow button status is stale
-      console.warn("go next failed", e);
+      log.warn("go next failed", e);
     }
   }
 
   function handleSidePanelClose(){
+    log.debug("handleSidePanelClose");
     setSidePanelState("none");
   }
 
   function loaded(){
+    log.debug("loaded");
     setLoading(false);
   }
 
@@ -352,6 +353,7 @@ function App() {
   }
 
   function showArrow(direction){
+    log.debug("show arrow:", direction);
     expect(direction).oneOf(["north", "south", "west", "east"]);
     setArrow({
       direction,
@@ -359,6 +361,11 @@ function App() {
   }
 
   function hideArrow(){
+    log.debug("hide arrow");
+    //to avoid useless refresh of this component, check current arrow object
+    if(arrow.direction === undefined){
+      return;
+    }
     setArrow({
     });
   }
@@ -373,6 +380,7 @@ function App() {
   }
 
   function injectApp(){
+    log.trace("inject app");
     if(mapRef.current) {
       mapRef.current.app = {
         showPanel,
@@ -388,6 +396,7 @@ function App() {
 
 
   React.useEffect(() => {
+    log.debug("useEffect 1");
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
     script.id = 'googleMaps';
@@ -408,12 +417,14 @@ function App() {
    * fetch possible logo url in DB
    */
   async function loadLogo(){
+    log.debug("load logo");
     const src = await getLogo(window.location.href);
     setLogoSrc(src);
     setLogoLoaded(true);
   }
 
   React.useEffect(() => {
+    log.debug("useEffect 2");
     loadLogo();
   }, []);
 

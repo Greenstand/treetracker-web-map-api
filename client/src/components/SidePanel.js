@@ -22,6 +22,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
 import Share from "./Share";
+import log from "loglevel";
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
@@ -201,12 +202,12 @@ function SidePanel(props){
   }
 
   function handleLoad(){
-    console.log("loaded....");
+    log.log("loaded....");
     setTreePictureLoaded(true);
   }
 
   React.useEffect(() => {
-    console.log("tree changed"); 
+    log.log("tree changed"); 
     if(tree && tree.image_url){
       setTreePictureLoaded(false);
     }
@@ -347,7 +348,7 @@ function SidePanel(props){
                 </Grid>
                 <Grid item>
                   <Typography className={classes.item} variant="body1" >
-                    Impace Owner: @{tree?.attachedWallet}
+                    Impact Owner: @{tree?.attachedWallet}
                   </Typography>
                 </Grid>
               </Grid>

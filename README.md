@@ -124,6 +124,24 @@ Future:
 * View photo together with tree data
 * View planter profile. 
 
+## How to enable log on console.
+
+By default, the client just output logs which are level of `warn` or above, this remains the browser console clean for normal users, to display more logs for debuggering, please follow this guide:
+
+1. Open the browser console panel.
+
+2. Open application tab, then open `Local Storage` tab:
+
+3. Add a key-value pair:
+
+key: loglevel
+value: DEBUG
+
+4. Refresh the page.
+
+![demo for set log](./log-demo.gif)
+
+
 ### How to test
 
 We use Jest to build tests.
