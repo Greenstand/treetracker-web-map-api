@@ -133,7 +133,7 @@ class Map{
         this.sql = new SQLCase2();
         this.sql.addFilterByMapName(this.mapName);
         this.sql.setBounds(this.bounds);
-      } else if ([12, 13, 14, 15].includes(this.zoomLevel)) {
+      } else if ([12, 13, 14, 15].includes(this.zoomLevel) && this.mapName != 'freetown') {
         this.sql = new SQLCase3();
         this.sql.setClusterRadius(this.clusterRadius);
         this.sql.addFilterByMapName(this.mapName);
