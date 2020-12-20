@@ -14,8 +14,16 @@ class SQLCase1{
     this.userId = userId;
   }
 
+  addFilterByWallet(wallet){
+    this.wallet = wallet;
+  }
+
   getJoin(){
     let result = "";
+    if(this.wallet){
+      result += 'INNER JOIN token ON token.tree_id = tree_region.tree_id \n';
+      result += 'INNER JOIN entity ON entity.id = token.entity_id \n';
+    }
     if(this.isFilteringByUserId){
       result += "JOIN trees ON tree_region.tree_id = trees.id";
     }
@@ -26,6 +34,9 @@ class SQLCase1{
     let result = "";
     if(this.isFilteringByUserId){
       result += "AND planter_id = " + this.userId + " ";
+    }
+    if(this.wallet) {
+      result += "AND entity.wallet = '" + this.wallet + "'"
     }
     if(this.treeIds && this.treeIds.length > 0){
       result += "AND tree_region.tree_id IN(" + this.treeIds.join(",") + ") ";
@@ -97,7 +108,7 @@ class SQLCase1{
       SELECT 'cluster' AS type,
       region_id id, ST_ASGeoJson(centroid) centroid,
       type_id as region_type,
-      count(id)
+      count(tree_region.id)
       FROM active_tree_region tree_region
       ${this.getJoin()}
       WHERE zoom_level = $1

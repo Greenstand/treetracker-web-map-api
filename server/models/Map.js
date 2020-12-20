@@ -69,15 +69,38 @@ class Map{
       /*
        * wallet map mode
        */
+      console.log(this.wallet)
+      const result = await this.pool.query({
+        text: `select count(*) as count 
+        from trees 
+        join token
+        on token.tree_id = trees.id
+        join entity 
+        on token.entity_id = entity.id
+        and entity.wallet = $1`,
+        values:[this.wallet]
+      });
+      const treeCount = result.rows[0].count;
+      parseInt(treeCount);
+      console.log(treeCount);
       if(this.zoomLevel > 15){
         this.sql = new SQLCase2();
         this.sql.setBounds(this.bounds);
         this.sql.addFilterByWallet(this.wallet);
       }else{
-        this.sql = new SQLCase3();
-        this.sql.setClusterRadius(this.clusterRadius);
-        this.sql.addFilterByWallet(this.wallet);
-        this.sql.setBounds(this.bounds);
+
+        if(treeCount > 2000){
+          this.sql = new SQLCase1();
+          this.sql.addFilterByWallet(this.wallet);
+          this.sql.setZoomLevel(this.zoomLevel);
+          this.sql.setBounds(this.bounds);
+        }else{
+          this.sql = new SQLCase3();
+          this.sql.setClusterRadius(this.clusterRadius);
+          this.sql.addFilterByWallet(this.wallet);
+          this.sql.setBounds(this.bounds);
+        }
+
       }
       if(this.zoomLevel <= 9){
         this.sqlZoomTarget = new SQLZoomTargetCase1V2();
