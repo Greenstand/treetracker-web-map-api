@@ -261,7 +261,7 @@ describe("Map", () => {
         });
         let result = await map.getQuery();
         expect(result).toMatchObject({
-          text: expect.stringMatching(/case2.*token_uuid.*AND entity.wallet =/is),
+          text: expect.stringMatching(/case2.*AND entity.wallet =/is),
           values: [],
         });
 

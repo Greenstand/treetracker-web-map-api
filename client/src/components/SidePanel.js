@@ -21,12 +21,30 @@ import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Slide from "@material-ui/core/Slide";
 import expect from "expect-runtime";
+import Tooltip from "@material-ui/core/Tooltip";
+import Explore from "@material-ui/icons/Explore";
+import Place from "@material-ui/icons/Place";
+import Eco from "@material-ui/icons/Eco";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
+import Public from "@material-ui/icons/Public";
+import InsertPhoto from "@material-ui/icons/InsertPhoto";
+import Search from "@material-ui/icons/Search";
+import ImageShower from "./ImageShower";
 import Share from "./Share";
+import axios from "axios";
+import Skeleton from "@material-ui/lab/Skeleton";
 import log from "loglevel";
+
+const CancelToken = axios.CancelToken;
+let source;
+
+const treetrackerApiUrl = process.env.REACT_APP_API;
 
 const WIDTH = 396;
 const MAX_WIDTH = 480;
 const HEIGHT = 520;
+
+const NONE = "--";
 
 const useStyles = makeStyles(theme => ({
   placeholder:{
@@ -121,8 +139,17 @@ const useStyles = makeStyles(theme => ({
   verify: {
     marginBottom: 15,
   },
+  detailIcon: {
+      fontSize: 20,
+  },
+  detailIconBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingTop: 2,
+    paddingRight: 7,
+  }, 
   item: {
-    marginBottom: 15,
   },
   card: {
     height: "100%",
@@ -182,6 +209,25 @@ const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(1),
   },
+  hash: {
+    width: 18,
+    height: 18,
+    background: "#212121",
+    fontSize: 15,
+  },
+  skeleton: {
+    height: "100%",
+    width: "100%",
+  },
+  colorBox: {
+    width: 16,
+    height: 16,
+  },
+  colorContainer: {
+    height: "100%",
+    paddingLeft: 10,
+    paddingRight: 5,
+  },
 }));
 
 
@@ -191,7 +237,10 @@ function SidePanel(props){
   expect(state).oneOf(["none", "show", "hide"]);
   const {hasPrev = true} = props;
   const {hasNext = true} = props;
-  const [isTreePictureLoaded, setTreePictureLoaded] = React.useState((tree && tree.image_url)?false:true);
+  const [isTreePictureLoaded, setTreePictureLoaded] = React.useState(tree?false:true);
+  const [isBasePictureShown, setBasePictureShown] = React.useState(false);
+  const [isLeafPictureShown, setLeafPictureShown] = React.useState(false);
+  const [treeDetail, setTreeDetail] = React.useState(undefined);
 
   function handleClose(){
     props.onClose();
@@ -206,12 +255,60 @@ function SidePanel(props){
     setTreePictureLoaded(true);
   }
 
+  function handleBasePictureClick(){
+    setBasePictureShown(true);
+  }
+
+  function handleBasePictureClose(){
+    setBasePictureShown(false);
+  }
+
+  function handleLeafPictureClick(){
+    setLeafPictureShown(true);
+  }
+
+  function handleLeafPictureClose(){
+    setLeafPictureShown(false);
+  }
+
   React.useEffect(() => {
     log.log("tree changed"); 
-    if(tree && tree.image_url){
+    if(tree){
       setTreePictureLoaded(false);
+      setTreeDetail(undefined);
+      source && source.cancel("clean previous request");
+      source = CancelToken.source();
+      axios.get(`${treetrackerApiUrl}tree?tree_id=${tree.id}`,{
+        cancelToken: source.token,
+      })
+        .then(r => {
+          setTreeDetail(r.data);
+          //if there isn't image, close load spin
+          if(!r.data.image_url){
+            setTreePictureLoaded(true);
+          }
+        })
+        .catch(function (thrown) {
+          if (axios.isCancel(thrown)) {
+            console.log('Request canceled', thrown.message);
+          } else {
+            throw thrown;
+          }
+        });
+
     }
   }, [props.tree]);
+
+  /* update visibility of some list */
+  React.useEffect(() => {
+    document.querySelectorAll(".list-root").forEach(e => {
+      if(e.querySelector(".list-container").childElementCount === 0){
+        e.style.display="none"
+      }else{
+        e.style.display="flex"
+      }
+    });
+  });
 
   if(tree === undefined){
     return null;
@@ -244,8 +341,8 @@ function SidePanel(props){
               <Box>GREENSTAND</Box>
             </Grid>
             <div className={classes.treePictureBox} >
-              {tree && tree.image_url &&
-                <img key={tree.id} id="tree_img" onLoad={handleLoad} className={classes.treePicture} alt="tree planted" src={tree.image_url} />
+              {treeDetail && treeDetail.image_url &&
+                <img key={tree.id} id="tree_img" onLoad={handleLoad} className={classes.treePicture} alt="tree planted" src={treeDetail.image_url} />
               }
             </div>
           </div>
@@ -269,23 +366,28 @@ function SidePanel(props){
             <Grid container className={classes.titleBox} >
               <Grid item>
                 <Paper elevation={5} className={classes.avatarPaper} >
-                  {tree.user_image_url &&
-                    <Avatar id="planter-img" className={`${classes.avatar}`} src={tree.user_image_url.startsWith("http")?tree.user_image_url:`http://${tree.user_image_url}`} />
-                  }
-                  {!tree.user_image_url &&
-                    <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
+                  {treeDetail ?
+                    <>
+                    {treeDetail.user_image_url?
+                      <Avatar id="planter-img" className={`${classes.avatar}`} src={treeDetail.user_image_url.startsWith("http")?treeDetail.user_image_url:`http://${treeDetail.user_image_url}`} />
+                    :
+                      <Avatar id="planter-img" className={`${classes.avatar} ${classes.avatarLogo}`} src={require("../images/greenstand_logo.svg")} />
+                    }
+                    </>
+                  :
+                    <Avatar id="planter-img" className={`${classes.avatar}`} />
                   }
                 </Paper>
               </Grid>
               <Grid item className={classes.nameBox} >
                 <Typography variant="h5" >
-                  {tree && `${tree.first_name} ${tree.last_name.slice(0, 1)}`}
+                  {treeDetail && `${treeDetail.first_name || ""} ${treeDetail.last_name?.slice(0, 1) || ""}`}
                 </Typography>
               </Grid>
             </Grid>
             <Grid container justify="space-between" alignItems="center" >
               <Grid item>
-                {tree?.approved &&
+                {treeDetail && treeDetail.approved &&
                 <Grid container className={classes.verify} >
                   <Grid item className={classes.icon} >
                     <Check style={{ color: "#abe38f"}} />
@@ -297,7 +399,7 @@ function SidePanel(props){
                   </Grid>
                 </Grid>
                 }
-                {tree?.attachedWallet &&
+                {treeDetail && treeDetail.token_uuid &&
                   <Grid container className={classes.verify} >
                     <Grid item className={classes.icon} >
                       <Check style={{ color: "#abe38f"}} />
@@ -311,7 +413,7 @@ function SidePanel(props){
                 }
               </Grid>
               <Grid item>
-                {tree?.id &&
+                {tree.id &&
                   <Share
                     shareUrl={`https://treetracker.org/?treeid=${tree.id}`}
                   />
@@ -321,47 +423,115 @@ function SidePanel(props){
             <Divider/>
             <Box height={15} />
             <Grid container className={classes.infoItem} >
-              <Grid item>
-                <AccessTime/>
+              <Grid item className={classes.detailIconBox} >
+                <Tooltip title="Tree ID">
+                  <Avatar className={`${classes.detailIcon} ${classes.hash}`} >
+                    #
+                  </Avatar>
+                </Tooltip>
               </Grid>
               <Grid item>
-                <Typography className={classes.item} variant="body1" >
-                  {tree && new Date(tree.time_created).toLocaleString("en-US")}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid container className={classes.infoItem} >
-              <Grid item>
-                <Nature/>
-              </Grid>
-              <Grid item>
-                <Typography className={classes.item} variant="body1" >
-                  Tree Id: #{tree?.id}
-                </Typography>
+                <Item title="Tree ID" prefix="#" value={tree.id} />
               </Grid>
             </Grid>
-            {tree?.attachedWallet &&
+            {!treeDetail &&
+              <Grid container className={classes.skeleton} >
+                <Skeleton width="100%" animation="wave" />
+                <Skeleton width="100%" animation="wave" />
+                <Skeleton width="100%" animation="wave" />
+              </Grid>
+            }
+            {treeDetail &&
               <>
-              <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Face />
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.item} variant="body1" >
-                    Impact Owner: @{tree?.attachedWallet}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container className={classes.infoItem} >
-                <Grid item>
-                  <Fingerprint />
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.item} variant="body1" >
-                    Token: {tree?.token_uuid}
-                  </Typography>
-                </Grid>
-              </Grid>
+                <List icon={AccessTime} tooltip="Create date" >
+                  <Item title="Created at" value={new Date(treeDetail.time_created).toLocaleString("en-US")} />
+                </List>
+                <List
+                  icon={Face}
+                  tooltip="Wallet"
+                >
+                  <Item title="Impact Owner" prefix="@" value={treeDetail.wallet} />
+                </List>
+                <List
+                  icon={Fingerprint}
+                  tooltip="Token assigned to the tree"
+                >
+                  <Item title="Token" prefix="" value={treeDetail.token_uuid} />
+                </List>
+                <List
+                  icon={Place}
+                  tooltip="Location information"
+                >
+                    <Item title="Lat" value={treeDetail.lat} />
+                    <Item title="Lon" value={treeDetail.lon} />
+                    <Item title="Altitude" value={domainSpecificData(treeDetail, "_coordinates_altitude")} />
+                </List>
+                <List
+                  icon={Nature}
+                  tooltip="Tree information"
+                >
+                    <Item title="Species" value={treeDetail.species_name || domainSpecificData(treeDetail, "tree_species")} />
+                    <Item title="DBH" value={domainSpecificData(treeDetail, "diameter (cm)") || attribute(treeDetail, "dbh")} />
+                    {attribute(treeDetail, "height_color") &&
+                      <Grid container>
+                        <Grid item>
+                          <Typography className={classes.item} variant="body1" >
+                            Height:  
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Grid container justify="center" alignItems="center" className={classes.colorContainer} >
+                            <div className={classes.colorBox} style={{background: attribute(treeDetail, "height_color")}} />
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Typography className={classes.item} variant="body1" >
+                            {attribute(treeDetail, "height_color")}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    }
+                    <Item title="Tree Healthy" value={domainSpecificData(treeDetail, "tree_health")} />
+                    <Item title="Proximity to" value={domainSpecificData(treeDetail, "threat to")} />
+                    <Item title="Base Around Tree" value={domainSpecificData(treeDetail, "tree_base")} />
+                    <Item title="Site" value={domainSpecificData(treeDetail, "tree_site")} />
+                    <Item title="Functional Uses" value={domainSpecificData(treeDetail, "functional_uses")} />
+                </List>
+                <List
+                  icon={InsertPhoto}
+                  tooltip="Tree images"
+                >
+                  {treeDetail.images && treeDetail.images.picture_base_url &&
+                    <Grid container>
+                      <Grid item>
+                        <Typography className={classes.item} variant="body1" >
+                          Base Picture: 
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <IconButton onClick={handleBasePictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                          <Search  />
+                          <ImageShower src={treeDetail.images.picture_base_url} title="Base picture" onClose={handleBasePictureClose} open={isBasePictureShown} className={classes.imageIcon} />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  }
+                  {treeDetail.images && treeDetail.images.picture_leaf_url &&
+                    <Grid container>
+                      <Grid item>
+                        <Typography className={classes.item} variant="body1" >
+                          Leaf Picture: 
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <IconButton onClick={handleLeafPictureClick} size="small" disableRipple={true} disableFocusRipple={true} >
+                          <Search  />
+                          <ImageShower src={treeDetail.images.picture_leaf_url} title="Leaf picture" onClose={handleLeafPictureClose} open={isLeafPictureShown} className={classes.imageIcon} />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  }
+                </List>
               </>
             }
           </CardContent>
@@ -381,6 +551,43 @@ function SidePanel(props){
     }
     </>
   );
+}
+
+function Item(props){
+  const classes = useStyles();
+  if(!props.value) return null;
+  return(
+    <Typography className={classes.item} variant="body1" >
+      {props.title}: {props.prefix ||""}{props.value || NONE}
+    </Typography>
+  )
+}
+
+function List(props){
+  const classes = useStyles();
+
+  return(
+    <Grid container className={classes.infoItem + " list-root"} >
+      <Grid item className={classes.detailIconBox}>
+        <Tooltip title={props.tooltip} >
+          <props.icon className={classes.detailIcon} />
+        </Tooltip>
+      </Grid>
+      <Grid item className={"list-container"} >
+        {props.children}
+      </Grid>
+    </Grid>
+  );
+}
+
+function domainSpecificData(treeDetail, property){
+  if(!treeDetail || !treeDetail.domain_specific_data) return;
+  return treeDetail.domain_specific_data[property];
+}
+
+function attribute(treeDetail, property){
+  if(!treeDetail || !treeDetail.attributes) return;
+  return treeDetail.attributes[property];
 }
 
 SidePanel.WIDTH = WIDTH;
