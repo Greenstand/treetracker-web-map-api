@@ -35,17 +35,17 @@ jobs:
  #   - name: run ESLint
  #     run: npm run lint
  #     working-directory: ${{ env.project-directory }}
-    # - name: build client dev project
-    #   if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
-    #   run: npm run build
-    #   working-directory: ${{ env.project-directory }}
-    # - uses: actions/upload-artifact@v2
-    #   if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
-    #   with:
-    #     name: client-bundle
-    #     path: client/build
     - name: build client project
-      run: sudo npm run build
+      if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
+      run: npm run build
+      working-directory: ${{ env.project-directory }}
+    - uses: actions/upload-artifact@v2
+      if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
+      with:
+        name: client-bundle
+        path: client/build
+    - name: build client project
+      run: npm run build
       working-directory: ${{ env.project-directory }}
  #   - name: run React tests
  #     run: npm test
