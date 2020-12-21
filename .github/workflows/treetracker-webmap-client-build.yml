@@ -32,6 +32,8 @@ jobs:
     - name: npm clean install
       run: npm ci
       working-directory: ${{ env.project-directory }}
+    - name: updating npm
+      run: npm update
  #   - name: run ESLint
  #     run: npm run lint
  #     working-directory: ${{ env.project-directory }}
