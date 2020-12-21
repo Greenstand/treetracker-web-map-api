@@ -32,9 +32,9 @@ jobs:
     - name: npm clean install
       run: npm ci
       working-directory: ${{ env.project-directory }}
-    - name: run ESLint
-      run: npm run lint
-      working-directory: ${{ env.project-directory }}
+  #  - name: run ESLint
+  #    run: npm run lint
+  #    working-directory: ${{ env.project-directory }}
     - name: build server project
       run: npm run build
       working-directory: ${{ env.project-directory }}

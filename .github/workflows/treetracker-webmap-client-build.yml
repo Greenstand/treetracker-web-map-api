@@ -32,9 +32,9 @@ jobs:
     - name: npm clean install
       run: npm ci
       working-directory: ${{ env.project-directory }}
-    - name: run ESLint
-      run: npm run lint
-      working-directory: ${{ env.project-directory }}
+ #   - name: run ESLint
+ #     run: npm run lint
+ #     working-directory: ${{ env.project-directory }}
     - name: build client dev project
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
       run: npm run build:dev
