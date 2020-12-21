@@ -36,7 +36,7 @@ jobs:
   #    run: npm run lint
   #    working-directory: ${{ env.project-directory }}
     - name: build server project
-      run: npm run build
+      run: npm run dev
       working-directory: ${{ env.project-directory }}
     - name: get-npm-version
       id: package-version

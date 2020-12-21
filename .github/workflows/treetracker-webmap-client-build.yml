@@ -37,7 +37,7 @@ jobs:
  #     working-directory: ${{ env.project-directory }}
     - name: build client dev project
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
-      run: npm run build:dev
+      run: npm run build
       working-directory: ${{ env.project-directory }}
     - uses: actions/upload-artifact@v2
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
