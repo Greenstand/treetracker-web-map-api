@@ -62,8 +62,8 @@ jobs:
     - name: Build snapshot with git sha and push on merge
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
       id: docker_build_snapshot_merge
-    #  uses: docker/build-push-action@v2
-      uses: actions/docker/cli@master
+      uses: docker/build-push-action@v2
+    #  uses: actions/docker/cli@master
       with:
         context: ./server
         args: docker build -t ximena9201/treetracker-web-map-api .
