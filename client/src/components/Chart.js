@@ -1,15 +1,19 @@
 import React from "react";
 import ChartJs from "chart.js";
+import expect from "expect-runtime";
 
 function Chart(props){
+  expect(props).property("data").match([{
+    x: expect.any("string"),
+    y: expect.any("number"),
+  }]);
   const refCanvas = React.useRef();
   const config = {
     type: "line",
     data: {
-      labels: ['Jan', '', 'Mar', '', 'May', '', 'Jul'],
       datasets: [{
         label: props.label,
-        data: [1, 2, 2, 3, 5, 5, 7],
+        data: props.data,
       }],
     },
     options: {
@@ -19,14 +23,25 @@ function Chart(props){
             drawBorder: false,
           },
           ticks: {
-            stepSize: 3, 
+            maxTicksLimit: 5,
           }
         }],
         xAxes: [{
+          type: "time",
+          time: {
+            unit: "month",
+            displayFormats: {
+              month: "MMM",
+            },
+          },
           gridLines: {
             display: false,
             drawBorder: false,
           },
+          ticks: {
+            maxTicksLimit: 4,
+            maxRotation: 0,
+          }
         }]
       }
     },
