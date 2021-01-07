@@ -38,7 +38,31 @@ describe("nearest", () => {
       .mockResolvedValueOnce({
         rows: [{
           mon: "2020-12-15 22:00:00", 
-          token_count: 1,
+          count: 1,
+        }],
+      })
+      .mockResolvedValueOnce({
+        rows: [{
+          mon: "2020-11-01 00:00:00", 
+          count: 1,
+        },{
+          mon: "2020-12-01 00:00:00", 
+          count: 2,
+        }],
+      })
+      .mockResolvedValueOnce({
+        rows: [{
+          tree_id: 1,
+          mon: "2020-11-01 00:00:00", 
+          species_id: 1,
+        },{
+          tree_id: 2,
+          mon: "2020-11-01 00:00:00", 
+          species_id: 1,
+        },{
+          tree_id: 3,
+          mon: "2020-12-01 00:00:00", 
+          species_id: 2,
         }],
       })
     const res = await request(app).get("/annaeye");
@@ -47,9 +71,23 @@ describe("nearest", () => {
       name: "Anna Eye",
       tokens: {
         total: 1,
-        tokenMonthly: [{
+        monthly: [{
           mon: expect.any(String),
-          token_count: expect.any(Number),
+          count: expect.any(Number),
+        }],
+      },
+      planters: {
+        total: 2,
+        monthly: expect.anything(),
+      },
+      species: {
+        total: 2,
+        monthly: [{
+          mon: "2020-11-01 00:00:00", 
+          count: 1,
+        },{
+          mon: "2020-12-01 00:00:00", 
+          count: 2,
         }],
       },
     });
