@@ -17,6 +17,7 @@
     "@sentry/node": "^5.4.3",
     "body-parser": "^1.18.2",
     "chai": "^4.2.0",
+    "expect-runtime": "^0.10.0",
     "express": "^4.16.2",
     "express-lru": "^1.0.0",
     "morgan": "^1.9.1",
