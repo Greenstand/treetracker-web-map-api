@@ -24,5 +24,16 @@ function parseMapName(domain){
   }
 }
 
+/*
+ * get wallet name form url
+ */
+function parseWallet(url){
+  const r = url.match(/(@(\S+)|wallet=(\w+))/);
+  if(r){
+    return r[2] || r[3];
+  }else{
+    return undefined;
+  }
+}
 
-export {parseMapName}
+export {parseMapName, parseWallet}

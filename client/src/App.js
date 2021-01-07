@@ -13,6 +13,8 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import getLogo from "./models/logo";
 import log from "loglevel";
+import * as utils from "./utils";
+import BottomPanel from "./components/BottomPanel";
 
 
 const MOBILE_WIDTH = 960;
@@ -91,10 +93,14 @@ const dataString3 = '{"data":[{"type":"point","id":222046,"time_created":"2020-0
 //}}}
 
 const useStyles = makeStyles(theme => ({
+  boxA: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
   mapContainer: {
     transform: "scale(1.02)",
     transition: "all 2s",
-    position: "absolute",
     width: "100%",
     height: "100%",
   },
@@ -236,11 +242,14 @@ function App() {
   const [hasNext, setHasNext] = React.useState(false);
   const [hasPrev, setHasPrev] = React.useState(false);
   const mapRef = React.useRef(null);
+  const bottomRef = React.useRef(null);
   const [isLoading, setLoading] = React.useState(true);
   const [logoLoaded, setLogoLoaded] = React.useState(false);
   const [message, setMessage] = React.useState({open: false, message:""});
   const [arrow, setArrow] = React.useState({});
   const [logoSrc, setLogoSrc] = React.useState(undefined);
+  const [walletName, setWalletName] = React.useState(utils.parseWallet(window.location.href));
+  const [mapHeight, setMapHeight] = React.useState(window.innerHeight);
 
   function showPanel(tree){
     log.log("show panel...");
@@ -427,6 +436,17 @@ function App() {
     log.debug("useEffect 2");
     loadLogo();
   }, []);
+  
+  //layout bottom panel
+  React.useEffect(() => {
+    setTimeout(() => {
+      const bottomPanel = bottomRef.current;
+      console.warn("bbbb:", bottomPanel);
+      expect(bottomPanel).defined().property("clientHeight").a("number");
+      setMapHeight(window.innerHeight - bottomPanel.clientHeight);
+    }, 1000);
+  }, []);
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -440,7 +460,12 @@ function App() {
         hasNext={hasNext}
         hasPrev={hasPrev}
       />
-      <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef}/>
+      <div className={classes.boxA} > 
+        <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef} style={{height: mapHeight}}/>
+        {walletName &&
+          <BottomPanel ref={bottomRef} walletName={walletName} />
+        }
+      </div>
       <Fade in={isLoading} timeout={{apear:0,exit: 1000}}>
         <Grid container className={classes.loadingContainer} >
           <Grid item>

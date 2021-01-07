@@ -13,6 +13,9 @@ const treetrackerApiUrl = process.env.REACT_APP_API || "/api/web/";
 
 
 const useStyles = makeStyles(theme => ({
+  boxA: {
+    height: theme.spacing(50),
+  },
   containerA: {
     padding: theme.spacing(2),
   },
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function BottomPanel(props){
+const BottomPanel = React.forwardRef((props, ref) => {
   expect(props).property("walletName").a("string");
   const classes = useStyles();
   const [wallet, setWallet] = React.useState(undefined);
@@ -53,7 +56,7 @@ function BottomPanel(props){
   }, []);
 
   return (
-    <Paper elevation={4} >
+    <Paper ref={ref} elevation={4} className={classes.boxA} >
       <G container className={classes.containerA} >
         <G item>
           <G container className={classes.containerB} >
@@ -107,6 +110,6 @@ function BottomPanel(props){
       </G>
     </Paper>
   );
-}
+})
 
 export default BottomPanel;
