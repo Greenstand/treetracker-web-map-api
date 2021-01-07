@@ -32,12 +32,12 @@ jobs:
     - name: npm clean install
       run: npm ci
       working-directory: ${{ env.project-directory }}
-  #  - name: run ESLint
-  #    run: npm run lint
-  #    working-directory: ${{ env.project-directory }}
-  #  - name: build server project
-  #    run: npm run dev
-  #    working-directory: ${{ env.project-directory }}
+    # - name: run ESLint
+    #   run: npm run lint
+    #   working-directory: ${{ env.project-directory }}
+    - name: build server project
+      run: npm run dev
+      working-directory: ${{ env.project-directory }}
     - name: get-npm-version
       id: package-version
       uses: martinbeentjes/npm-get-version-action@master
@@ -63,22 +63,11 @@ jobs:
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
       id: docker_build_snapshot_merge
       uses: docker/build-push-action@v2
-    #  uses: actions/docker/cli@master
       with:
         context: ./server
-        args: docker build -t ximena9201/treetracker-web-map-api .
-    - name: docker login
-      uses: actions/docker/login@master
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-    - name: docker push
-      uses: actions/docker/cli@master
-      with:
-        args: push ximena9201/treetracker-web-map-api
-   #     file: ./server/Dockerfile
-   #     push: true
-   #     tags: ximena9201/treetracker-web-map-api:${{ steps.package-version.outputs.current-version }}-${{ steps.git-sha.outputs.sha_short }}
+        file: ./server/Dockerfile
+        push: true
+        tags: ximena9210/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }}-${{ steps.git-sha.outputs.sha_short }}
     - name: Build snapshot and push on merge
       if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
       id: docker_build_merge
@@ -87,7 +76,7 @@ jobs:
         context: ./server
         file: ./server/Dockerfile
         push: true
-        tags: ximena9201/treetracker-web-map:${{ steps.package-version.outputs.current-version }}-latest
+        tags: ximena9210/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }}-latest
   
   release:
     name: Release semantic version
@@ -127,7 +116,7 @@ jobs:
           context: ./server
           file: ./server/Dockerfile
           push: true
-          tags: ximena9201/treetracker-web-map-api:${{ steps.package-version.outputs.current-version }}
+          tags: ximena9210/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }}
       - id: export_bumped_version
         run: |
           export BUMPED_VERSION="${{ steps.package-version.outputs.current-version }}"
