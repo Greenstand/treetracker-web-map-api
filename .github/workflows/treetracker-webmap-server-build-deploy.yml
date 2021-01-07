@@ -141,4 +141,4 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
     - name: Update kubernetes resources
-      run: kubectl -n development apply --wait -k server/deployment/
+      run: kubectl -n webmap apply --wait -k server/deployment/
