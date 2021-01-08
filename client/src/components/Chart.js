@@ -14,9 +14,19 @@ function Chart(props){
       datasets: [{
         label: props.label,
         data: props.data,
+        fill: false,
+        backgroundColor: "#FFA500",
+        borderColor: "#FFA500",
       }],
     },
     options: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: props.label,
+      },
       scales: {
         yAxes: [{
           gridLines: {
@@ -54,7 +64,7 @@ function Chart(props){
 
   return (
     <div>
-      <canvas ref={refCanvas} width="220px" height="120px" ></canvas>
+      <canvas ref={refCanvas} ></canvas>
     </div>
   );
 }

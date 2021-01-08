@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   },
   mapContainer: {
     transform: "scale(1.02)",
-    //transition: "all 2s",
+    transition: "transform 2s",
     width: "100%",
     height: "100%",
   },
@@ -225,12 +225,20 @@ const useStyles = makeStyles(theme => ({
     },
   },
   logoLoaded: {
-    transform: "translate(0, 0)",
+    transform: "translate(0, 0) !important",
     opacity: 1,
 //    [theme.breakpoints.down("sm")]: {
 //      transform: "translate(0, 0)",
 //      opacity: 1,
 //    },
+  },
+  logoWalletName: {
+    transform: "translate(0, -20px)",
+    right: 10,
+    top: 10,
+    "& img": {
+      maxWidth: 250,
+    },
   },
 }));
 
@@ -463,7 +471,8 @@ function App() {
         hasPrev={hasPrev}
       />
       <div className={classes.boxA} > 
-        <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef} style={{height: mapHeight}}/>
+        <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef} style={{height: mapHeight}}>
+        </div>
         {walletName &&
           <BottomPanel ref={bottomRef} walletName={walletName} />
         }
@@ -475,7 +484,7 @@ function App() {
           </Grid>
         </Grid>
       </Fade>
-      <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
+      <div className={`${classes.logo}  ${walletName?classes.logoWalletName:""} ${logoLoaded?classes.logoLoaded:""}` }>
         <img alt="logo" src={logoSrc} />
       </div>
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
