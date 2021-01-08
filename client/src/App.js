@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   },
   mapContainer: {
     transform: "scale(1.02)",
-    transition: "all 2s",
+    //transition: "all 2s",
     width: "100%",
     height: "100%",
   },

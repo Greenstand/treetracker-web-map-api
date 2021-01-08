@@ -133,9 +133,8 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       const result = await pool.query(query);
       const monthly = result.rows;
       expect(monthly).match([{
-        tree_id: expect.stringMatching(/\d+/),
-        mon: expect.any("string"), 
-        species_id: expect.stringMatching(/\d+/)
+        tree_id: expect.any("number"),//expect.stringMatching(/\d+/),
+        species_id: expect.any("number"),//expect.stringMatching(/\d+/)
       }]);
       //convert to {mon: xxx, count: n}
       const species = new Set();
