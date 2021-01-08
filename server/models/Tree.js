@@ -1,0 +1,37 @@
+const SQLTree = require("./sqls/SQLTree");
+const { Pool} = require('pg');
+const config = require('../config/config');
+
+class Tree{
+  constructor(){
+    this.pool = new Pool({ connectionString: config.connectionString });
+  }
+
+  async getTreeById(treeId){
+    const sql = new SQLTree();
+    sql.setTreeId(treeId);
+    const query = await sql.getQuery();
+    const result = await this.pool.query(query);
+    if(result.rows.length === 0){
+      throw new Error("can not find tree", treeId);
+    }
+    const treeObject = result.rows[0];
+    //attribute
+    {
+      const query = {
+        text: "select * from tree_attributes where tree_id = $1",
+        values: [treeId],
+      };
+      const attributes = await this.pool.query(query);
+      const attributeJson = {};
+      for(const r of attributes.rows){
+        attributeJson[r.key] = r.value;
+      }
+      treeObject.attributes = attributeJson;
+    }
+    return treeObject;
+  }
+}
+
+
+module.exports = Tree;

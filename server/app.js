@@ -1,17 +1,21 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var http = require('http');
-var pg = require('pg');
-const { Pool, Client } = require('pg');
-var path = require('path');
-var app = express();
-var config = require('./config/config');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const expressLru = require('express-lru');
+const config = require('./config/config');
 const Sentry = require('@sentry/node');
 const Map = require('./models/Map');
+const Tree = require("./models/Tree");
 
-const pool = new Pool({ connectionString: config.connectionString });
 Sentry.init({ dsn: config.sentryDSN });
-
+const cache = expressLru({
+  max: 1000,
+  ttl: 60000,
+  skip: function(req) {
+    // Don't run if bounds passed in, possibly other cases as well
+    return !!req.user || !!req.query.bounds;
+  }
+});
 app.use(Sentry.Handlers.requestHandler());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
@@ -29,7 +33,7 @@ if(process.env.NODE_ENV == 'dev'){
 }
 
 //app.get(/(\/api\/web)?\/trees/, function (req, res) {
-app.get("/trees", async function (req, res) {
+app.get("/trees", cache, async function (req, res) {
   const map = new Map();
   const beginTime = Date.now();
   await map.init(req.query);
@@ -50,6 +54,21 @@ app.use("/entities", entity);
 //nearest API
 const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
+
+//wallet API
+const wallet = require("./api/wallet");
+app.use("/wallets", wallet);
+
+app.get("/tree", async function (req, res){
+  const tree = new Tree();
+  const treeId = req.query.tree_id;
+  if(!treeId){
+    console.warn("no tree id", treeId);
+    res.status(400).json({message:"no tree id"});
+  }
+  const treeDetail = await tree.getTreeById(treeId);
+  res.status(200).json(treeDetail);
+});
 
 ////add static files, HTML pages
 //app.use(express.static(path.join(__dirname, "../client")));
