@@ -9,6 +9,7 @@ import axios from "axios";
 import log from "loglevel";
 import expect from "expect-runtime";
 import Skeleton from "@material-ui/lab/Skeleton";
+import ArrowLeft from "@material-ui/icons/ArrowLeft";
 
 const treetrackerApiUrl = process.env.REACT_APP_API || "/api/web/";
 
@@ -16,6 +17,7 @@ const treetrackerApiUrl = process.env.REACT_APP_API || "/api/web/";
 const useStyles = makeStyles(theme => ({
   boxA: {
     height: theme.spacing(40),
+    zIndex: 999,
   },
   containerA: {
     padding: theme.spacing(2),
@@ -42,12 +44,35 @@ const useStyles = makeStyles(theme => ({
   text: {
     fontWeight: 500,
   },
+  closeButton: {
+    position: "absolute",
+    right: "50%",
+    top: -34,
+    width: 23,
+    height: 48,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    cursor: "pointer",
+    transform: "rotate(90deg)",
+    boxShadow: "0px 3px 0px -1px rgba(0,0,0,0.05), 0px 3px 0px 0px rgba(0,0,0,0.05), 0px 1px 0px 0px rgba(0,0,0,0.1)",
+  },
 }));
 
 const BottomPanel = React.forwardRef((props, ref) => {
   expect(props).property("walletName").a("string");
   const classes = useStyles();
   const [wallet, setWallet] = React.useState(undefined);
+  const [isHidden, setHidden] = React.useState(false);
+
+  function handleClose(){
+    setHidden(true);
+    props.onClose && props.onClose();
+  }
+
+  function handleOpen(){
+    setHidden(false);
+    props.onOpen && props.onOpen();
+  }
 
   React.useEffect(() => {
     //load data from server
@@ -66,65 +91,89 @@ const BottomPanel = React.forwardRef((props, ref) => {
   }, []);
 
   return (
-    <Paper ref={ref} elevation={4} className={classes.boxA} >
-      <G container className={classes.containerA} >
-        <G item>
-          <G container className={classes.containerB} >
+    <div ref={ref}  >
+      {!isHidden &&
+        <Paper elevation={4} className={classes.boxA} >
+          <div style={{position: "relative"}} >
+            <Paper title="hide" onClick={handleClose} elevation={3} className={classes.closeButton} >
+              <G container justify="center" alignItems="center" style={{height: "100%"}} >
+                <G item>
+                  <ArrowLeft/> 
+                </G>
+              </G>
+            </Paper>
+          </div>
+          <G container className={classes.containerA} >
             <G item>
+              <G container className={classes.containerB} >
+                <G item>
+                  <T variant="caption" >
+                    IMPACT OWNER 
+                  </T>
+                </G>
+                <G item>
+                  <T variant="h6" >
+                    {wallet && wallet.name || <Skeleton/> }
+                  </T>
+                </G>
+              </G>
+            </G>
+            <G item className={classes.containerC} >
               <T variant="caption" >
-                IMPACT OWNER 
+                Total tokens
+              </T>
+              <T variant="body2" className={classes.text} >
+                {wallet && wallet.tokens.total || <Skeleton/> }
+              </T>
+              <T variant="caption" >
+                Total planters
+              </T>
+              <T variant="body2" className={classes.text} >
+                {wallet && wallet.planters.total || <Skeleton/> }
+              </T>
+              <T variant="caption" >
+                Total species
+              </T>
+              <T variant="body2" className={classes.text} >
+                {wallet && wallet.species.total || <Skeleton/> }
               </T>
             </G>
-            <G item>
-              <T variant="h6" >
-                {wallet && wallet.name || <Skeleton/> }
-              </T>
+            <G item className={classes.containerD} >
+              {wallet && 
+                <Chart label="tokens" data={wallet.tokens.monthly.map(e => ({x: e.mon, y:e.count}))} />
+                ||
+                <Skeleton variant="rect" component="div" width="70%" height="70%" />
+              }
+            </G>
+            <G item className={classes.containerD} >
+              {wallet && 
+                <Chart label="planters" data={wallet.planters.monthly.map(e => ({x: e.mon, y:e.count}))} />
+                ||
+                <Skeleton variant="rect" component="div" width="70%" height="70%" />
+              }
+            </G>
+            <G item className={classes.containerD} >
+              {wallet && 
+                <Chart label="species" data={wallet.species.monthly.map(e => ({x: e.mon, y:e.count}))} />
+                ||
+                <Skeleton variant="rect" component="div" width="70%" height="70%" />
+              }
             </G>
           </G>
-        </G>
-        <G item className={classes.containerC} >
-          <T variant="caption" >
-            Total tokens
-          </T>
-          <T variant="body2" className={classes.text} >
-            {wallet && wallet.tokens.total || <Skeleton/> }
-          </T>
-          <T variant="caption" >
-            Total planters
-          </T>
-          <T variant="body2" className={classes.text} >
-            {wallet && wallet.planters.total || <Skeleton/> }
-          </T>
-          <T variant="caption" >
-            Total species
-          </T>
-          <T variant="body2" className={classes.text} >
-            {wallet && wallet.species.total || <Skeleton/> }
-          </T>
-        </G>
-        <G item className={classes.containerD} >
-          {wallet && 
-            <Chart label="tokens" data={wallet.tokens.monthly.map(e => ({x: e.mon, y:e.count}))} />
-            ||
-            <Skeleton variant="rect" component="div" width="70%" height="70%" />
-          }
-        </G>
-        <G item className={classes.containerD} >
-          {wallet && 
-            <Chart label="planters" data={wallet.planters.monthly.map(e => ({x: e.mon, y:e.count}))} />
-            ||
-            <Skeleton variant="rect" component="div" width="70%" height="70%" />
-          }
-        </G>
-        <G item className={classes.containerD} >
-          {wallet && 
-            <Chart label="species" data={wallet.species.monthly.map(e => ({x: e.mon, y:e.count}))} />
-            ||
-            <Skeleton variant="rect" component="div" width="70%" height="70%" />
-          }
-        </G>
-      </G>
-    </Paper>
+        </Paper>
+      }
+      {isHidden &&
+        <div style={{position: "relative"}} >
+          <Paper title="hide" onClick={handleOpen} elevation={3} className={classes.closeButton} >
+            <G container justify="center" alignItems="center" style={{height: "100%"}} >
+              <G item>
+                <ArrowLeft/> 
+              </G>
+            </G>
+          </Paper>
+        </div>
+      }
+    </div>
   );
 })
 

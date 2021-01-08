@@ -387,6 +387,22 @@ function App() {
     });
   }
 
+  function handleBottomPanelOpen(){
+    setTimeout(() => {
+      const bottomPanel = bottomRef.current;
+      log.warn("bottom panel height:", bottomPanel.clientHeight);
+      setMapHeight(window.innerHeight - bottomPanel.clientHeight);
+    }, 10);
+  }
+
+  function handleBottomPanelClose(){
+    setTimeout(() => {
+      const bottomPanel = bottomRef.current;
+      log.warn("bottom panel height:", bottomPanel.clientHeight);
+      setMapHeight(window.innerHeight - bottomPanel.clientHeight);
+    }, 10);
+  }
+
   function handleArrowClick(){
     const {map} = mapRef.current;
     expect(map).defined()
@@ -474,7 +490,7 @@ function App() {
         <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef} style={{height: mapHeight}}>
         </div>
         {walletName &&
-          <BottomPanel ref={bottomRef} walletName={walletName} />
+          <BottomPanel onClose={handleBottomPanelClose} onOpen={handleBottomPanelOpen} ref={bottomRef} walletName={walletName} />
         }
       </div>
       <Fade in={isLoading} timeout={{apear:0,exit: 1000}}>
