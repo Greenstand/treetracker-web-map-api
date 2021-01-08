@@ -439,12 +439,14 @@ function App() {
   
   //layout bottom panel
   React.useEffect(() => {
-    setTimeout(() => {
-      const bottomPanel = bottomRef.current;
-      console.warn("bbbb:", bottomPanel);
-      expect(bottomPanel).defined().property("clientHeight").a("number");
-      setMapHeight(window.innerHeight - bottomPanel.clientHeight);
-    }, 1000);
+    if(walletName){
+      setTimeout(() => {
+        const bottomPanel = bottomRef.current;
+        console.warn("bbbb:", bottomPanel);
+        expect(bottomPanel).defined().property("clientHeight").a("number");
+        setMapHeight(window.innerHeight - bottomPanel.clientHeight);
+      }, 1000);
+    }
   }, []);
 
 

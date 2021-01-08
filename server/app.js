@@ -55,6 +55,10 @@ app.use("/entities", entity);
 const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
 
+//wallet API
+const wallet = require("./api/wallet");
+app.use("/wallets", wallet);
+
 app.get("/tree", async function (req, res){
   const tree = new Tree();
   const treeId = req.query.tree_id;

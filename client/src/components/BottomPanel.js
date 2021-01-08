@@ -41,7 +41,7 @@ const BottomPanel = React.forwardRef((props, ref) => {
 
   React.useEffect(() => {
     //load data from server
-    axios.get(`${treetrackerApiUrl}/wallets/${props.walletName}`)
+    axios.get(`${treetrackerApiUrl}wallets/${props.walletName}`)
       .then(res => {
         log.debug("get response from server");
         expect(res).property("data").match({

@@ -5,7 +5,7 @@ import expect from "expect-runtime";
 function Chart(props){
   expect(props).property("data").match([{
     x: expect.any("string"),
-    y: expect.any("number"),
+    y: expect.stringMatching(/\d+/),
   }]);
   const refCanvas = React.useRef();
   const config = {
