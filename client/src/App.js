@@ -403,6 +403,11 @@ function App() {
     }, 10);
   }
 
+  function handleBottomPanelHeightChange(height){
+    expect(height).a("number");
+    setMapHeight(window.innerHeight - height);
+  }
+
   function handleArrowClick(){
     const {map} = mapRef.current;
     expect(map).defined()
@@ -465,10 +470,12 @@ function App() {
   React.useEffect(() => {
     if(walletName){
       setTimeout(() => {
-        const bottomPanel = bottomRef.current;
-        console.warn("bbbb:", bottomPanel);
-        expect(bottomPanel).defined().property("clientHeight").a("number");
-        setMapHeight(window.innerHeight - bottomPanel.clientHeight);
+//        console.log("bottomRef:", bottomRef);
+//        expect(bottomRef).property("getPanelHeight").a("Function");
+//        const bottomPanel = bottomRef.current;
+//        console.warn("bbbb:", bottomPanel);
+//        expect(bottomPanel).defined().property("clientHeight").a("number");
+//        setMapHeight(window.innerHeight - bottomPanel.clientHeight);
       }, 1000);
     }
   }, []);
@@ -490,7 +497,7 @@ function App() {
         <div className={`${classes.mapContainer} ${isLoading?"":classes.mapLoaded}`} id="map-canvas" ref={mapRef} style={{height: mapHeight}}>
         </div>
         {walletName &&
-          <BottomPanel onClose={handleBottomPanelClose} onOpen={handleBottomPanelOpen} ref={bottomRef} walletName={walletName} />
+          <BottomPanel onClose={handleBottomPanelClose} onOpen={handleBottomPanelOpen} ref={bottomRef} walletName={walletName} onHeightChange={handleBottomPanelHeightChange} />
         }
       </div>
       <Fade in={isLoading} timeout={{apear:0,exit: 1000}}>
