@@ -37,7 +37,7 @@ describe("nearest", () => {
       })
       .mockResolvedValueOnce({
         rows: [{
-          mon: "2020-11-01 22:00:00", 
+          mon: "2019-12-31T16:00:00.000Z",
           count: "1",
         },{
           mon: "2020-12-01 22:00:00", 
@@ -75,10 +75,10 @@ describe("nearest", () => {
       tokens: {
         total: 4,
         monthly: [{
-          mon: "2020-11-01 22:00:00", 
+          mon: expect.anything(),
           count: 1,
         },{
-          mon: "2020-12-01 22:00:00", 
+          mon: expect.anything(),
           count: 4,
         }],
       },
@@ -89,10 +89,10 @@ describe("nearest", () => {
       species: {
         total: 2,
         monthly: [{
-          mon: "2020-11-01 00:00:00", 
+          mon: expect.anything(),
           count: 1,
         },{
-          mon: "2020-12-01 00:00:00", 
+          mon: expect.anything(),
           count: 2,
         }],
       },
