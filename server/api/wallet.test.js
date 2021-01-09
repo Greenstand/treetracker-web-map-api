@@ -55,17 +55,17 @@ describe("nearest", () => {
       })
       .mockResolvedValueOnce({
         rows: [{
-          tree_id: "1",
+          tree_id: 1,
           mon: "2020-11-01 00:00:00", 
-          species_id: "1",
+          species_id: 1,
         },{
-          tree_id: "2",
+          tree_id: 2,
           mon: "2020-11-01 00:00:00", 
-          species_id: "1",
+          species_id: 1,
         },{
-          tree_id: "3",
+          tree_id: 3,
           mon: "2020-12-01 00:00:00", 
-          species_id: "2",
+          species_id: 2,
         }],
       })
     const res = await request(app).get("/annaeye");
@@ -73,17 +73,17 @@ describe("nearest", () => {
     expect(res.body).toMatchObject({
       name: "Anna Eye",
       tokens: {
-        total: "4",
+        total: 4,
         monthly: [{
           mon: "2020-11-01 22:00:00", 
-          count: "1",
+          count: 1,
         },{
           mon: "2020-12-01 22:00:00", 
-          count: "4",
+          count: 4,
         }],
       },
       planters: {
-        total: "2",
+        total: 2,
         monthly: expect.anything(),
       },
       species: {

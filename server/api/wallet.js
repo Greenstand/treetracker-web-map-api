@@ -67,11 +67,11 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       }
       console.debug("query:", query);
       const result = await pool.query(query);
-      const monthly = result.rows;
-//      expect(monthly).match([{
-//        mon: expect.any("string"), 
-//        count: expect.stringMatching(/\d+/)
-//      }]);
+      const monthly = result.rows.map(e => {e.count = parseInt(e.count); return e});
+      expect(monthly).match([{
+        mon: expect.anything(),
+        count: expect.any("number"),
+      }]);
       wallet.tokens = {
         total: monthly.reduce((a,c) => c.count > a?c.count:a, 0),
         monthly,
@@ -106,11 +106,11 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       }
       console.debug("query:", query);
       const result = await pool.query(query);
-      const monthly = result.rows;
-//      expect(monthly).match([{
-//        mon: expect.any("string"), 
-//        count: expect.stringMatching(/\d+/)
-//      }]);
+      const monthly = result.rows.map(e => {e.count = parseInt(e.count); return e});
+      expect(monthly).match([{
+        mon: expect.anything(),
+        count: expect.any("number"),
+      }]);
       wallet.planters = {
         total: monthly.reduce((a,c) => c.count > a?c.count:a, 0),
         monthly,
@@ -133,8 +133,8 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       const result = await pool.query(query);
       const monthly = result.rows;
       expect(monthly).match([{
-        tree_id: expect.any("number"),//expect.stringMatching(/\d+/),
-        species_id: expect.any("number"),//expect.stringMatching(/\d+/)
+        tree_id: expect.any("number"),
+        species_id: expect.any("number"),
       }]);
       //convert to {mon: xxx, count: n}
       const species = new Set();
