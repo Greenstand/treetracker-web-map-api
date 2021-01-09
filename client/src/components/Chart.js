@@ -17,6 +17,7 @@ function Chart(props){
         fill: false,
         backgroundColor: "#FFA500",
         borderColor: "#FFA500",
+        borderWidth: 2,
       }],
     },
     options: {

@@ -2,6 +2,7 @@ const express = require("express");
 const expect = require("expect-runtime");
 const router = express.Router();
 const {Pool, Client} = require("pg");
+const moment = require("moment");
 var config = require('../config/config');
 
 const pool = new Pool({ connectionString: config.connectionString });
@@ -67,11 +68,15 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       }
       console.debug("query:", query);
       const result = await pool.query(query);
-      const monthly = result.rows;
-//      expect(monthly).match([{
-//        mon: expect.any("string"), 
-//        count: expect.stringMatching(/\d+/)
-//      }]);
+      const monthly = result.rows.map(e => {
+        e.count = parseInt(e.count); 
+        e.mon = moment(e.mon).format("yyyy-MM-DD");
+        return e;
+      });
+      expect(monthly).match([{
+        mon: expect.stringMatching(/\d{4}-\d{2}-\d{2}/),
+        count: expect.any("number"),
+      }]);
       wallet.tokens = {
         total: monthly.reduce((a,c) => c.count > a?c.count:a, 0),
         monthly,
@@ -106,11 +111,15 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       }
       console.debug("query:", query);
       const result = await pool.query(query);
-      const monthly = result.rows;
-//      expect(monthly).match([{
-//        mon: expect.any("string"), 
-//        count: expect.stringMatching(/\d+/)
-//      }]);
+      const monthly = result.rows.map(e => {
+        e.count = parseInt(e.count); 
+        e.mon = moment(e.mon).format("yyyy-MM-DD");
+        return e;
+      });
+      expect(monthly).match([{
+        mon: expect.stringMatching(/\d{4}-\d{2}-\d{2}/),
+        count: expect.any("number"),
+      }]);
       wallet.planters = {
         total: monthly.reduce((a,c) => c.count > a?c.count:a, 0),
         monthly,
@@ -131,10 +140,14 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
       }
       console.debug("query:", query);
       const result = await pool.query(query);
-      const monthly = result.rows;
+      const monthly = result.rows.map(e => {
+        e.mon = moment(e.mon).format("yyyy-MM-DD");
+        return e;
+      });
       expect(monthly).match([{
-        tree_id: expect.any("number"),//expect.stringMatching(/\d+/),
-        species_id: expect.any("number"),//expect.stringMatching(/\d+/)
+        tree_id: expect.any("number"),
+        mon: expect.stringMatching(/\d{4}-\d{2}-\d{2}/),
+        species_id: expect.any("number"),
       }]);
       //convert to {mon: xxx, count: n}
       const species = new Set();

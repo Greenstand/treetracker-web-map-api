@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
   boxA: {
     height: theme.spacing(40),
     zIndex: 999,
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
   },
   containerA: {
     padding: theme.spacing(2),
@@ -55,6 +58,16 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     transform: "rotate(90deg)",
     boxShadow: "0px 3px 0px -1px rgba(0,0,0,0.05), 0px 3px 0px 0px rgba(0,0,0,0.05), 0px 1px 0px 0px rgba(0,0,0,0.1)",
+    "& svg": {
+      transform: "rotate(180deg)",
+      fill: "#86c232",
+      marginTop: 3,
+    },
+  },
+  closeButtonB: {
+    "& svg": {
+      transform: "rotate(0deg)",
+    },
   },
 }));
 
@@ -63,16 +76,26 @@ const BottomPanel = React.forwardRef((props, ref) => {
   const classes = useStyles();
   const [wallet, setWallet] = React.useState(undefined);
   const [isHidden, setHidden] = React.useState(false);
+  const panelRef = React.useRef();
 
   function handleClose(){
     setHidden(true);
-    props.onClose && props.onClose();
+    props.onHeightChange && props.onHeightChange(0);
   }
 
   function handleOpen(){
     setHidden(false);
-    props.onOpen && props.onOpen();
+    //TODO can optimize
+    setTimeout(() => {
+      expect(panelRef.current).property("clientHeight").a("number").above(0);
+      props.onHeightChange && props.onHeightChange(panelRef.current.clientHeight);
+    }, 10);
   }
+
+  React.useEffect(() => {
+    expect(panelRef.current).property("clientHeight").a("number").above(0);
+    props.onHeightChange && props.onHeightChange(panelRef.current.clientHeight);
+  }, []);
 
   React.useEffect(() => {
     //load data from server
@@ -90,15 +113,16 @@ const BottomPanel = React.forwardRef((props, ref) => {
       });
   }, []);
 
+
   return (
     <div ref={ref}  >
       {!isHidden &&
-        <Paper elevation={4} className={classes.boxA} >
+        <Paper elevation={4} ref={panelRef} className={classes.boxA} >
           <div style={{position: "relative"}} >
             <Paper title="hide" onClick={handleClose} elevation={3} className={classes.closeButton} >
               <G container justify="center" alignItems="center" style={{height: "100%"}} >
                 <G item>
-                  <ArrowLeft/> 
+                  <ArrowLeft /> 
                 </G>
               </G>
             </Paper>
@@ -164,7 +188,7 @@ const BottomPanel = React.forwardRef((props, ref) => {
       }
       {isHidden &&
         <div style={{position: "relative"}} >
-          <Paper title="hide" onClick={handleOpen} elevation={3} className={classes.closeButton} >
+          <Paper title="hide" onClick={handleOpen} elevation={3} className={`${classes.closeButton} ${classes.closeButtonB}`} >
             <G container justify="center" alignItems="center" style={{height: "100%"}} >
               <G item>
                 <ArrowLeft/> 
