@@ -434,7 +434,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
         //change to handle cancel
         log.log("request cancelled because of:", thrown.message);
       }else{
-        log.log("request failed", thrown);
+        log.warn("request failed", thrown);
       }
     });
 };

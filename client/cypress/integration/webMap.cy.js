@@ -2,7 +2,126 @@ import expectRuntime from "expect-runtime";
 import * as mapTools from "../../src/mapTools";
 const scale = 1;
 
-describe("Web Map", () => {
+
+
+describe.only("Spin case", () => {
+
+  it("", () => {
+    let data = JSON.parse(`{"data":[{"type":"cluster","id":6632615,"centroid":{"type":"Point","coordinates":[0,0]},"region_type":5,"count":"158"}],"zoomTargets":[{"region_id":6632615,"most_populated_subregion_id":6632420,"total":"100","zoom_level":4,"centroid":{"type":"Point","coordinates":[0,0]}}]}`);
+    //deal with location
+    data = {data: data.data.map(d => ({...d, centroid: JSON.stringify(d.centroid)})), zoomTargets: data.zoomTargets.map(d => ({...d, centroid: JSON.stringify(d.centroid)}))};
+    
+//    cy.intercept(/\/trees\?.*zoom_level=(2|4|6|8|10|12|14).*/, {
+//      body: {
+//        data: 500,
+//      },
+////      delay: 10000,
+////      delayMs: 10000,
+//    });
+//    cy.intercept(/\/trees\?.*zoom_level=.*/, req => {
+//      
+//      console.log("req:", req);
+//      expectRuntime(req).property("url").defined();
+//      if(req.url.match(/zoom_level=(2|4|6|8|10|12|14)/)){
+//        console.log("case1:", req);
+//        req.reply((res) => {
+////          res.delay(1000);
+//          res.send(data);
+//        });
+//      }else if(req.url.match(/zoom_level=16/)){
+//        console.log("case2:", req);
+//        req.reply((res) => {
+////          res.delay(1000);
+//          res.send({
+//            data:[{type: "point", id: 198033, lat: "0", lon: "0.0002"}],
+//          });
+//        });
+//      }else{
+//        console.error("bad req:", req);
+//      }
+//    });
+//    cy.intercept(/\/trees\?.*zoom_level=16.*/, {
+//      body: {
+//        data: 500,
+//      },
+//      delay: 10000,
+//      delayMs: 10000,
+//    });
+//    cy.intercept(/\/trees\?.*zoom_level=16.*/, {
+//      data: "xxx",
+//    });
+//    cy.intercept(/\/trees\?.*zoom_level=16.*/, req => {
+//      req.reply((res) => {
+//        res.send({
+//          data:[{type: "point", id: 198033, lat: "0", lon: "0.0002"}],
+//        });
+//      });
+//    });
+    cy.intercept(/\/trees\?.*zoom_level=(2|4|6|8|10|12|14).*/, req => {
+      req.reply(data);
+    }).as("requestCluster");
+    cy.intercept(/\/trees\?.*zoom_level=16.*/, req => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, 4000);
+      })
+        .then(() => {
+          req.reply({
+              data:[{type: "point", id: 198033, lat: "0", lon: "0.0002"}],
+          });
+        });
+    }).as("requestTrees");
+    cy.visit("http://localhost:3000");
+    cy.wait("@requestCluster");
+    cy.wait(1000);
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestCluster");
+    cy.get("div[aria-label=158]").click({force:true});
+    cy.wait(1000);
+    cy.wait("@requestTrees");
+//    cy.wait(2000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(2000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(2000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(2000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(2000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(1000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(1000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(1000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(1000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(1000);
+//    cy.get("div[aria-label=158]").click({force:true});
+//    cy.wait(10000);
+  });
+
+});
+
+describe.skip("Web Map", () => {
   
   before(() => {
     //cy.viewport("iphone-6");
