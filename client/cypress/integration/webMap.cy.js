@@ -15,7 +15,7 @@ describe.only("Spin case", () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve();
-        }, 4000);
+        }, 1);
       })
         .then(() => {
           req.reply(data);
