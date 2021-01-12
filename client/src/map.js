@@ -64,6 +64,8 @@ var treetrackerApiUrl = "/api/web/";
 
 let isLoadingMarkers = false;
 
+var loadingTimer = undefined;
+
 //if (typeof configTreetrackerApi !== "undefined") {
 //  treetrackerApiUrl = configTreetrackerApi;
 //}
@@ -186,10 +188,23 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 
   log.log("request:", queryUrl);
   source = CancelToken.source();
+
+  //loading
+  getApp().loadingB(false);
+  if(!firstRender){
+    loadingTimer = setTimeout(() => {
+      getApp().loadingB(true);
+    }, 3000);
+  }
+
   axios.get(queryUrl,{
     cancelToken: source.token,
   })
     .then(response => {
+      //loading
+      clearTimeout(loadingTimer);
+      getApp().loadingB(false);
+
       expect(response)
         .defined()
         .property("data")
@@ -1206,6 +1221,7 @@ function getApp(){
   const {app} = mapElement;
   expect(app).defined();
   expect(app).property("loaded").defined();
+  expect(app).property("loadingB").defined();
   expect(app).property("showPanel").defined();
   expect(app).property("showMessage").defined();
   return app;
