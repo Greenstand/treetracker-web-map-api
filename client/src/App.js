@@ -8,6 +8,7 @@ import load from "./map";
 import SidePanel from "./components/SidePanel";
 import * as mapTools from "./mapTools";
 import Loader from "./components/Loader";
+import LoaderB from "./components/LoaderB";
 import Fade from "@material-ui/core/Fade";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -197,6 +198,15 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     backgroundColor: "rgba(255,255,255,0.25)",
   },
+  loadingContainerB:{
+    userSelect: "none",
+    pointerEvents: "none",
+    position: "absolute",
+    width: "100%",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   logo: {
     userSelect: "none",
     pointerEvents: "none",
@@ -237,6 +247,7 @@ function App() {
   const [hasPrev, setHasPrev] = React.useState(false);
   const mapRef = React.useRef(null);
   const [isLoading, setLoading] = React.useState(true);
+  const [isLoadingB, setLoadingB] = React.useState(false);
   const [logoLoaded, setLogoLoaded] = React.useState(false);
   const [message, setMessage] = React.useState({open: false, message:""});
   const [arrow, setArrow] = React.useState({});
@@ -338,6 +349,11 @@ function App() {
     setLoading(false);
   }
 
+  function loadingB(isLoading){
+    log.debug("loadingB");
+    setLoadingB(isLoading);
+  }
+
   function handleMessageClose(){
     setMessage({
       open: false,
@@ -385,6 +401,7 @@ function App() {
       mapRef.current.app = {
         showPanel,
         loaded,
+        loadingB,
         showMessage,
         showArrow,
         hideArrow,
@@ -474,6 +491,13 @@ function App() {
             </div>
           </div>
         </div>
+      }
+      {isLoadingB &&
+        <Grid container className={classes.loadingContainerB} >
+          <Grid item>
+            <LoaderB/>
+          </Grid>
+        </Grid>
       }
     </ThemeProvider>
   );
