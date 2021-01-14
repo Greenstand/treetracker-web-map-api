@@ -1,5 +1,5 @@
 # Setup and build the client
-FROM FROM node:12.19.0-alpine as client
+FROM node:12.19.0-alpine as client
 
 WORKDIR /usr/app/client/
 COPY client/package*.json ./
@@ -8,7 +8,7 @@ RUN npm ci
 
 
 # Setup the server
-FROM FROM node:12.19.0-alpine as server
+FROM node:12.19.0-alpine as server
 
 WORKDIR /usr/app/
 COPY --from=client /usr/app/client ./client/
