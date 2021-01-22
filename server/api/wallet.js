@@ -56,11 +56,21 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
     //tokens
     {
       const query = {
+//        text: `
+//          SELECT mon, sum(token_count) OVER (ORDER BY mon) AS "count" FROM 
+//          (
+//            SELECT date_trunc('mon', created_at) AS mon, count(id) AS token_count  FROM wallets.token 
+//            WHERE entity_id = $1
+//            GROUP BY mon
+//          ) tt
+//          ORDER BY mon`,
+        //REVISE to use transaction directly, no need to join token table any
+        //more, cuz the information is enough for this chart 
         text: `
           SELECT mon, sum(token_count) OVER (ORDER BY mon) AS "count" FROM 
           (
-            SELECT date_trunc('mon', created_at) AS mon, count(id) AS token_count  FROM wallets.token 
-            WHERE entity_id = $1
+            SELECT date_trunc('mon', processed_at) AS mon, count(id) AS token_count  FROM wallets."transaction" 
+            WHERE destination_entity_id = $1
             GROUP BY mon
           ) tt
           ORDER BY mon`,
