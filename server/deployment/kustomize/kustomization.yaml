@@ -1,0 +1,4 @@
+resources:
+- treetracker-webmap-api-deployment.yml
+- treetracker-webmap-api-mapping.yml
+- treetracker-webmap-api-service.yml

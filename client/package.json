@@ -42,7 +42,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.4.3",
     "axios": "^0.19.2",
-    "cypress": "^5.5.0",
+    "cypress": "^6.2.1",
     "cypress-react-unit-test": "^4.16.9"
   },
   "proxy": "http://localhost:3001"
