@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "treetracker-webmap-api"
-          image: "greenstand/treetracker-webmap-api:master"
+          image: "greenstand/treetracker-webmap-api:1.0.0-latest"
           volumeMounts:
             - name: "configdb-volume"
               mountPath: "/usr/app/server/config/config.js"
