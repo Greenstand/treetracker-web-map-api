@@ -1,5 +1,5 @@
 # Setup the server
-FROM node:12.19.0-alpine as server
+FROM node:12.19.0-alpine
 
 WORKDIR /usr/app/server
 COPY package*.json ./
