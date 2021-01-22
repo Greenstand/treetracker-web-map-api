@@ -36,11 +36,11 @@ jobs:
  #     run: npm run lint
  #     working-directory: ${{ env.project-directory }}
     - name: build client project
-      if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
+      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       run: sudo npm run build
       working-directory: ${{ env.project-directory }}
     - uses: actions/upload-artifact@v2
-      if: github.event_name == 'push' && github.repository == 'ximena9201/treetracker-web-map'
+      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       with:
         name: client-bundle
         path: client/build
@@ -57,7 +57,7 @@ jobs:
     if: |
       !contains(github.event.head_commit.message, 'skip-ci') &&
       github.event_name == 'push' &&
-      github.repository == 'ximena9201/treetracker-web-map'
+      github.repository == 'greenstand/treetracker-web-map'
     steps:
       # check out repository code and setup node
       - uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
     if: |
       !contains(github.event.head_commit.message, 'skip-ci') &&
       github.event_name == 'push' &&
-      github.repository == 'ximena9201/treetracker-web-map'    
+      github.repository == 'Greenstand/treetracker-web-map'    
     steps:
     - uses: actions/checkout@v2
     - name: Download bundled client resources
