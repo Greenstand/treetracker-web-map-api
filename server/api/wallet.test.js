@@ -47,10 +47,10 @@ describe("nearest", () => {
       .mockResolvedValueOnce({
         rows: [{
           mon: "2020-11-01 00:00:00", 
-          count: "1",
+          planter_id: 1,
         },{
           mon: "2020-12-01 00:00:00", 
-          count: "2",
+          planter_id: 2,
         }],
       })
       .mockResolvedValueOnce({

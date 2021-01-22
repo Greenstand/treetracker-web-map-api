@@ -95,57 +95,90 @@ router.get("/:walletName", handlerWrapper(async function(req, res){
     //planter
     {
       const query = {
+//        text: `
+//          SELECT mon, sum("count") OVER (ORDER BY mon) AS "count" FROM 
+//          (
+//            SELECT date_trunc('mon', created_at) AS mon, count(planter_id) AS count FROM 
+//            (
+//              SELECT DISTINCT tr.planter_id, pr.created_at
+//              FROM wallets."token" AS t
+//              JOIN wallets.wallet AS w
+//              ON t.entity_id = w.id
+//              JOIN trees AS tr
+//              ON tr.id = t.tree_id
+//              JOIN planter AS p 
+//              ON tr.planter_id = p.id
+//              LEFT JOIN planter_registrations AS pr
+//              ON p.id = pr.planter_id
+//              WHERE w.id = $1
+//            ) pl
+//            GROUP BY mon
+//          ) tt
+//          WHERE mon IS NOT NULL 
+//          ORDER BY mon
+//        `,
         text: `
-          SELECT mon, sum("count") OVER (ORDER BY mon) AS "count" FROM 
-          (
-            SELECT date_trunc('mon', created_at) AS mon, count(planter_id) AS count FROM 
-            (
-              SELECT DISTINCT tr.planter_id, pr.created_at
-              FROM wallets."token" AS t
-              JOIN wallets.wallet AS w
-              ON t.entity_id = w.id
-              JOIN trees AS tr
-              ON tr.id = t.tree_id
-              JOIN planter AS p 
-              ON tr.planter_id = p.id
-              LEFT JOIN planter_registrations AS pr
-              ON p.id = pr.planter_id
-              WHERE w.id = $1
-            ) pl
-            GROUP BY mon
-          ) tt
-          WHERE mon IS NOT NULL 
+          SELECT tr.id tree_id, date_trunc('mon', processed_at) AS mon, planter_id FROM trees tr
+          JOIN wallets."token" t 
+          ON t.tree_id = tr.id
+          JOIN wallets."transaction" ts
+          ON ts.token_id = t.id
+          WHERE ts.destination_entity_id = $1
+          AND tr.planter_id IS NOT NULL 
           ORDER BY mon
         `,
         values: [wallet.id],
       }
       console.debug("query:", query);
       const result = await pool.query(query);
+
       const monthly = result.rows.map(e => {
-        e.count = parseInt(e.count); 
         e.mon = moment(e.mon).format("yyyy-MM-DD");
         return e;
       });
       expect(monthly).match([{
+        planter_id: expect.any("number"),
         mon: expect.stringMatching(/\d{4}-\d{2}-\d{2}/),
-        count: expect.any("number"),
       }]);
+      //convert to {mon: xxx, count: n}
+      const planters = new Set();
+      const monthlyMap = {};
+      monthly.forEach(e => {
+        planters.add(e.planter_id);
+        monthlyMap[e.mon] = planters.size;
+      });
+      const r = Object.keys(monthlyMap).map(mon => {
+        return {
+          mon,
+          count: monthlyMap[mon],
+        }
+      });
       wallet.planters = {
-        total: monthly.reduce((a,c) => c.count > a?c.count:a, 0),
-        monthly,
+        total: r.reduce((a,c) => c.count > a?c.count:a, 0),
+        monthly: r,
       }
     }
     //species
     {
       const query = {
+//        text: `
+//          SELECT tr.id tree_id, date_trunc('mon', time_created) AS mon, species_id FROM trees tr
+//          JOIN wallets."token" t 
+//          ON t.tree_id = tr.id
+//          WHERE t.entity_id = $1
+//          AND tr.species_id IS NOT NULL 
+//          ORDER BY mon
+//        `,
+        //REVISE to use transaction table to do the work
         text: `
-          SELECT tr.id tree_id, date_trunc('mon', time_created) AS mon, species_id FROM trees tr
+          SELECT tr.id tree_id, date_trunc('mon', processed_at) AS mon, species_id FROM trees tr
           JOIN wallets."token" t 
           ON t.tree_id = tr.id
-          WHERE t.entity_id = $1
+          JOIN wallets."transaction" ts
+          ON ts.token_id = t.id
+          WHERE ts.destination_entity_id = $1
           AND tr.species_id IS NOT NULL 
-          ORDER BY mon
-        `,
+          ORDER BY mon`,
         values: [wallet.id],
       }
       console.debug("query:", query);
