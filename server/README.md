@@ -1,6 +1,6 @@
 # treetracker-map-api
 
-API for web maps of tree plantings.
+API for web maps of tree plantings
 
 # Dockerized deployment
 
