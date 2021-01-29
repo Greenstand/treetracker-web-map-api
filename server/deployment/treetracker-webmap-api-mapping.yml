@@ -9,5 +9,7 @@ spec:
   service: treetracker-webmap-api-ambassador-svc
   rewrite: /
   cors:
-    origins: https://dev.webmap.treetracker.org
+    origins: 
+    - https://dev.webmap.treetracker.org
+    - https://dev.treetracker.org
     methods: GET
