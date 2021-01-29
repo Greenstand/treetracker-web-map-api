@@ -2,7 +2,7 @@ import * as mapTools from "./mapTools";
 import MapModel from "./MapModel";
 import expect from "expect-runtime";
 import axios from "axios";
-import {configTreetrackerApi, sentryDSN} from "./config";
+import {sentryDSN} from "./config";
 import {theme} from "./App";
 import {parseMapName} from "./utils";
 import log from "loglevel";
@@ -59,7 +59,7 @@ var markerByPointId = {};
 var selectedTreeMarker;
 var selectedOldTreeMarker;
 
-var treetrackerApiUrl = "/webmap/";
+var treetrackerApiUrl = "/default/";
 
 let isLoadingMarkers = false;
 
