@@ -59,8 +59,7 @@ var markerByPointId = {};
 var selectedTreeMarker;
 var selectedOldTreeMarker;
 
-//var treetrackerApiUrl = "http://dev.treetracker.org/api/web/";
-var treetrackerApiUrl = "/api/web/";
+const treetrackerApiUrl = "/webmap/";
 
 let isLoadingMarkers = false;
 
