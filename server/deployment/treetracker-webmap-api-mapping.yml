@@ -10,4 +10,4 @@ spec:
   rewrite: /
   cors:
     origins: https://dev.webmap.treetracker.org
-    methods: POST
+    methods: GET
