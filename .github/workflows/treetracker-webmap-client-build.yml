@@ -35,21 +35,18 @@ jobs:
  #   - name: run ESLint
  #     run: npm run lint
  #     working-directory: ${{ env.project-directory }}
+ #   - name: run React tests
+ #     run: npm test
+ #     working-directory: ${{ env.project-directory }}
     - name: build client project
       if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
-      run: REACT_APP_API=https://dev-k8s.treetracker.org/webmap sudo npm run build
+      run: REACT_APP_API=https://dev-k8s.treetracker.org/webmap npm run build
       working-directory: ${{ env.project-directory }}
     - uses: actions/upload-artifact@v2
       if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       with:
         name: client-bundle
         path: client/build
-    - name: build client project
-      run: sudo npm run build
-      working-directory: ${{ env.project-directory }}
- #   - name: run React tests
- #     run: npm test
-  #    working-directory: ${{ env.project-directory }}
   release:
     name: Release semantic version
     needs: client
