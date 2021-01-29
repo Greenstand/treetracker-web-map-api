@@ -59,15 +59,12 @@ var markerByPointId = {};
 var selectedTreeMarker;
 var selectedOldTreeMarker;
 
-const treetrackerApiUrl = "/webmap/";
+var treetrackerApiUrl = "/webmap/";
 
 let isLoadingMarkers = false;
 
 var loadingTimer = undefined;
 
-//if (typeof configTreetrackerApi !== "undefined") {
-//  treetrackerApiUrl = configTreetrackerApi;
-//}
 if(process.env.REACT_APP_API){
   treetrackerApiUrl = process.env.REACT_APP_API;
 }else{
