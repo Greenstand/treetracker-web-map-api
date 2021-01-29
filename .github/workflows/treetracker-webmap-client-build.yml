@@ -37,7 +37,7 @@ jobs:
  #     working-directory: ${{ env.project-directory }}
     - name: build client project
       if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
-      run: sudo npm run build
+      run: REACT_APP_API=https://dev-k8s.treetrack.org/webmap sudo npm run build
       working-directory: ${{ env.project-directory }}
     - uses: actions/upload-artifact@v2
       if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
