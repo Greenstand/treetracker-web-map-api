@@ -8,4 +8,4 @@ spec:
   prefix: /webmap/
   service: treetracker-webmap-api-ambassador-svc
   rewrite: /
-  origins: https://dev.webmap.treetracker.org/
+  origins: https://dev-k8s.treetracker.org/
