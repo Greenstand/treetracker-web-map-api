@@ -30,9 +30,9 @@ jobs:
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
       - name: Copy kustomize.yml
-        run: cp deployment/kustomize/kustomization.yaml deployment/kustomization.yaml
+        run: cp ./deployment/kustomize/kustomization.yaml ./deployment/kustomization.yaml
       - name: Run kustomize
-        run: (cd deployment && ../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }} )
+        run: (cd ./deployment && ../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }} )
       - name: Install doctl for kubernetes
         uses: digitalocean/action-doctl@v2
         with:
