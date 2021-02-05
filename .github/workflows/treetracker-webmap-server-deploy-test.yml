@@ -43,5 +43,5 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save ${{ secrets.TEST_CLUSTER_NAME }}
       - name: Update kubernetes resources
-        run: kubectl -n wallet-api apply --wait -k ./deployment/
+        run: kubectl -n webmap apply --wait -k ./deployment/
         working-directory: ${{ env.project-directory }}
