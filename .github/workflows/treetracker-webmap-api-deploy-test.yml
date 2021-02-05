@@ -29,6 +29,7 @@ jobs:
           path: ${{ env.project-directory }}.
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+        working-directory: ${{ env.project-directory }}
       - name: Copy kustomize.yml
         run: cp ./deployment/kustomize/kustomization.yaml ./deployment/kustomization.yaml
         working-directory: ${{ env.project-directory }}
