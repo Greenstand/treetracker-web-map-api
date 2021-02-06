@@ -26,7 +26,7 @@ jobs:
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
         with:
-          path: ${{ env.project-directory }}.
+          path: ${{ env.project-directory }}
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
         working-directory: ${{ env.project-directory }}
