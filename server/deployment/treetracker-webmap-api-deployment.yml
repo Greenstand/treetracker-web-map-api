@@ -21,6 +21,6 @@ spec:
           env:
             - name: DATABASE_URL
               valueFrom:
-              secretKeyRef:
-                name: treetracker-webmap-database-test
-                key: database
+                secretKeyRef:
+                  name: treetracker-webmap-database-test
+                  key: database
