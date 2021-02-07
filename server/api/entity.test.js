@@ -1,7 +1,6 @@
 const request = require("supertest");
 const express = require("express");
 const {Pool, Client} = require("pg");
-const config = require('../config/config');
 
 jest.mock("pg");
 const query = jest.fn();

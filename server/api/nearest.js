@@ -4,10 +4,9 @@
 const express = require("express");
 const router = express.Router();
 const { Pool, Client } = require("pg");
-var config = require("../config/config");
 const chai = require("chai");
 
-const pool = new Pool({ connectionString: config.connectionString });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 //router.get("/:id", async function (req, res, next) {
 //  console.log("id:", req.params.id);
