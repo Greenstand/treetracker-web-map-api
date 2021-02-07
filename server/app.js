@@ -2,12 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const expressLru = require('express-lru');
-const config = require('./config/config');
 const Sentry = require('@sentry/node');
 const Map = require('./models/Map');
 const Tree = require("./models/Tree");
 
-Sentry.init({ dsn: config.sentryDSN });
+Sentry.init({ dsn: null });
 const cache = expressLru({
   max: 1000,
   ttl: 60000,
