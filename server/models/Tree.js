@@ -1,10 +1,9 @@
 const SQLTree = require("./sqls/SQLTree");
 const { Pool} = require('pg');
-const config = require('../config/config');
 
 class Tree{
   constructor(){
-    this.pool = new Pool({ connectionString: config.connectionString });
+    this.pool = new Pool({ connectionString: process.env.DATABASE_URL });
   }
 
   async getTreeById(treeId){
