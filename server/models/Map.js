@@ -30,6 +30,9 @@ class Map{
       this.sql = new SQLCase2();
       this.sql.addTreeFilter(this.treeid);
 
+    }else if(this.capture_id){
+      this.sql = new SQLCase2();
+      this.sql.addUUIDFilter(this.capture_id);
     }else if(this.userid){
       /*
        * User map mode

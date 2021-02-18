@@ -10,6 +10,11 @@ class SQLCase2{
     this.treeid = treeid;
   }
 
+  addUUIDFilter(uuid){
+    this.uuid = uuid;
+  }
+
+
   addTreesFilter(){
     throw new Error("dedicated");
   }
@@ -38,6 +43,9 @@ class SQLCase2{
     let result = "";
     if(this.treeid){
       result += 'AND trees.id = ' + this.treeid + ' \n';
+    }
+    if(this.uuid){
+      result += 'AND trees.uuid = ' + this.uuid + ' \n';
     }
     if(this.mapName){
       result += `
