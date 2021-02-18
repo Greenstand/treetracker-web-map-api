@@ -6,11 +6,12 @@ const scale = 1;
 
 describe.only("Spin case", () => {
 
+  let data = JSON.parse(`{"data":[{"type":"cluster","id":6632615,"centroid":{"type":"Point","coordinates":[0,0]},"region_type":5,"count":"158"}],"zoomTargets":[{"region_id":6632615,"most_populated_subregion_id":6632420,"total":"100","zoom_level":4,"centroid":{"type":"Point","coordinates":[0,0]}}]}`);
+
+  //deal with location
+  data = {data: data.data.map(d => ({...d, centroid: JSON.stringify(d.centroid)})), zoomTargets: data.zoomTargets.map(d => ({...d, centroid: JSON.stringify(d.centroid)}))};
+
   it("", () => {
-    let data = JSON.parse(`{"data":[{"type":"cluster","id":6632615,"centroid":{"type":"Point","coordinates":[0,0]},"region_type":5,"count":"158"}],"zoomTargets":[{"region_id":6632615,"most_populated_subregion_id":6632420,"total":"100","zoom_level":4,"centroid":{"type":"Point","coordinates":[0,0]}}]}`);
-    //deal with location
-    data = {data: data.data.map(d => ({...d, centroid: JSON.stringify(d.centroid)})), zoomTargets: data.zoomTargets.map(d => ({...d, centroid: JSON.stringify(d.centroid)}))};
-    
     cy.intercept(/\/trees\?.*zoom_level=(2|4|6|8|10|12|14).*/, req => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -57,6 +58,33 @@ describe.only("Spin case", () => {
     cy.get("div[aria-label=158]").click({force:true});
     cy.wait(1000);
     cy.wait("@requestTrees");
+  });
+
+  it.only("load", () => {
+    cy.intercept(/\/trees\?.*zoom_level=(2|4|6|8|10|12|14).*/, req => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, 1);
+      })
+        .then(() => {
+          req.reply(data);
+        });
+    }).as("requestCluster");
+    cy.intercept(/\/trees\?.*zoom_level=16.*/, req => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, 4000);
+      })
+        .then(() => {
+          req.reply({
+              data:[{type: "point", id: 198033, lat: "0", lon: "0.0002"}],
+          });
+        });
+    }).as("requestTrees");
+    cy.visit("http://localhost:3000");
+    cy.wait("@requestCluster");
   });
 
 });

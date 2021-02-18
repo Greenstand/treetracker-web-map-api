@@ -14,6 +14,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import getLogo from "./models/logo";
 import log from "loglevel";
+import Timeline from "./components/Timeline";
 
 
 const MOBILE_WIDTH = 960;
@@ -468,6 +469,7 @@ function App() {
       <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
         <img alt="logo" src={logoSrc} />
       </div>
+      <Timeline/>
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
           {message.message}
