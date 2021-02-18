@@ -1,6 +1,7 @@
 const { Pool} = require('pg');
 const SQLCase2 = require("./sqls/SQLCase2");
 const SQLCase1 = require("./sqls/SQLCase1");
+const SQLCase1Timeline = require("./sqls/SQLCase1Timeline");
 const SQLCase3 = require("./sqls/SQLCase3");
 const SQLCase4 = require("./sqls/SQLCase4");
 const SQLZoomTargetCase1V2 = require("./sqls/SQLZoomTargetCase1V2");
@@ -23,6 +24,7 @@ class Map{
     this.flavor = settings.flavor;
     this.token = settings.token;
     this.treeIds = [];
+    this.timeline = settings.timeline;
     if(this.treeid){
       /*
        * Single tree map mode
@@ -150,6 +152,20 @@ class Map{
         this.sqlZoomTarget.addMapNameFilter(this.mapName);
       }
 
+    }else if(this.timeline){
+      if(this.zoomLevel > 15){
+        throw "xxxx";
+//      } else if ([12, 13, 14, 15].includes(this.zoomLevel) && this.mapName != 'freetown') {
+////        this.sql = new SQLCase3();
+////        this.sql.setClusterRadius(this.clusterRadius);
+////        this.sql.addFilterByMapName(this.mapName);
+////        this.sql.setBounds(this.bounds);
+      }else{
+        this.sql = new SQLCase1Timeline();
+        this.sql.addTimeline(this.timeline);
+        this.sql.setBounds(this.bounds);
+        this.sql.setZoomLevel(this.zoomLevel);
+      }
     }else{
       /*
        * Normal map mode
