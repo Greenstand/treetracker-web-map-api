@@ -31,6 +31,10 @@ describe("parseMapName", () => {
       parseMapName("http://dev.treetracker.org");
     }).toThrow();
   });
+  
+  it("127.17.0.225 should return undefined", () => {
+    expect(parseMapName("127.17.0.225")).toBeUndefined();
+  });
 
   it("wallet.treetracker.org should return undefined", () => {
     expect(parseMapName("wallet.treetracker.org")).toBeUndefined();
