@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.2.0...v1.3.0) (2021-02-18)
+
+
+### Features
+
+* create capture id query param to support hateoas link from wallet service ([52b3c82](https://github.com/Greenstand/treetracker-web-map/commit/52b3c82cf06e17e2876aea9c7b940023092dc5b4))
+
 # [1.2.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.1.0...v1.2.0) (2021-01-28)
 
 
