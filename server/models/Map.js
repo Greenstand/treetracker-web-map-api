@@ -1,3 +1,4 @@
+const log = require("loglevel");
 const { Pool} = require('pg');
 const SQLCase2 = require("./sqls/SQLCase2");
 const SQLCase1 = require("./sqls/SQLCase1");
@@ -208,6 +209,7 @@ class Map{
     const beginTime = Date.now();
     const data = await this.pool.query(query);
     console.log("get points took time:%d ms", Date.now() - beginTime);
+    log.warn("get point:", data.rows.length);
     console.log(data.rows.slice(0,2))
     return data.rows;
   }
