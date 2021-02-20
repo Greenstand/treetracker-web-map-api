@@ -426,6 +426,7 @@ function App() {
       mapRef.current.map = map;
       expect(mapRef)
         .property("current").defined();
+      expect(map).property("rerender").defined();
       injectApp();
     };
   }, []);
@@ -445,6 +446,13 @@ function App() {
     log.debug("useEffect 2");
     loadLogo();
   }, []);
+
+  function handleDateChange(date){
+    log.warn("date changed:", date);
+    window.history.pushState('page2', '', `/?timeline=${date.join("_")}`);
+    const {map} = mapRef.current;
+    map.rerender();
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -469,7 +477,9 @@ function App() {
       <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
         <img alt="logo" src={logoSrc} />
       </div>
-      <Timeline/>
+      <Timeline
+        onDateChange={handleDateChange}
+      />
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
           {message.message}

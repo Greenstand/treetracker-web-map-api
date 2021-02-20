@@ -45,5 +45,5 @@
     "cypress": "^6.2.1",
     "cypress-react-unit-test": "^4.16.9"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://178.128.209.183:23001"
 }

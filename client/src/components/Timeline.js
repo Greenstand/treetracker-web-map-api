@@ -1,3 +1,4 @@
+import log from "loglevel";
 import React from "react";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Grid from "@material-ui/core/Grid";
@@ -15,14 +16,16 @@ const useStyles = makeStyles(theme => ({
   },
   box1: {
     width: theme.spacing(80),
+    flexWrap: "nowrap",
   },
   box2: {
-    width: theme.spacing(10),
+//    width: theme.spacing(10),
   },
   box3: {
-    width: theme.spacing(70),
+    minWidth: theme.spacing(70),
   },
 }));
+
 
 
 function valuetext(value) {
@@ -37,12 +40,18 @@ function Timeline(props){
     setSlide(!slide);
   }
 
-  const dayRange = 365*5;
+  const dayRange = Math.round(moment.duration(moment().diff(moment("2015-01-01"))).as("d"));
 
   const [value, setValue] = React.useState([0, dayRange]);
+  console.warn("value:", value);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleChangeCommitted = (e, value) => {
+    log.debug("trigger change commit:", value);
+    props.onDateChange && props.onDateChange(value.map(e => valuetext(e)));
   };
 
 
@@ -54,16 +63,19 @@ function Timeline(props){
           alignItems="center"
           className={classes.box1}
         >
-          <Grid item xs={1} className={classes.box2} >
+          <Grid item  className={classes.box2} >
             <IconButton onClick={handleClick} >
               <AccessTime fontSize="large" color="primary" />
             </IconButton>
           </Grid>
-          <Grid item xs={3} className={classes.box3} >
+          <Grid item  className={classes.box3} >
             {slide &&
               <Slider
+              min={0}
+              max={dayRange}
               value={value}
               onChange={handleChange}
+              onChangeCommitted={handleChangeCommitted}
               valueLabelDisplay="auto"
               aria-labelledby="range-slider"
               getAriaValueText={valuetext}

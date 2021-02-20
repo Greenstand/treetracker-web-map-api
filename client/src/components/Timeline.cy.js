@@ -20,14 +20,16 @@ describe("Timeline", () => {
 
       return(
         <div style={{background:"gray",height:"1000px"}} >
-          <Timeline />
+          <Timeline 
+            onDateChange={(e) => console.log("change:", e)}
+          />
         </div>
       )
     }
     mount(
       <Test/>
     );
-    cy.contains("Dadior");
+//    cy.contains("Dadior");
   });
 
 
