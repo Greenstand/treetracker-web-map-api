@@ -3,6 +3,7 @@ const { Pool} = require('pg');
 const SQLCase2 = require("./sqls/SQLCase2");
 const SQLCase1 = require("./sqls/SQLCase1");
 const SQLCase1Timeline = require("./sqls/SQLCase1Timeline");
+const SQLCase3Timeline = require("./sqls/SQLCase3Timeline");
 const SQLCase3 = require("./sqls/SQLCase3");
 const SQLCase4 = require("./sqls/SQLCase4");
 const SQLZoomTargetCase1V2 = require("./sqls/SQLZoomTargetCase1V2");
@@ -156,11 +157,11 @@ class Map{
     }else if(this.timeline){
       if(this.zoomLevel > 15){
         throw "xxxx";
-//      } else if ([12, 13, 14, 15].includes(this.zoomLevel) && this.mapName != 'freetown') {
-////        this.sql = new SQLCase3();
-////        this.sql.setClusterRadius(this.clusterRadius);
-////        this.sql.addFilterByMapName(this.mapName);
-////        this.sql.setBounds(this.bounds);
+      } else if ([12, 13, 14, 15].includes(this.zoomLevel) && this.mapName != 'freetown') {
+        this.sql = new SQLCase3Timeline();
+        this.sql.setClusterRadius(this.clusterRadius);
+        this.sql.setBounds(this.bounds);
+        this.sql.addTimeline(this.timeline);
       }else{
         this.sql = new SQLCase1Timeline();
         this.sql.addTimeline(this.timeline);
