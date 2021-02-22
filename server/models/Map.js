@@ -1,6 +1,7 @@
 const log = require("loglevel");
 const { Pool} = require('pg');
 const SQLCase2 = require("./sqls/SQLCase2");
+const SQLCase2Timeline = require("./sqls/SQLCase2Timeline");
 const SQLCase1 = require("./sqls/SQLCase1");
 const SQLCase1Timeline = require("./sqls/SQLCase1Timeline");
 const SQLCase3Timeline = require("./sqls/SQLCase3Timeline");
@@ -156,8 +157,10 @@ class Map{
 
     }else if(this.timeline){
       if(this.zoomLevel > 15){
-        throw "xxxx";
-      } else if ([12, 13, 14, 15].includes(this.zoomLevel) && this.mapName != 'freetown') {
+        this.sql = new SQLCase2Timeline();
+        this.sql.addTimeline(this.timeline);
+        this.sql.setBounds(this.bounds);
+      } else if ([12, 13, 14, 15].includes(this.zoomLevel) ) {
         this.sql = new SQLCase3Timeline();
         this.sql.setClusterRadius(this.clusterRadius);
         this.sql.setBounds(this.bounds);
