@@ -5,6 +5,7 @@ const expressLru = require('express-lru');
 const Sentry = require('@sentry/node');
 const Map = require('./models/Map');
 const Tree = require("./models/Tree");
+const helper = require("./routeUtils");
 
 Sentry.init({ dsn: null });
 const cache = expressLru({
@@ -32,7 +33,7 @@ if(process.env.NODE_ENV == 'dev'){
 }
 
 //app.get(/(\/api\/web)?\/trees/, function (req, res) {
-app.get("/trees", cache, async function (req, res) {
+app.get("/trees", cache, helper.handlerWrapper(async function (req, res) {
   const map = new Map();
   const beginTime = Date.now();
   await map.init(req.query);
@@ -41,7 +42,7 @@ app.get("/trees", cache, async function (req, res) {
   response.zoomTargets = await map.getZoomTargets();
   console.log("/trees took time:%d ms", Date.now() - beginTime);
   res.status(200).json(response);
-});
+}));
 
 app.use(Sentry.Handlers.errorHandler());
 
@@ -64,6 +65,9 @@ app.get("/tree", async function (req, res){
   const treeDetail = await tree.getTreeById(treeId);
   res.status(200).json(treeDetail);
 });
+
+// Global error handler
+app.use(helper.errorHandler);
 
 ////add static files, HTML pages
 //app.use(express.static(path.join(__dirname, "../client")));
