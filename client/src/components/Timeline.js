@@ -26,10 +26,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
+const dayRange = Math.round(moment.duration(moment().diff(moment("2015-01-01"))).as("d"));
 
 function valuetext(value) {
   return moment('2015-01-01').add(value, "days").format("YYYY-MM-DD");
+}
+
+function textvalue(begin, end){
+  return [
+    Math.round(moment.duration(moment(begin).diff(moment("2015-01-01"))).as("d")),
+    Math.round(moment.duration(moment(end).diff(moment("2015-01-01"))).as("d")),
+  ];
 }
 
 function Timeline(props){
@@ -40,7 +47,6 @@ function Timeline(props){
     setSlide(!slide);
   }
 
-  const dayRange = Math.round(moment.duration(moment().diff(moment("2015-01-01"))).as("d"));
 
   const [value, setValue] = React.useState([0, dayRange]);
   console.warn("value:", value);
@@ -54,6 +60,12 @@ function Timeline(props){
     props.onDateChange && props.onDateChange(value.map(e => valuetext(e)));
   };
 
+  React.useEffect(() => {
+    if(props.date){
+      setSlide(true);
+      setValue(textvalue(...props.date));
+    }
+  },[props.date]);
 
   return(
     <>

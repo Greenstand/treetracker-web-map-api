@@ -253,6 +253,7 @@ function App() {
   const [message, setMessage] = React.useState({open: false, message:""});
   const [arrow, setArrow] = React.useState({});
   const [logoSrc, setLogoSrc] = React.useState(undefined);
+  const [timelineDate, setTimelineDate] = React.useState(undefined);
 
   function showPanel(tree){
     log.log("show panel...");
@@ -454,6 +455,17 @@ function App() {
     map.rerender();
   }
 
+  /* init timeline date */
+  React.useEffect(() => {
+    log.debug("init timeline");
+    const m = window.location.search.match(/timeline=(\d{4}-\d{2}-\d{2})_(\d{4}-\d{2}-\d{2})/);
+    if(m){
+      const date = [m[1],m[2]];
+      log.warn("init date:", date);
+      setTimelineDate(date);
+    }
+  },[]);
+
   return (
     <ThemeProvider theme={theme}>
       <SidePanel 
@@ -479,6 +491,7 @@ function App() {
       </div>
       <Timeline
         onDateChange={handleDateChange}
+        date={timelineDate}
       />
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
