@@ -14,7 +14,7 @@ class SQLCase3Timeline extends SQLCase3{
   }
 
   addTimeline(timeline){
-    SQLCase1Timeline.checkTimeline(timeline);
+    SQLCase3Timeline.checkTimeline(timeline);
     this.timeline = timeline;
   }
 
@@ -22,10 +22,11 @@ class SQLCase3Timeline extends SQLCase3{
   getJoin(){
     let result = "";
     //disable parent getJoin, so, just do my job
+    //no need to join it anymore
 //    result += super.getJoin();
-    if(this.timeline){
-      result += "JOIN trees ON tree_region.tree_id = trees.id";
-    }
+//    if(this.timeline){
+//      result += "JOIN trees ON tree_region.tree_id = trees.id";
+//    }
     return result;
   }
   

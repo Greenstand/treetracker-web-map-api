@@ -29,7 +29,7 @@ exports.handlerWrapper = fn =>
   }
 
 exports.errorHandler = (err, req, res, next) => {
-  log.debug("catch error:", err);
+  log.warn("catch error:", err);
   if(err instanceof HttpError){
     res.status(err.code).send({
       code: err.code,
