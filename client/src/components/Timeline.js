@@ -55,11 +55,18 @@ const TimelineSlider = withStyles({
   },
 })(Slider);
 
+const useStylesTooltip = makeStyles(theme => ({
+  popper: {
+    opacity: .5,
+  },
+}));
+
 function ValueLabelComponent(props) {
   const { children, open, value } = props;
+  const classes = useStylesTooltip();
 
   return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+    <Tooltip open={open} classes={{popper:classes.popper}} enterTouchDelay={0} placement="top" title={value}>
       {children}
     </Tooltip>
   );
@@ -91,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: -21,
   },
   box3: {
-    minWidth: theme.spacing(70),
+    minWidth: theme.spacing(140),
     [theme.breakpoints.down('xs')]: {
       minWidth: theme.spacing(40),
     },
