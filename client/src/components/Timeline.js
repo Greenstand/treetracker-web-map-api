@@ -124,7 +124,10 @@ function Timeline(props){
 
   function handleClick(){
     setSlide(!slide);
-    props.onClose && props.onClose();
+    if(slide){
+      setValue([0, dayRange]);
+      props.onClose && props.onClose();
+    }
   }
 
 
