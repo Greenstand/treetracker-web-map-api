@@ -456,6 +456,13 @@ function App() {
     map.rerender();
   }
 
+  function handleDateClose(){
+    setTimelineDate(undefined);
+    window.history.pushState('page2', '', `/`);
+    const {map} = mapRef.current;
+    map.rerender();
+  }
+
   /* init timeline date */
   React.useEffect(() => {
     log.debug("init timeline");
@@ -499,6 +506,7 @@ function App() {
         <Timeline
           onDateChange={handleDateChange}
           date={timelineDate}
+          onClose={handleDateClose}
         />
       }
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>

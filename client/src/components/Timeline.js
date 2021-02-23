@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
     position: "fixed",
     bottom: 15,
     left: 23,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       left: -5,
     },
   },
@@ -92,8 +92,8 @@ const useStyles = makeStyles(theme => ({
   },
   box3: {
     minWidth: theme.spacing(70),
-    [theme.breakpoints.down('sm')]: {
-      minWidth: theme.spacing(23),
+    [theme.breakpoints.down('xs')]: {
+      minWidth: theme.spacing(40),
     },
   },
 }));
@@ -124,6 +124,7 @@ function Timeline(props){
 
   function handleClick(){
     setSlide(!slide);
+    props.onClose && props.onClose();
   }
 
 
