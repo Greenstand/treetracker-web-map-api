@@ -9,6 +9,7 @@ import Slider from '@material-ui/core/Slider';
 import moment from "moment";
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import HighlightOff from "@material-ui/icons/HighlightOff";
 
 const TimelineSlider = withStyles({
   root: {
@@ -19,6 +20,14 @@ const TimelineSlider = withStyles({
     },
     "& .MuiSlider-markLabelActive": {
       color: "white",
+    },
+    "& .MuiSlider-markActive": {
+      backgroundColor: "transparent",
+      display: "none",
+    },
+    "& .MuiSlider-mark": {
+      backgroundColor: "transparent",
+      display: "none",
     },
   },
   thumb: {
@@ -68,6 +77,9 @@ const useStyles = makeStyles(theme => ({
     position: "fixed",
     bottom: 15,
     left: 23,
+    [theme.breakpoints.down('sm')]: {
+      left: -5,
+    },
   },
   box1: {
     width: theme.spacing(80),
@@ -80,12 +92,15 @@ const useStyles = makeStyles(theme => ({
   },
   box3: {
     minWidth: theme.spacing(70),
+    [theme.breakpoints.down('sm')]: {
+      minWidth: theme.spacing(23),
+    },
   },
 }));
 
 const dayRange = Math.round(moment.duration(moment().diff(moment("2015-01-01"))).as("d"));
 
-const marks = ['2015', '2016', '2017', '2018', '2019', '2020', '2021'].map(e => {
+const marks = ['2015',  '2017',  '2019',  '2021'].map(e => {
   return ({
     label: e,
     value: Math.round(moment.duration(moment(`${e}-01-01`).diff(moment(`2015-01-01`))).as("d")),
@@ -140,9 +155,15 @@ function Timeline(props){
           className={classes.box1}
         >
           <Grid item  className={classes.box2} >
-            <IconButton onClick={handleClick} >
-              <AccessTime fontSize="large" color="primary" />
-            </IconButton>
+            <Tooltip title="Timeline" >
+              <IconButton onClick={handleClick} >
+                {slide?
+                  <HighlightOff fontSize="large" color="primary" />
+                  :
+                  <AccessTime fontSize="large" color="primary" />
+                }
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item  className={classes.box3} >
             {slide &&

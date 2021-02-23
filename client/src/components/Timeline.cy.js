@@ -5,7 +5,7 @@ import Timeline from "./Timeline";
 describe("Timeline", () => {
 
   before(() => {
-//    cy.viewport(1366,768);
+    cy.viewport("iphone-6");
   });
 
 
