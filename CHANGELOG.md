@@ -1,3 +1,11 @@
+## [1.4.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.0...v1.4.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* remove unused .env ([0357b3c](https://github.com/Greenstand/treetracker-web-map/commit/0357b3c9499e2ddb4c77fa13e40350bcf091a07c))
+* use dotenv to load environment variables ([dd19799](https://github.com/Greenstand/treetracker-web-map/commit/dd197995d45bd1f896d1e3234d56ec21516d4868))
+
 # [1.4.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.3.0...v1.4.0) (2021-02-25)
 
 
