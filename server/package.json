@@ -17,6 +17,7 @@
     "@sentry/node": "^5.4.3",
     "body-parser": "^1.18.2",
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.2",
     "express-lru": "^1.0.0",
     "loglevel": "^1.7.1",
