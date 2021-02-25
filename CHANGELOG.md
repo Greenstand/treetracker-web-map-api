@@ -1,3 +1,28 @@
+# [1.4.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.3.0...v1.4.0) (2021-02-25)
+
+
+### Bug Fixes
+
+* bug in timeline ([b4cdc9c](https://github.com/Greenstand/treetracker-web-map/commit/b4cdc9c7ae8a0cfb164be48ecbb190f70c499b4b))
+* ip cause crash ([28911ea](https://github.com/Greenstand/treetracker-web-map/commit/28911eaaf844ccb50392e871e4a3f1864cb2fa04))
+
+
+### Features
+
+* add some infra for express: error handler ([96252bd](https://github.com/Greenstand/treetracker-web-map/commit/96252bd0cba4ef27fe5a089d1b15d858b155b41b))
+* api is oky for the timeline zoom = 2 ([b6ff978](https://github.com/Greenstand/treetracker-web-map/commit/b6ff978c5a5b56a8f4d90d6786ba68ffeb06d4f6))
+* appearnce of timeline component ([2d2db5f](https://github.com/Greenstand/treetracker-web-map/commit/2d2db5f01651724368700964b4bb07bc83149dd5))
+* can hide timeline in some cases ([dff0cab](https://github.com/Greenstand/treetracker-web-map/commit/dff0cab0f0d8144b69b646ca8ce2a7f18e786525))
+* can query timeline with date ([0dc1a47](https://github.com/Greenstand/treetracker-web-map/commit/0dc1a4753912601ce7aa738a61c2bc23b2ed99a7))
+* can set default timeline ([fdb279a](https://github.com/Greenstand/treetracker-web-map/commit/fdb279a9c7697140a88655204e4a43bf0b6214c4))
+* can show tree points with timeline ([6bde9ba](https://github.com/Greenstand/treetracker-web-map/commit/6bde9ba1b82cc3398056ef9f778adb22d4158f09))
+* can use basic timeline filter the zoom =2 ([b536a8a](https://github.com/Greenstand/treetracker-web-map/commit/b536a8a4b6fecaa8dfa6d282f7c374911f715f9b))
+* erace all timeline data when click close ([bdce282](https://github.com/Greenstand/treetracker-web-map/commit/bdce2822e13617f65fb87b09ac766f782e59ac19))
+* improve css ([8810eb7](https://github.com/Greenstand/treetracker-web-map/commit/8810eb7ca2f161d5857adebb3d7b7bf78b34c598))
+* improve the slider ([26534a0](https://github.com/Greenstand/treetracker-web-map/commit/26534a087312f79ea943ee6dffc35fcf6a92cece))
+* original component for timeline ([aff4be3](https://github.com/Greenstand/treetracker-web-map/commit/aff4be350b1cd23bccb77640862bd8562ca11a19))
+* timeline map can zoom into 12-14  level ([ba2b09a](https://github.com/Greenstand/treetracker-web-map/commit/ba2b09a3b84d9c06c0d1ef931c0f0816248cd7e5))
+
 # [1.3.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.2.0...v1.3.0) (2021-02-18)
 
 
