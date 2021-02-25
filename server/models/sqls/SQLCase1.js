@@ -97,7 +97,7 @@ class SQLCase1{
       SELECT 'cluster' AS type,
       region_id id, ST_ASGeoJson(centroid) centroid,
       type_id as region_type,
-      count(id)
+      count(tree_region.id)
       FROM active_tree_region tree_region
       ${this.getJoin()}
       WHERE zoom_level = $1

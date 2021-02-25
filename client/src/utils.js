@@ -1,4 +1,7 @@
 function parseMapName(domain){
+  if(domain.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/)){
+    return undefined;
+  }
   const matcher = domain.match(/^((\w+\.?)+org|localhost)$/);
   if(matcher){
     if(domain === "localhost"){

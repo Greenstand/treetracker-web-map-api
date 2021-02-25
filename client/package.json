@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "expect-runtime": "^0.4.0",
     "loglevel": "^1.7.0",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -44,5 +45,5 @@
     "cypress": "^6.2.1",
     "cypress-react-unit-test": "^4.16.9"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://127.0.0.1:3001"
 }

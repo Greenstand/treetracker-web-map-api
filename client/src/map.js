@@ -65,6 +65,11 @@ let isLoadingMarkers = false;
 
 var loadingTimer = undefined;
 
+/*
+ * Add this for time filter, the date will be put into the url path
+ */
+let timeline = undefined;
+
 if(process.env.REACT_APP_API){
   treetrackerApiUrl = process.env.REACT_APP_API;
 }else{
@@ -161,6 +166,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     getQueryStringValue("clusterRadius") || getClusterRadius(zoomLevel);
 
   log.log("Cluster radius: " + clusterRadius);
+
 //  if (req != null) {
 //    log.log("initMarkers abort");
 //    req.abort();
@@ -181,6 +187,9 @@ var initMarkers = function(viewportBounds, zoomLevel) {
     queryUrl = queryUrl + "&bounds=" + viewportBounds;
   }
   queryUrl = queryUrl + getTreeQueryParametersFromRequestedFilters();
+
+  timeline = getQueryStringValue("timeline");
+  timeline && (queryUrl += `&timeline=${timeline}`);
 
   log.log("request:", queryUrl);
   source = CancelToken.source();
@@ -1212,6 +1221,17 @@ function handleHideArrow(){
   getApp().hideArrow();
 }
 
+/*
+ * Simply re-render the map, just copied the code in 'idle' event 
+ */
+function rerender(){
+  log.debug("rerender map");
+  var zoomLevel = map.getZoom();
+  log.log("New zoom level: " + zoomLevel);
+  currentZoom = zoomLevel;
+  initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
+}
+
 function getApp(){
   const mapElement = document.getElementById("map-canvas");
   const {app} = mapElement;
@@ -1237,6 +1257,7 @@ return {
   hasPrevPoint,
   hasNextPoint,
   addMarkerByPixel,
+  rerender,
 }
 
 }
