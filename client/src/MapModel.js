@@ -63,18 +63,18 @@ class MapModel {
             lat: nearest.lat,
             lng: nearest.lng,
           };
-          const distanceLat = window.google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLat = window.L.CRS.EPSG3857.distance(
             center,
-            new window.google.maps.LatLng(
+            window.L.latLng(
               dist.lat,
               center.lng
               ),
           );
           log.log("distanceLat:", distanceLat);
           expect(distanceLat).number();
-          const distanceLng = window.google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLng = window.L.CRS.EPSG3857.distance(
             center,
-            new window.google.maps.LatLng(
+            window.L.latLng(
               center.lat,
               dist.lng,
               ),
