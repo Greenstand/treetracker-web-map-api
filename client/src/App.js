@@ -417,20 +417,13 @@ function App() {
 
   React.useEffect(() => {
     log.debug("useEffect 1");
-    const script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGv1-FFd7NFUS6HWNlivbKwETzuIPdKE&libraries=geometry';
-    script.id = 'googleMaps';
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      //map.initialize();
-      const map = load();
-      mapRef.current.map = map;
-      expect(mapRef)
-        .property("current").defined();
-      expect(map).property("rerender").defined();
-      injectApp();
-    };
+    //map.initialize();
+    injectApp();
+    const map = load();
+    mapRef.current.map = map;
+    expect(mapRef)
+      .property("current").defined();
+    expect(map).property("rerender").defined();
   }, []);
 
   /*
