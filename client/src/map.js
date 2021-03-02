@@ -1089,12 +1089,14 @@ function getCurrentIndex(){
 }
 
 function goNextPoint(){
+  log.debug("go to next");
   const index = getCurrentIndex();
   const nextIndex = (index + 1) % points.length;
   expect(nextIndex).within(0, points.length);
   const nextPoint = points[nextIndex];
   const marker = markerByPointId[nextPoint.id];
   expect(marker).defined();
+  marker.fire("click");
 }
 
 function goPrevPoint(){
@@ -1107,6 +1109,7 @@ function goPrevPoint(){
   const prevPoint = points[prevIndex];
   const marker = markerByPointId[prevPoint.id];
   expect(marker).defined();
+  marker.fire("click");
 }
 
 function hasNextPoint(){
