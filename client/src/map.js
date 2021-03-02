@@ -297,6 +297,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 
           marker.on("click", function() {
             log.debug("marker click");
+            log.debug("click marker:", marker);
 //            window.google.maps.event.clearListeners(marker, "mouseover");
 //            window.google.maps.event.clearListeners(marker, "mouseout");
 //            if (item.count <= 300) {
@@ -313,14 +314,18 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             if(marker.zoomTarget){
               fetchMarkers = false;
               var zoomLevel = map.getZoom();
-              map.setZoom(zoomLevel + 2);
               const centroid = JSON.parse(marker.zoomTarget.centroid);
               const position = {
                 lat: centroid.coordinates[1],
                 lng: centroid.coordinates[0],
               }
               log.log("zoom target:", position);
-              map.panTo(position);
+              map.flyTo(
+                window.L.latLng(centroid.coordinates[1],
+                  centroid.coordinates[0]
+                ),
+                zoomLevel + 2,
+              );
             }else{
               fetchMarkers = false;
               var zoomLevel = map.getZoom();
@@ -539,12 +544,12 @@ function getCircularPointIndex(index) {
 
 // clear the markers from the map and then clear our the array of markers
 function clearOverlays(overlays) {
-  //log.log(overlays);
-  for (var i = 0; i < overlays.length; i++) {
-    //log.log(i);
-    overlays[i].setMap(null);
-  }
-  overlays.length = 0;
+  log.debug("clear overlays");
+  //remove
+  overlays.forEach(m => {
+    map.removeLayer(m);
+  });
+  overlays = [];
 }
 
 // Gets the value of a given querystring in the provided url
