@@ -138,3 +138,30 @@ body {
   animation-iteration-count:infinite;
   animation-timing-function:linear;
 }
+
+.greenstand-cluster-box-small {
+  background: url(./images/cluster_46px.png);
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.greenstand-cluster-box-large {
+  background: url(./images/cluster_63px.png);
+  width: 63px;
+  height: 63px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.greenstand-point-box {
+  background: url(./images/pin_29px.png);
+  width: 29px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

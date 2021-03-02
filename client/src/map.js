@@ -251,9 +251,22 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             anchor = new window.L.point(32, 32);
           }
 
+          if (item.count <= 300) {
+            iconUrl = require("./images/cluster_46px.png");
+          } else {
+            iconUrl = require("./images/cluster_63px.png");
+          }
           var marker = new window.L.marker(
             latLng,
             {
+                icon: new window.L.DivIcon({
+                  className: "greenstand-cluster",
+                  html: `
+                    <div class="greenstand-cluster-box-${item.count <= 300?'small':'large'}"  >
+                    <div>${shortenLargeNumber(item.count).toString()}</div>
+                    </div>
+                  `,
+                }),
               label: {
                 text: shortenLargeNumber(item.count).toString(),
                 color: "#000"
@@ -782,6 +795,7 @@ var initialize = function() {
     //    streetViewControl: false,
     //    fullscreenControl: false,
     //    backgroundColor: theme.palette.grey.A200,
+    zoomControl: false,
   };
   if(mapName != null && !!mapConfig[mapName]) {
     mapOptions.zoom = mapConfig[mapName].zoom;
@@ -790,12 +804,20 @@ var initialize = function() {
 
 
   map = window.L.map('map-canvas', mapOptions);
+  
+  //control
+  window.L.control.zoom({
+      position: 'bottomright'
+  }).addTo(map);
 
   //google satillite map
-  const googleSat = window.L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-    maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3']
-  });
+  const googleSat = window.L.tileLayer(
+    'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+      maxZoom: 20,
+//      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+//      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      subdomains:['mt0','mt1','mt2','mt3']
+    });
   googleSat.addTo(map);
 
   // insert freetown overlay
