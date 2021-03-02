@@ -267,15 +267,6 @@ var initMarkers = function(viewportBounds, zoomLevel) {
                     </div>
                   `,
                 }),
-              label: {
-                text: shortenLargeNumber(item.count).toString(),
-                color: "#000"
-              },
-//              icon: {
-//                url: iconUrl,
-//                labelOrigin: labelOrigin,
-//                anchor: anchor
-//              }
             });
           marker.addTo(map);
 
@@ -321,7 +312,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
               }
               log.log("zoom target:", position);
               map.flyTo(
-                window.L.latLng(centroid.coordinates[1],
+                window.L.latLng(
+                  centroid.coordinates[1],
                   centroid.coordinates[0]
                 ),
                 zoomLevel + 2,
@@ -329,8 +321,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             }else{
               fetchMarkers = false;
               var zoomLevel = map.getZoom();
-              map.setZoom(zoomLevel + 2);
-              map.panTo(marker.position);
+              map.flyTo(marker.getLatLng(), zoomLevel+2);
             }
           });
 
@@ -374,15 +365,22 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           var marker = new window.L.marker(
             latLng,
             {
-              title: "Tree",
-//              icon: {
-//                url: require("./images/pin_29px.png"),
-//              },
+                icon: new window.L.DivIcon({
+                  className: "greenstand-cluster",
+                  html: `
+                    <div class="greenstand-point-box"  >
+                    <div></div>
+                    </div>
+                  `,
+                }),
               zIndex: undefined,
-              payload: {
-                id: item["id"]
-              }
+//              payload: {
+//                id: item["id"]
+//              }
             });
+          marker.payload = {
+            id: item["id"]
+          };
           marker.addTo(map);
 
           if (
