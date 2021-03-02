@@ -139,6 +139,10 @@ body {
   animation-timing-function:linear;
 }
 
+.greenstand-cluster:hover {
+  z-index: 256 !important;
+}
+
 .greenstand-cluster-box-small {
   background: url(./images/cluster_46px.png);
   width: 46px;
@@ -147,6 +151,13 @@ body {
   justify-content: center;
   align-items: center;
   transform: translate(-50%, -50%);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.greenstand-cluster-box-small:hover {
+  background: url(./images/cluster_46px_highlight.png);
+  z-index: 9;
 }
 
 .greenstand-cluster-box-large {
@@ -157,6 +168,17 @@ body {
   justify-content: center;
   align-items: center;
   transform: translate(-50%, -50%);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.greenstand-cluster-box-large:hover {
+  background: url(./images/cluster_63px_highlight.png);
+  z-index: 9;
+}
+
+.greenstand-point:hover {
+  z-index: 256 !important;
 }
 
 .greenstand-point-box {
@@ -167,4 +189,10 @@ body {
   justify-content: center;
   align-items: center;
   transform: translate(-50%, -50%);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.greenstand-point-box:hover {
+  background: url(./images/pin_29px_highlight.png);
 }

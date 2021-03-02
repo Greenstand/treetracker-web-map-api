@@ -366,7 +366,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
             latLng,
             {
                 icon: new window.L.DivIcon({
-                  className: "greenstand-cluster",
+                  className: "greenstand-point",
                   html: `
                     <div class="greenstand-point-box"  >
                     <div></div>
@@ -838,7 +838,7 @@ var initialize = function() {
   //  });
 
   function registerFirstInteraction() {
-    log.debug("registerFirstInteraction");
+    log.trace("registerFirstInteraction");
     firstInteraction = true;
   }
 
