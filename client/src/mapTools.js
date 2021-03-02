@@ -157,14 +157,14 @@ const TILE_SIZE = 256;
 // The mapping between latitude, longitude and pixels is defined by the web
 // mercator projection.
 function project(latLng: google.maps.LatLng) {
-  let siny = Math.sin((latLng.lat() * Math.PI) / 180);
+  let siny = Math.sin((latLng.lat * Math.PI) / 180);
 
   // Truncating to 0.9999 effectively limits latitude to 89.189. This is
   // about a third of a tile past the edge of the world tile.
   siny = Math.min(Math.max(siny, -0.9999), 0.9999);
 
   return window.L.point(
-    TILE_SIZE * (0.5 + latLng.lng() / 360),
+    TILE_SIZE * (0.5 + latLng.lng / 360),
     TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI))
   );
 }
@@ -174,8 +174,8 @@ function getLatLngCoordinateByPixel(top, left, map){
   expect(left).number();
   expect(map).defined();
   const northWest = window.L.latLng(
-    map.getBounds().getNorthEast().lat(),
-    map.getBounds().getSouthWest().lng());
+    map.getBounds().getNorthEast().lat,
+    map.getBounds().getSouthWest().lng);
   const northWestPixel = map.getProjection().fromLatLngToPoint(northWest);
   const pixelSize = Math.pow(2, -map.getZoom());
   const result = window.L.point(
@@ -192,8 +192,8 @@ function getPixelCoordinateByLatLng(lat, lng, map){
   expect(lng).number();
   expect(map).defined();
   const northWest = window.L.latLng(
-    map.getBounds().getNorthEast().lat(),
-    map.getBounds().getSouthWest().lng());
+    map.getBounds().getNorthEast().lat,
+    map.getBounds().getSouthWest().lng);
   const northWestPixel = map.getProjection().fromLatLngToPoint(northWest);
   const target = window.L.latLng(
     lat,
