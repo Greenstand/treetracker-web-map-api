@@ -146,6 +146,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(-50%, -50%);
 }
 
 .greenstand-cluster-box-large {
@@ -155,6 +156,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(-50%, -50%);
 }
 
 .greenstand-point-box {
@@ -164,4 +166,5 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(-50%, -50%);
 }

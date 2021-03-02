@@ -265,7 +265,11 @@ function App() {
     const marker = map.getMarkerByPointId()[tree.id]
     if(marker){
       expect(marker).defined();
-      const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getLatLng().lat, marker.getLatLng().lng, map.getMap());
+      const mapLeaflet = map.getMap();
+      log.log("map leaflet:", mapLeaflet);
+//      const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getLatLng().lat, marker.getLatLng().lng, map.getMap());
+      const {x:left, y:top} = mapLeaflet.latLngToContainerPoint(marker.getLatLng());
+      log.log("top:", top, "left:", left);
       expect(top).number();
       expect(left).number();
       log.log("the point at:", top, left);

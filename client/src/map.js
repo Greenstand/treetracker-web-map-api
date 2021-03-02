@@ -31,7 +31,7 @@ function load(
 
 const YES = "YES";
 const NO = "NO";
-var map = undefined; //Google Map object
+var map = undefined; //Leaflet Map object
 var mc = undefined; //Marker Clusterer
 var markers = []; //All the markers
 var mapModel = undefined;
