@@ -790,6 +790,14 @@ var initialize = function() {
 
 
   map = window.L.map('map-canvas', mapOptions);
+
+  //google satillite map
+  const googleSat = window.L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+  });
+  googleSat.addTo(map);
+
   // insert freetown overlay
   //  map.overlayMapTypes.insertAt(
   //    0,

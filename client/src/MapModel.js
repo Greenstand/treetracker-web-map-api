@@ -4,6 +4,7 @@
 import expect from "expect-runtime";
 import axios from "axios";
 import log from "loglevel";
+import "leaflet";
 
 class MapModel {
   constructor(options){
@@ -43,7 +44,7 @@ class MapModel {
       //no markers
       this._markers.length === 0 || 
       //all markers out of bounds
-      this._markers.every(marker => !this._map.getBounds().contains(marker.getPosition()))
+      this._markers.every(marker => !this._map.getBounds().contains(marker.getLatLng()))
     ){
       //no markers, need to find nearest
       const center = this._map.getCenter();
