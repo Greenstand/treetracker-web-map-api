@@ -514,13 +514,14 @@ function showAlert() {
 
 function changeTreeMarkSelected() {
   if (selectedOldTreeMarker) {
-    selectedOldTreeMarker.setIcon(require("./images/pin_29px.png"));
-    selectedOldTreeMarker.setZIndex(0);
+//TODO to highlight icon
+//    selectedOldTreeMarker.setIcon(require("./images/pin_29px.png"));
+//    selectedOldTreeMarker.setZIndex(0);
   }
 
   if (selectedTreeMarker) {
-    selectedTreeMarker.setIcon(require("./images/pin_32px.png"));
-    selectedTreeMarker.setZIndex(99999);
+//    selectedTreeMarker.setIcon(require("./images/pin_32px.png"));
+//    selectedTreeMarker.setZIndex(99999);
   }
 }
 

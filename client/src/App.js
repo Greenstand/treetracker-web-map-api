@@ -265,7 +265,7 @@ function App() {
     const marker = map.getMarkerByPointId()[tree.id]
     if(marker){
       expect(marker).defined();
-      const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getPosition().lat(), marker.getPosition().lng(), map.getMap());
+      const {top, left} = mapTools.getPixelCoordinateByLatLng(marker.getLatLng().lat, marker.getLatLng().lng, map.getMap());
       expect(top).number();
       expect(left).number();
       log.log("the point at:", top, left);
@@ -303,7 +303,7 @@ function App() {
         const x = left - leftCenter;
         const y = top - topCenter;
         log.log("pant by x,y:", x, y);
-        map.getMap().panBy(x,y);
+        map.getMap().panBy(window.L.point(x,y));
       }
       setHasNext(map.hasNextPoint());
       setHasPrev(map.hasPrevPoint());
