@@ -14,4 +14,5 @@ spec:
     - https://dev.treetracker.org
     - https://test.treetracker.org
     - https://treetracker.org
+    - https://ready.treetracker.org
     methods: GET
