@@ -1,4 +1,4 @@
-name: Deploy WebMap Client Test Env
+name: Deploy WebMap Client Prod Env
 
 on:
   workflow_dispatch:
@@ -50,7 +50,7 @@ jobs:
       with:
         name: client-bundle
         path: build
-    - name: Configure AWS credentials from Test account
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.TEST_AWS_ACCESS_KEY_ID }}
@@ -58,7 +58,7 @@ jobs:
         aws-region: us-east-1
     - name: Copy front end resources to s3 bucket
       run: |
-        aws s3 sync build s3://${{ secrets.TEST_CDN_S3_BUCKET }} --delete
+        aws s3 sync build s3://${{ secrets.PROD_CDN_S3_BUCKET }} --delete
     - name: Invalidate cloudfront caches
       run: |
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.TEST_CDN_DISTRIBUTION_ID }} --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.PROD_CDN_DISTRIBUTION_ID }} --paths "/*"
