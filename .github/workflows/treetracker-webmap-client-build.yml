@@ -1,4 +1,4 @@
-name: Treetracker WebMap Client CI/CD Pipeline
+name: WebMap Client CI/CD
 
 on:
   push:
