@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.3...v1.5.4) (2021-03-03)
+
+
+### Bug Fixes
+
+* temporary updated mapping to allow CORS for all envs ([a569d5e](https://github.com/Greenstand/treetracker-web-map/commit/a569d5ec78fc4a3d9b802870c705baa866fa96b0))
+
 ## [1.5.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.2...v1.5.3) (2021-03-03)
 
 
