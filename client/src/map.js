@@ -715,8 +715,13 @@ function fitMapToBoundsForSet(data){
     window.innerWidth,
     window.innerHeight,
   );
-  map.panTo(bounds.center);
-  map.setZoom(bounds.zoomLevel);
+  const {lat, lng} = bounds.center;
+  expect(lat).a(expect.any(Number));
+  expect(lng).a(expect.any(Number));
+  const latLng = window.L.latLng(lat, lng);
+//  map.panTo(latLng);
+//  map.setZoom(bounds.zoomLevel);
+  map.flyTo(latLng, bounds.zoomLevel);
 }
  
 
