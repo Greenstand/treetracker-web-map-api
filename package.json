@@ -1,6 +1,7 @@
 {
   "name": "treetracker-web",
   "version": "1.0.0",
+  "private": true,
   "description": "treetracker web map",
   "repository": {
     "type": "git",
