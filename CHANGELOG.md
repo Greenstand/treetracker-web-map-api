@@ -1,3 +1,17 @@
+## [1.5.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.0...v1.5.1) (2021-03-03)
+
+
+### Bug Fixes
+
+* clean up releaserc ([49f64b9](https://github.com/Greenstand/treetracker-web-map/commit/49f64b9731144c6204f0f9d3275eca9db77b8bf0))
+* fix needs in workflow ([155e678](https://github.com/Greenstand/treetracker-web-map/commit/155e67806c2248b508221b38bf6de44b87d49100))
+* fix production deploy ([2edd880](https://github.com/Greenstand/treetracker-web-map/commit/2edd880ea15ada1944e807342ccebc73c871b6bf))
+* mark as private project ([d624924](https://github.com/Greenstand/treetracker-web-map/commit/d624924bb5a41dad13e5f4cfa150cb71391eebd3))
+* trigger a release ([20a5be3](https://github.com/Greenstand/treetracker-web-map/commit/20a5be34cac4070530764bc7b16a77f039743dea))
+* trigger release ([71cd0a9](https://github.com/Greenstand/treetracker-web-map/commit/71cd0a924c7971ea3192d8393e1e5c716374e9ee))
+* trigger release ([6bfda4f](https://github.com/Greenstand/treetracker-web-map/commit/6bfda4fa66eb93b15ee44455254a92c9c3f97d2c))
+* trigger release ([6bb906c](https://github.com/Greenstand/treetracker-web-map/commit/6bb906c407e2f66e499159581c4169c511d6e9a0))
+
 # [1.5.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.1...v1.5.0) (2021-03-03)
 
 
