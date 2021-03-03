@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.1...v1.5.0) (2021-03-03)
+
+
+### Features
+
+* trigger a release ([268bd11](https://github.com/Greenstand/treetracker-web-map/commit/268bd114ad21bdc84470d9fcb09cdc4fd0fb2c6c))
+
 ## [1.4.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.0...v1.4.1) (2021-02-25)
 
 
