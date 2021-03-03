@@ -124,6 +124,6 @@ jobs:
       run: kubectl -n webmap delete job --ignore-not-found=true  webmap-db-migration-job
     - name: Update kubernetes resources
       run: kubectl -n webmap apply --wait -k server/deployment/
-    - name: Attempt to wait for migration job to complete
-      run: kubectl wait --for=condition=complete --timeout=45s job/webmap-db-migration-job
+      #    - name: Attempt to wait for migration job to complete
+      # run: kubectl wait --for=condition=complete --timeout=45s job/webmap-db-migration-job
 
