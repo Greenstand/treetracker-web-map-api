@@ -26,11 +26,9 @@ jobs:
       run: npm ci
       working-directory: ${{ env.project-directory }}
     - name: build client project
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       run: CI= REACT_APP_API=https://test-k8s.treetracker.org/webmap/ npm run build
       working-directory: ${{ env.project-directory }}
     - uses: actions/upload-artifact@v2
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       with:
         name: client-bundle
         path: client/build
@@ -40,8 +38,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: client
     if: |
-      !contains(github.event.head_commit.message, 'skip-ci') &&
-      github.event_name == 'push' &&
       github.repository == 'Greenstand/treetracker-web-map'    
     steps:
     - uses: actions/checkout@v2
