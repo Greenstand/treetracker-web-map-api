@@ -140,7 +140,11 @@ body {
 }
 
 .greenstand-cluster:hover {
-  z-index: 256 !important;
+  z-index: 999 !important;
+}
+
+.greenstand-cluster.clicked {
+  z-index: 999 !important;
 }
 
 .greenstand-cluster-box-small {
@@ -160,6 +164,10 @@ body {
   z-index: 9;
 }
 
+.greenstand-cluster.clicked .greenstand-cluster-box-small{
+  background: url(./images/cluster_46px_clicked.png);
+}
+
 .greenstand-cluster-box-large {
   background: url(./images/cluster_63px.png);
   width: 63px;
@@ -177,8 +185,17 @@ body {
   z-index: 9;
 }
 
+.greenstand-cluster.clicked .greenstand-cluster-box-large {
+  background: url(./images/cluster_63px_clicked.png);
+}
+
+
 .greenstand-point:hover {
-  z-index: 256 !important;
+  z-index: 999 !important;
+}
+
+.greenstand-point.clicked {
+  z-index: 999 !important;
 }
 
 .greenstand-point-box {
@@ -195,4 +212,8 @@ body {
 
 .greenstand-point-box:hover {
   background: url(./images/pin_29px_highlight.png);
+}
+
+.greenstand-point.clicked .greenstand-point-box {
+  background: url(./images/pin_32px.png);
 }

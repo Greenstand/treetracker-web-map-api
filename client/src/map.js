@@ -302,6 +302,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
 //                url: require("./images/cluster_63px_clicked.png"),
 //              });
 //            }
+            //icon
+            window.L.DomUtil.addClass(marker._icon, "clicked");
             if(marker.zoomTarget){
               fetchMarkers = false;
               var zoomLevel = map.getZoom();
@@ -517,11 +519,13 @@ function changeTreeMarkSelected() {
 //TODO to highlight icon
 //    selectedOldTreeMarker.setIcon(require("./images/pin_29px.png"));
 //    selectedOldTreeMarker.setZIndex(0);
+    window.L.DomUtil.removeClass(selectedOldTreeMarker._icon, "clicked");
   }
 
   if (selectedTreeMarker) {
 //    selectedTreeMarker.setIcon(require("./images/pin_32px.png"));
 //    selectedTreeMarker.setZIndex(99999);
+    window.L.DomUtil.addClass(selectedTreeMarker._icon, "clicked");
   }
 }
 
@@ -816,7 +820,7 @@ var initialize = function() {
 
   //google satillite map
   const googleSat = window.L.tileLayer(
-    'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
       maxZoom: 20,
 //      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
 //      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
