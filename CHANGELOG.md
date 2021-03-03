@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.1...v1.5.2) (2021-03-03)
+
+
+### Bug Fixes
+
+* do not skip workflows ([79e6ff8](https://github.com/Greenstand/treetracker-web-map/commit/79e6ff881d060dec036de48fa014b664c390d7b7))
+
 ## [1.5.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.0...v1.5.1) (2021-03-03)
 
 
