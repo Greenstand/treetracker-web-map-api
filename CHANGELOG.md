@@ -1,3 +1,11 @@
+## [1.5.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.5...v1.5.6) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix production deployment environment ([9d5df5d](https://github.com/Greenstand/treetracker-web-map/commit/9d5df5de0f75be485f080bfcb5c8882bd0c6d201))
+* perform release when actions change for server ([daf0c1e](https://github.com/Greenstand/treetracker-web-map/commit/daf0c1e5c6ea7a3f0ca8594eb1f0277ed5c4d53b))
+
 ## [1.5.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.4...v1.5.5) (2021-03-03)
 
 
