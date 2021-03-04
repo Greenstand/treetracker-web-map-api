@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.2...v1.6.3) (2021-03-04)
+
+
+### Bug Fixes
+
+* use the manual dbconnection secret for now ([1db1d5d](https://github.com/Greenstand/treetracker-web-map/commit/1db1d5ded3b985495826bd54d226901c9fe2752b))
+
 ## [1.6.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.1...v1.6.2) (2021-03-04)
 
 
