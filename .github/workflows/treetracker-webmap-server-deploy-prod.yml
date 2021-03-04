@@ -13,8 +13,8 @@ env:
   project-directory: ./server
 
 jobs:
-  deploy-test:
-    name: Deploy latest to prod environment, requires approval
+  deploy:
+    name: Deploy, requires approval
     runs-on: ubuntu-latest
     if: |
       github.repository == 'Greenstand/treetracker-web-map'
