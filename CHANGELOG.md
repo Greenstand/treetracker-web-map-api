@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.5...v1.6.6) (2021-03-04)
+
+
+### Bug Fixes
+
+* use uuid for capture id when matching captures in wallet for map ([902cb1b](https://github.com/Greenstand/treetracker-web-map/commit/902cb1b9fed967976d355fc62198de1d4b3db62f))
+
 ## [1.6.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.4...v1.6.5) (2021-03-04)
 
 
