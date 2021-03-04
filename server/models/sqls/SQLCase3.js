@@ -82,7 +82,7 @@ class SQLCase3{
   getJoin(){
     let result = "";
     if(this.wallet){
-      result += 'INNER JOIN wallet.token ON CONCAT(wallet.token.capture_id, "") = trees.uuid \n';
+      result += 'INNER JOIN wallet.token ON wallet.token.capture_id::text = trees.uuid \n';
       result += 'INNER JOIN wallet.wallet ON wallet.wallet.id = wallet.token.wallet_id \n';
     }
     if(this.flavor){
