@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.6...v1.6.7) (2021-03-04)
+
+
+### Bug Fixes
+
+* compare uuid in trees table using string ([77074df](https://github.com/Greenstand/treetracker-web-map/commit/77074dfaf79492059733410dd8ab2ab94c276792))
+
 ## [1.6.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.5...v1.6.6) (2021-03-04)
 
 
