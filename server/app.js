@@ -66,16 +66,12 @@ app.get("/tree", async function (req, res){
   res.status(200).json(treeDetail);
 });
 
+const version = require('../package.json').version
+app.get('*',function (req, res) {
+  res.status(200).send(version)
+});
+
 // Global error handler
 app.use(helper.errorHandler);
 
-////add static files, HTML pages
-//app.use(express.static(path.join(__dirname, "../client")));
-//app.get("/", (req, res) => {
-//  res.sendFile(path.join(__dirname, "../client", "index.html"));
-//});
-
-//app.listen(port, () => {
-//  console.log('listening on port ' + port);
-//});
 module.exports = app;
