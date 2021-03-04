@@ -1,4 +1,4 @@
-name: Webmap Server CI/CD
+name: Webmap Server CI/CD Unstable Branch
 
 on:
   push:
