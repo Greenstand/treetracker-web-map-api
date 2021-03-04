@@ -1,3 +1,10 @@
+## [1.6.10](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.9...v1.6.10) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix query ([28cb215](https://github.com/Greenstand/treetracker-web-map/commit/28cb2152be64a7d32caa975a8823a6cf92b72252))
+
 ## [1.6.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.8...v1.6.9) (2021-03-04)
 
 
