@@ -4,6 +4,14 @@
 ### Bug Fixes
 
 * fix query ([28cb215](https://github.com/Greenstand/treetracker-web-map/commit/28cb2152be64a7d32caa975a8823a6cf92b72252))
+* trigger release after failed workflow ([525370b](https://github.com/Greenstand/treetracker-web-map/commit/525370b756de534dab1f2b9b8e46f2d862b6b05f))
+
+## [1.6.10](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.9...v1.6.10) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix query ([28cb215](https://github.com/Greenstand/treetracker-web-map/commit/28cb2152be64a7d32caa975a8823a6cf92b72252))
 
 ## [1.6.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.8...v1.6.9) (2021-03-04)
 
