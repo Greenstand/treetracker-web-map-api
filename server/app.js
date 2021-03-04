@@ -66,10 +66,10 @@ app.get("/tree", async function (req, res){
   res.status(200).json(treeDetail);
 });
 
-const version = require('../package.json').version
+/*const version = require('../package.json').version
 app.get('*',function (req, res) {
   res.status(200).send(version)
-});
+});*/
 
 // Global error handler
 app.use(helper.errorHandler);
