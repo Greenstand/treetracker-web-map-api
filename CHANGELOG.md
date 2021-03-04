@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.7...v1.6.8) (2021-03-04)
+
+
+### Bug Fixes
+
+* use cast ([ce497f3](https://github.com/Greenstand/treetracker-web-map/commit/ce497f3174a85595604bfc44cf923a2721a9777e))
+
 ## [1.6.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.6...v1.6.7) (2021-03-04)
 
 
