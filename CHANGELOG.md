@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.4...v1.6.5) (2021-03-04)
+
+
+### Bug Fixes
+
+* use singular for schema name ([73d4da8](https://github.com/Greenstand/treetracker-web-map/commit/73d4da8d7c1510d480dd77d99fed4a36f2a3c6e6))
+
 ## [1.6.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.3...v1.6.4) (2021-03-04)
 
 
