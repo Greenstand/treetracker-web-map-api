@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.0...v1.6.1) (2021-03-04)
+
+
+### Bug Fixes
+
+* get package version from root ([876b169](https://github.com/Greenstand/treetracker-web-map/commit/876b169f44ab4d76c2649960b08fe333a87ab5d2))
+
 # [1.6.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.6...v1.6.0) (2021-03-04)
 
 
