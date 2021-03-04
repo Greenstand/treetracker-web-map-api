@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.8...v1.6.9) (2021-03-04)
+
+
+### Bug Fixes
+
+* join individual tree data against wallet schema ([024a304](https://github.com/Greenstand/treetracker-web-map/commit/024a304aa6c6f2c601d0aaf1ff86b11127d633c1))
+
 ## [1.6.8](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.7...v1.6.8) (2021-03-04)
 
 
