@@ -111,7 +111,7 @@ class SQLCase2{
   getJoin(){
     let result = "";
     if(this.wallet){
-      result += 'INNER JOIN wallet.token ON wallet.token.tree_id = trees.id \n';
+      result += 'INNER JOIN wallet.token ON wallet.token.capture_id = trees.uuid \n';
       result += 'INNER JOIN wallet.wallet ON wallet.wallet.id = wallet.token.entity_id \n';
     }
     if(this.flavor){
