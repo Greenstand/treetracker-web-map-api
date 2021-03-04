@@ -7,16 +7,9 @@ on:
   push:
     paths:
     - 'server/**'
-    - '.github/workflows/treetracker-webmap-server-build-deploy.yml'
+    - '.github/workflows/treetracker-webmap-server*'
     branches:
       - master
-  pull_request:
-    paths:
-    - 'server/**'
-    - '.github/workflows/treetracker-webmap-server-build-deploy.yml'
-    branches:
-      - master
-
 
 env: 
   project-directory: ./server
