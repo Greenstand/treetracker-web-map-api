@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.3...v1.6.4) (2021-03-04)
+
+
+### Bug Fixes
+
+* trigger deploy ([184f3aa](https://github.com/Greenstand/treetracker-web-map/commit/184f3aa201add738772326d20244c4ee68ccfca8))
+
 ## [1.6.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.2...v1.6.3) (2021-03-04)
 
 
