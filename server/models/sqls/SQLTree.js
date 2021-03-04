@@ -25,8 +25,8 @@ class SQLTree{
         ON planter.id = trees.planter_id
         LEFT JOIN tree_species ON
           trees.species_id = tree_species.id
-        LEFT JOIN token ON token.capture_id = trees.uuid
-        LEFT JOIN entity ON entity.id = token.entity_id 
+        LEFT JOIN token ON wallet.token.capture_id::text = trees.uuid
+        LEFT JOIN wallet ON wallet.id = token.wallet_id 
         WHERE
           trees.id = $1 AND trees.active = true
       `,
