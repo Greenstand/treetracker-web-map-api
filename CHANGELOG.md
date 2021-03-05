@@ -1,3 +1,10 @@
+## [1.6.14](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.13...v1.6.14) (2021-03-05)
+
+
+### Bug Fixes
+
+* some updates to support query tree by uuid ([797dfd2](https://github.com/Greenstand/treetracker-web-map/commit/797dfd2470bbc9c527c2bdc989a266158a1f1af0))
+
 ## [1.6.13](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.12...v1.6.13) (2021-03-05)
 
 
