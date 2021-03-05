@@ -8,6 +8,7 @@ spec:
   prefix: /webmap/
   service: treetracker-webmap-api-ambassador-svc
   rewrite: /
+  timeout_ms: 0
   cors:
     origins: 
     - https://dev.webmap.treetracker.org
