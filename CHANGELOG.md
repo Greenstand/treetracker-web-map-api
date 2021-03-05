@@ -1,3 +1,10 @@
+## [1.6.15](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.14...v1.6.15) (2021-03-05)
+
+
+### Bug Fixes
+
+* include other active domains in mapping ([d9fd8e5](https://github.com/Greenstand/treetracker-web-map/commit/d9fd8e5ac7650c01881d3022a13776d2b6959670))
+
 ## [1.6.14](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.13...v1.6.14) (2021-03-05)
 
 
