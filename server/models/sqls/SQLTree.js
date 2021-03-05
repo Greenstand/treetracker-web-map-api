@@ -18,7 +18,7 @@ class SQLTree{
           planter.first_name AS first_name, planter.last_name as last_name,
           planter.image_url AS user_image_url,
           token.id::text AS token_uuid,
-          entity.wallet as wallet
+          wallet.wallet as wallet
         FROM
           trees
         INNER JOIN planter
@@ -26,7 +26,7 @@ class SQLTree{
         LEFT JOIN tree_species ON
           trees.species_id = tree_species.id
         LEFT JOIN wallet.token token ON wallet.token.capture_id::text = trees.uuid
-        LEFT JOIN wallet ON wallet.id = wallet.token.wallet_id 
+        LEFT JOIN wallet.wallet wallet ON wallet.id = wallet.token.wallet_id 
         WHERE
           trees.id = $1 AND trees.active = true
       `,
