@@ -56,14 +56,25 @@ const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
 
 app.get("/tree", async function (req, res){
+  try {
+  console.log('get tree')
   const tree = new Tree();
   const treeId = req.query.tree_id;
-  if(!treeId){
+  const uuid = req.query.uuid;
+  if(treeId){
+    const treeDetail = await tree.getTreeById(treeId);
+    res.status(200).json(treeDetail);
+  } else if(uuid){
+    const treeDetail = await tree.getTreeByUUID(uuid);
+    res.status(200).json(treeDetail);
+  } else {
     console.warn("no tree id", treeId);
     res.status(400).json({message:"no tree id"});
   }
-  const treeDetail = await tree.getTreeById(treeId);
-  res.status(200).json(treeDetail);
+
+  } catch (error) {
+    console.log(error)
+  }
 });
 
 /*const version = require('../package.json').version
