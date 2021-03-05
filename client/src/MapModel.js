@@ -4,6 +4,7 @@
 import expect from "expect-runtime";
 import axios from "axios";
 import log from "loglevel";
+import "leaflet";
 
 class MapModel {
   constructor(options){
@@ -43,7 +44,7 @@ class MapModel {
       //no markers
       this._markers.length === 0 || 
       //all markers out of bounds
-      this._markers.every(marker => !this._map.getBounds().contains(marker.getPosition()))
+      this._markers.every(marker => !this._map.getBounds().contains(marker.getLatLng()))
     ){
       //no markers, need to find nearest
       const center = this._map.getCenter();
@@ -62,33 +63,33 @@ class MapModel {
             lat: nearest.lat,
             lng: nearest.lng,
           };
-          const distanceLat = window.google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLat = window.L.CRS.EPSG3857.distance(
             center,
-            new window.google.maps.LatLng(
+            window.L.latLng(
               dist.lat,
-              center.lng()
+              center.lng
               ),
           );
           log.log("distanceLat:", distanceLat);
           expect(distanceLat).number();
-          const distanceLng = window.google.maps.geometry.spherical.computeDistanceBetween(
+          const distanceLng = window.L.CRS.EPSG3857.distance(
             center,
-            new window.google.maps.LatLng(
-              center.lat(),
+            window.L.latLng(
+              center.lat,
               dist.lng,
               ),
           );
           log.log("distanceLng:", distanceLng);
           expect(distanceLng).number();
           log.log("dist:", dist);
-          log.log("center:", center, center.lat());
-          if(dist.lat > center.lat()){
+          log.log("center:", center, center.lat);
+          if(dist.lat > center.lat){
             log.log("On the north");
             if(distanceLat > distanceLng){
               log.log("On the north");
               this.showArrow("north");
             }else{
-              if(dist.lng > center.lng()){
+              if(dist.lng > center.lng){
                 log.log("On the east");
                 this.showArrow("east");
               }else{
@@ -102,7 +103,7 @@ class MapModel {
               log.log("On the south");
               this.showArrow("south");
             }else{
-              if(dist.lng > center.lng()){
+              if(dist.lng > center.lng){
                 log.log("On the east");
                 this.showArrow("east");
               }else{
@@ -168,9 +169,9 @@ class MapModel {
       this._cancelAxios("cancel previous nearest request");
     }
     const center = this._map.getCenter();
-    log.log("current center:", center.toJSON());
+    log.log("current center:", center);
     const zoom_level = this._map.getZoom();
-    const res = await axios.get(this.apiUrl + `nearest?zoom_level=${zoom_level}&lat=${center.lat()}&lng=${center.lng()}`, {
+    const res = await axios.get(this.apiUrl + `nearest?zoom_level=${zoom_level}&lat=${center.lat}&lng=${center.lng}`, {
       cancelToken: new axios.CancelToken((c) => {
         this._cancelAxios = c;
       }),
