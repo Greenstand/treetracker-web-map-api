@@ -1,3 +1,10 @@
+## [1.6.13](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.12...v1.6.13) (2021-03-05)
+
+
+### Bug Fixes
+
+* disable request timeout ([f404d96](https://github.com/Greenstand/treetracker-web-map/commit/f404d9686ccc91077a4f6823beb0d2a9e9f9e724))
+
 ## [1.6.12](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.11...v1.6.12) (2021-03-05)
 
 
