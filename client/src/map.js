@@ -9,6 +9,7 @@ import log from "loglevel";
 import {mapConfig} from "./mapConfig";
 import 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import "leaflet-utfgrid/L.UTFGrid-min.js";
 
 const CancelToken = axios.CancelToken;
 let source;
@@ -833,6 +834,24 @@ var initialize = function() {
     });
   googleSat.addTo(map);
 
+  var baseURL_def = "http://47.91.14.192:13000";
+  new window.L.tileLayer(baseURL_def + '/{z}/{x}/{y}.png').addTo(map);
+  var utfGridLayer = new window.L.utfGrid(baseURL_def + '/{z}/{x}/{y}.grid.json');
+  utfGridLayer.on('click', function (e) {
+    console.log("e:", e);
+    if (e.data) {
+      console.log('click', e.data);
+      map.panTo(e.latlng);
+      map.setView(e.latlng, map.getZoom() + 2);
+    } else {
+      console.log('click nothing');
+    }
+  });
+  console.warn("utf:", utfGridLayer);
+  utfGridLayer.on('mouseover', function (e) {
+    console.log("e:", e);
+  });
+  utfGridLayer.addTo(map);
   // insert freetown overlay
   //  map.overlayMapTypes.insertAt(
   //    0,
