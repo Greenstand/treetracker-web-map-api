@@ -839,7 +839,7 @@ var initialize = function() {
   new window.L.tileLayer(
     baseURL_def + '/{z}/{x}/{y}.png',
     {
-      minZoom: 15,
+      minZoom: 16,
       maxZoom: 18,
     }
   ).addTo(map);
