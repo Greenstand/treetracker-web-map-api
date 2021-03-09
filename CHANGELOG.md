@@ -1,3 +1,10 @@
+## [1.6.16](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.15...v1.6.16) (2021-03-09)
+
+
+### Bug Fixes
+
+* increase LRU TTL to 10 minutes to improve map performance ([49cc467](https://github.com/Greenstand/treetracker-web-map/commit/49cc467aaca80f000b828b803d384b398679c17b))
+
 ## [1.6.15](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.14...v1.6.15) (2021-03-05)
 
 
