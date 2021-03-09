@@ -384,7 +384,8 @@ var initMarkers = function(viewportBounds, zoomLevel) {
           marker.payload = {
             id: item["id"]
           };
-          marker.addTo(map);
+          //NOTE close, use tile server to render points.
+          //marker.addTo(map);
 
           if (
             selectedTreeMarker &&
@@ -835,14 +836,60 @@ var initialize = function() {
   googleSat.addTo(map);
 
   var baseURL_def = "http://47.91.14.192:13000";
-  new window.L.tileLayer(baseURL_def + '/{z}/{x}/{y}.png').addTo(map);
-  var utfGridLayer = new window.L.utfGrid(baseURL_def + '/{z}/{x}/{y}.grid.json');
+  new window.L.tileLayer(
+    baseURL_def + '/{z}/{x}/{y}.png',
+    {
+      minZoom: 15,
+      maxZoom: 18,
+    }
+  ).addTo(map);
+  var utfGridLayer = new window.L.utfGrid(
+    baseURL_def + '/{z}/{x}/{y}.grid.json',
+    {
+      minZoom: 15,
+      maxZoom: 18,
+    }
+  );
   utfGridLayer.on('click', function (e) {
     console.log("e:", e);
     if (e.data) {
       console.log('click', e.data);
-      map.panTo(e.latlng);
-      map.setView(e.latlng, map.getZoom() + 2);
+//      map.panTo(e.latlng);
+//      map.setView(e.latlng, map.getZoom() + 2);
+//      points.forEach(function(point, i) {
+//        var marker = markerByPointId[point.id];
+//        expect(marker).defined();
+//        marker.on("click", function() {
+//          log.debug("marker click");
+//    //      window.google.maps.event.clearListeners(marker, "mouseover");
+//    //      window.google.maps.event.clearListeners(marker, "mouseout");
+//          //toggle tree mark
+//          selectedOldTreeMarker = selectedTreeMarker;
+//          selectedTreeMarker = marker;
+//          changeTreeMarkSelected();
+//
+//          //attache wallet
+//          if(wallet != null){
+//            point.attachedWallet = wallet;
+//          }
+//          getApp().showPanel(point);
+//          return;
+//        });
+//      });
+      //expect(e.data).property("id").a("number");
+      const point = points.reduce((a,c) => {
+        //expect(c).property("id").a("number");
+        if(c.id === e.data.id){
+          return c;
+        }else{
+          return a;
+        }
+      }, undefined);
+      expect(point).defined();
+      selectedTreeMarker = {
+        payload: e.data,
+      }
+      getApp().showPanel(point);
     } else {
       console.log('click nothing');
     }
