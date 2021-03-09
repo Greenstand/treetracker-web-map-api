@@ -72,6 +72,11 @@ var loadingTimer = undefined;
  */
 let timeline = undefined;
 
+/*
+ * When mouse over the icon in tile pic, create the markerHighlight
+ */
+let markerHighlight = undefined;
+
 if(process.env.REACT_APP_API){
   treetrackerApiUrl = process.env.REACT_APP_API;
 }else{
@@ -897,6 +902,36 @@ var initialize = function() {
   console.warn("utf:", utfGridLayer);
   utfGridLayer.on('mouseover', function (e) {
     console.log("e:", e);
+    expect(e.data).match({
+      lat: expect.any(Number),
+      lon: expect.any(Number),
+    });
+    markerHighlight = new window.L.marker(
+      [e.data.lat, e.data.lon],
+      {
+          icon: new window.L.DivIcon({
+            className: "greenstand-point-highlight",
+            html: `
+              <div class="greenstand-point-highlight-box"  >
+              <div></div>
+              </div>
+            `,
+            iconSize: [32, 32],
+          }),
+      }
+    );
+    markerHighlight.payload = {
+      id: e.data.id
+    };
+    markerHighlight.addTo(map);
+  });
+  utfGridLayer.on('mouseout', function (e) {
+    console.log("e:", e);
+    expect(e.data).match({
+      lat: expect.any(Number),
+      lon: expect.any(Number),
+    });
+    map.removeLayer(markerHighlight);
   });
   utfGridLayer.addTo(map);
   // insert freetown overlay

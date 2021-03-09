@@ -217,3 +217,19 @@ body {
 .greenstand-point.clicked .greenstand-point-box {
   background: url(./images/pin_32px.png);
 }
+
+.greenstand-point-highlight{
+  z-index: 999 !important;
+}
+
+.greenstand-point-highlight-box {
+  background: url(./images/pin_29px_highlight.png);
+  width: 29px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*transform: translate(-50%, -50%);*/
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
