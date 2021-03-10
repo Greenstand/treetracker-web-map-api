@@ -1,3 +1,10 @@
+## [1.6.18](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.17...v1.6.18) (2021-03-10)
+
+
+### Bug Fixes
+
+* do not treat map.treetracker.org as a map name ([1ae18b9](https://github.com/Greenstand/treetracker-web-map/commit/1ae18b948e188a633be911df54381f8ea1eab269))
+
 ## [1.6.17](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.16...v1.6.17) (2021-03-10)
 
 
