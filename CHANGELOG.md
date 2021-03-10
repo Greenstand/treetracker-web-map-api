@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.19...v1.7.0) (2021-03-10)
+
+
+### Features
+
+* add the district delinations for freetown ([1c6781b](https://github.com/Greenstand/treetracker-web-map/commit/1c6781b801e2d797f2dd6a43d4ecc39d2a1ca83c))
+
 ## [1.6.19](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.18...v1.6.19) (2021-03-10)
 
 
