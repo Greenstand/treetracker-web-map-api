@@ -19,4 +19,5 @@ spec:
     - https://wallet.treetracker.org
     - https://freetown.treetracker.org
     - https://map.treetracker.org
+    - http://localhost:3000
     methods: GET
