@@ -18,4 +18,5 @@ spec:
     - https://ready.treetracker.org
     - https://wallet.treetracker.org
     - https://freetown.treetracker.org
+    - https://map.treetracker.org
     methods: GET
