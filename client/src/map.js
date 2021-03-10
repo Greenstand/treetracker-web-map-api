@@ -872,7 +872,7 @@ class freetownOverlay {
     div.style.height = this.tileSize.height + 'px';
     div.style.width = this.tileSize.width + 'px';
     div.tileId = 'x_' + coord.x + '_y_' + coord.y + '_zoom_' + zoom; 
-    div.style.backgroundImage = 'url(' + "https://treetracker-map-tiles.nyc3.cdn.digitaloceanspaces.com/freetown/" + zoom + "/" + coord.x + "/" + y  + ".png" + ')';
+    div.style.backgroundImage = 'url(' + "https://treetracker-map-tiles.nyc3.digitaloceanspaces.com/freetown/" + zoom + "/" + coord.x + "/" + y  + ".png" + ')';
     //check if coord is in tile range
     if (zoom == 10 && coord.x == 474 && y < 537 && y > 534) {
       return div;
@@ -921,6 +921,14 @@ class freetownOverlay {
     0,
     new freetownOverlay(new window.google.maps.Size(256, 256))
   );
+  map.data.loadGeoJson(
+    "https://treetracker-map-features.fra1.digitaloceanspaces.com/freetown_catchments.geojson"
+  );
+  map.data.setStyle({
+    strokeWeight: 1,
+    strokeOpacity: 1,
+    strokeColor: 'green'
+  });
 
   // only fetch when the user has made some sort of action
   window.google.maps.event.addListener(map, "dragstart", function() {
