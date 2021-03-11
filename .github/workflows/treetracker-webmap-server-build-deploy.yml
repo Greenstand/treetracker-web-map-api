@@ -1,16 +1,14 @@
-name: Treetracker WebMap API CI/CD Pipeline
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+#
+
+name: Webmap Server CI/CD
 
 on:
   push:
     paths:
     - 'server/**'
-    - '.github/workflows/treetracker-webmap-server-build-deploy.yml'
-    branches:
-      - master
-  pull_request:
-    paths:
-    - 'server/**'
-    - '.github/workflows/treetracker-webmap-server-build-deploy.yml'
+    - '.github/workflows/treetracker-webmap-server*'
     branches:
       - master
 
@@ -18,11 +16,23 @@ env:
   project-directory: ./server
 
 jobs:
+  #  test:
+  #   - name: npm clean install
+  #    run: npm ci
+  #    working-directory: ${{ env.project-directory }}
+      #    - name: run ESLint
+      # run: npm run lint
+      #working-directory: ${{ env.project-directory }}
+      #- name: build server project
+      #run: npm run build
+      #working-directory: ${{ env.project-directory }}
   build:
-    name: Build Server Project
+    name: Release and Build
     runs-on: ubuntu-latest
     if: |
-      !contains(github.event.head_commit.message, 'skip-ci')
+      !contains(github.event.head_commit.message, 'skip-ci') &&
+      github.event_name == 'push' &&
+      github.repository == 'Greenstand/treetracker-web-map'
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
@@ -40,25 +50,17 @@ jobs:
       id: package-version
       uses: martinbeentjes/npm-get-version-action@master
       with:
-        path: server
+        path: ./
     - name: Set up QEMU
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       uses: docker/setup-buildx-action@v1
     - name: Login to DockerHub
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       uses: docker/login-action@v1 
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    - name: Set git sha
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
-      id: git-sha
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build snapshot with git sha and push on merge
-      if: github.event_name == 'push' && github.repository == 'Greenstand/treetracker-web-map'
       id: docker_build_snapshot_merge
       uses: docker/build-push-action@v2
       with:
@@ -66,7 +68,16 @@ jobs:
         file: ./server/Dockerfile
         push: true
         tags: greenstand/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }}
-  
+    - shell: bash
+      run: |
+        echo '${{ steps.package-version.outputs.current-version }}' > image-tag
+    - name: persist tag name
+      uses: actions/upload-artifact@v1
+      with:
+        name: image-tag-${{github.sha}}
+        path: image-tag
+
+
   deploy:
     name: Deploy latest to development environment
     runs-on: ubuntu-latest
@@ -77,17 +88,36 @@ jobs:
       github.repository == 'Greenstand/treetracker-web-map'
     steps:
     - uses: actions/checkout@v2
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@master
+      with:
+        path: ./
+    - name: Download tag name
+      uses: actions/download-artifact@v1
+      with:
+        name: image-tag-${{github.sha}}
+    - name: Set image tag name 
+      id: image-tag-name
+      run: |
+        value=`cat image-tag-${{github.sha}}/image-tag`
+        echo "::set-output name=image-tag-name::$value"
     - name: Install kustomize
-      run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+      run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
     - name: Copy kustomize.yml
       run: cp server/deployment/kustomize/kustomization.yaml server/deployment/kustomization.yaml
     - name: Run kustomize
-      run: (cd server/deployment && ../../kustomize edit set image greenstand/treetracker-admin-api:${{ needs.release.outputs.bumped_version }} )
+      run: (cd server/deployment && ../../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.image-tag-name.outputs.image-tag-name }} )
     - name: Install doctl for kubernetes
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
+    - name: Delete completed migration jobs prior to deployment
+      run: kubectl -n webmap delete job --ignore-not-found=true  webmap-db-migration-job
     - name: Update kubernetes resources
       run: kubectl -n webmap apply --wait -k server/deployment/
+      #    - name: Attempt to wait for migration job to complete
+      # run: kubectl wait --for=condition=complete --timeout=45s job/webmap-db-migration-job
+

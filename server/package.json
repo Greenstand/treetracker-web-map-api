@@ -1,7 +1,7 @@
 {
   "name": "treetracker-map-server",
   "version": "1.0.6",
-  "description": "The tree map server",
+  "description": "The tree map server map",
   "author": "",
   "keywords": [],
   "main": "server.js",
@@ -17,8 +17,10 @@
     "@sentry/node": "^5.4.3",
     "body-parser": "^1.18.2",
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.2",
     "express-lru": "^1.0.0",
+    "loglevel": "^1.7.1",
     "morgan": "^1.9.1",
     "pg": "^7.4.0"
   },

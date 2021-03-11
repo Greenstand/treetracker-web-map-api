@@ -14,6 +14,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import getLogo from "./models/logo";
 import log from "loglevel";
+import Timeline from "./components/Timeline";
 
 
 const MOBILE_WIDTH = 960;
@@ -252,6 +253,8 @@ function App() {
   const [message, setMessage] = React.useState({open: false, message:""});
   const [arrow, setArrow] = React.useState({});
   const [logoSrc, setLogoSrc] = React.useState(undefined);
+  const [timelineDate, setTimelineDate] = React.useState(undefined);
+  const [timelineEnabled, setTimelineEnabled] = React.useState(true);
 
   function showPanel(tree){
     log.log("show panel...");
@@ -425,6 +428,7 @@ function App() {
       mapRef.current.map = map;
       expect(mapRef)
         .property("current").defined();
+      expect(map).property("rerender").defined();
       injectApp();
     };
   }, []);
@@ -444,6 +448,36 @@ function App() {
     log.debug("useEffect 2");
     loadLogo();
   }, []);
+
+  function handleDateChange(date){
+    log.warn("date changed:", date);
+    window.history.pushState('page2', '', `/?timeline=${date.join("_")}`);
+    const {map} = mapRef.current;
+    map.rerender();
+  }
+
+  function handleDateClose(){
+    setTimelineDate(undefined);
+    window.history.pushState('page2', '', `/`);
+    const {map} = mapRef.current;
+    map.rerender();
+  }
+
+  /* init timeline date */
+  React.useEffect(() => {
+    log.debug("init timeline");
+    //if there are any other filter, like wallet, then close the timeline
+    if(window.location.search.match(/(wallet=|userid=|treeid=|flavor=|token=|map_name=)/)){
+      setTimelineEnabled(false);
+      return;
+    }
+    const m = window.location.search.match(/timeline=(\d{4}-\d{2}-\d{2})_(\d{4}-\d{2}-\d{2})/);
+    if(m){
+      const date = [m[1],m[2]];
+      log.warn("init date:", date);
+      setTimelineDate(date);
+    }
+  },[]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -468,6 +502,13 @@ function App() {
       <div className={`${classes.logo} ${logoLoaded?classes.logoLoaded:""}`}>
         <img alt="logo" src={logoSrc} />
       </div>
+      {timelineEnabled &&
+        <Timeline
+          onDateChange={handleDateChange}
+          date={timelineDate}
+          onClose={handleDateClose}
+        />
+      }
       <Snackbar open={message.open} autoHideDuration={10000} onClose={handleMessageClose}>
         <MuiAlert onClose={handleMessageClose} severity="warning">
           {message.message}
