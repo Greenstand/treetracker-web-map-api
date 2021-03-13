@@ -115,7 +115,7 @@ jobs:
 #    - name: Delete completed migration jobs prior to deployment
 #      run: kubectl -n webmap delete job --ignore-not-found=true  webmap-db-migration-job
     - name: Update kubernetes resources
-      run: kustomize build deployment/overlays/development | kubectl apply -n webmap --wait -f -
+      run: kustomize build server/deployment/overlays/development | kubectl apply -n webmap --wait -f -
       #    - name: Attempt to wait for migration job to complete
       # run: kubectl wait --for=condition=complete --timeout=45s job/webmap-db-migration-job
 
