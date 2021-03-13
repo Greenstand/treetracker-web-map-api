@@ -1,3 +1,10 @@
+## [1.8.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.5...v1.8.6) (2021-03-13)
+
+
+### Bug Fixes
+
+* must be sequence node ([e15240c](https://github.com/Greenstand/treetracker-web-map/commit/e15240c336aef4332db31d8ddc19eed07a40eb6b))
+
 ## [1.8.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.4...v1.8.5) (2021-03-13)
 
 
