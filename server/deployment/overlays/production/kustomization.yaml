@@ -1,4 +1,4 @@
 bases:
   - ../../base
 patchesStrategicMerge:
-  - treetracker-web-api-mapping.yaml
+  - treetracker-webmap-api-mapping.yaml
