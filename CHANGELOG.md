@@ -1,3 +1,10 @@
+## [1.8.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.6...v1.8.7) (2021-03-13)
+
+
+### Bug Fixes
+
+* keep fixing up workflow ([14de483](https://github.com/Greenstand/treetracker-web-map/commit/14de48398e9193ad047dc2be51d4c6f27b8df19a))
+
 ## [1.8.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.5...v1.8.6) (2021-03-13)
 
 
