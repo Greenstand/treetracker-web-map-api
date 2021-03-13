@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.7.0...v1.8.0) (2021-03-13)
+
+
+### Features
+
+* update deployment to use overlays ([f47af84](https://github.com/Greenstand/treetracker-web-map/commit/f47af849da5ea8dab2c29e4bb899feea32302ac1))
+
 # [1.7.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.19...v1.7.0) (2021-03-10)
 
 
