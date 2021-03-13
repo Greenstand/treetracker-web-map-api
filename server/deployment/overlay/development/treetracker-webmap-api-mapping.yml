@@ -1,0 +1,14 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: webmap-be-api
+  namespace: webmap
+spec:
+  cors:
+    cors:
+    origins: '*'
+    methods: GET, OPTIONS
+    headers:
+      - Content-Type
+      - Authorization

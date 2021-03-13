@@ -1,0 +1,19 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: webmap-be-api
+  namespace: webmap
+spec:
+  cors:
+    cors:
+    origins: 
+      - https://test.treetracker.org
+      - https://test-app.forestmatic.com
+      - https://forestmatic.com
+      - https://app.forestmatic.com
+      - https://staging-app.forestmatic.com
+    methods: GET, OPTIONS
+    headers:
+      - Content-Type
+      - Authorization
