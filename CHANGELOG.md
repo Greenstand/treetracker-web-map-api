@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.4...v1.8.5) (2021-03-13)
+
+
+### Bug Fixes
+
+* filename extension ([fc808c1](https://github.com/Greenstand/treetracker-web-map/commit/fc808c1dd17b4d750554bd23cd7e10cacfd0864b))
+
 ## [1.8.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.3...v1.8.4) (2021-03-13)
 
 
