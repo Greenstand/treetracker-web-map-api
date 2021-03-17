@@ -51,7 +51,7 @@ Optional:
     REACT_APP_API=http://localhost:3000/
     ```
 
-    2. To set up the API development environment locally, follow the steps at the [server folder](./server)
+    2. To set up the API development environment locally, follow the steps at the [server folder](./../server)
 
 
 ---
