@@ -56,7 +56,6 @@ Optional:
 
 ---
 
-
 ## How to enable log on console.
 
 By default, the client just output logs which are level of `warn` or above, this remains the browser console clean for normal users, to display more logs for debuggering, please follow this guide:
@@ -70,10 +69,6 @@ By default, the client just output logs which are level of `warn` or above, this
     key: loglevel
     value: DEBUG
     ```
-4. Refresh the page.
-
-![demo for set log](./log-demo.gif)
-
 
 ### How to test
 

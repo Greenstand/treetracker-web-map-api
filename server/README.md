@@ -45,13 +45,14 @@ To set up your environment for BackEnd development, follow the steps below:
     - Option 1 is for **BackEnd development only**.
     - Option 2 is for **FrontEnd and BackEnd development**.
 
-    Choose one of the options:
-    
+    Choose one of the options and      Run the code below on the terminal:
+
     - **Option 1**:
 
          > NOTE 1: This command will run server.js with CORS restrictions lifted
          > NOTE 2: For environments running the FrontEnd and BackEnd, do not use this option, because API will run at port 3000 conflicting with the React project. Choose option 2.
-        
+       
+
         ```
         NODE_ENV=dev supervisor server.js
         ```
@@ -63,12 +64,13 @@ To set up your environment for BackEnd development, follow the steps below:
         cd server
         npm run dev
         ```
-        > NOTES: 
+        > NOTE: 
         > 1. In this way, the server would run on port 3001, and client would run on port 3000.
 
 <br>  
 
 > IMPORTANT NOTE: When running for the first time the API, if the endpoints are not responding, because after the queries there aren't any answer or error, it might be some incompatibility with the node version and pg module. If you are running Node.js 14, downgrade to Node.js 12.19.0.
+[How to Upgrade (or Downgrade) Node.js Using npm](https://www.surrealcms.com/blog/how-to-upgrade-or-downgrade-nodejs-using-npm.html)
 
 <br>  
 
