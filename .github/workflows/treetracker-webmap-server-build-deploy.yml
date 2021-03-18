@@ -104,20 +104,18 @@ jobs:
         echo "::set-output name=image-tag-name::$value"
     - name: Install kustomize
       run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-    - name: Copy kustomize.yml
-      run: cp server/deployment/kustomize/kustomization.yaml server/deployment/kustomization.yaml
     - name: Run kustomize
-      run: (cd server/deployment && ../../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.image-tag-name.outputs.image-tag-name }} )
+      run: (cd server/deployment/base && ../../../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.image-tag-name.outputs.image-tag-name }} )
     - name: Install doctl for kubernetes
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
-    - name: Delete completed migration jobs prior to deployment
-      run: kubectl -n webmap delete job --ignore-not-found=true  webmap-db-migration-job
+#    - name: Delete completed migration jobs prior to deployment
+#      run: kubectl -n webmap delete job --ignore-not-found=true  webmap-db-migration-job
     - name: Update kubernetes resources
-      run: kubectl -n webmap apply --wait -k server/deployment/
+      run: kustomize build server/deployment/overlays/development | kubectl apply -n webmap --wait -f -
       #    - name: Attempt to wait for migration job to complete
       # run: kubectl wait --for=condition=complete --timeout=45s job/webmap-db-migration-job
 

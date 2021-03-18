@@ -1,3 +1,116 @@
+# [1.10.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.3...v1.10.0) (2021-03-18)
+
+
+### Features
+
+* close tile servver in case of wallet ([bc8ceb8](https://github.com/Greenstand/treetracker-web-map/commit/bc8ceb8cb32bfbe54ecf3f80bf8e5bd96da0b6d5))
+* switcher ([031847f](https://github.com/Greenstand/treetracker-web-map/commit/031847fab2fb1aa62972bdfd8426b388d30aba46))
+
+## [1.9.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.2...v1.9.3) (2021-03-18)
+
+
+### Bug Fixes
+
+* allow tiles to show to max zoom ([83be984](https://github.com/Greenstand/treetracker-web-map/commit/83be984d22fb0aeaa8d4a380f7305cc2b167049e))
+
+## [1.9.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.1...v1.9.2) (2021-03-18)
+
+
+### Bug Fixes
+
+* allow tiles to show to max zoom ([3fe099f](https://github.com/Greenstand/treetracker-web-map/commit/3fe099f2da2f3ba98f9385e16386774d3ff97e4f))
+
+## [1.9.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.0...v1.9.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* remove extra slash ([387e316](https://github.com/Greenstand/treetracker-web-map/commit/387e316303e8be869d1033e9ff1e9f82dcc72eb2))
+
+# [1.9.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.7...v1.9.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* add default tile server for dev ([67b68f7](https://github.com/Greenstand/treetracker-web-map/commit/67b68f78cdb057568b4dbc152adb54836da4eef6))
+* bug in zoom in to 'userid' map ([01c861c](https://github.com/Greenstand/treetracker-web-map/commit/01c861cff0b3eca3e8299654919c975dc104c1e3))
+* next tree button ([b0080a5](https://github.com/Greenstand/treetracker-web-map/commit/b0080a5e04090804f22767e3833e3f974b21887e))
+* shouldn't show points on zoom level 15 ([af3e7fc](https://github.com/Greenstand/treetracker-web-map/commit/af3e7fc2daca84698d2a93fc684bebb8d1ef30d6))
+* style problem on markers; hybrid map with google map ([bf0109b](https://github.com/Greenstand/treetracker-web-map/commit/bf0109be98eccd7ed2d8972ee30726e2f7d299bf))
+
+
+### Features
+
+* add setting for tile server ([94c4c03](https://github.com/Greenstand/treetracker-web-map/commit/94c4c03d7902047492a18b75d90eb0255de8eac3))
+* after correcting all compilation error, map can show now ([4ebf780](https://github.com/Greenstand/treetracker-web-map/commit/4ebf780049b67f135d5a90e4e9342c92e3a1b393))
+* can click tile point to display panel ([24c736d](https://github.com/Greenstand/treetracker-web-map/commit/24c736d6ec711156a9bd3fd4125d1bac8509572c))
+* can display nearest arrow ([73893bc](https://github.com/Greenstand/treetracker-web-map/commit/73893bc170db10189dcafd657ea47d243c1f50de))
+* can display tree panel ([1a02190](https://github.com/Greenstand/treetracker-web-map/commit/1a021900237d52669ac167991fea0f685d30de12))
+* can display tree point ([23e8372](https://github.com/Greenstand/treetracker-web-map/commit/23e837273a20e9b588279ee98657187d818a8b6a))
+* can highlight the tree icon ([39df7dc](https://github.com/Greenstand/treetracker-web-map/commit/39df7dc6e88aa25829e9f197139407e4fc212cd1))
+* can show first screen correctly ([561ead6](https://github.com/Greenstand/treetracker-web-map/commit/561ead658b0f7b28086f2abbe0b08518125438aa))
+* can show side panel correctly ([3668d26](https://github.com/Greenstand/treetracker-web-map/commit/3668d261f48909e35656d237b44ee868d1c328ca))
+* can zoom in to furser zoom level ([0286879](https://github.com/Greenstand/treetracker-web-map/commit/02868795ba1ff8ae33d8b1fc78b2b0425da8ff11))
+* google satalite map ([5a9452a](https://github.com/Greenstand/treetracker-web-map/commit/5a9452ad5f242080ddd3ab63afe7b96434b20990))
+* improve marker css ([2bcbeb7](https://github.com/Greenstand/treetracker-web-map/commit/2bcbeb785939add508844712ceb000b2067b7918))
+* install grid leaf plugin; can display tile on the map ([cea527c](https://github.com/Greenstand/treetracker-web-map/commit/cea527ce2a1adf243ba31ffb32dab5e502ad84fa))
+
+## [1.8.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.6...v1.8.7) (2021-03-13)
+
+
+### Bug Fixes
+
+* keep fixing up workflow ([14de483](https://github.com/Greenstand/treetracker-web-map/commit/14de48398e9193ad047dc2be51d4c6f27b8df19a))
+
+## [1.8.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.5...v1.8.6) (2021-03-13)
+
+
+### Bug Fixes
+
+* must be sequence node ([e15240c](https://github.com/Greenstand/treetracker-web-map/commit/e15240c336aef4332db31d8ddc19eed07a40eb6b))
+
+## [1.8.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.4...v1.8.5) (2021-03-13)
+
+
+### Bug Fixes
+
+* filename extension ([fc808c1](https://github.com/Greenstand/treetracker-web-map/commit/fc808c1dd17b4d750554bd23cd7e10cacfd0864b))
+
+## [1.8.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.3...v1.8.4) (2021-03-13)
+
+
+### Bug Fixes
+
+* correct file name ([57a4654](https://github.com/Greenstand/treetracker-web-map/commit/57a4654c04fe284f6244a0e00b259b38a6fe5601))
+
+## [1.8.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.2...v1.8.3) (2021-03-13)
+
+
+### Bug Fixes
+
+* overlays not overlay ([98e6a92](https://github.com/Greenstand/treetracker-web-map/commit/98e6a9276b6526b1049db7365be13a4295e47abb))
+
+## [1.8.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.1...v1.8.2) (2021-03-13)
+
+
+### Bug Fixes
+
+* fix path ([67b2697](https://github.com/Greenstand/treetracker-web-map/commit/67b26974796d99a16172463ae46b087b0704e4e0))
+
+## [1.8.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.0...v1.8.1) (2021-03-13)
+
+
+### Bug Fixes
+
+* fix path to deployment yaml ([715a9b1](https://github.com/Greenstand/treetracker-web-map/commit/715a9b1042a838656735e4fe98e36515537d9118))
+
+# [1.8.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.7.0...v1.8.0) (2021-03-13)
+
+
+### Features
+
+* update deployment to use overlays ([f47af84](https://github.com/Greenstand/treetracker-web-map/commit/f47af849da5ea8dab2c29e4bb899feea32302ac1))
+
 # [1.7.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.19...v1.7.0) (2021-03-10)
 
 
