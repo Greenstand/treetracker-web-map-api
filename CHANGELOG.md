@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.1...v1.9.2) (2021-03-18)
+
+
+### Bug Fixes
+
+* allow tiles to show to max zoom ([3fe099f](https://github.com/Greenstand/treetracker-web-map/commit/3fe099f2da2f3ba98f9385e16386774d3ff97e4f))
+
 ## [1.9.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.0...v1.9.1) (2021-03-18)
 
 
