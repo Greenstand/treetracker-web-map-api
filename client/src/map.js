@@ -848,14 +848,14 @@ var initialize = function() {
     baseURL_def + '{z}/{x}/{y}.png',
     {
       minZoom: 16,
-      maxZoom: 18,
+      maxZoom: 22,
     }
   ).addTo(map);
   var utfGridLayer = new window.L.utfGrid(
     baseURL_def + '{z}/{x}/{y}.grid.json',
     {
       minZoom: 15,
-      maxZoom: 18,
+      maxZoom: 22,
     }
   );
 
