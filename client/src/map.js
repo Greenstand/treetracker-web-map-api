@@ -201,6 +201,19 @@ var initMarkers = function(viewportBounds, zoomLevel) {
   log.log("request:", queryUrl);
   source = CancelToken.source();
 
+  //for tile server version, if zoom level > 15, and it isn't cases like
+  //map_name, wallet, then do not request for points, just let the tile
+  //server works.
+  if(
+    queryUrl.match(/zoom_level=(16|17|18|19|20|21|22)/) &&
+    !queryUrl.match(/(wallet|map_name|timeline|userid|token)/)
+  ){
+    log.warn("quit, use tile server instead");
+    clearOverlays(markers);
+    return;
+  }
+
+
   //loading
   getApp().loadingB(false);
   if(!firstRender){
