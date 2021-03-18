@@ -201,6 +201,19 @@ var initMarkers = function(viewportBounds, zoomLevel) {
   log.log("request:", queryUrl);
   source = CancelToken.source();
 
+  //for tile server version, if zoom level > 15, and it isn't cases like
+  //map_name, wallet, then do not request for points, just let the tile
+  //server works.
+  if(
+    queryUrl.match(/zoom_level=(16|17|18|19|20|21|22)/) &&
+    !queryUrl.match(/(wallet|map_name|timeline|userid|token)/)
+  ){
+    log.warn("quit, use tile server instead");
+    clearOverlays(markers);
+    return;
+  }
+
+
   //loading
   getApp().loadingB(false);
   if(!firstRender){
@@ -840,104 +853,110 @@ var initialize = function() {
     });
   googleSat.addTo(map);
 
-  var baseURL_def = process.env.REACT_APP_TILE_SERVER_URL;
-  if(!baseURL_def){
-    throw new Error("Tile server url isn't set");
-  }
-  new window.L.tileLayer(
-    baseURL_def + '{z}/{x}/{y}.png',
-    {
-      minZoom: 16,
-      maxZoom: 20,
+  //if isn't cases like wallet, org, then use tile
+  if(!token && !mapName && !treeid && !userid && !wallet){
+    log.info("use tile server");
+    var baseURL_def = process.env.REACT_APP_TILE_SERVER_URL;
+    if(!baseURL_def){
+      throw new Error("Tile server url isn't set");
     }
-  ).addTo(map);
-  var utfGridLayer = new window.L.utfGrid(
-    baseURL_def + '{z}/{x}/{y}.grid.json',
-    {
-      minZoom: 15,
-      maxZoom: 20,
-    }
-  );
-
-  utfGridLayer.on('click', function (e) {
-    console.log("e:", e);
-    if (e.data) {
-      console.log('click', e.data);
-//      map.panTo(e.latlng);
-//      map.setView(e.latlng, map.getZoom() + 2);
-//      points.forEach(function(point, i) {
-//        var marker = markerByPointId[point.id];
-//        expect(marker).defined();
-//        marker.on("click", function() {
-//          log.debug("marker click");
-//    //      window.google.maps.event.clearListeners(marker, "mouseover");
-//    //      window.google.maps.event.clearListeners(marker, "mouseout");
-//          //toggle tree mark
-//          selectedOldTreeMarker = selectedTreeMarker;
-//          selectedTreeMarker = marker;
-//          changeTreeMarkSelected();
-//
-//          //attache wallet
-//          if(wallet != null){
-//            point.attachedWallet = wallet;
-//          }
-//          getApp().showPanel(point);
-//          return;
-//        });
-//      });
-      //expect(e.data).property("id").a("number");
-      const point = points.reduce((a,c) => {
-        //expect(c).property("id").a("number");
-        if(c.id === e.data.id){
-          return c;
-        }else{
-          return a;
-        }
-      }, undefined);
-      expect(point).defined();
-      selectedTreeMarker = {
-        payload: e.data,
-      }
-      getApp().showPanel(point);
-    } else {
-      console.log('click nothing');
-    }
-  });
-  console.warn("utf:", utfGridLayer);
-  utfGridLayer.on('mouseover', function (e) {
-    console.log("e:", e);
-    expect(e.data).match({
-      lat: expect.any(Number),
-      lon: expect.any(Number),
-    });
-    markerHighlight = new window.L.marker(
-      [e.data.lat, e.data.lon],
+    new window.L.tileLayer(
+      baseURL_def + '{z}/{x}/{y}.png',
       {
-          icon: new window.L.DivIcon({
-            className: "greenstand-point-highlight",
-            html: `
-              <div class="greenstand-point-highlight-box"  >
-              <div></div>
-              </div>
-            `,
-            iconSize: [32, 32],
-          }),
+        minZoom: 16,
+        maxZoom: 20,
+      }
+    ).addTo(map);
+    var utfGridLayer = new window.L.utfGrid(
+      baseURL_def + '{z}/{x}/{y}.grid.json',
+      {
+        minZoom: 15,
+        maxZoom: 20,
       }
     );
-    markerHighlight.payload = {
-      id: e.data.id
-    };
-    markerHighlight.addTo(map);
-  });
-  utfGridLayer.on('mouseout', function (e) {
-    console.log("e:", e);
-    expect(e.data).match({
-      lat: expect.any(Number),
-      lon: expect.any(Number),
+
+    utfGridLayer.on('click', function (e) {
+      console.log("e:", e);
+      if (e.data) {
+        console.log('click', e.data);
+  //      map.panTo(e.latlng);
+  //      map.setView(e.latlng, map.getZoom() + 2);
+  //      points.forEach(function(point, i) {
+  //        var marker = markerByPointId[point.id];
+  //        expect(marker).defined();
+  //        marker.on("click", function() {
+  //          log.debug("marker click");
+  //    //      window.google.maps.event.clearListeners(marker, "mouseover");
+  //    //      window.google.maps.event.clearListeners(marker, "mouseout");
+  //          //toggle tree mark
+  //          selectedOldTreeMarker = selectedTreeMarker;
+  //          selectedTreeMarker = marker;
+  //          changeTreeMarkSelected();
+  //
+  //          //attache wallet
+  //          if(wallet != null){
+  //            point.attachedWallet = wallet;
+  //          }
+  //          getApp().showPanel(point);
+  //          return;
+  //        });
+  //      });
+        //expect(e.data).property("id").a("number");
+        const point = points.reduce((a,c) => {
+          //expect(c).property("id").a("number");
+          if(c.id === e.data.id){
+            return c;
+          }else{
+            return a;
+          }
+        }, undefined);
+        expect(point).defined();
+        selectedTreeMarker = {
+          payload: e.data,
+        }
+        getApp().showPanel(point);
+      } else {
+        console.log('click nothing');
+      }
     });
-    map.removeLayer(markerHighlight);
-  });
-  utfGridLayer.addTo(map);
+    console.warn("utf:", utfGridLayer);
+    utfGridLayer.on('mouseover', function (e) {
+      console.log("e:", e);
+      expect(e.data).match({
+        lat: expect.any(Number),
+        lon: expect.any(Number),
+      });
+      markerHighlight = new window.L.marker(
+        [e.data.lat, e.data.lon],
+        {
+            icon: new window.L.DivIcon({
+              className: "greenstand-point-highlight",
+              html: `
+                <div class="greenstand-point-highlight-box"  >
+                <div></div>
+                </div>
+              `,
+              iconSize: [32, 32],
+            }),
+        }
+      );
+      markerHighlight.payload = {
+        id: e.data.id
+      };
+      markerHighlight.addTo(map);
+    });
+    utfGridLayer.on('mouseout', function (e) {
+      console.log("e:", e);
+      expect(e.data).match({
+        lat: expect.any(Number),
+        lon: expect.any(Number),
+      });
+      map.removeLayer(markerHighlight);
+    });
+    utfGridLayer.addTo(map);
+  }else{
+    log.info("do not use tile server");
+  }
   // insert freetown overlay
   //  map.overlayMapTypes.insertAt(
   //    0,
