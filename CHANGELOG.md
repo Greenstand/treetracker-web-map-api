@@ -1,3 +1,11 @@
+# [1.10.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.3...v1.10.0) (2021-03-18)
+
+
+### Features
+
+* close tile servver in case of wallet ([bc8ceb8](https://github.com/Greenstand/treetracker-web-map/commit/bc8ceb8cb32bfbe54ecf3f80bf8e5bd96da0b6d5))
+* switcher ([031847f](https://github.com/Greenstand/treetracker-web-map/commit/031847fab2fb1aa62972bdfd8426b388d30aba46))
+
 ## [1.9.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.2...v1.9.3) (2021-03-18)
 
 
