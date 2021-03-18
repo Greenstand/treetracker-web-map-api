@@ -855,6 +855,7 @@ var initialize = function() {
       maxZoom: 18,
     }
   );
+<<<<<<< HEAD
   utfGridLayer.on('click', function (e) {
     console.log("e:", e);
     if (e.data) {
@@ -939,6 +940,16 @@ var initialize = function() {
   //    0,
   //    new freetownOverlay(new window.google.maps.Size(256, 256))
   //  );
+=======
+  map.data.loadGeoJson(
+    "https://treetracker-map-features.fra1.digitaloceanspaces.com/freetown_catchments.geojson"
+  );
+  map.data.setStyle({
+    strokeWeight: 1,
+    strokeOpacity: 1,
+    strokeColor: 'green'
+  });
+>>>>>>> greenstand/master
 
   // only fetch when the user has made some sort of action
   //TODO closed

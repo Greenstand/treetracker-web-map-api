@@ -1,3 +1,271 @@
+## [1.8.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.6...v1.8.7) (2021-03-13)
+
+
+### Bug Fixes
+
+* keep fixing up workflow ([14de483](https://github.com/Greenstand/treetracker-web-map/commit/14de48398e9193ad047dc2be51d4c6f27b8df19a))
+
+## [1.8.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.5...v1.8.6) (2021-03-13)
+
+
+### Bug Fixes
+
+* must be sequence node ([e15240c](https://github.com/Greenstand/treetracker-web-map/commit/e15240c336aef4332db31d8ddc19eed07a40eb6b))
+
+## [1.8.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.4...v1.8.5) (2021-03-13)
+
+
+### Bug Fixes
+
+* filename extension ([fc808c1](https://github.com/Greenstand/treetracker-web-map/commit/fc808c1dd17b4d750554bd23cd7e10cacfd0864b))
+
+## [1.8.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.3...v1.8.4) (2021-03-13)
+
+
+### Bug Fixes
+
+* correct file name ([57a4654](https://github.com/Greenstand/treetracker-web-map/commit/57a4654c04fe284f6244a0e00b259b38a6fe5601))
+
+## [1.8.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.2...v1.8.3) (2021-03-13)
+
+
+### Bug Fixes
+
+* overlays not overlay ([98e6a92](https://github.com/Greenstand/treetracker-web-map/commit/98e6a9276b6526b1049db7365be13a4295e47abb))
+
+## [1.8.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.1...v1.8.2) (2021-03-13)
+
+
+### Bug Fixes
+
+* fix path ([67b2697](https://github.com/Greenstand/treetracker-web-map/commit/67b26974796d99a16172463ae46b087b0704e4e0))
+
+## [1.8.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.0...v1.8.1) (2021-03-13)
+
+
+### Bug Fixes
+
+* fix path to deployment yaml ([715a9b1](https://github.com/Greenstand/treetracker-web-map/commit/715a9b1042a838656735e4fe98e36515537d9118))
+
+# [1.8.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.7.0...v1.8.0) (2021-03-13)
+
+
+### Features
+
+* update deployment to use overlays ([f47af84](https://github.com/Greenstand/treetracker-web-map/commit/f47af849da5ea8dab2c29e4bb899feea32302ac1))
+
+# [1.7.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.19...v1.7.0) (2021-03-10)
+
+
+### Features
+
+* add the district delinations for freetown ([1c6781b](https://github.com/Greenstand/treetracker-web-map/commit/1c6781b801e2d797f2dd6a43d4ecc39d2a1ca83c))
+
+## [1.6.19](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.18...v1.6.19) (2021-03-10)
+
+
+### Bug Fixes
+
+* temporary fix to allow local development ([d5954ac](https://github.com/Greenstand/treetracker-web-map/commit/d5954acd45834f407532a06b8f79fe5bd13646d5))
+
+## [1.6.18](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.17...v1.6.18) (2021-03-10)
+
+
+### Bug Fixes
+
+* do not treat map.treetracker.org as a map name ([1ae18b9](https://github.com/Greenstand/treetracker-web-map/commit/1ae18b948e188a633be911df54381f8ea1eab269))
+
+## [1.6.17](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.16...v1.6.17) (2021-03-10)
+
+
+### Bug Fixes
+
+* update CORS for map.treetracker.org ([47bb232](https://github.com/Greenstand/treetracker-web-map/commit/47bb232c900442acd950629e06ec9a24cd4e1502))
+
+## [1.6.16](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.15...v1.6.16) (2021-03-09)
+
+
+### Bug Fixes
+
+* increase LRU TTL to 10 minutes to improve map performance ([49cc467](https://github.com/Greenstand/treetracker-web-map/commit/49cc467aaca80f000b828b803d384b398679c17b))
+
+## [1.6.15](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.14...v1.6.15) (2021-03-05)
+
+
+### Bug Fixes
+
+* include other active domains in mapping ([d9fd8e5](https://github.com/Greenstand/treetracker-web-map/commit/d9fd8e5ac7650c01881d3022a13776d2b6959670))
+
+## [1.6.14](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.13...v1.6.14) (2021-03-05)
+
+
+### Bug Fixes
+
+* some updates to support query tree by uuid ([797dfd2](https://github.com/Greenstand/treetracker-web-map/commit/797dfd2470bbc9c527c2bdc989a266158a1f1af0))
+
+## [1.6.13](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.12...v1.6.13) (2021-03-05)
+
+
+### Bug Fixes
+
+* disable request timeout ([f404d96](https://github.com/Greenstand/treetracker-web-map/commit/f404d9686ccc91077a4f6823beb0d2a9e9f9e724))
+
+## [1.6.12](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.11...v1.6.12) (2021-03-05)
+
+
+### Bug Fixes
+
+* keep fixing SQL ([5c2aac1](https://github.com/Greenstand/treetracker-web-map/commit/5c2aac1e1f101991594e49a6f846609a926b2130))
+
+## [1.6.11](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.10...v1.6.11) (2021-03-05)
+
+
+### Bug Fixes
+
+* fix sql queries ([cfb01cc](https://github.com/Greenstand/treetracker-web-map/commit/cfb01cc5784697fd2002d883fcc36089b93e1388))
+
+## [1.6.10](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.9...v1.6.10) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix query ([28cb215](https://github.com/Greenstand/treetracker-web-map/commit/28cb2152be64a7d32caa975a8823a6cf92b72252))
+* trigger release after failed workflow ([525370b](https://github.com/Greenstand/treetracker-web-map/commit/525370b756de534dab1f2b9b8e46f2d862b6b05f))
+
+## [1.6.10](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.9...v1.6.10) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix query ([28cb215](https://github.com/Greenstand/treetracker-web-map/commit/28cb2152be64a7d32caa975a8823a6cf92b72252))
+
+## [1.6.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.8...v1.6.9) (2021-03-04)
+
+
+### Bug Fixes
+
+* join individual tree data against wallet schema ([024a304](https://github.com/Greenstand/treetracker-web-map/commit/024a304aa6c6f2c601d0aaf1ff86b11127d633c1))
+
+## [1.6.8](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.7...v1.6.8) (2021-03-04)
+
+
+### Bug Fixes
+
+* use cast ([ce497f3](https://github.com/Greenstand/treetracker-web-map/commit/ce497f3174a85595604bfc44cf923a2721a9777e))
+
+## [1.6.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.6...v1.6.7) (2021-03-04)
+
+
+### Bug Fixes
+
+* compare uuid in trees table using string ([77074df](https://github.com/Greenstand/treetracker-web-map/commit/77074dfaf79492059733410dd8ab2ab94c276792))
+
+## [1.6.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.5...v1.6.6) (2021-03-04)
+
+
+### Bug Fixes
+
+* use uuid for capture id when matching captures in wallet for map ([902cb1b](https://github.com/Greenstand/treetracker-web-map/commit/902cb1b9fed967976d355fc62198de1d4b3db62f))
+
+## [1.6.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.4...v1.6.5) (2021-03-04)
+
+
+### Bug Fixes
+
+* use singular for schema name ([73d4da8](https://github.com/Greenstand/treetracker-web-map/commit/73d4da8d7c1510d480dd77d99fed4a36f2a3c6e6))
+
+## [1.6.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.3...v1.6.4) (2021-03-04)
+
+
+### Bug Fixes
+
+* trigger deploy ([184f3aa](https://github.com/Greenstand/treetracker-web-map/commit/184f3aa201add738772326d20244c4ee68ccfca8))
+
+## [1.6.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.2...v1.6.3) (2021-03-04)
+
+
+### Bug Fixes
+
+* use the manual dbconnection secret for now ([1db1d5d](https://github.com/Greenstand/treetracker-web-map/commit/1db1d5ded3b985495826bd54d226901c9fe2752b))
+
+## [1.6.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.1...v1.6.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* package.json wont have correct version until split of repos ([65d47c4](https://github.com/Greenstand/treetracker-web-map/commit/65d47c4029903b07ef06e06e2a250bae1aaeded1))
+
+## [1.6.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.6.0...v1.6.1) (2021-03-04)
+
+
+### Bug Fixes
+
+* get package version from root ([876b169](https://github.com/Greenstand/treetracker-web-map/commit/876b169f44ab4d76c2649960b08fe333a87ab5d2))
+
+# [1.6.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.6...v1.6.0) (2021-03-04)
+
+
+### Features
+
+* print package version ([bcbbf67](https://github.com/Greenstand/treetracker-web-map/commit/bcbbf676d9ce615748e2f9ef7d6d426bb16eba95))
+
+## [1.5.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.5...v1.5.6) (2021-03-04)
+
+
+### Bug Fixes
+
+* fix production deployment environment ([9d5df5d](https://github.com/Greenstand/treetracker-web-map/commit/9d5df5de0f75be485f080bfcb5c8882bd0c6d201))
+* perform release when actions change for server ([daf0c1e](https://github.com/Greenstand/treetracker-web-map/commit/daf0c1e5c6ea7a3f0ca8594eb1f0277ed5c4d53b))
+
+## [1.5.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.4...v1.5.5) (2021-03-03)
+
+
+### Bug Fixes
+
+* clean up jobs, add prod server deploy ([120d8a1](https://github.com/Greenstand/treetracker-web-map/commit/120d8a11cde753a17971490fd2fa4fc01c54ab0c))
+
+## [1.5.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.3...v1.5.4) (2021-03-03)
+
+
+### Bug Fixes
+
+* temporary updated mapping to allow CORS for all envs ([a569d5e](https://github.com/Greenstand/treetracker-web-map/commit/a569d5ec78fc4a3d9b802870c705baa866fa96b0))
+
+## [1.5.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.2...v1.5.3) (2021-03-03)
+
+
+### Bug Fixes
+
+* temporary updated mapping to allow CORS for all envs ([0c311eb](https://github.com/Greenstand/treetracker-web-map/commit/0c311eb7adb005a965516a83ab0eba842abb6c7d))
+
+## [1.5.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.1...v1.5.2) (2021-03-03)
+
+
+### Bug Fixes
+
+* do not skip workflows ([79e6ff8](https://github.com/Greenstand/treetracker-web-map/commit/79e6ff881d060dec036de48fa014b664c390d7b7))
+
+## [1.5.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.5.0...v1.5.1) (2021-03-03)
+
+
+### Bug Fixes
+
+* clean up releaserc ([49f64b9](https://github.com/Greenstand/treetracker-web-map/commit/49f64b9731144c6204f0f9d3275eca9db77b8bf0))
+* fix needs in workflow ([155e678](https://github.com/Greenstand/treetracker-web-map/commit/155e67806c2248b508221b38bf6de44b87d49100))
+* fix production deploy ([2edd880](https://github.com/Greenstand/treetracker-web-map/commit/2edd880ea15ada1944e807342ccebc73c871b6bf))
+* mark as private project ([d624924](https://github.com/Greenstand/treetracker-web-map/commit/d624924bb5a41dad13e5f4cfa150cb71391eebd3))
+* trigger a release ([20a5be3](https://github.com/Greenstand/treetracker-web-map/commit/20a5be34cac4070530764bc7b16a77f039743dea))
+* trigger release ([71cd0a9](https://github.com/Greenstand/treetracker-web-map/commit/71cd0a924c7971ea3192d8393e1e5c716374e9ee))
+* trigger release ([6bfda4f](https://github.com/Greenstand/treetracker-web-map/commit/6bfda4fa66eb93b15ee44455254a92c9c3f97d2c))
+* trigger release ([6bb906c](https://github.com/Greenstand/treetracker-web-map/commit/6bb906c407e2f66e499159581c4169c511d6e9a0))
+
+# [1.5.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.1...v1.5.0) (2021-03-03)
+
+
+### Features
+
+* trigger a release ([268bd11](https://github.com/Greenstand/treetracker-web-map/commit/268bd114ad21bdc84470d9fcb09cdc4fd0fb2c6c))
+
 ## [1.4.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.4.0...v1.4.1) (2021-02-25)
 
 
