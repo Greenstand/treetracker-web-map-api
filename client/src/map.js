@@ -840,7 +840,7 @@ var initialize = function() {
     });
   googleSat.addTo(map);
 
-  var baseURL_def = "http://47.91.14.192:13000";
+  var baseURL_def = "http://47.91.14.192:3000";
   new window.L.tileLayer(
     baseURL_def + '/{z}/{x}/{y}.png',
     {
@@ -1088,6 +1088,7 @@ var initialize = function() {
       currentZoom = zoomLevel;
       initMarkers(toUrlValueLonLat(getViewportBounds(1.1)), zoomLevel);
     }
+    mapModel.checkArrow();
   });
 
   currentZoom = initialZoom;

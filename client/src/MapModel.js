@@ -40,11 +40,34 @@ class MapModel {
    */
   async checkArrow(){
     log.log("check arrow");
+    const mymap = this._map;
+    const {x,y} = mymap.getSize();
+    let found = false;
+    var utfGridLayer = Object.values(mymap._layers).reduce((a,c) => c._url && c._url.match(/grid.json$/)?c:a,undefined);
+    const begin = Date.now();
+    me: for(let y1 = 0; y1 < y; y1 += 4){
+      for(let x1 = 0; x1 < x; x1 +=4){
+        const tileChar = utfGridLayer._objectForEvent({latlng:mymap.containerPointToLatLng([x1,y1])})._tileCharCode;
+        if(!tileChar){
+          //log.warn("can not fond char on!:", x1, y1);
+          continue;
+        }
+        const m = tileChar.match(/\d+:\d+:\d+:(\d+)/);
+        if(!m) throw new Error("Wrong char:" + tileChar);
+        if(m[1] !== "32"){
+          log.log("find:", tileChar, "at:", x1,y1);
+          found = true;
+          break me;
+        }
+      }
+    }
+    log.info("Take time:", Date.now() - begin);
     if(
-      //no markers
-      this._markers.length === 0 || 
-      //all markers out of bounds
-      this._markers.every(marker => !this._map.getBounds().contains(marker.getLatLng()))
+//      //no markers
+//      this._markers.length === 0 || 
+//      //all markers out of bounds
+//      this._markers.every(marker => !this._map.getBounds().contains(marker.getLatLng()))
+      found
     ){
       //no markers, need to find nearest
       const center = this._map.getCenter();
