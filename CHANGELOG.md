@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.9.0...v1.9.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* remove extra slash ([387e316](https://github.com/Greenstand/treetracker-web-map/commit/387e316303e8be869d1033e9ff1e9f82dcc72eb2))
+
 # [1.9.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.8.7...v1.9.0) (2021-03-18)
 
 
