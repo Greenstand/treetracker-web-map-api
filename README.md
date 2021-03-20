@@ -1,77 +1,108 @@
-# Treetracker Web
+# Tree Tracker Web Map (BackEnd - API)
 
-## Project Description  
+This project is built using Node.js version 12.19.0.
 
-* Displays location and details of all trees that have been tracked.
+## Requirements
 
-* A way for tree donors to view, manage and track their sponsored trees.
+- Node.js 12
 
-* This is meant to be displayed by other organizations, by embedding on other websites or sharing specific links to projects.
+## Backend Development
 
-Live map is at [www.treetracker.org](https://www.treetracker.org)
+To set up your environment for BackEnd development, follow the steps below:
 
-For more details see the [Tree Tracker Web Map Wiki](https://github.com/Greenstand/treetracker-web-map/wiki)
+> NOTE: We recommend all of these tasks to be executed using Visual Studio Code, openning a Terminal session.
 
-&nbsp;
-&nbsp;
 
-## Get Started
+1. Install node modules, running npm i in the server/ folder
+    ```
+    cd server
+    npm i
+    ```
+2. Set up database connection string.  
 
-1. Development Environment Quick Start
+    
+    1. Create a .env file at the folder server.
+    2. Add the following content in the .env file
 
-    * For FrontEnd developers:
-        * Go the [client folder](./client) to learn how to set up the (FrontEnd) React WebApp Development Environment
-    * For BackEnd developers:
-        * Go the [server folder](./server) to learn how to set up the (BackEnd) Node API Development Environment.
+        ```
+        DATABASE_URL=postgresql://xxxx:xxxx@dxxxx:25060/treetracker?ssl=no-verify
+        ```
+
+        > NOTE: The default mode to run the API in the test environment is connecting with the remote database.
+            > * Ask for the db connectiong string on the slack channel.
+    
+
+3. Install supervisor globally
+
+    ```
+    npm i -g supervisor
+    ```
+
+4. <a name="rundev">Run the Backend Development Environment</a>
+
+    Attention:
+
+    - Option 1 is for **BackEnd development only**.
+    - Option 2 is for **FrontEnd and BackEnd development**.
+
+    Choose one of the options and      Run the code below on the terminal:
+
+    - **Option 1**:
+
+         > NOTE 1: This command will run server.js with CORS restrictions lifted
+         > NOTE 2: For environments running the FrontEnd and BackEnd, do not use this option, because API will run at port 3000 conflicting with the React project. Choose option 2.
+       
+
+        ```
+        NODE_ENV=dev supervisor server.js
+        ```
         
 
+    - **Option 2**: 
 
-## Current Milestones and Issue Topics  
+        ```
+        cd server
+        npm run dev
+        ```
+        > NOTE: 
+        > 1. In this way, the server would run on port 3001, and client would run on port 3000.
 
-* Developers please see current milestones at [GitHub GreenStand Milestones](https://github.com/Greenstand/treetracker-web-map/milestones).  
+<br>  
 
+> IMPORTANT NOTE: When running for the first time the API, if the endpoints are not responding, because after the queries there aren't any answer or error, it might be some incompatibility with the node version and pg module. If you are running Node.js 14, downgrade to Node.js 12.19.0.
+[How to Upgrade (or Downgrade) Node.js Using npm](https://www.surrealcms.com/blog/how-to-upgrade-or-downgrade-nodejs-using-npm.html)
 
-* Big picture UX/UI challenges are tracked at [GitHub GrenStand Web Map Issues](https://github.com/Greenstand/treetracker-web-map/issues?q=is%3Aissue+is%3Aopen+label%3AUX%2FUI).  
-
-
-&nbsp;
-&nbsp;
-
-
-### Alternative development environment for MS Windows (Works on Linux and Mac also)
-
-- On Windows, the easiest way to develop and debug Node.js applications is using Visual Studio Code.
-    - It comes with Node.js support out of the box.
+<br>  
 
 
-    https://code.visualstudio.com/docs
+
+### (Optional) Local Database
 
 
-&nbsp;
-&nbsp;
+
+* The steps below are required only for scenarios where the API needs to connect with the Postgres database locally.
+* The default mode to run the application is connecting with the remote database, but for some specific scenarios, as an exception, the developer might need to have the database running local.
+* Do not execute these steps if you are configuring the environment for the first time.
+
+1. Install postgres
+2. Install postGIS
+3. Create a database named 'treetracker'
+4. Import our developer seed into your database.  
+    - Ask in slack for the link to the seed.
+5. Configure server/.env to point to your local database.
+6. Run the [Backend Development Environmet](#rundev).
 
 
-## Clustering Basics
-
-For performance and UX purposes, since this map needs to deal with an enormous amount of trees, a clustering strategy is used to group those trees, showing information in a way that is more digestible for the end-user.
-
-Although this feature is already implemented, performance optimizations are a work in progress.
+---
 
 
-### Overriding clustering and map initial zoom for testing
+### How to test
 
-When there is a need to tweak the clusterization behavior, the **cluster radius** and **zoom** can be overridden specifying query strings.
-For example, if you need to load the map with an initial zoom level of 15, and a radius of 0.001 you will access it like this:
+We use Jest to build tests.
 
-dev.treetracker.org?**zoom=15&clusterRadius=0.001**
+1. To test server
+```
+cd server
+npm test
+```
 
-To find the correct value for the cluster radius in a given zoom level, play with some ranges between 0.1 and 0.00025. However, feel free to experiment however you like.
-
-When these values are overridden, you can zoom and drag the map freely, while keeping the same clusterization behaviors.
-
-Another useful tool to use in conjunction with this is the web browser's console (in Chrome or Firefox, hit F12 to open it). Whenever the map is updated, current zoom level and cluster radius used will be output to the console, so you have a better idea of what is going on.
-
-Future: 
-* Filters and Statistics
-* View photo together with tree data
-* View planter profile. 
