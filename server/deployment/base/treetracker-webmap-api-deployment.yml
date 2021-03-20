@@ -22,5 +22,5 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: treetracker-webmap-database-test
+                  name: dbconnection
                   key: database

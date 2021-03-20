@@ -1,5 +1,5 @@
 
-name: Deploy to Test Env
+name: Deploy to Dev Env
 
 
 on:
@@ -14,7 +14,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy, requires approval
+    name: Deploy
     runs-on: ubuntu-latest
     if: |
       github.repository == 'Greenstand/treetracker-web-map'
@@ -28,15 +28,18 @@ jobs:
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
         working-directory: ${{ env.project-directory }}
+      - name: Copy kustomize.yml
+        run: cp ./deployment/kustomize/kustomization.yaml ./deployment/kustomization.yaml
+        working-directory: ${{ env.project-directory }}
       - name: Run kustomize
-        run: (cd ./deployment/base && ../../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }} )
+        run: (cd ./deployment && ../kustomize edit set image greenstand/treetracker-webmap-api:${{ steps.package-version.outputs.current-version }} )
         working-directory: ${{ env.project-directory }}
       - name: Install doctl for kubernetes
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save ${{ secrets.TEST_CLUSTER_NAME }}
+        run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
       - name: Update kubernetes resources
-        run: kustomize build deployment/overlays/development | kubectl apply -n webmap --wait -f -
+        run: kubectl -n webmap apply --wait -k ./deployment/
         working-directory: ${{ env.project-directory }}

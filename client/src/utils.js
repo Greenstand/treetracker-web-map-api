@@ -16,6 +16,7 @@ function parseMapName(domain){
       sub[0] !== "test" && 
       sub[0] !== "dev" &&
       sub[0] !== "wallet" &&
+      sub[0] !== "map" &&
       sub[0] !== "ready"
     ){
       return sub[0];

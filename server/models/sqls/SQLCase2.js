@@ -3,6 +3,8 @@
  * on the map;
  */
 
+
+
 class SQLCase2{
   
 
@@ -80,7 +82,7 @@ class SQLCase2{
       result += "AND trees.planter_id = " + this.userId + " \n";
     }
     if(this.wallet) {
-      result += "AND wallets.wallet.name = '" + this.wallet + "'"
+      result += "AND wallet.wallet.name = '" + this.wallet + "'"
     }
     return result;
   }
@@ -111,8 +113,8 @@ class SQLCase2{
   getJoin(){
     let result = "";
     if(this.wallet){
-      result += 'INNER JOIN wallets.token ON wallets.token.tree_id = trees.id \n';
-      result += 'INNER JOIN wallets.wallet ON wallets.wallet.id = wallets.token.entity_id \n';
+      result += 'INNER JOIN wallet.token ON wallet.token.capture_id::text = trees.uuid \n';
+      result += 'INNER JOIN wallet.wallet ON wallet.wallet.id = wallet.token.wallet_id \n';
     }
     if(this.flavor){
       result += "INNER JOIN tree_attributes ON tree_attributes.tree_id = trees.id";

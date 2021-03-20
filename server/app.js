@@ -10,7 +10,7 @@ const helper = require("./routeUtils");
 Sentry.init({ dsn: null });
 const cache = expressLru({
   max: 1000,
-  ttl: 60000,
+  ttl: 60000 * 10,
   skip: function(req) {
     // Don't run if bounds passed in, possibly other cases as well
     return !!req.user || !!req.query.bounds;
@@ -56,26 +56,33 @@ const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
 
 app.get("/tree", async function (req, res){
+  try {
+  console.log('get tree')
   const tree = new Tree();
   const treeId = req.query.tree_id;
-  if(!treeId){
+  const uuid = req.query.uuid;
+  if(treeId){
+    const treeDetail = await tree.getTreeById(treeId);
+    res.status(200).json(treeDetail);
+  } else if(uuid){
+    const treeDetail = await tree.getTreeByUUID(uuid);
+    res.status(200).json(treeDetail);
+  } else {
     console.warn("no tree id", treeId);
     res.status(400).json({message:"no tree id"});
   }
-  const treeDetail = await tree.getTreeById(treeId);
-  res.status(200).json(treeDetail);
+
+  } catch (error) {
+    console.log(error)
+  }
 });
+
+/*const version = require('../package.json').version
+app.get('*',function (req, res) {
+  res.status(200).send(version)
+});*/
 
 // Global error handler
 app.use(helper.errorHandler);
 
-////add static files, HTML pages
-//app.use(express.static(path.join(__dirname, "../client")));
-//app.get("/", (req, res) => {
-//  res.sendFile(path.join(__dirname, "../client", "index.html"));
-//});
-
-//app.listen(port, () => {
-//  console.log('listening on port ' + port);
-//});
 module.exports = app;
