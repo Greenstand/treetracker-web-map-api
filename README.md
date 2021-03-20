@@ -13,9 +13,8 @@ To set up your environment for BackEnd development, follow the steps below:
 > NOTE: We recommend all of these tasks to be executed using Visual Studio Code, openning a Terminal session.
 
 
-1. Install node modules, running npm i in the server/ folder
+1. Install node modules, running npm i in the root
     ```
-    cd server
     npm i
     ```
 2. Set up database connection string.  
@@ -89,7 +88,7 @@ To set up your environment for BackEnd development, follow the steps below:
 3. Create a database named 'treetracker'
 4. Import our developer seed into your database.  
     - Ask in slack for the link to the seed.
-5. Configure server/.env to point to your local database.
+5. Configure .env to point to your local database.
 6. Run the [Backend Development Environmet](#rundev).
 
 
