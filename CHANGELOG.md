@@ -1,3 +1,11 @@
+## [1.11.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.0...v1.11.1) (2021-03-20)
+
+
+### Bug Fixes
+
+* Update README for local development ([4fdd281](https://github.com/Greenstand/treetracker-web-map/commit/4fdd281fd447dfbe755148eafa76ec9e23ca9b58))
+* Update README for local development ([090714a](https://github.com/Greenstand/treetracker-web-map/commit/090714a2bf777b5ab21902b3a3fb7fc4644e47fe))
+
 # [1.11.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.10.0...v1.11.0) (2021-03-20)
 
 
