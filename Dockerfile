@@ -5,4 +5,4 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm ci --silent
 COPY . ./
-CMD [ "node", "." ]
+CMD [ "node", "src/server.js" ]
