@@ -463,6 +463,7 @@ var initMarkers = function(viewportBounds, zoomLevel) {
       log.log("init marker finished, loaded:", markers.length);
       isLoadingMarkers = false;
       //debugger;
+      log.warn("checkArrow");
       mapModel.checkArrow();
     }).catch(function(thrown){
       if(axios.isCancel(thrown)){
