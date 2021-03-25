@@ -9,6 +9,7 @@ import log from "loglevel";
 import {mapConfig} from "./mapConfig";
 import 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.gridlayer.googlemutant';
 
 const CancelToken = axios.CancelToken;
 let source;
@@ -824,6 +825,12 @@ var initialize = function() {
   }).addTo(map);
 
   //google satillite map
+  window.L.gridLayer.googleMutant({
+    maxZoom: 20,
+    type: 'satellite'
+  }).addTo(map);
+
+  /*
   const googleSat = window.L.tileLayer(
     'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
       maxZoom: 20,
@@ -832,6 +839,7 @@ var initialize = function() {
       subdomains:['mt0','mt1','mt2','mt3']
     });
   googleSat.addTo(map);
+  */
 
   window.L.TileLayer.FreeTown = window.L.TileLayer.extend({
     getTileUrl: function(coords) {

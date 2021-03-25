@@ -108,6 +108,10 @@ body {
   animation-duration: 1s;
 }
 
+.leaflet-control-attribution {
+  top: 10px;
+}
+
 @keyframes slideInFromBottom {
   0% {
     opacity: 0;
