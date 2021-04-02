@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.4...v1.11.5) (2021-04-02)
+
+
+### Bug Fixes
+
+* fix manual deployment actions ([39faa73](https://github.com/Greenstand/treetracker-web-map/commit/39faa7379c13056cfe54bc81db7fedd6ff8fc329))
+
 ## [1.11.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.3...v1.11.4) (2021-04-02)
 
 
