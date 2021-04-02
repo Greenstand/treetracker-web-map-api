@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.2...v1.11.3) (2021-04-02)
+
+
+### Bug Fixes
+
+* update and clean up CORS settings ([7d15297](https://github.com/Greenstand/treetracker-web-map/commit/7d152979b4c569966ba91dc62107d5ec53756cfd))
+
 ## [1.11.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.1...v1.11.2) (2021-04-02)
 
 
