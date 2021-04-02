@@ -1,3 +1,10 @@
+## [1.11.4](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.3...v1.11.4) (2021-04-02)
+
+
+### Bug Fixes
+
+* fix repository name match ([62d7458](https://github.com/Greenstand/treetracker-web-map/commit/62d745809f358a7455cae6e3c2a63b8eb630abce))
+
 ## [1.11.3](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.2...v1.11.3) (2021-04-02)
 
 
