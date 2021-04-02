@@ -10,7 +10,7 @@ const helper = require("./routeUtils");
 Sentry.init({ dsn: null });
 const cache = expressLru({
   max: 1000,
-  ttl: 60000 * 10,
+  ttl: 60000 * 240,
   skip: function(req) {
     // Don't run if bounds passed in, possibly other cases as well
     return !!req.user || !!req.query.bounds;
