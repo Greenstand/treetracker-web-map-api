@@ -6,13 +6,10 @@ metadata:
   namespace: webmap
 spec:
   cors:
-    cors:
     origins: 
-      - https://treetracker.org
-      - https://forestmatic.com
-      - https://app.forestmatic.com
-      - https://staging-app.forestmatic.com
-    methods: GET, OPTIONS
-    headers:
-      - Content-Type
-      - Authorization
+    - https://wallet.treetracker.org
+    - https://freetown.treetracker.org
+    - https://map.treetracker.org
+    - https://forestmatic.com
+    - https://app.forestmatic.com
+    - https://staging-app.forestmatic.com

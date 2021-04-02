@@ -10,14 +10,7 @@ spec:
   rewrite: /
   timeout_ms: 0
   cors:
-    origins: 
-    - https://dev.webmap.treetracker.org
-    - https://dev.treetracker.org
-    - https://test.treetracker.org
-    - https://treetracker.org
-    - https://ready.treetracker.org
-    - https://wallet.treetracker.org
-    - https://freetown.treetracker.org
-    - https://map.treetracker.org
-    - http://localhost:3000
-    methods: GET
+    methods: GET, OPTIONS
+    headers:
+    - Content-Type
+    - Authorization

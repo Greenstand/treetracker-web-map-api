@@ -8,8 +8,4 @@ spec:
   cors:
     cors:
     origins: 
-      - '*'
-    methods: GET, OPTIONS
-    headers:
-      - Content-Type
-      - Authorization
+    - '*'
