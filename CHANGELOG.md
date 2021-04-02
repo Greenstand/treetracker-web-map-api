@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.1...v1.11.2) (2021-04-02)
+
+
+### Bug Fixes
+
+* increase LRU cache time ([e052d45](https://github.com/Greenstand/treetracker-web-map/commit/e052d45e2b18a10bb48c08c2e815b6576b844eb2))
+
 ## [1.11.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.0...v1.11.1) (2021-03-20)
 
 
