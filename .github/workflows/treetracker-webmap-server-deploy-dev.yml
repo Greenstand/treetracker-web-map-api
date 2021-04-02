@@ -17,7 +17,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     if: |
-      github.repository == 'Greenstand/treetracker-web-map'
+      github.repository == 'Greenstand/treetracker-web-map-api'
     steps:
       - uses: actions/checkout@v2
         with:
