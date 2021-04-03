@@ -2,6 +2,8 @@
 
 This project is built using Node.js version 12.19.0.
 
+Project Knowledge Base: [[https://app.gitbook.com/@greenstand/s/impact-map/]]
+
 ## Requirements
 
 - Node.js 12
