@@ -1,3 +1,10 @@
+## [1.11.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.6...v1.11.7) (2021-04-12)
+
+
+### Bug Fixes
+
+* temporarily open CORS ([55dc487](https://github.com/Greenstand/treetracker-web-map/commit/55dc4874c6192eef40d656165a04caa6ba652eaf))
+
 ## [1.11.6](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.5...v1.11.6) (2021-04-12)
 
 
