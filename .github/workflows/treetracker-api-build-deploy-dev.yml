@@ -29,9 +29,6 @@ jobs:
       - name: run ESLint
         run: npm run lint
         working-directory: ${{ env.project-directory }}
-      - name: build api project
-        run: npm run build
-        working-directory: ${{ env.project-directory }}
       - name: run api tests
         run: npm run test:ci
         working-directory: ${{ env.project-directory }}
