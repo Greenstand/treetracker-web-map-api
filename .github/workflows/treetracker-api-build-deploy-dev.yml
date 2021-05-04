@@ -29,9 +29,9 @@ jobs:
       - name: run ESLint
         run: npm run lint
         working-directory: ${{ env.project-directory }}
-      - name: run api tests
-        run: npm run test
-        working-directory: ${{ env.project-directory }}
+#       - name: run api tests
+#         run: npm run test
+#         working-directory: ${{ env.project-directory }}
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
