@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "treetracker-webmap-api"
-          image: "greenstand/treetracker-webmap-api:TAG"
+          image: "greenstand/treetracker-web-map-api:TAG"
           env:
             - name: DATABASE_URL
               valueFrom:
