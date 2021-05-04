@@ -27,6 +27,7 @@ jobs:
       #run: npm run build
       #working-directory: ${{ env.project-directory }}
   build:
+    needs: stop
     name: Release and Build
     runs-on: ubuntu-latest
     if: |
