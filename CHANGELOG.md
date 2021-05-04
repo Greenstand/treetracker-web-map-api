@@ -1,3 +1,10 @@
+## [1.11.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.8...v1.11.9) (2021-05-04)
+
+
+### Bug Fixes
+
+* workflow had extra steps in wrong order ([ff23c6c](https://github.com/Greenstand/treetracker-web-map/commit/ff23c6c2b917f017bed80f514f744253a6de8b7d))
+
 ## [1.11.8](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.7...v1.11.8) (2021-05-04)
 
 
