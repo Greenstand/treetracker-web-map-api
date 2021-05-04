@@ -1,3 +1,12 @@
+## [1.11.8](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.7...v1.11.8) (2021-05-04)
+
+
+### Bug Fixes
+
+* add eslint config ([975788b](https://github.com/Greenstand/treetracker-web-map/commit/975788b4d8857da9102c437773f632f7245c5dae))
+* bring package-lock.json up to date ([ea39392](https://github.com/Greenstand/treetracker-web-map/commit/ea39392a2f2f1bcf64c3883a8fac0e6da8a9f171))
+* skip tests ([293af67](https://github.com/Greenstand/treetracker-web-map/commit/293af67d7ec041686d86566dac380a72014d57a5))
+
 ## [1.11.7](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.6...v1.11.7) (2021-04-12)
 
 
