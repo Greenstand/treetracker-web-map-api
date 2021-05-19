@@ -12,6 +12,11 @@ class SQLCase2{
     this.treeid = treeid;
   }
 
+  addTreeNameFilter(tree_name){
+    this.tree_name = tree_name;
+  }
+
+
   addUUIDFilter(uuid){
     this.uuid = uuid;
   }
@@ -45,6 +50,9 @@ class SQLCase2{
     let result = "";
     if(this.treeid){
       result += 'AND trees.id = ' + this.treeid + ' \n';
+    }
+    if(this.tree_name){
+      result += "AND trees.name = '" + this.tree_name + "' \n";
     }
     if(this.uuid){
       result += 'AND trees.uuid = ' + this.uuid + ' \n';

@@ -18,6 +18,7 @@ class Map{
   async init(settings){
     console.debug("init map with settings:", settings);
     this.treeid = settings.treeid;
+    this.tree_name = settings.tree_name;
     this.zoomLevel = parseInt(settings.zoom_level);
     this.userid = settings.userid;
     this.clusterRadius = settings.clusterRadius;
@@ -34,7 +35,9 @@ class Map{
        */
       this.sql = new SQLCase2();
       this.sql.addTreeFilter(this.treeid);
-
+    }else if(this.tree_name){
+      this.sql = new SQLCase2();
+      this.sql.addTreeNameFilter(this.tree_name);
     }else if(this.capture_id){
       this.sql = new SQLCase2();
       this.sql.addUUIDFilter(this.capture_id);

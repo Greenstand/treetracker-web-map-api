@@ -14,12 +14,17 @@ const pool = new Pool({
   const client = await pool.connect();
 
   const select = {
-    text: `SELECT count(id)
+    text: `SELECT count(trees.id)
     FROM trees
+    JOIN region
+    ON ST_Contains( region.geom, trees.estimated_geometric_location)
+    JOIN region_zoom
+    ON region_zoom.region_id = region.id
     WHERE trees.active = true
     AND trees.cluster_regions_assigned = false`
   };
   const rval = await client.query(select);
+  console.log(rval.rows[0].count)
 /*  if(rval.rows[0].count == 0){
     console.log("no new trees");
     client.release();
@@ -63,13 +68,18 @@ const pool = new Pool({
         AND cluster_regions_assigned = false`
     };
     console.log(update);
-    await client.query(update);
+    const rval2 = await client.query(update);
+    console.log(rval2);
 
     await client.query('COMMIT');
 
     const select = {
-      text: `SELECT count(id)
+      text: `SELECT count(trees.id)
       FROM trees
+      JOIN region
+      ON ST_Contains( region.geom, trees.estimated_geometric_location)
+      JOIN region_zoom
+      ON region_zoom.region_id = region.id
       WHERE trees.active = true
       AND trees.cluster_regions_assigned = false`
     };

@@ -29,6 +29,7 @@ const allowCrossDomain = (req, res, next) => {
 }
 
 if(process.env.NODE_ENV == 'dev'){
+  console.log('disable cors');
   app.use(allowCrossDomain);
 }
 
@@ -61,11 +62,15 @@ app.get("/tree", async function (req, res){
   const tree = new Tree();
   const treeId = req.query.tree_id;
   const uuid = req.query.uuid;
+  const treeName = req.query.tree_name;
   if(treeId){
     const treeDetail = await tree.getTreeById(treeId);
     res.status(200).json(treeDetail);
   } else if(uuid){
     const treeDetail = await tree.getTreeByUUID(uuid);
+    res.status(200).json(treeDetail);
+  } else if(treeName){
+    const treeDetail = await tree.getTreeByName(treeName);
     res.status(200).json(treeDetail);
   } else {
     console.warn("no tree id", treeId);
