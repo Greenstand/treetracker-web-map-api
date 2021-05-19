@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.9...v1.12.0) (2021-05-19)
+
+
+### Features
+
+* implement tree_name feature ([c1b2330](https://github.com/Greenstand/treetracker-web-map/commit/c1b2330f2a0d682589eec01d96b9eadbd918a7a1))
+
 ## [1.11.9](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.8...v1.11.9) (2021-05-04)
 
 
