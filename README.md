@@ -8,6 +8,10 @@ Project Knowledge Base: https://app.gitbook.com/@greenstand/s/impact-map/
 
 - Node.js 12
 
+## News
+
+The docker image name was updated from treetracker-webmap-api to treetracker-web-map-api due to standardization in how we name docker images based of repository names.  This change had introduced deployment issues.  Cloud engineers please be adivsed of this change.
+
 ## Backend Development
 
 To set up your environment for BackEnd development, follow the steps below:
