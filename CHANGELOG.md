@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.12.0...v1.13.0) (2021-05-22)
+
+
+### Features
+
+* add note about docker image name change ([39f979b](https://github.com/Greenstand/treetracker-web-map/commit/39f979b43ce97268ae842a15baee2a69e2702407))
+
 # [1.12.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.11.9...v1.12.0) (2021-05-19)
 
 
