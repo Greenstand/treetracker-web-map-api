@@ -1,5 +1,6 @@
 node_modules/
 config/config.js
+src/config/config.js
 
 *.swp
 .DS_Store

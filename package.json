@@ -18,7 +18,8 @@
     "eslint": "eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "test": "jest --watchAll --runInBand",
-    "dev": "NODE_PORT=3001 NODE_ENV=dev nodemon src/server.js"
+    "dev": "NODE_PORT=3001 NODE_ENV=dev nodemon src/server.js",
+    "update-db": "node src/cron/assign-new-trees-to-clusters.js"
   },
   "dependencies": {
     "@sentry/node": "^5.4.3",
