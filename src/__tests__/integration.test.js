@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Integration tests", () => {
+describe.skip("Integration tests", () => {
 
   describe("/trees", () => {
     it("/trees?clusterRadius=8&zoom_level=2&map_name=freetown", async () => {

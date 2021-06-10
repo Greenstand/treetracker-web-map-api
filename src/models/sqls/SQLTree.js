@@ -5,9 +5,13 @@ class SQLTree{
     this.treeId = treeId;
   }
 
+  setTreeName(treeName){
+    this.treeName = treeName;
+  }
+
   getQuery(){
-    if(!this.treeId){
-      throw new Error("treeId required");
+    if(!this.treeId && !this.treeName){
+      throw new Error("treeId or treeName required");
     }
 
     const query = {
@@ -28,12 +32,25 @@ class SQLTree{
         LEFT JOIN wallet.token token ON token.capture_id::text = trees.uuid
         LEFT JOIN wallet.wallet wallet ON wallet.id = token.wallet_id 
         WHERE
-          trees.id = $1 AND trees.active = true
+        true 
+        ${this.getFilter()}
+        AND trees.active = true
       `,
-      values: [this.treeId],
+      values: [],
     };    
     console.log("tree:", query);
     return query;
+  }
+
+  getFilter(){
+    let filter = "";
+    if(this.treeId){
+      filter += `AND trees.id = ${this.treeId}`;
+    }
+    if(this.treeName){
+      filter += `AND trees.name = '${this.treeName}'`;
+    }
+    return filter;
   }
 
   setTreeUUID(uuid){
