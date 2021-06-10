@@ -63,7 +63,7 @@ class Tree{
     const query = await sql.getQuery();
     const result = await this.pool.query(query);
     if(result.rows.length === 0){
-      throw new Error("can not find tree", treeId);
+      throw new Error("can not find tree", treeName);
     }
     const treeObject = result.rows[0];
     //attribute
