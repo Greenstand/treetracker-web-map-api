@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.0...v1.14.1) (2021-06-10)
+
+
+### Bug Fixes
+
+* small bug on printing log ([8bb6035](https://github.com/Greenstand/treetracker-web-map/commit/8bb60358b557786f2e89482f53e04a683f3b7963))
+
 # [1.14.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.13.1...v1.14.0) (2021-06-10)
 
 
