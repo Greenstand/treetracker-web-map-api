@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.13.1...v1.14.0) (2021-06-10)
+
+
+### Features
+
+* support api: /tree?tree_name=xxx ([ee16e63](https://github.com/Greenstand/treetracker-web-map/commit/ee16e63eb9fa8a2618b7fc989d0d2fa0db3f3f4b))
+
 ## [1.13.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.13.0...v1.13.1) (2021-05-22)
 
 
