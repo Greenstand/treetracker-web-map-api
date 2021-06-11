@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.1...v1.14.2) (2021-06-11)
+
+
+### Bug Fixes
+
+* return undefine rather than throw error when didnt' find tree ([002008d](https://github.com/Greenstand/treetracker-web-map/commit/002008dad0fc1c2e183ce4044695de8c4dcd08dd))
+
 ## [1.14.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.0...v1.14.1) (2021-06-10)
 
 
