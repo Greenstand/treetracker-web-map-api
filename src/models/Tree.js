@@ -12,7 +12,8 @@ class Tree{
     const query = await sql.getQuery();
     const result = await this.pool.query(query);
     if(result.rows.length === 0){
-      throw new Error("can not find tree", treeId);
+//      throw new Error("can not find tree", treeId);
+      return undefined;
     }
     const treeObject = result.rows[0];
     //attribute
@@ -37,7 +38,8 @@ class Tree{
     const query = await sql.getQueryUUID();
     const result = await this.pool.query(query);
     if(result.rows.length === 0){
-      throw new Error("can not find tree", treeId);
+//      throw new Error("can not find tree", treeId);
+      return undefined;
     }
     const treeObject = result.rows[0];
     //attribute
@@ -63,7 +65,8 @@ class Tree{
     const query = await sql.getQuery();
     const result = await this.pool.query(query);
     if(result.rows.length === 0){
-      throw new Error("can not find tree", treeName);
+//      throw new Error(`can not find tree ${treeName}`);
+      return undefined;
     }
     const treeObject = result.rows[0];
     //attribute
