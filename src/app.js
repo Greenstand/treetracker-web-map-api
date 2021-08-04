@@ -63,19 +63,20 @@ app.get("/tree", async function (req, res){
   const treeId = req.query.tree_id;
   const uuid = req.query.uuid;
   const treeName = req.query.tree_name;
+  let treeDetail = {};
   if(treeId){
-    const treeDetail = await tree.getTreeById(treeId);
-    res.status(200).json(treeDetail);
+    treeDetail = await tree.getTreeById(treeId);
   } else if(uuid){
-    const treeDetail = await tree.getTreeByUUID(uuid);
-    res.status(200).json(treeDetail);
+    treeDetail = await tree.getTreeByUUID(uuid);
   } else if(treeName){
-    const treeDetail = await tree.getTreeByName(treeName);
-    res.status(200).json(treeDetail);
+    treeDetail = await tree.getTreeByName(treeName);
   } else {
     console.warn("no tree id", treeId);
     res.status(400).json({message:"no tree id"});
   }
+  treeDetail.planter_identifier = "";
+
+  res.status(200).json(treeDetail);
 
   } catch (error) {
     console.log(error)
