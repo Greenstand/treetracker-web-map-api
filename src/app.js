@@ -71,10 +71,10 @@ app.get("/tree", async function (req, res){
   } else if(treeName){
     treeDetail = await tree.getTreeByName(treeName);
   } else {
-    console.warn("no tree id", treeId);
-    res.status(400).json({message:"no tree id"});
+    console.warn("tree_id did not match any record", treeId);
+    res.status(400).json({message:"tree_id did not match any record"});
   }
-  treeDetail.planter_identifier = "";
+  delete treeDetail.planter_identifier;
 
   res.status(200).json(treeDetail);
 
