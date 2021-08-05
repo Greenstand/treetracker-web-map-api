@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.15.0...v1.15.1) (2021-08-05)
+
+
+### Bug Fixes
+
+* use delete to remove key ([94ad2d8](https://github.com/Greenstand/treetracker-web-map/commit/94ad2d8eed2d974a4955fd8feea94c22464af464))
+
 # [1.15.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.2...v1.15.0) (2021-08-05)
 
 
