@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.2...v1.15.0) (2021-08-05)
+
+
+### Features
+
+* remove planter identifer from tree detail object ([af0949b](https://github.com/Greenstand/treetracker-web-map/commit/af0949bf1301f39cd252b0523ec972b948bed225))
+
 ## [1.14.2](https://github.com/Greenstand/treetracker-web-map/compare/v1.14.1...v1.14.2) (2021-06-11)
 
 
