@@ -79,22 +79,35 @@ class Map{
       /*
        * wallet map mode
        */
-      if(this.zoomLevel > 15){
-        this.sql = new SQLCase2();
-        this.sql.setBounds(this.bounds);
-        this.sql.addFilterByWallet(this.wallet);
-      }else{
-        this.sql = new SQLCase3();
-        this.sql.setClusterRadius(this.clusterRadius);
-        this.sql.addFilterByWallet(this.wallet);
-        this.sql.setBounds(this.bounds);
-      }
-      if(this.zoomLevel <= 9){
-        this.sqlZoomTarget = new SQLZoomTargetCase1V2();
-        this.sqlZoomTarget.setBounds(this.bounds);
-        this.sqlZoomTarget.setZoomLevel(this.zoomLevel);
-      }
-
+			const result = await this.pool.query({
+				text: `
+				 SELECT count(wallet.token.id)
+				 FROM wallet."token"
+				 INNER JOIN wallet.wallet ON wallet.wallet.id = wallet.token.wallet_id
+				 WHERE wallet.wallet.name = '${this.wallet}'
+				 `,
+				values:[]
+			});
+			const treeCount = result.rows[0].count;
+			parseInt(treeCount);
+			log.warn("count by wallet %d, get %s", this.wallet, treeCount);
+			if(this.zoomLevel > 15){
+				this.sql = new SQLCase2();
+				this.sql.setBounds(this.bounds);
+				this.sql.addFilterByWallet(this.wallet);
+			}else{
+				if(treeCount > 2000){
+					this.sql = new SQLCase1();
+					this.sql.addFilterByWallet(this.wallet);
+					this.sql.setZoomLevel(this.zoomLevel);
+					this.sql.setBounds(this.bounds);
+				}else{
+					this.sql = new SQLCase3();
+          this.sql.setClusterRadius(this.clusterRadius);
+					this.sql.addFilterByWallet(this.wallet);
+					this.sql.setBounds(this.bounds);
+				}
+			}
     }else if(this.flavor){
       /*
        * flavor map mode
