@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.15.1...v1.16.0) (2021-08-14)
+
+
+### Features
+
+* wallet switch to case1 when big ([2c54bb2](https://github.com/Greenstand/treetracker-web-map/commit/2c54bb2a64176229fae19182ca05cccff9dd40f0))
+
 ## [1.15.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.15.0...v1.15.1) (2021-08-05)
 
 
