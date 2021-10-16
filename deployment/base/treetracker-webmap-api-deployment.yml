@@ -14,7 +14,16 @@ spec:
     metadata:
       labels:
         app: "treetracker-webmap-api"
-    spec:
+     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: doks.digitalocean.com/node-pool
+                operator: In
+                values:
+                - microservices-node-pool
       containers:
         - name: "treetracker-webmap-api"
           image: "greenstand/treetracker-web-map-api:TAG"
