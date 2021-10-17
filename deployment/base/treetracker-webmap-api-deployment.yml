@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app: "treetracker-webmap-api"
-     spec:
+    spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
