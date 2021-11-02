@@ -6,6 +6,5 @@ metadata:
   namespace: webmap
 spec:
   cors:
-    cors:
     origins: 
     - '*'
