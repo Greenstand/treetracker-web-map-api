@@ -4,3 +4,4 @@ src/config/config.js
 
 *.swp
 .DS_Store
+.env

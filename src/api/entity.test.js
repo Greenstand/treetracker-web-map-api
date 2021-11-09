@@ -83,4 +83,21 @@ describe("entity", () => {
     }]);
   });
 
+  it("/entities?stakeholder_uuid=3ce486bd-4f17-4f82-9fab-317c72cb359d", async () => {
+    query.mockResolvedValue({rows:[{id:1, stakeholder_uuid: "3ce486bd-4f17-4f82-9fab-317c72cb359d"}]});
+    const response = await request(app)
+      .get("/entities?stakeholder_uuid=3ce486bd-4f17-4f82-9fab-317c72cb359d")
+    expect(new Pool().query).toBeDefined();
+    expect(response.statusCode).toBe(200);
+    expect(query).toHaveBeenCalledWith({
+      text: "select * from entity where stakeholder_uuid = $1",
+      values: ["3ce486bd-4f17-4f82-9fab-317c72cb359d"],
+    });
+    expect(response.body).toMatchObject([{
+      id: 1,
+      stakeholder_uuid: "3ce486bd-4f17-4f82-9fab-317c72cb359d",
+    }]);
+  });
+  
+
 });

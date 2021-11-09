@@ -28,6 +28,10 @@ router.get("/", async function(req, res, next){
     where = " where map_name = $1";
     values.push(req.query.map_name);
   }
+  if(req.query.stakeholder_uuid){
+    where = " where stakeholder_uuid = $1";
+    values.push(req.query.stakeholder_uuid);
+  }
   const query = {
     text: "select * from entity" + where, 
     values,
