@@ -1,3 +1,13 @@
+## [1.16.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.16.0...v1.16.1) (2022-02-28)
+
+
+### Bug Fixes
+
+* get tree by token ([dbf0319](https://github.com/Greenstand/treetracker-web-map/commit/dbf0319a36f2f0e5ed7c015f3817a76d3734d50f))
+* release node from 12 -> 14 ([2bcb88e](https://github.com/Greenstand/treetracker-web-map/commit/2bcb88e77c6f3bcb4897161e736bac2222fa8f1b))
+* remove extra line ([862a4b5](https://github.com/Greenstand/treetracker-web-map/commit/862a4b59994e5ebe7d26c13de1fad0269208f837))
+* remove useless code ([88c4ef0](https://github.com/Greenstand/treetracker-web-map/commit/88c4ef00471ef901f2b0488a37ef2e57007ad40c))
+
 # [1.16.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.15.1...v1.16.0) (2021-08-14)
 
 
