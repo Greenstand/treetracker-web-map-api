@@ -60,16 +60,6 @@ class SQLTree {
     return filter;
   }
 
-  getJoin() {
-    let join = "";
-    if (this.token) {
-      join += `
-        INNER JOIN wallet.token token ON token.capture_id::text = trees.uuid
-      `;
-    }
-    return join;
-  }
-
   setTreeUUID(uuid) {
     this.treeUUID = uuid;
   }
