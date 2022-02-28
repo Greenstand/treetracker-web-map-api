@@ -1,17 +1,21 @@
 
-class SQLTree{
+class SQLTree {
 
-  setTreeId(treeId){
+  setTreeId(treeId) {
     this.treeId = treeId;
   }
 
-  setTreeName(treeName){
+  setTreeName(treeName) {
     this.treeName = treeName;
   }
 
-  getQuery(){
-    if(!this.treeId && !this.treeName){
-      throw new Error("treeId or treeName required");
+  setToken(token) {
+    this.token = token;
+  }
+
+  getQuery() {
+    if (!this.treeId && !this.treeName && !this.token) {
+      throw new Error("treeId or treeName or token required");
     }
 
     const query = {
@@ -37,28 +41,31 @@ class SQLTree{
         AND trees.active = true
       `,
       values: [],
-    };    
+    };
     console.log("tree:", query);
     return query;
   }
 
-  getFilter(){
+  getFilter() {
     let filter = "";
-    if(this.treeId){
+    if (this.treeId) {
       filter += `AND trees.id = ${this.treeId}`;
     }
-    if(this.treeName){
+    if (this.treeName) {
       filter += `AND trees.name = '${this.treeName}'`;
+    }
+    if (this.token) {
+      filter += `AND token.id = '${this.token}'`;
     }
     return filter;
   }
 
-  setTreeUUID(uuid){
+  setTreeUUID(uuid) {
     this.treeUUID = uuid;
   }
 
-  getQueryUUID(){
-    if(!this.treeUUID){
+  getQueryUUID() {
+    if (!this.treeUUID) {
       throw new Error("treeUUID required");
     }
 
@@ -83,7 +90,7 @@ class SQLTree{
           trees.uuid = $1 AND trees.active = true
       `,
       values: [this.treeUUID],
-    };    
+    };
     console.log("tree:", query);
     return query;
   }
