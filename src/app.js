@@ -11,7 +11,7 @@ Sentry.init({ dsn: null });
 const cache = expressLru({
   max: 1000,
   ttl: 60000 * 240,
-  skip: function(req) {
+  skip: function (req) {
     // Don't run if bounds passed in, possibly other cases as well
     return !!req.user || !!req.query.bounds;
   }
@@ -22,13 +22,13 @@ app.use(bodyParser.json()); // parse application/json
 app.set('view engine', 'html');
 
 const allowCrossDomain = (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
 }
 
-if(process.env.NODE_ENV == 'dev'){
+if (process.env.NODE_ENV == 'dev') {
   console.log('disable cors');
   app.use(allowCrossDomain);
 }
@@ -56,31 +56,34 @@ app.use("/entities", entity);
 const nearest = require("./api/nearest");
 app.use("/nearest", nearest);
 
-app.get("/tree", async function (req, res){
+app.get("/tree", async function (req, res) {
   try {
-  console.log('get tree')
-  const tree = new Tree();
-  const treeId = req.query.tree_id;
-  const uuid = req.query.uuid;
-  const treeName = req.query.tree_name;
-  let treeDetail = {};
-  if(treeId){
-    treeDetail = await tree.getTreeById(treeId);
-  } else if(uuid){
-    treeDetail = await tree.getTreeByUUID(uuid);
-  } else if(treeName){
-    treeDetail = await tree.getTreeByName(treeName);
-  } else {
-    console.warn("tree_id did not match any record", treeId);
-    res.status(400).json({message:"tree_id did not match any record"});
-  }
-  delete treeDetail.planter_identifier;
+    console.log('get tree')
+    const tree = new Tree();
+    const treeId = req.query.tree_id;
+    const uuid = req.query.uuid;
+    const token = req.query.token;
+    const treeName = req.query.tree_name;
+    let treeDetail = {};
+    if (treeId) {
+      treeDetail = await tree.getTreeById(treeId);
+    } else if (uuid) {
+      treeDetail = await tree.getTreeByUUID(uuid);
+    } else if (treeName) {
+      treeDetail = await tree.getTreeByName(treeName);
+    } else if (token) {
+      treeDetail = await tree.getTreeByToken(token);
+    } else {
+      console.warn("tree_id did not match any record", treeId);
+      res.status(400).json({ message: "tree_id did not match any record" });
+    }
+    delete treeDetail.planter_identifier;
 
-  res.status(200).json(treeDetail);
+    res.status(200).json(treeDetail);
 
   } catch (error) {
     console.log(error)
-    res.status(500).json({message:"something wrong:" + error});
+    res.status(500).json({ message: "something wrong:" + error });
   }
 });
 
