@@ -110,4 +110,4 @@ We use Jest to build tests.
 cd server
 npm test
 ```
-
+Troubleshooting Local Set up - If your local set up is showing errors , comment the line in (engine-strict=true) .npmrc file.
