@@ -66,6 +66,11 @@ class SQLCase1{
                 ) org ON planter.organization_id = org.entity_id
               ) planter_ids
               ON trees.planter_id = planter_ids.id
+
+          UNION ALL
+              select id from trees where planting_organization_id = (
+                  select id from entity where map_name = '${this.mapName}'
+              )
           ) t1
         )
       `;

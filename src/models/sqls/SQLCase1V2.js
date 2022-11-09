@@ -19,15 +19,17 @@ class SQLCase1V2 extends SQLCase1{
       result += `
         INNER JOIN
         (  select trees.id as org_tree_id from trees
-          INNER JOIN (
+          where trees.planter_id in (
             SELECT id FROM planter
             JOIN (
               SELECT entity_id FROM getEntityRelationshipChildren(
                 (SELECT id FROM entity WHERE map_name = '${this.mapName}')
               )
             ) org ON planter.organization_id = org.entity_id
-          ) planter_ids
-          ON trees.planter_id = planter_ids.id
+          ) OR 
+              trees.planting_organization_id = (
+                select id from entity where map_name = '${this.mapName}'
+              )
         ) tree_ids
         ON tree_region.tree_id = tree_ids.org_tree_id`;
     }
