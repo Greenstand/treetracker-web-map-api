@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/Greenstand/treetracker-web-map/compare/v1.16.1...v1.17.0) (2022-11-09)
+
+
+### Features
+
+* planting_org ([929561f](https://github.com/Greenstand/treetracker-web-map/commit/929561feb28fc4b317c5b5f2e5427ff86bbe0ac3))
+
 ## [1.16.1](https://github.com/Greenstand/treetracker-web-map/compare/v1.16.0...v1.16.1) (2022-02-28)
 
 
