@@ -26,10 +26,10 @@ describe("nearest", () => {
     jest.clearAllMocks();
   });
 
-  it("/nearest?zoom_level=16&lng=85.5&lat=23.4", async () => {
+  it("/nearest?zoom_level=16&lon=85.5&lat=23.4", async () => {
     query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=16&lng=85.5&lat=23.4"
+      "/nearest?zoom_level=16&lon=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
@@ -42,10 +42,10 @@ describe("nearest", () => {
     });
   });
 
-  it("/nearest?zoom_level=14&lng=85.5&lat=23.4", async () => {
+  it("/nearest?zoom_level=14&lon=85.5&lat=23.4", async () => {
     query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=14&lng=85.5&lat=23.4"
+      "/nearest?zoom_level=14&lon=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
@@ -58,10 +58,10 @@ describe("nearest", () => {
     });
   });
 
-  it("/nearest?zoom_level=8&lng=85.5&lat=23.4", async () => {
+  it("/nearest?zoom_level=8&lon=85.5&lat=23.4", async () => {
     query.mockResolvedValue({ rows: nearestResult });
     const response = await request(app).get(
-      "/nearest?zoom_level=8&lng=85.5&lat=23.4"
+      "/nearest?zoom_level=8&lon=85.5&lat=23.4"
     );
     expect(new Pool().query).toBeDefined();
     expect(response.statusCode).toBe(200);
