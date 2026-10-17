@@ -1,4 +1,6 @@
 bases:
   - ../../base
+resources:
+  - dbconnection-sealed-secret.yaml
 patchesStrategicMerge:
   - treetracker-webmap-api-mapping.yml
