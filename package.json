@@ -5,13 +5,13 @@
   "description": "treetracker web map",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Greenstand/treetracker-web-map.git"
+    "url": "git+https://github.com/Greenstand/treetracker-web-map-api.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://github.com/Greenstand/treetracker-web-map/issues"
+    "url": "https://github.com/Greenstand/treetracker-web-map-api/issues"
   },
-  "homepage": "https://github.com/Greenstand/treetracker-web-map#readme",
+  "homepage": "https://github.com/Greenstand/treetracker-web-map-api#readme",
   "scripts": {
     "lint": "npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
