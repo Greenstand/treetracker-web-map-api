@@ -25,13 +25,13 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 router.get("/", async function (req, res, next) {
   try{
-    let { zoom_level, lng, lat } = req.query;
+    let { zoom_level, lon, lat } = req.query;
     zoom_level = parseInt(zoom_level);
-    lng = parseFloat(lng);
+    lon = parseFloat(lon);
     lat = parseFloat(lat);
-    console.log("lng:", lng);
+    console.log("lon:", lon);
     chai.expect(zoom_level).above(0);
-    chai.expect(lng).not.NaN;
+    chai.expect(lon).not.NaN;
     chai.expect(lat).not.NaN;
     let query;
     if (zoom_level <= 11) {
@@ -45,7 +45,7 @@ router.get("/", async function (req, res, next) {
       zoom_level = ${zoom_level}
     ORDER BY
       active_tree_region.centroid <->
-      ST_SetSRID(ST_MakePoint(${lng}, ${lat}),4326)
+      ST_SetSRID(ST_MakePoint(${lon}, ${lat}),4326)
     LIMIT 1;
     `,
         values: [],
@@ -59,7 +59,7 @@ router.get("/", async function (req, res, next) {
     clusters
   ORDER BY
     location <->
-    ST_SetSRID(ST_MakePoint(${lng}, ${lat}),4326)
+    ST_SetSRID(ST_MakePoint(${lon}, ${lat}),4326)
   LIMIT 1;
     `,
         values: [],
@@ -75,7 +75,7 @@ router.get("/", async function (req, res, next) {
     active = true
   ORDER BY
     estimated_geometric_location <->
-    ST_SetSRID(ST_MakePoint(${lng}, ${lat}),4326)
+    ST_SetSRID(ST_MakePoint(${lon}, ${lat}),4326)
   LIMIT 1;
     `,
         values: [],
