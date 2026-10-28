@@ -23,10 +23,10 @@
   },
   "dependencies": {
     "@sentry/node": "^5.4.3",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.20.1",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
-    "express": "^4.16.2",
+    "express": "^4.18.2",
     "express-lru": "^1.0.0",
     "loglevel": "^1.7.1",
     "morgan": "^1.9.1",
